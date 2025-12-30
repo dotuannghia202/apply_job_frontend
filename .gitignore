@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Các file chứa biến môi trường
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Loại trừ tất cả các file .env khác (nếu có)
+.env.*
