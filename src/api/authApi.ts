@@ -3,9 +3,9 @@ import type {
   BackendResponse,
   LoginRequest,
   LoginResponse,
-  User,
 } from "../types/auth";
 
+import type { User } from "../types/user";
 const authApi = {
   login(data: LoginRequest): Promise<BackendResponse<LoginResponse>> {
     const url = `/auth/login`;

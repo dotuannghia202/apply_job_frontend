@@ -9,6 +9,9 @@ export default defineConfig([
   globalIgnores(["dist"]),
   {
     files: ["**/*.{ts,tsx}"],
+    plugins: {
+      "@typescript-eslint": tseslint,
+    },
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -18,10 +21,14 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parser: tseslint.parser,
     },
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true }, // Cho phép export các hằng số
     ],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "error",
+    },
   },
 ]);

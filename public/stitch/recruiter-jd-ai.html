@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CognitiveBridge | AI JD Generator</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#72b183", // Updated primary color to #72b183
+              "primary-container": "#d4e8d9",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#00210f",
+              "secondary": "#006b60",
+              "secondary-container": "#8df5e4",
+              "on-secondary-container": "#005c53",
+              "tertiary": "#6f26f6",
+              "tertiary-container": "#c3acff",
+              "on-tertiary-container": "#4200a2",
+              "surface": "#f7f9fc",
+              "on-surface": "#2d3338",
+              "on-surface-variant": "#596065",
+              "surface-container-low": "#f1f4f7",
+              "surface-container-highest": "#dde3e9",
+              "surface-container-lowest": "#ffffff",
+              "outline-variant": "#acb3b8",
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(114, 177, 131, 0.15);
+        }
+        .signature-gradient {
+            background: linear-gradient(135deg, #72b183 0%, #aed6ba 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-6 py-3 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-extrabold tracking-tight text-blue-900 dark:text-blue-100 font-manrope">CognitiveBridge</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-primary transition-colors" href="#">Find Jobs</a>
+<a class="text-primary dark:text-primary font-bold border-b-2 border-primary" href="#">Post a Job</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-primary transition-colors" href="#">Analytics</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-primary transition-colors" href="#">Talent Pool</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden bg-surface-container-high border border-outline-variant/20">
+<img alt="User profile avatar with dropdown" data-alt="professional corporate headshot of a smiling executive man in a grey suit with soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNGg-zl4jFuqip_1cBknS5ekycujlgHECyqQPSsF8na1f-ehrW3Tx9q2F5yCJU1Y8Y6HoZkyuZhUyn9iVWdYmwfZqVjyWwH7Ouq5dLAgwLHafWp7V4qmLQEBk5QTgeGQT0zKjHIjzO1NMmLIrqL6zuZEMSjbAmyaZ_hmZY9o0fx7fTX4qLNH7YJjWwIobopdIeuiol0LMHawoTFQ8j4Dsp0jmdR6aS64to26cPTfbJ31lRAIragwEJeRcnXJUajwuEVn2rB7vYe-gj"/>
+</div>
+</div>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 h-[1px] w-full"></div>
+</nav>
+<main class="max-w-7xl mx-auto px-6 py-12">
+<!-- Header Section -->
+<header class="mb-12">
+<h1 class="text-4xl md:text-5xl font-manrope font-extrabold tracking-tight text-on-surface mb-4">
+                Craft the Future of your <span class="text-primary">Engineering Team</span>
+</h1>
+<p class="text-lg text-on-surface-variant max-w-2xl font-body">
+                Our AI analyzes your unique culture and technical needs to generate a high-performing Job Description that attracts elite talent.
+            </p>
+</header>
+<!-- Main Interactive Area: Asymmetric Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<!-- Left: Input Form (5 cols) -->
+<section class="lg:col-span-5 space-y-8">
+<div class="bg-surface-container-low rounded-xl p-8 space-y-6">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+<h2 class="text-xl font-manrope font-bold">Role Parameters</h2>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-on-surface-variant font-label">Job Title</label>
+<input class="w-full px-4 py-3 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all font-body text-on-surface outline-none" placeholder="e.g. Senior Full Stack Engineer" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-on-surface-variant font-label">Key Skills</label>
+<div class="flex flex-wrap gap-2 mb-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                    React <span class="material-symbols-outlined text-[14px]" data-icon="close">close</span>
+</span>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                    Node.js <span class="material-symbols-outlined text-[14px]" data-icon="close">close</span>
+</span>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                    AWS <span class="material-symbols-outlined text-[14px]" data-icon="close">close</span>
+</span>
+</div>
+<input class="w-full px-4 py-3 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all font-body text-on-surface outline-none" placeholder="Add a skill..." type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-on-surface-variant font-label">Company Culture</label>
+<textarea class="w-full px-4 py-3 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all font-body text-on-surface outline-none resize-none" placeholder="Describe the vibe, values, and team dynamic..." rows="4"></textarea>
+</div>
+</div>
+<button class="w-full py-4 signature-gradient text-on-primary rounded-full font-bold shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                        Generate Intelligence
+                    </button>
+</div>
+<!-- Secondary Context Card -->
+<div class="bg-tertiary-container/20 rounded-xl p-6 flex gap-4 items-start">
+<span class="material-symbols-outlined text-tertiary" data-icon="tips_and_updates">tips_and_updates</span>
+<div>
+<p class="text-sm font-bold text-on-tertiary-container mb-1">AI Pro Tip</p>
+<p class="text-xs text-on-tertiary-container/80">Including mentions of mentorship or professional development budget increases application rates by 34% for senior roles.</p>
+</div>
+</div>
+</section>
+<!-- Right: AI Preview Pane (7 cols) -->
+<section class="lg:col-span-7">
+<div class="relative group">
+<!-- Magic Border Effect -->
+<div class="absolute -inset-1 bg-gradient-to-r from-primary via-tertiary to-secondary opacity-20 group-hover:opacity-40 blur transition duration-1000 group-hover:duration-200 rounded-2xl"></div>
+<div class="relative bg-surface-container-lowest rounded-2xl p-8 min-h-[600px] shadow-xl border border-outline-variant/10">
+<!-- Preview Header -->
+<div class="flex justify-between items-center mb-10 pb-6 border-b border-surface-container">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+</div>
+<div>
+<h3 class="font-manrope font-bold text-lg leading-none">Draft Preview</h3>
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+                                        AI Optimized
+                                    </span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 text-sm font-bold text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span>
+                                    Regenerate
+                                </button>
+<button class="px-6 py-2 signature-gradient text-on-primary rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-shadow">
+                                    Publish Job
+                                </button>
+</div>
+</div>
+<!-- Generated Content -->
+<div class="space-y-10">
+<!-- Section: Overview -->
+<div>
+<h4 class="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-4">The Role</h4>
+<h2 class="text-3xl font-manrope font-extrabold text-on-surface mb-4">Senior Full Stack Engineer</h2>
+<p class="text-on-surface-variant leading-relaxed">
+                                    As a pivotal member of our CognitiveBridge core team, you will bridge the gap between complex AI logic and intuitive user experiences. We aren't just looking for a coder; we're looking for an architect who values clean systems and human-centric design.
+                                </p>
+</div>
+<!-- Section: Responsibilities (Bento Style Sub-grid) -->
+<div>
+<h4 class="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-6">Responsibilities</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface p-5 rounded-xl border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary mb-3" data-icon="architecture">architecture</span>
+<p class="text-sm font-medium">Design and maintain scalable microservices using Node.js and GraphQL.</p>
+</div>
+<div class="bg-surface p-5 rounded-xl border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary mb-3" data-icon="brush">brush</span>
+<p class="text-sm font-medium">Collaborate with designers to implement high-fidelity, accessible UIs in React.</p>
+</div>
+<div class="bg-surface p-5 rounded-xl border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary mb-3" data-icon="cloud_sync">cloud_sync</span>
+<p class="text-sm font-medium">Optimize cloud infrastructure for performance and global availability.</p>
+</div>
+<div class="bg-surface p-5 rounded-xl border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary mb-3" data-icon="groups">groups</span>
+<p class="text-sm font-medium">Mentor junior developers and drive technical excellence across the squad.</p>
+</div>
+</div>
+</div>
+<!-- Section: Requirements & Benefits -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div>
+<h4 class="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-4">Requirements</h4>
+<ul class="space-y-3">
+<li class="flex gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-base" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            5+ years in full-stack development.
+                                        </li>
+<li class="flex gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-base" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            Deep expertise in React &amp; TypeScript.
+                                        </li>
+<li class="flex gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-base" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            Passion for AI and LLM integration.
+                                        </li>
+</ul>
+</div>
+<div>
+<h4 class="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-4">Benefits</h4>
+<ul class="space-y-3">
+<li class="flex gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary text-base" data-icon="local_hospital">local_hospital</span>
+                                            Premium health &amp; dental.
+                                        </li>
+<li class="flex gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary text-base" data-icon="flight_takeoff">flight_takeoff</span>
+                                            Unlimited PTO policy.
+                                        </li>
+<li class="flex gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary text-base" data-icon="psychology">psychology</span>
+                                            Learning &amp; mental health budget.
+                                        </li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Floating Feedback Badge -->
+<div class="absolute -bottom-4 -right-4 bg-white p-3 rounded-2xl ai-glow border border-primary/10 flex items-center gap-2">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-green-100 flex items-center justify-center">
+<span class="text-[8px] font-bold text-primary">AI</span>
+</div>
+</div>
+<span class="text-[11px] font-bold text-on-surface-variant">Match Score: 98%</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 mt-20">
+<div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex flex-col gap-1">
+<span class="font-manrope font-bold text-slate-900 dark:text-slate-100">CognitiveBridge AI</span>
+<p class="font-inter text-xs text-slate-500">© 2024 CognitiveBridge AI. Human-Centric Recruitment.</p>
+</div>
+<div class="flex gap-6">
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+</body></html>

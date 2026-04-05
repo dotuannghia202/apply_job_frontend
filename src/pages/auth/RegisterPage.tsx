@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { LoginForm } from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -9,28 +9,30 @@ const LoginPage = () => {
       <div className="relative z-10">
         <h1 className="text-white font-bold text-xl mb-12">Job Portal</h1>
 
-        <div className="space-y-2 mb-8">
-          <h2 className="text-4xl font-semibold text-white tracking-tight">
-            Welcome back
+        <div className="space-y-2 mb-4">
+          <h2 className="text-3xl font-semibold text-white tracking-tight">
+            Join us to find the perfect job for you.
           </h2>
-          <p className="text-gray-400">Please enter your account details</p>
+          <p className="text-gray-400 mt-4">
+            Start your journey with us by registering an account.
+          </p>
         </div>
       </div>
 
       <div className="relative z-10">
-        <LoginForm />
+        <RegisterForm />
       </div>
 
       <div className="mt-8 text-center relative z-10">
         <button
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/login")}
           className="text-gray-400 hover:text-white text-sm underline underline-offset-4 cursor-pointer"
         >
-          You haven't an account? Create an account
+          Already have an account? Login
         </button>
       </div>
     </>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

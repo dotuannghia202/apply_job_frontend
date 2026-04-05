@@ -175,7 +175,7 @@ export const LoginForm = () => {
       <Button
         disabled={isLoading}
         type="submit"
-        className="w-full bg-[#72b183] hover:bg-[#5e966c] text-[#0a0c0b] font-bold h-12 rounded-xl transition-all"
+        className="w-full bg-primary hover:bg-primary-hover text-white font-bold h-12 rounded-xl transition-all"
       >
         {isLoading ? (
           <LoaderCircle className="w-5 h-5 animate-spin" />
@@ -185,7 +185,7 @@ export const LoginForm = () => {
       </Button>
 
       {/* Social Logins */}
-      <div className="flex justify-center gap-4 mt-8">
+      {/* <div className="flex justify-center gap-4 mt-8">
         <SocialButton icon={<Chrome className="w-5 h-5" />} />
         <SocialButton icon={<Github className="w-5 h-5" />} />
         <SocialButton
@@ -193,16 +193,16 @@ export const LoginForm = () => {
             <Facebook className="w-5 h-5 text-blue-600" fill="currentColor" />
           }
         />
-      </div>
+      </div> */}
     </form>
   );
 };
 
-const SocialButton = ({ icon }: { icon: React.ReactNode }) => (
-  <button
-    type="button"
-    className="w-12 h-12 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer shadow-md"
-  >
-    {icon}
-  </button>
-);
+// const SocialButton = ({ icon }: { icon: React.ReactNode }) => (
+//   <button
+//     type="button"
+//     className="w-12 h-12 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer shadow-md"
+//   >
+//     {icon}
+//   </button>
+// );

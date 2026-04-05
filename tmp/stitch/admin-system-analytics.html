@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CognitiveBridge | Admin Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-on-surface": "#9a9da0",
+                        "primary-container": "#bce3c8",
+                        "inverse-primary": "#72b183",
+                        "tertiary-container": "#c3acff",
+                        "on-surface-variant": "#596065",
+                        "tertiary-dim": "#6302ea",
+                        "on-tertiary": "#fdf7ff",
+                        "tertiary": "#6f26f6",
+                        "on-tertiary-container": "#4200a2",
+                        "on-tertiary-fixed": "#280069",
+                        "surface-container": "#eaeef3",
+                        "inverse-surface": "#0b0f11",
+                        "outline-variant": "#acb3b8",
+                        "secondary-fixed-dim": "#7fe6d5",
+                        "secondary-fixed": "#8df5e4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-background": "#2d3338",
+                        "on-primary-fixed-variant": "#1a4d2e",
+                        "secondary-dim": "#005e54",
+                        "on-primary-fixed": "#0a2b16",
+                        "error-container": "#f56965",
+                        "primary-fixed-dim": "#a2d4b1",
+                        "error": "#ac3434",
+                        "on-tertiary-fixed-variant": "#4c00b9",
+                        "primary-dim": "#5a936a",
+                        "primary": "#72b183",
+                        "tertiary-fixed": "#c3acff",
+                        "error-dim": "#70030f",
+                        "on-secondary-container": "#005c53",
+                        "on-surface": "#2d3338",
+                        "on-secondary": "#e2fff8",
+                        "surface-bright": "#f7f9fc",
+                        "surface": "#f7f9fc",
+                        "secondary-container": "#8df5e4",
+                        "on-secondary-fixed-variant": "#00675c",
+                        "primary-fixed": "#bce3c8",
+                        "surface-container-high": "#e3e9ee",
+                        "on-primary-container": "#1a4d2e",
+                        "outline": "#757c81",
+                        "surface-tint": "#72b183",
+                        "surface-variant": "#dde3e9",
+                        "on-secondary-fixed": "#004840",
+                        "secondary": "#006b60",
+                        "on-error-container": "#65000b",
+                        "surface-container-low": "#f1f4f7",
+                        "surface-container-highest": "#dde3e9",
+                        "on-error": "#fff7f6",
+                        "tertiary-fixed-dim": "#b69bff",
+                        "surface-dim": "#d3dbe1",
+                        "background": "#f7f9fc"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-slate-200/50 dark:border-slate-800/50 bg-slate-50 dark:bg-slate-950 flex flex-col h-full py-6 gap-2">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<div>
+<h1 class="font-manrope font-bold text-lg text-slate-900 dark:text-slate-100">Recruiter Portal</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">AI-Powered Hiring</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active: Dashboard (closest match to Overview) -->
+<a class="bg-primary/10 text-primary rounded-lg px-4 py-2 mx-2 flex items-center gap-3 transition-transform duration-200 hover:translate-x-1 font-inter text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 px-4 py-2 mx-2 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-transform duration-200 hover:translate-x-1 font-inter text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="work_history">work_history</span>
+<span>Applications</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 px-4 py-2 mx-2 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-transform duration-200 hover:translate-x-1 font-inter text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span>AI Matches</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 px-4 py-2 mx-2 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-transform duration-200 hover:translate-x-1 font-inter text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span>Messages</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 px-4 py-2 mx-2 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-transform duration-200 hover:translate-x-1 font-inter text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full bg-gradient-to-br from-primary to-primary-dim text-on-primary py-3 rounded-full font-semibold text-sm shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                Generate JD with AI
+            </button>
+</div>
+<div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800">
+<a class="text-slate-500 hover:text-primary px-4 py-2 mx-2 flex items-center gap-3 font-inter text-xs" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                Help Center
+            </a>
+<a class="text-slate-500 hover:text-primary px-4 py-2 mx-2 flex items-center gap-3 font-inter text-xs" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar (Authority: JSON) -->
+<header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-6 py-3 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 font-manrope">CognitiveBridge</span>
+<div class="hidden md:flex items-center bg-surface-container-highest px-4 py-2 rounded-full w-96 gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline" placeholder="Global system search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors p-2">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors p-2">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+<img alt="User profile avatar with dropdown" class="w-9 h-9 rounded-full object-cover border-2 border-primary/20" data-alt="portrait of a professional male executive with short hair and modern glasses smiling in a corporate setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsCPd4ECyx9dsGDo_KffswGH_smG1Yyz7gx56AGIzPXl7u9C3JPcdkOV1pGVzG2SKiTLrFQnz5uhD0Pf0foc1FRHAs-VmzIgY-a4uEFavV8_716-q-4rdXRSnt6xE974QxWh9pToyqJDK5KRmJY3ebKXtmOVwGPkMJ4_DE7AtvCBcSDbpPX_lqoBm2JSWo512mf9K6wTcPtVoxQuG0Ugtu74t4SmNKknIa60XCdQ3Sa-3qvlmFXQ4xOQZaw6Vglv2nJibv5Gf0Nc7R"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="max-w-7xl mx-auto px-8 py-10 space-y-12">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-4xl font-manrope font-extrabold text-on-surface tracking-tight">System Intelligence</h2>
+<p class="text-on-surface-variant mt-2 font-body">Real-time platform analytics and algorithmic health.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 bg-surface-container-high text-on-surface rounded-full text-sm font-semibold hover:bg-surface-variant transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="calendar_today">calendar_today</span>
+                        Last 30 Days
+                    </button>
+<button class="px-5 py-2.5 bg-primary text-on-primary rounded-full text-sm font-semibold shadow-lg shadow-primary/20 hover:scale-105 transition-transform flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+                        Export PDF
+                    </button>
+</div>
+</div>
+<!-- Summary Cards: Bento Style -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="col-span-1 md:col-span-2 bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col justify-between group overflow-hidden relative">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+<div class="flex justify-between items-start z-10">
+<div>
+<p class="text-sm font-label font-bold text-outline-variant uppercase tracking-wider">Total Ecosystem Users</p>
+<h3 class="text-5xl font-manrope font-extrabold mt-2">142,804</h3>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl p-3 bg-primary/10 rounded-xl" data-icon="groups">groups</span>
+</div>
+<div class="mt-8 flex items-center gap-4 z-10">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant font-medium">Candidates</span>
+<span class="text-lg font-bold">128.4k</span>
+</div>
+<div class="w-[1px] h-8 bg-slate-100"></div>
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant font-medium">Employers</span>
+<span class="text-lg font-bold">14.4k</span>
+</div>
+<div class="ml-auto text-primary font-bold flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-lg text-xs">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                            12%
+                        </div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-sm font-label font-bold text-outline-variant uppercase tracking-wider">Active Jobs</p>
+<h3 class="text-4xl font-manrope font-extrabold mt-2">8,432</h3>
+</div>
+<div class="mt-6">
+<div class="flex justify-between text-xs mb-2">
+<span class="text-on-surface-variant">Capacity Utilized</span>
+<span class="font-bold">78%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[78%]"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-sm font-label font-bold text-outline-variant uppercase tracking-wider">Revenue Growth</p>
+<h3 class="text-4xl font-manrope font-extrabold mt-2">$2.4M</h3>
+</div>
+<div class="mt-6 flex items-center gap-2">
+<span class="text-primary font-bold text-sm">+24%</span>
+<span class="text-on-surface-variant text-xs">vs last quarter</span>
+</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- User Growth Over Time -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex justify-between items-center mb-10">
+<h4 class="text-xl font-manrope font-bold">User Growth Over Time</h4>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="text-xs font-medium text-on-surface-variant">Candidates</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-tertiary"></span>
+<span class="text-xs font-medium text-on-surface-variant">Employers</span>
+</div>
+</div>
+</div>
+<!-- SVG Chart Visualization -->
+<div class="relative h-64 w-full">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 800 200">
+<!-- Grid lines -->
+<line class="text-slate-100" stroke="currentColor" stroke-dasharray="4" x1="0" x2="800" y1="0" y2="0"></line>
+<line class="text-slate-100" stroke="currentColor" stroke-dasharray="4" x1="0" x2="800" y1="100" y2="100"></line>
+<line class="text-slate-100" stroke="currentColor" stroke-dasharray="4" x1="0" x2="800" y1="200" y2="200"></line>
+<!-- Line 1: Candidates (Changed to brand primary #72b183) -->
+<path d="M0,180 Q100,160 200,140 T400,80 T600,60 T800,20" fill="none" stroke="#72b183" stroke-linecap="round" stroke-width="4"></path>
+<!-- Line 2: Employers -->
+<path d="M0,195 Q100,190 200,180 T400,170 T600,150 T800,140" fill="none" stroke="#6f26f6" stroke-linecap="round" stroke-width="4"></path>
+<!-- Area Fills -->
+<path d="M0,180 Q100,160 200,140 T400,80 T600,60 T800,20 V200 H0 Z" fill="url(#grad1)" opacity="0.1"></path>
+</svg>
+<defs>
+<lineargradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#72b183;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#72b183;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<div class="flex justify-between mt-6 text-[10px] uppercase font-bold text-outline tracking-tighter">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+</div>
+</div>
+</div>
+<!-- Top Industries -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<h4 class="text-xl font-manrope font-bold mb-8">Top Industries</h4>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Engineering</span>
+<span class="text-outline">42%</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-primary-container h-full w-[42%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Fintech</span>
+<span class="text-outline">28%</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-tertiary to-tertiary-container h-full w-[28%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Healthcare</span>
+<span class="text-outline">18%</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-secondary to-secondary-container h-full w-[18%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Design</span>
+<span class="text-outline">12%</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary-dim to-primary h-full w-[12%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="mt-10 p-4 rounded-xl bg-primary/5 border border-primary/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                                AI Trend Analysis suggests <span class="font-bold">Renewable Energy</span> is expected to grow by <span class="font-bold">15%</span> next month.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activities Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<div class="px-8 py-6 border-b border-surface-container flex justify-between items-center bg-surface-bright">
+<h4 class="text-xl font-manrope font-bold">Recent Activities</h4>
+<button class="text-primary text-sm font-semibold hover:underline">View All Logs</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high">
+<th class="px-8 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Activity</th>
+<th class="px-8 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Entity</th>
+<th class="px-8 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Status</th>
+<th class="px-8 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Timestamp</th>
+<th class="px-8 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<tr class="hover:bg-surface transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="domain_verification">domain_verification</span>
+</div>
+<span class="text-sm font-semibold">New Company Approved</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-2">
+<img alt="Tech Corp" class="w-6 h-6 rounded-md" data-alt="clean minimalist tech logo with geometric shapes and blue colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNIjI5lVj3mahnfiYEG6j8RJTZ4hF84AIORNwNGVsz21eHmUvX4m5Hu1XHx7pnoWg1INDL1jG_kt7Sb61T5lshzwx8Ztlm6EUXwgYn8e9adbS9dhoWl2wkvZuU2c6Ze8o3Y9AEywvspEMcldIXKlc1BO6x-NU3nI0Q3yYC1G8h2eUEoZbSVgP8AabTCreSDBVx3_dKXzlt4AnewwLWlC5nj8na9tK3GbZ3m2muA1gqD4dVInW_YLj4Ebfo6oJmtKU1inoqR--qXhs1"/>
+<span class="text-sm font-body">NexGen Systems</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">Verified</span>
+</td>
+<td class="px-8 py-5 text-sm text-outline">2 mins ago</td>
+<td class="px-8 py-5">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="more_horiz">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-error-container/30 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="report">report</span>
+</div>
+<span class="text-sm font-semibold">Job Post Reported</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="text-sm font-body italic">Senior Solidity Dev...</span>
+</td>
+<td class="px-8 py-5">
+<span class="bg-error/10 text-error px-3 py-1 rounded-full text-xs font-bold">Flagged</span>
+</td>
+<td class="px-8 py-5 text-sm text-outline">15 mins ago</td>
+<td class="px-8 py-5">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="more_horiz">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+</div>
+<span class="text-sm font-semibold">Premium Subscription</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="text-sm font-body">User #89423</span>
+</td>
+<td class="px-8 py-5">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">Processed</span>
+</td>
+<td class="px-8 py-5 text-sm text-outline">1 hour ago</td>
+<td class="px-8 py-5">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="more_horiz">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Footer (Authority: JSON) -->
+<footer class="w-full border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 mt-12">
+<div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex flex-col gap-2">
+<span class="font-manrope font-bold text-slate-900 dark:text-slate-100">CognitiveBridge AI</span>
+<p class="font-inter text-xs text-slate-500">© 2024 CognitiveBridge AI. Human-Centric Recruitment.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Cookie Settings</a>
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Accessibility</a>
+<a class="font-inter text-xs text-slate-500 hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>
