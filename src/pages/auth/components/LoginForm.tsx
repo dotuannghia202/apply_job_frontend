@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
-import { LoaderCircle, Chrome, Github, Facebook } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
 import authApi from "@/api/authApi";
 import type { LoginRequest } from "@/types/auth";
+import { preventSpaceKey } from "@/helper";
 
 export const LoginForm = () => {
   console.count("Render LoginForm");
@@ -67,7 +68,7 @@ export const LoginForm = () => {
       setLoading(true);
       try {
         const res = await authApi.login(formLogin);
-        if (res.statusCode === 200) {
+        if (res.statusCode === 200 && res.data) {
           const { access_token, user } = res.data;
           localStorage.setItem("access_token", access_token.toString());
           localStorage.setItem("user", JSON.stringify(user));
@@ -123,6 +124,7 @@ export const LoginForm = () => {
         <Input
           id="user_name"
           name="username"
+          onKeyDown={preventSpaceKey}
           onChange={handleChange}
           placeholder="Johndoe@gmail.com"
           className={`h-12 transition-all duration-200 focus-visible:ring-green-500/50 ${
@@ -148,6 +150,7 @@ export const LoginForm = () => {
         <PasswordInput
           id="password"
           name="password"
+          onKeyDown={preventSpaceKey}
           onChange={handleChange}
           placeholder="Enter your password ..."
           className={`h-12 transition-all duration-200 focus-visible:ring-green-500/50 ${
