@@ -1,0 +1,58 @@
+import { Bell, Settings } from "lucide-react";
+
+const navLinks = ["Find Jobs", "My Applications", "Profile"];
+
+const JobSearchTopNav = () => {
+  return (
+    <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-3">
+        <div className="flex items-center gap-8">
+          <span className="text-2xl font-extrabold tracking-tight text-slate-900">
+            CognitiveBridge
+          </span>
+          <div className="hidden gap-6 md:flex">
+            {navLinks.map((link) => (
+              <a
+                key={link}
+                href="#"
+                className={`border-b-2 py-1 text-sm font-semibold transition-colors ${
+                  link === "Find Jobs"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-slate-600 hover:text-primary"
+                }`}
+              >
+                {link}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="rounded-full p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-primary"
+          >
+            <Bell className="size-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="Settings"
+            className="rounded-full p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-primary"
+          >
+            <Settings className="size-5" />
+          </button>
+          <div className="size-9 overflow-hidden rounded-full border border-slate-200">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS0FoW5Z0KfIiipGj8AcqmZ5YsaPYXcsSR8d-2bkj7t_b9wvjcSQbmN_jMPWlxbq81cm08GLH9fkCZecDz7oi7vXDrK9SWLsRKPpAzCraMJ1Agl-oWe268sa9c7Bm84ddjwamlesyzwV_JrNZxXDrJ8xrTTXmqNrLMW33leAgpqSArr85MLRRzuM20dKGQ87KONifn_1WmmQQ-lEtLMpCXRzyPJPb3iN-yKRtyr-HP4LzJNjrDEXCOnKDtt07Qqa432HpLq9BZdkt-"
+              alt="User avatar"
+              className="size-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default JobSearchTopNav;

@@ -10,6 +10,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import authApi from "@/api/authApi";
 import type { LoginRequest } from "@/types/auth";
 import { preventSpaceKey } from "@/helper";
+import { useAuthStore } from "@/store/auth.store";
 
 export const LoginForm = () => {
   console.count("Render LoginForm");
@@ -27,6 +28,7 @@ export const LoginForm = () => {
 
   const [isLoading, setLoading] = React.useState(false);
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -70,9 +72,9 @@ export const LoginForm = () => {
         const res = await authApi.login(formLogin);
         if (res.statusCode === 200 && res.data) {
           const { access_token, user } = res.data;
-          localStorage.setItem("access_token", access_token.toString());
-          localStorage.setItem("user", JSON.stringify(user));
-          navigate("/admin/dashboard");
+
+          setAuth(user, access_token);
+          navigate("/");
         }
       } catch (error) {
         if (isAxiosError(error)) {

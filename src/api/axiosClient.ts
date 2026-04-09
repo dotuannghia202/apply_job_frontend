@@ -10,12 +10,12 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("accessToken");
 
     const publicEndpoints = ["/auth/login", "/auth/register", "/auth/refresh"];
 
     const isPublicEndpoint = publicEndpoints.some((endpoint) =>
-      config.url?.includes(endpoint)
+      config.url?.includes(endpoint),
     );
 
     if (token && config.headers && !isPublicEndpoint) {
@@ -25,18 +25,18 @@ axiosClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
     if (error.response?.statusCode === 401) {
-      localStorage.removeItem("access_token");
+      localStorage.removeItem("accessToken");
       window.location.href = "/login";
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosClient;

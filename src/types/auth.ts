@@ -10,16 +10,16 @@ export interface AuthUser {
 }
 
 export interface LoginRequest {
-  username: String;
-  password: String;
+  username: string;
+  password: string;
 }
 
 export interface LoginResponse {
-  access_token: String;
+  access_token: string;
   user: User;
 }
 
 export interface RegisterRequest {
-  name: String;
-  email: String;
+  name: string;
+  email: string;
 }

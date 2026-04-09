@@ -21,7 +21,7 @@ const authApi = {
   },
 
   getProfile(): Promise<BackendResponse<User>> {
-    const url = `/auth/me`;
+    const url = `/auth/account`;
     return axiosClient.get(url);
   },
 

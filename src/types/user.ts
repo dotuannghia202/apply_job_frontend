@@ -1,5 +1,8 @@
+import type { RoleName } from "./auth";
+
 export interface User {
   id: number;
-  email: String;
-  name: String;
+  email: string;
+  name: string;
+  roles: Array<RoleName>;
 }

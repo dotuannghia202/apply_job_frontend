@@ -14,10 +14,11 @@ import UnauthorizedPage from "@/pages/errors/UnauthorizedPage";
 import AuthRequiredPage from "@/pages/errors/AuthRequiredPage";
 
 import AdminSystemAnalyticsPage from "@/pages/stitch/AdminSystemAnalyticsPage";
-import CandidateJobSearchPage from "@/pages/stitch/CandidateJobSearchPage";
+
 import EmployerDashboardPage from "@/pages/stitch/RecruiterDashboardPage";
 import EmployerJDGeneratorPage from "@/pages/stitch/RecruiterJDGeneratorPage";
 import type { RoleName } from "@/types/auth";
+import JobListPage from "@/pages/jobs/JobListPage";
 
 // Sau này nếu có AdminDashboardPage riêng thì import thêm:
 // import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
@@ -28,7 +29,7 @@ function getUserRoles(): RoleName[] {
 
   try {
     const user = JSON.parse(rawUser);
-    return user?.roles?.map((r: { name: string }) => r.name as RoleName) ?? [];
+    return user?.roles?.map((r: RoleName) => r) ?? [];
   } catch {
     return [];
   }
@@ -117,13 +118,14 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // CANDIDATE only
           {
-            element: <RequireRoles allowedRoles={["CANDIDATE"]} />,
+            element: (
+              <RequireRoles allowedRoles={["CANDIDATE", "EMPLOYER", "ADMIN"]} />
+            ),
             children: [
               {
                 path: "jobs",
-                element: <CandidateJobSearchPage />,
+                element: <JobListPage />,
               },
             ],
           },
