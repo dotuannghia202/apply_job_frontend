@@ -1,13 +1,19 @@
-import { ChevronDown, Grid2x2, List } from "lucide-react";
+import { ChevronLeft, ChevronRight, Grid2x2, List } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import JobCard from "@/pages/jobs/components/JobCard";
 import { useGetJobs } from "@/api/jobs/job.queries";
 import type { Job } from "@/types/job";
+import { Button } from "@/components/ui/button";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+} from "@/components/ui/pagination";
 
 const JobListSection = () => {
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 12;
   const [items, setItems] = useState<Job[]>([]);
 
   const filters = useMemo(() => ({ page, pageSize }), [page, pageSize]);
@@ -19,15 +25,7 @@ const JobListSection = () => {
   const hasNextPage = meta ? meta.page < meta.pages : false;
 
   useEffect(() => {
-    if (!data?.data) return;
-
-    setItems((prev) => {
-      if (page === 1) return apiJobs;
-
-      const seenIds = new Set(prev.map((job) => job.id));
-      const next = apiJobs.filter((job) => !seenIds.has(job.id));
-      return [...prev, ...next];
-    });
+    setItems(apiJobs);
   }, [apiJobs, data?.data, page]);
 
   return (
@@ -71,17 +69,44 @@ const JobListSection = () => {
         ))}
       </div>
 
-      {!isError && hasNextPage ? (
+      {meta ? (
         <div className="mt-12 flex justify-center">
-          <button
-            type="button"
-            disabled={isFetching}
-            onClick={() => setPage((prev) => prev + 1)}
-            className="inline-flex items-center gap-2 rounded-full border border-primary/20 px-7 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isFetching ? "Loading..." : "Load More Opportunities"}
-            <ChevronDown className="size-4" />
-          </button>
+          <Pagination>
+            <PaginationContent className="gap-4">
+              <PaginationItem>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon-lg"
+                  disabled={isFetching || page <= 1}
+                  onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                  className="rounded-full border-primary/30 text-primary hover:bg-primary/5"
+                >
+                  <ChevronLeft className="size-5" />
+                </Button>
+              </PaginationItem>
+
+              <PaginationItem>
+                <div className="text-lg font-semibold text-slate-500">
+                  <span className="text-primary">{meta.page}</span> /{" "}
+                  {meta.pages} pages
+                </div>
+              </PaginationItem>
+
+              <PaginationItem>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon-lg"
+                  disabled={isFetching || !hasNextPage}
+                  onClick={() => setPage((prev) => prev + 1)}
+                  className="rounded-full border-primary/30 text-primary hover:bg-primary/5"
+                >
+                  <ChevronRight className="size-5" />
+                </Button>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       ) : null}
     </section>

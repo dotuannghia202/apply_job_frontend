@@ -12,6 +12,8 @@ export interface Job {
   skills: string[];
   startDate: string;
   endDate: string;
+  requirements?: string[];
+  benefits?: string[];
 }
 
 export interface JobListFilters {
