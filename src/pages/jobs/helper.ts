@@ -15,6 +15,28 @@ export type JobCardItem = {
   };
 };
 
+export function formatVND(value?: number | null): string {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "Agree on salary";
+  }
+
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+export function getCityFromAddress(address?: string | null): string {
+  const safe = address?.trim();
+  if (!safe) return "";
+
+  const lastCommaIndex = safe.lastIndexOf(",");
+  if (lastCommaIndex === -1) return safe;
+
+  return safe.slice(lastCommaIndex + 1).trim();
+}
+
 export const industryFilters = [
   { label: "Technology", checked: false },
   { label: "AI & Data Science", checked: true },
