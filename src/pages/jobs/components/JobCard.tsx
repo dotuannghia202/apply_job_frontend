@@ -10,13 +10,20 @@ import { JobPopup } from "@/pages/jobs/components/JobPopup";
 const JobCard = ({ job }: { job: Job }) => {
   const anchorRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<number | null>(null);
+  const openTimerRef = useRef<number | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const OPEN_DELAY_MS = 400;
 
   const companyName = job.company?.name ?? "Unknown";
   const companyLogo = job.company?.logo;
   const salaryText = formatVND(job.salary);
 
   const openPopup = () => {
+    if (openTimerRef.current) {
+      window.clearTimeout(openTimerRef.current);
+      openTimerRef.current = null;
+    }
     if (closeTimerRef.current) {
       window.clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
@@ -24,7 +31,29 @@ const JobCard = ({ job }: { job: Job }) => {
     setIsPopupOpen(true);
   };
 
+  const scheduleOpenPopup = () => {
+    if (isPopupOpen) return;
+
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+
+    if (openTimerRef.current) {
+      window.clearTimeout(openTimerRef.current);
+    }
+
+    openTimerRef.current = window.setTimeout(() => {
+      setIsPopupOpen(true);
+      openTimerRef.current = null;
+    }, OPEN_DELAY_MS);
+  };
+
   const scheduleClosePopup = () => {
+    if (openTimerRef.current) {
+      window.clearTimeout(openTimerRef.current);
+      openTimerRef.current = null;
+    }
     if (closeTimerRef.current) {
       window.clearTimeout(closeTimerRef.current);
     }
@@ -35,6 +64,10 @@ const JobCard = ({ job }: { job: Job }) => {
   };
 
   const closePopup = () => {
+    if (openTimerRef.current) {
+      window.clearTimeout(openTimerRef.current);
+      openTimerRef.current = null;
+    }
     if (closeTimerRef.current) {
       window.clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
@@ -46,7 +79,7 @@ const JobCard = ({ job }: { job: Job }) => {
     <>
       <article
         ref={anchorRef}
-        onMouseEnter={openPopup}
+        onMouseEnter={scheduleOpenPopup}
         onMouseLeave={scheduleClosePopup}
         className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
       >
