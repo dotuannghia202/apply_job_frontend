@@ -1,97 +1,75 @@
-import {
-  BadgeCheck,
-  Bookmark,
-  Bolt,
-  Clock3,
-  Globe,
-  Share2,
-  Wallet,
-} from "lucide-react";
+import { Bookmark } from "lucide-react";
 
-import type { JobCardItem } from "@/pages/jobs/helper";
+import type { Job } from "@/types/job";
 
-type JobCardProps = {
-  job: JobCardItem;
-};
+const JobCard = ({ job }: { job: Job }) => {
+  const companyName = job.company?.name ?? "Unknown";
+  const companyLogo = job.company?.logo;
 
-const JobCard = ({ job }: JobCardProps) => {
-  const badge =
-    job.badge?.tone === "secondary"
-      ? {
-          wrapper: "bg-cyan-100 text-cyan-800",
-          icon: <BadgeCheck className="size-3.5" />,
-        }
-      : {
-          wrapper: "bg-violet-100 text-violet-800",
-          icon: <Bolt className="size-3.5" />,
-        };
+  const formatSalary = (salary: number) => {
+    if (!Number.isFinite(salary) || salary <= 0) return "Thỏa thuận";
+    if (salary >= 1_000_000) {
+      const million = salary / 1_000_000;
+      const display =
+        million >= 10 ? Math.round(million) : Math.round(million * 10) / 10;
+      return `${display} triệu`;
+    }
+    return `${salary} triệu`;
+  };
+
+  const salaryText = formatSalary(job.salary);
 
   return (
-    <article className="group flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
-      <div>
-        <div className="mb-6 flex items-start justify-between">
-          <div className="flex size-14 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-2">
-            <img
-              src={job.companyLogo}
-              alt={`${job.company} logo`}
-              className="size-full object-contain"
-            />
+    <article className="flex items-center gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+      <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
+        {companyLogo ? (
+          <img
+            src={companyLogo}
+            alt={`${companyName} logo`}
+            className="size-full object-contain"
+          />
+        ) : (
+          <span className="text-xl font-bold text-slate-600">
+            {companyName.slice(0, 1).toUpperCase()}
+          </span>
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              {job.active ? (
+                <span className="inline-flex items-center rounded-full bg-rose-600 px-3 py-1 text-xs font-bold text-white">
+                  HOT
+                </span>
+              ) : null}
+
+              <h3 className="min-w-0 text-lg font-extrabold leading-snug text-slate-900">
+                {job.name}
+              </h3>
+            </div>
+
+            <p className="mt-1 text-sm text-slate-600">{companyName}</p>
           </div>
+
           <button
             type="button"
-            aria-label={`Bookmark ${job.title}`}
-            className="rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-rose-500"
+            aria-label={`Save ${job.name}`}
+            className="shrink-0 rounded-full border border-green-500/30 p-2 text-green-600 transition-colors hover:bg-green-50"
           >
-            <Bookmark className="size-4" />
+            <Bookmark className="size-5" />
           </button>
         </div>
 
-        {job.badge ? (
-          <div
-            className={`mb-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[10px] font-bold uppercase ${badge.wrapper}`}
-          >
-            {badge.icon}
-            {job.badge.label}
-          </div>
-        ) : null}
-
-        <h3 className="text-xl font-bold text-slate-900 transition-colors group-hover:text-primary">
-          {job.title}
-        </h3>
-        <p className="mt-1 text-sm text-slate-600">
-          {job.company} • {job.location}
-        </p>
-
-        <div className="mt-4 flex flex-wrap gap-4 text-xs font-medium text-slate-500">
-          <span className="flex items-center gap-1">
-            {job.isRemote ? (
-              <Globe className="size-3.5" />
-            ) : (
-              <Clock3 className="size-3.5" />
-            )}
-            {job.workType}
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
+            {salaryText}
           </span>
-          <span className="flex items-center gap-1">
-            <Wallet className="size-3.5" />
-            {job.salary}
+          <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
+            {job.location}
           </span>
         </div>
-      </div>
-
-      <div className="mt-7 flex items-center gap-3">
-        <button
-          type="button"
-          className="flex-1 rounded-full bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
-        >
-          Apply Now
-        </button>
-        <button
-          type="button"
-          aria-label={`Share ${job.title}`}
-          className="rounded-full border border-slate-200 bg-slate-50 p-2.5 text-slate-700 transition-colors hover:bg-slate-100"
-        >
-          <Share2 className="size-4" />
-        </button>
       </div>
     </article>
   );

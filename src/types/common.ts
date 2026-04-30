@@ -7,7 +7,17 @@ export interface BackendResponse<T> {
 
 export interface QueryParams {
   page?: number;
-  pageSize?: number;
+  size?: number;
   name?: string;
   email?: string;
+}
+
+export interface Pagination<T> {
+  result: T[];
+  meta: {
+    page: number;
+    pageSize: number;
+    pages: number;
+    total: number;
+  };
 }
