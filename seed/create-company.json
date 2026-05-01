@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Vingroup JSC",
+    "description": "The largest private conglomerate in Vietnam, focusing on technology, industry, and services.",
+    "address": "No. 7 Bang Lang 1 Street, Vinhomes Riverside, Long Bien District, Hanoi",
+    "logo": "logo_vingroup"
+  },
+  {
+    "name": "VNG Corporation",
+    "description": "A leading digital content and online entertainment technology company, owner of Zalo.",
+    "address": "Z06 Street 13, Tan Thuan Export Processing Zone, District 7, Ho Chi Minh City",
+    "logo": "logo_vng"
+  },
+  {
+    "name": "VNPT Group",
+    "description": "Vietnam's key telecommunications and digital services provider with nationwide infrastructure.",
+    "address": "57 Huynh Thuc Khang Street, Lang Ha Ward, Dong Da District, Hanoi",
+    "logo": "logo_vnpt"
+  },
+  {
+    "name": "Momo (M_Service)",
+    "description": "The leading mobile e-wallet and super-app platform in the Vietnamese fintech market.",
+    "address": "7th Floor, Phu My Hung Building, 8 Hoang Van Thai Street, District 7, Ho Chi Minh City",
+    "logo": "logo_momo"
+  },
+  {
+    "name": "CMC Corporation",
+    "description": "A top-tier technology group specializing in digital infrastructure and system integration.",
+    "address": "CMC Tower, 11 Duy Tan Street, Dich Vong Hau Ward, Cau Giay District, Hanoi",
+    "logo": "logo_cmc"
+  },
+  {
+    "name": "Tiki Corporation",
+    "description": "A trusted all-in-one e-commerce ecosystem and advanced logistics platform.",
+    "address": "52 Ut Tich Street, Ward 4, Tan Binh District, Ho Chi Minh City",
+    "logo": "logo_tiki"
+  },
+  {
+    "name": "VinFast Auto",
+    "description": "A global smart electric vehicle manufacturer and a member of Vingroup.",
+    "address": "Dinh Vu - Cat Hai Economic Zone, Cat Hai Island, Hai Phong City",
+    "logo": "logo_vinfast"
+  },
+  {
+    "name": "Techcombank",
+    "description": "One of the leading commercial banks in Vietnam, pioneering in digital banking transformation.",
+    "address": "No. 6 Quang Trung Street, Tran Hung Dao Ward, Hoan Kiếm District, Hanoi",
+    "logo": "logo_tcb"
+  },
+  {
+    "name": "VPBank",
+    "description": "A major joint-stock commercial bank focused on retail and digital financial services.",
+    "address": "89 Lang Ha Street, Dong Da District, Hanoi",
+    "logo": "logo_vpbank"
+  },
+  {
+    "name": "Grab Vietnam",
+    "description": "Southeast Asia's leading super-app offering ride-hailing, food delivery, and payments.",
+    "address": "Mapletree Business Centre, 1060 Nguyen Van Linh, District 7, Ho Chi Minh City",
+    "logo": "logo_grab"
+  },
+  {
+    "name": "Be Group",
+    "description": "A multi-service consumer platform providing transportation and logistics services.",
+    "address": "16th Floor, Sai Gon Tower, 29 Le Duan Street, District 1, Ho Chi Minh City",
+    "logo": "logo_be"
+  },
+  {
+    "name": "NashTech Vietnam",
+    "description": "A global technology solutions provider specializing in software development and BPO.",
+    "address": "Etown Building, 364 Cong Hoa Street, Tan Binh District, Ho Chi Minh City",
+    "logo": "logo_nashtech"
+  },
+  {
+    "name": "KMS Technology",
+    "description": "A US-based software services company with a strong development hub in Vietnam.",
+    "address": "123 Cong Hoa Street, Ward 12, Tan Binh District, Ho Chi Minh City",
+    "logo": "logo_kms"
+  },
+  {
+    "name": "MISA JSC",
+    "description": "A leading provider of accounting, finance, and enterprise management software.",
+    "address": "Technosoft Building, Duy Tan Street, Dich Vong Hau, Cau Giay District, Hanoi",
+    "logo": "logo_misa"
+  },
+  {
+    "name": "Shopee Vietnam",
+    "description": "The most popular e-commerce platform in the Southeast Asian region.",
+    "address": "17th Floor, Saigon Centre Tower 2, 67 Le Loi Street, District 1, Ho Chi Minh City",
+    "logo": "logo_shopee"
+  },
+  {
+    "name": "Giao Hang Tiet Kiem (GHTK)",
+    "description": "A premier e-commerce delivery company focusing on speed and technology-driven logistics.",
+    "address": "VTV Tower, 8 Pham Hung Street, Me Tri, Nam Tu Liem District, Hanoi",
+    "logo": "logo_ghtk"
+  },
+  {
+    "name": "Amanotes",
+    "description": "A world-leading music-tech company with millions of users globally.",
+    "address": "Deutsches Haus Building, 33 Le Duan Street, District 1, Ho Chi Minh City",
+    "logo": "logo_amanotes"
+  },
+  {
+    "name": "Sun Asterisk Vietnam",
+    "description": "A Digital Creative Studio that helps startups and enterprises with digital transformation.",
+    "address": "13th Floor, Keangnam Landmark 72, Pham Hung Street, Nam Tu Liem District, Hanoi",
+    "logo": "logo_sunasterisk"
+  },
+  {
+    "name": "ZaloPay",
+    "description": "A diverse mobile payment platform integrated within the Zalo ecosystem.",
+    "address": "VNG Campus, Tan Thuan Dong, District 7, Ho Chi Minh City",
+    "logo": "logo_zalopay"
+  },
+  {
+    "name": "MB Bank",
+    "description": "Military Commercial Joint Stock Bank, a leader in digital banking and financial innovation.",
+    "address": "18 Le Nam De Street, Quan Thanh Ward, Ba Dinh District, Hanoi",
+    "logo": "logo_mbbank"
+  }
+]

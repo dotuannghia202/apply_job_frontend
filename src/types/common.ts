@@ -21,3 +21,8 @@ export interface Pagination<T> {
     total: number;
   };
 }
+
+export interface ResObjectCommon {
+  id: number;
+  name: string;
+}
