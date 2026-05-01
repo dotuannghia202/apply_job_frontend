@@ -1,7 +1,8 @@
 import JobListSection from "@/pages/jobs/components/JobListSection";
 import JobSearchFooter from "@/pages/jobs/components/JobSearchFooter";
-import JobSearchHero from "@/pages/jobs/components/JobSearchHero";
+
 import JobSearchTopNav from "@/pages/jobs/components/JobSearchTopNav";
+import JobCategoryHero from "./components/JobCategoryHero";
 
 const JobListPage = () => {
   return (
@@ -9,7 +10,7 @@ const JobListPage = () => {
       <JobSearchTopNav />
 
       <main className="mx-auto w-full max-w-7xl px-6 py-10">
-        <JobSearchHero />
+        <JobCategoryHero />
 
         <JobListSection />
       </main>

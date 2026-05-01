@@ -1,11 +1,5 @@
 import { Bell, Settings, SlidersHorizontal } from "lucide-react";
 
-import {
-  experienceFilters,
-  industryFilters,
-  jobTypeFilters,
-} from "@/pages/jobs/helper";
-
 const navLinks = ["Find Jobs", "My Applications", "Profile"];
 
 const JobSearchTopNav = () => {
@@ -15,7 +9,7 @@ const JobSearchTopNav = () => {
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center gap-8">
             <span className="text-2xl font-extrabold tracking-tight text-slate-900">
-              CognitiveBridge
+              Job Portal
             </span>
             <div className="hidden gap-6 md:flex">
               {navLinks.map((link) => (
@@ -56,61 +50,6 @@ const JobSearchTopNav = () => {
                 className="size-full object-cover"
               />
             </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 border-t border-slate-200/70 py-3">
-          <div className="hidden items-center gap-2 text-sm font-semibold text-slate-700 md:flex">
-            <SlidersHorizontal className="size-4 text-primary" />
-            Filters
-          </div>
-
-          <div className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap pb-1 md:pb-0">
-            {industryFilters.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  item.checked
-                    ? "border-primary/20 bg-primary/10 text-primary"
-                    : "border-slate-200 bg-slate-50 text-slate-600"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-
-            <span className="mx-2 hidden h-6 w-px bg-slate-200 md:inline-block" />
-
-            {experienceFilters.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  item.checked
-                    ? "border-primary/20 bg-primary/10 text-primary"
-                    : "border-slate-200 bg-slate-50 text-slate-600"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-
-            <span className="mx-2 hidden h-6 w-px bg-slate-200 md:inline-block" />
-
-            {jobTypeFilters.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  item.active
-                    ? "border-primary/20 bg-primary/10 text-primary"
-                    : "border-slate-200 bg-slate-50 text-slate-600"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
           </div>
         </div>
       </div>

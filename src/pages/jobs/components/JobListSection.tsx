@@ -13,10 +13,10 @@ import {
 
 const JobListSection = () => {
   const [page, setPage] = useState(1);
-  const pageSize = 12;
+  const size = 12;
   const [items, setItems] = useState<Job[]>([]);
 
-  const filters = useMemo(() => ({ page, pageSize }), [page, pageSize]);
+  const filters = useMemo(() => ({ page, size }), [page, size]);
   const { data, isLoading, isError, isFetching } = useGetJobs(filters);
 
   const apiJobs = data?.data?.result ?? [];
