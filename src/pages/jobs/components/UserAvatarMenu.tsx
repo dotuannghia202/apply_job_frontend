@@ -83,15 +83,15 @@ function AccountDropdownSection({
   const SectionIcon = section.icon;
 
   return (
-    <section className="border-b border-slate-100 last:border-b-0">
+    <section>
       <button
         type="button"
         aria-expanded={isOpen}
         onClick={onToggle}
-        className="flex w-full items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+        className="group/section flex w-full items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
       >
         <div
-          className={`flex size-10 shrink-0 items-center justify-center transition-colors ${
+          className={`flex size-10 shrink-0 items-center justify-center transition-colors group-hover/section:text-primary ${
             isOpen ? "text-primary" : "text-slate-500"
           }`}
         >
@@ -99,7 +99,7 @@ function AccountDropdownSection({
         </div>
 
         <span
-          className={`min-w-0 flex-1 text-[15px] font-semibold transition-colors ${
+          className={`min-w-0 flex-1 text-[15px] font-semibold transition-colors group-hover/section:text-primary ${
             isOpen ? "text-primary" : "text-slate-800"
           }`}
         >
@@ -107,7 +107,7 @@ function AccountDropdownSection({
         </span>
 
         <ChevronDown
-          className={`size-5 shrink-0 transition-transform duration-300 ${
+          className={`size-5 shrink-0 transition-[color,transform] duration-300 group-hover/section:text-primary ${
             isOpen ? "rotate-180 text-primary" : "text-slate-500"
           }`}
         />
@@ -217,7 +217,7 @@ const UserAvatarMenu = () => {
             <button
               type="button"
               onClick={handleLogout}
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-slate-100 text-base font-bold text-slate-700 transition-colors hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-slate-100 text-base font-bold text-slate-700 transition-colors hover:bg-slate-300 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
             >
               <LogOut className="size-5" />
               Đăng xuất
