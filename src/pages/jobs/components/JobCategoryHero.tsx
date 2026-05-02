@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import {
+  Building2,
   ChevronLeft,
   ChevronRight,
   ChevronRight as ArrowRight,
-  Banknote,
   MapPin,
   Search,
+  Banknote,
 } from "lucide-react";
 import { useGetIndustries } from "@/api/industries/industry.queries";
 import { useGetSpecializationsByIndustryId } from "@/api/specializations/specialization.queries";
 import type { Industry, Specialization } from "@/types/industry";
+import type { JobListFilters } from "@/types/job";
 import Img1 from "@/assets/images/ImgSlide1.png";
 import Img2 from "@/assets/images/ImgSlide2.png";
 import Img3 from "@/assets/images/ImgSlide3.png";
@@ -54,6 +56,11 @@ const SLIDER_IMAGES = [
 const PAGE_SIZE = 6;
 const inputClassName =
   "w-full border-0 bg-transparent px-0 text-sm text-slate-800 placeholder:text-slate-500 focus-visible:ring-0 focus-visible:outline-none";
+
+type JobSearchFilters = Pick<
+  JobListFilters,
+  "keyword" | "location" | "maxSalary"
+>;
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -199,9 +206,17 @@ const SubcategoryPanel = ({
  * Displays industries in a paginated list on the left, and shows specializations
  * in a detailed panel on the right when hovering over an industry.
  */
-const JobCategoryHero = () => {
+interface JobCategoryHeroProps {
+  filters: JobSearchFilters;
+  onSearch: (filters: JobSearchFilters) => void;
+}
+
+const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
   const [categoryPage, setCategoryPage] = useState(1);
   const [hoveredIndustry, setHoveredIndustry] = useState<Industry | null>(null);
+  const [keyword, setKeyword] = useState(filters.keyword ?? "");
+  const [location, setLocation] = useState(filters.location ?? "");
+  const [salary, setSalary] = useState(filters.maxSalary?.toString() ?? "");
   const leaveTimerRef = useRef<number | null>(null);
 
   // Fetch industries from API
@@ -221,6 +236,12 @@ const JobCategoryHero = () => {
   const allIndustries: Industry[] = industriesData?.data?.result ?? [];
   const totalItems = industriesData?.data?.meta.total ?? 0;
   const totalCategoryPages = Math.ceil(totalItems / PAGE_SIZE);
+
+  useEffect(() => {
+    setKeyword(filters.keyword ?? "");
+    setLocation(filters.location ?? "");
+    setSalary(filters.maxSalary?.toString() ?? "");
+  }, [filters.keyword, filters.location, filters.maxSalary]);
 
   const handleCategoryEnter = (industry: Industry) => {
     if (leaveTimerRef.current) {
@@ -249,16 +270,37 @@ const JobCategoryHero = () => {
     }, 150);
   };
 
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const trimmedKeyword = keyword.trim();
+    const trimmedSalary = salary.trim();
+    const normalizedSalary = trimmedSalary ? Number(trimmedSalary) : undefined;
+
+    onSearch({
+      keyword: trimmedKeyword || undefined,
+      location: location.trim() || undefined,
+      maxSalary:
+        normalizedSalary !== undefined && Number.isFinite(normalizedSalary)
+          ? normalizedSalary
+          : undefined,
+    });
+  };
+
   return (
     <section className="mb-12">
       <div className="relative overflow-hidden ">
         {/* ── Search bar ── */}
-        <div className="mb-6 flex flex-col gap-2 rounded-3xl border border-slate-200 bg-white/90 p-2 shadow-xl lg:flex-row lg:items-center">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="mb-6 flex flex-col gap-2 rounded-3xl border border-slate-200 bg-white/90 p-2 shadow-xl lg:flex-row lg:items-center"
+        >
           <div className="flex flex-1 items-center gap-3 rounded-2xl px-4 py-2">
-            <Search className="size-4 text-primary" />
+            <Building2 className="size-4 text-primary" />
             <input
               type="text"
-              placeholder="Job title, keywords, or company"
+              value={keyword}
+              onChange={(event) => setKeyword(event.target.value)}
+              placeholder="Job title or company name"
               className={inputClassName}
             />
           </div>
@@ -267,7 +309,9 @@ const JobCategoryHero = () => {
             <MapPin className="size-4 text-primary" />
             <input
               type="text"
-              placeholder="City or remote"
+              value={location}
+              onChange={(event) => setLocation(event.target.value)}
+              placeholder="Location"
               className={inputClassName}
             />
           </div>
@@ -276,17 +320,23 @@ const JobCategoryHero = () => {
             <Banknote className="size-4 text-primary" />
             <input
               type="text"
-              placeholder="Salary range"
+              inputMode="numeric"
+              value={salary}
+              onChange={(event) =>
+                setSalary(event.target.value.replace(/\D/g, ""))
+              }
+              placeholder="Max salary"
               className={inputClassName}
             />
           </div>
           <button
-            type="button"
-            className="rounded-full bg-primary px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-primary/90"
+            type="submit"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-primary/90"
           >
+            <Search className="size-4" />
             Find Jobs
           </button>
-        </div>
+        </form>
 
         {/* ── Category browser + right panel ── */}
         <div className="flex gap-4" style={{ minHeight: 340 }}>

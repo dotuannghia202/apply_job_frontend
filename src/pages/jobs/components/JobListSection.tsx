@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import JobCard from "@/pages/jobs/components/JobCard";
 import { useGetJobs } from "@/api/jobs/job.queries";
-import type { Job } from "@/types/job";
+import type { Job, JobListFilters } from "@/types/job";
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -11,13 +11,40 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 
-const JobListSection = () => {
+type JobSearchFilters = Pick<
+  JobListFilters,
+  "keyword" | "location" | "maxSalary"
+>;
+
+interface JobListSectionProps {
+  filters?: JobSearchFilters;
+}
+
+const PAGE_SIZE = 12;
+
+const JobListSection = ({ filters = {} }: JobListSectionProps) => {
   const [page, setPage] = useState(1);
-  const size = 12;
   const [items, setItems] = useState<Job[]>([]);
 
-  const filters = useMemo(() => ({ page, size }), [page, size]);
-  const { data, isLoading, isError, isFetching } = useGetJobs(filters);
+  const keyword = filters.keyword?.trim() || undefined;
+  const location = filters.location?.trim() || undefined;
+  const maxSalary = filters.maxSalary;
+
+  useEffect(() => {
+    setPage(1);
+  }, [keyword, location, maxSalary]);
+
+  const queryFilters = useMemo<JobListFilters>(
+    () => ({
+      page,
+      size: PAGE_SIZE,
+      keyword,
+      location,
+      maxSalary,
+    }),
+    [keyword, location, maxSalary, page],
+  );
+  const { data, isLoading, isError, isFetching } = useGetJobs(queryFilters);
 
   const apiJobs = data?.data?.result ?? [];
   const meta = data?.data?.meta;

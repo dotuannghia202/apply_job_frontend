@@ -1,4 +1,6 @@
-import { Bell, Settings, SlidersHorizontal } from "lucide-react";
+import { Bell, MessageCircleMore } from "lucide-react";
+
+import UserAvatarMenu from "@/pages/jobs/components/UserAvatarMenu";
 
 const navLinks = ["Find Jobs", "My Applications", "Profile"];
 
@@ -38,18 +40,13 @@ const JobSearchTopNav = () => {
             </button>
             <button
               type="button"
-              aria-label="Settings"
+              aria-label="Messages"
               className="rounded-full p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-primary"
             >
-              <Settings className="size-5" />
+              <MessageCircleMore className="size-5" />
             </button>
-            <div className="size-9 overflow-hidden rounded-full border border-slate-200">
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS0FoW5Z0KfIiipGj8AcqmZ5YsaPYXcsSR8d-2bkj7t_b9wvjcSQbmN_jMPWlxbq81cm08GLH9fkCZecDz7oi7vXDrK9SWLsRKPpAzCraMJ1Agl-oWe268sa9c7Bm84ddjwamlesyzwV_JrNZxXDrJ8xrTTXmqNrLMW33leAgpqSArr85MLRRzuM20dKGQ87KONifn_1WmmQQ-lEtLMpCXRzyPJPb3iN-yKRtyr-HP4LzJNjrDEXCOnKDtt07Qqa432HpLq9BZdkt-"
-                alt="User avatar"
-                className="size-full object-cover"
-              />
-            </div>
+
+            <UserAvatarMenu />
           </div>
         </div>
       </div>

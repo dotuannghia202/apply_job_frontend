@@ -19,9 +19,10 @@ export interface Job {
 export interface JobListFilters {
   location?: string;
   page?: number;
-  pageSize?: number;
+  size?: number;
   levels?: string[];
   specialization?: number;
-  name?: string;
+  maxSalary?: number;
   skill?: string;
+  keyword?: string;
 }

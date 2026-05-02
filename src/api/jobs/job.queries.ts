@@ -5,11 +5,14 @@ import type { JobListFilters } from "@/types/job";
 
 // 1. Hook GET ALL (Dùng useQuery vì lấy dữ liệu)
 export const useGetJobs = (filters: JobListFilters = {}) => {
-  const normalizedFilters: Required<Pick<JobListFilters, "page" | "pageSize">> &
+  const normalizedFilters: Required<Pick<JobListFilters, "page" | "size">> &
     JobListFilters = {
-    page: filters.page ?? 1,
-    pageSize: filters.pageSize ?? 10,
     ...filters,
+    keyword: filters.keyword?.trim() || undefined,
+    location: filters.location?.trim() || undefined,
+    maxSalary: filters.maxSalary,
+    page: filters.page ?? 1,
+    size: filters.size ?? 10,
   };
 
   return useQuery({
