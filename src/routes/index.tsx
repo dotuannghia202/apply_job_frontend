@@ -13,15 +13,13 @@ import NotFoundPage from "@/pages/errors/NotFoundPage";
 import UnauthorizedPage from "@/pages/errors/UnauthorizedPage";
 import AuthRequiredPage from "@/pages/errors/AuthRequiredPage";
 
+import AdminDashboardPage from "@/pages/admin/DashboardPage";
 import AdminSystemAnalyticsPage from "@/pages/stitch/AdminSystemAnalyticsPage";
 
 import EmployerDashboardPage from "@/pages/stitch/RecruiterDashboardPage";
 import EmployerJDGeneratorPage from "@/pages/stitch/RecruiterJDGeneratorPage";
 import type { RoleName } from "@/types/auth";
 import JobListPage from "@/pages/jobs/JobListPage";
-
-// Sau này nếu có AdminDashboardPage riêng thì import thêm:
-// import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -37,7 +35,7 @@ function getUserRoles(): RoleName[] {
 
 function getDefaultHomePath(roles: RoleName[]) {
   if (roles.includes("ADMIN")) return "/admin/dashboard";
-  if (roles.includes("EMPLOYER")) return "/jobs";
+  if (roles.includes("EMPLOYER")) return "/employer/dashboard";
   if (roles.includes("CANDIDATE")) return "/jobs";
   return "/403";
 }
@@ -51,6 +49,14 @@ function HomeRedirect() {
   }
 
   return <Navigate to={getDefaultHomePath(roles)} replace />;
+}
+
+function PlaceholderPage({ title }: { title: string }) {
+  return (
+    <main className="mx-auto w-full max-w-7xl px-6 py-10">
+      <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+    </main>
+  );
 }
 
 export const router = createBrowserRouter([
@@ -85,9 +91,15 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "admin/dashboard",
-                element: <div>Admin Dashboard</div>,
-                // Sau này thay bằng:
-                // element: <AdminDashboardPage />
+                element: <AdminDashboardPage />,
+              },
+              {
+                path: "admin/users",
+                element: <PlaceholderPage title="User Management" />,
+              },
+              {
+                path: "admin/company-approval",
+                element: <PlaceholderPage title="Company Approval" />,
               },
               {
                 path: "analytics/system",
@@ -103,6 +115,14 @@ export const router = createBrowserRouter([
               {
                 path: "employer/dashboard",
                 element: <EmployerDashboardPage />,
+              },
+              {
+                path: "employer/applicants",
+                element: <PlaceholderPage title="Applicants" />,
+              },
+              {
+                path: "employer/jobs",
+                element: <PlaceholderPage title="My Jobs" />,
               },
             ],
           },
@@ -126,6 +146,18 @@ export const router = createBrowserRouter([
               {
                 path: "jobs",
                 element: <JobListPage />,
+              },
+              {
+                path: "jobs/applications",
+                element: <PlaceholderPage title="My Applications" />,
+              },
+              {
+                path: "jobs/my-cv",
+                element: <PlaceholderPage title="My CV" />,
+              },
+              {
+                path: "jobs/saved",
+                element: <PlaceholderPage title="Saved Jobs" />,
               },
             ],
           },

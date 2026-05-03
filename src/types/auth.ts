@@ -1,12 +1,10 @@
-import type { User } from "./user";
-
 export type RoleName = "ADMIN" | "EMPLOYER" | "CANDIDATE";
 
 export interface AuthUser {
   id: number;
   email: string;
   name: string;
-  avatar?: string | null;
+  avatarUrl?: string | null;
   roles: Array<RoleName>;
 }
 
@@ -17,7 +15,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   access_token: string;
-  user: User;
+  user: AuthUser;
 }
 
 export interface RegisterRequest {

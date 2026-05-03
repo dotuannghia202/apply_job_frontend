@@ -141,10 +141,11 @@ function AccountDropdownSection({
 const UserAvatarMenu = () => {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
+  const avatarUrl = useAuthStore((state) => state.avatarUrl);
   const logout = useAuthStore((state) => state.logout);
   const [openSections, setOpenSections] = useState(defaultOpenSections);
 
-  const avatarSrc = user?.avatar?.trim() || avatarPlaceholder;
+  const avatarSrc = avatarUrl?.trim() || user?.avatarUrl?.trim() || avatarPlaceholder;
   const displayName = user?.name || "Người dùng";
   const displayEmail = user?.email || "Chưa có email";
 
