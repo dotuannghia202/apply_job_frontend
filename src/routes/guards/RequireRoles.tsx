@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { normalizeRoles } from "@/helper/auth-roles";
 import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 
@@ -12,7 +13,7 @@ export default function RequireRoles({ allowedRoles }: RequireRolesProps) {
   if (!user) {
     return <Navigate to="/401" replace />;
   }
-  const userRoles = user.roles.map((role) => role);
+  const userRoles = normalizeRoles(user.roles);
   const canAccess = allowedRoles.some((role) => userRoles.includes(role));
 
   if (!canAccess) {

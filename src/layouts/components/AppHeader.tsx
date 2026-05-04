@@ -5,6 +5,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { fetchUserById } from "@/api/users/user.api";
 import { useUpdateUser } from "@/api/users/user.queries";
 import { Switch } from "@/components/ui/switch";
+import { normalizeRoles } from "@/helper/auth-roles";
 import { cn } from "@/lib/utils";
 import UserAvatarMenu from "@/pages/jobs/components/UserAvatarMenu";
 import { useAuthStore } from "@/store/auth.store";
@@ -121,8 +122,19 @@ const AppHeader = () => {
           },
         });
 
-        setRoles(response.data?.roles ?? nextRoles);
-        navigate(checked ? "/employer/dashboard" : "/jobs");
+        const responseRoles = normalizeRoles(response.data?.roles);
+        const updatedRoles = responseRoles.length > 0 ? responseRoles : nextRoles;
+        const targetPath =
+          nextRole === "EMPLOYER" ? "/employer/dashboard" : "/jobs";
+
+        if (nextRole === "CANDIDATE") {
+          navigate(targetPath, { replace: true, flushSync: true });
+          setRoles(updatedRoles);
+          return;
+        }
+
+        setRoles(updatedRoles);
+        navigate(targetPath, { replace: true, flushSync: true });
       } catch (error) {
         console.error("Failed to switch user role", error);
       } finally {

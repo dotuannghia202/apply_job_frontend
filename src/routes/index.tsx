@@ -18,6 +18,7 @@ import AdminSystemAnalyticsPage from "@/pages/stitch/AdminSystemAnalyticsPage";
 
 import EmployerDashboardPage from "@/pages/stitch/RecruiterDashboardPage";
 import EmployerJDGeneratorPage from "@/pages/stitch/RecruiterJDGeneratorPage";
+import { normalizeRoles } from "@/helper/auth-roles";
 import type { RoleName } from "@/types/auth";
 import JobListPage from "@/pages/jobs/JobListPage";
 
@@ -27,7 +28,7 @@ function getUserRoles(): RoleName[] {
 
   try {
     const user = JSON.parse(rawUser);
-    return user?.roles?.map((r: RoleName) => r) ?? [];
+    return normalizeRoles(user?.roles);
   } catch {
     return [];
   }
