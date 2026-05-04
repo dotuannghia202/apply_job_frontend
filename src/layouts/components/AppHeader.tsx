@@ -1,6 +1,9 @@
 import { Bell, MessageCircleMore } from "lucide-react";
+import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
+import { fetchUserById } from "@/api/users/user.api";
+import { useUpdateUser } from "@/api/users/user.queries";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import UserAvatarMenu from "@/pages/jobs/components/UserAvatarMenu";
@@ -65,18 +68,69 @@ function getNavLinks(mode: RoleName) {
   return candidateNavLinks;
 }
 
+function replaceCandidateEmployerRole(
+  roles: RoleName[],
+  nextRole: "CANDIDATE" | "EMPLOYER",
+) {
+  const otherRoles = roles.filter(
+    (role) => role !== "CANDIDATE" && role !== "EMPLOYER",
+  );
+
+  return [...otherRoles, nextRole];
+}
+
 const AppHeader = () => {
+  const [isSwitchingRole, setIsSwitchingRole] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
+  const setRoles = useAuthStore((state) => state.setRoles);
+  const updateUserMutation = useUpdateUser();
   const roles = user?.roles ?? [];
   const mode = getHeaderMode(location.pathname, roles);
   const navLinks = getNavLinks(mode);
   const canSwitchCandidateEmployer = mode !== "ADMIN";
   const isEmployerMode = mode === "EMPLOYER";
+  const isModeSwitchPending = isSwitchingRole || updateUserMutation.isPending;
 
   const handleModeChange = (checked: boolean) => {
-    navigate(checked ? "/employer/dashboard" : "/jobs");
+    if (!user || isModeSwitchPending) return;
+
+    const nextRole: "CANDIDATE" | "EMPLOYER" = checked
+      ? "EMPLOYER"
+      : "CANDIDATE";
+    const nextRoles = replaceCandidateEmployerRole(roles, nextRole);
+
+    const updateRole = async () => {
+      setIsSwitchingRole(true);
+
+      try {
+        const profileResponse = await fetchUserById(user.id);
+        const profile = profileResponse.data;
+        const response = await updateUserMutation.mutateAsync({
+          id: user.id,
+          data: {
+            name: profile?.name ?? user.name,
+            avatarUrl: profile?.avatarUrl ?? user.avatarUrl ?? null,
+            age: profile?.age ?? 0,
+            gender: profile?.gender ?? null,
+            address: profile?.address ?? null,
+            isActive: profile?.isActive ?? true,
+            companyId: profile?.company?.id,
+            roles: nextRoles,
+          },
+        });
+
+        setRoles(response.data?.roles ?? nextRoles);
+        navigate(checked ? "/employer/dashboard" : "/jobs");
+      } catch (error) {
+        console.error("Failed to switch user role", error);
+      } finally {
+        setIsSwitchingRole(false);
+      }
+    };
+
+    void updateRole();
   };
 
   return (
@@ -122,6 +176,8 @@ const AppHeader = () => {
                 <Switch
                   checked={isEmployerMode}
                   onCheckedChange={handleModeChange}
+                  disabled={isModeSwitchPending}
+                  aria-busy={isModeSwitchPending}
                   aria-label="Switch between candidate and employer mode"
                 />
                 <span

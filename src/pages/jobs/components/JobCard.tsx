@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { cn } from "@/lib/utils";
 import type { Job } from "@/types/job";
 import { formatVND, getCityFromAddress } from "../helper";
 import { JobPopup } from "@/pages/jobs/components/JobPopup";
@@ -18,6 +19,7 @@ const JobCard = ({ job }: { job: Job }) => {
   const companyName = job.company?.name ?? "Unknown";
   const companyLogo = job.company?.logo;
   const salaryText = formatVND(job.salary);
+  const isSaved = job.isSaved;
 
   const openPopup = () => {
     if (openTimerRef.current) {
@@ -136,10 +138,15 @@ const JobCard = ({ job }: { job: Job }) => {
             <Button
               variant="ghost"
               size="icon"
-              aria-label={`Save ${job.name}`}
-              className="size-9 shrink-0 rounded-full border border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600"
+              aria-label={`${isSaved ? "Unsave" : "Save"} ${job.name}`}
+              className={cn(
+                "size-9 shrink-0 rounded-full border transition-colors",
+                isSaved
+                  ? "border-rose-200 bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600"
+                  : "border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600",
+              )}
             >
-              <Heart className="size-4" />
+              <Heart className={cn("size-4", isSaved && "fill-current")} />
             </Button>
           </div>
 

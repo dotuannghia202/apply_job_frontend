@@ -14,6 +14,7 @@ export interface Job {
   endDate: string;
   requirements?: string[];
   benefits?: string[];
+  isSaved: boolean;
 }
 
 export interface JobListFilters {

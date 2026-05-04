@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AuthUser } from "@/types/auth";
+import type { AuthUser, RoleName } from "@/types/auth";
 import {
   clearAuthFromStorage,
   getAccessTokenFromStorage,
@@ -14,6 +14,7 @@ interface AuthState {
   isAuthenticated: boolean;
   setAuth: (user: AuthUser, accessToken: string) => void;
   setAvatar: (avatarUrl: string | null) => void;
+  setRoles: (roles: RoleName[]) => void;
   logout: () => void;
 }
 
@@ -53,6 +54,20 @@ export const useAuthStore = create<AuthState>((set) => ({
       return {
         user,
         avatarUrl,
+      };
+    });
+  },
+
+  setRoles: (roles) => {
+    set((state) => {
+      const user = state.user ? { ...state.user, roles } : null;
+
+      if (user && state.accessToken) {
+        saveAuthToStorage(user, state.accessToken);
+      }
+
+      return {
+        user,
       };
     });
   },
