@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import AuthLayout from "./layouts/AuthLayout";
-import AppLayout from "./layouts/AppLayout";
+import AuthLayout from "../layouts/AuthLayout";
+import AppLayout from "../layouts/AppLayout";
 
 import RequireAuth from "./guards/RequireAuth";
 import RequireRoles from "./guards/RequireRoles";
@@ -16,11 +16,12 @@ import AuthRequiredPage from "@/pages/errors/AuthRequiredPage";
 import AdminDashboardPage from "@/pages/admin/DashboardPage";
 import AdminSystemAnalyticsPage from "@/pages/stitch/AdminSystemAnalyticsPage";
 
-import EmployerDashboardPage from "@/pages/stitch/RecruiterDashboardPage";
 import EmployerJDGeneratorPage from "@/pages/stitch/RecruiterJDGeneratorPage";
 import { normalizeRoles } from "@/helper/auth-roles";
 import type { RoleName } from "@/types/auth";
 import JobListPage from "@/pages/jobs/JobListPage";
+import EmployerDashboard from "@/pages/employer/dashboard/EmployerDashboardPage";
+import PostJobPage from "@/pages/employer/post-job/PostJobPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -115,7 +116,7 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "employer/dashboard",
-                element: <EmployerDashboardPage />,
+                element: <EmployerDashboard />,
               },
               {
                 path: "employer/applicants",
@@ -134,7 +135,7 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "jobs/jd-generator",
-                element: <EmployerJDGeneratorPage />,
+                element: <PostJobPage />,
               },
             ],
           },

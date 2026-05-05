@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import JobListSection from "@/pages/jobs/components/JobListSection";
-import JobSearchFooter from "@/pages/jobs/components/JobSearchFooter";
 
 import JobCategoryHero from "./components/JobCategoryHero";
 import type { JobListFilters } from "@/types/job";
@@ -21,8 +20,6 @@ const JobListPage = () => {
 
         <JobListSection filters={filters} />
       </main>
-
-      <JobSearchFooter />
     </div>
   );
 };
