@@ -14,14 +14,13 @@ import UnauthorizedPage from "@/pages/errors/UnauthorizedPage";
 import AuthRequiredPage from "@/pages/errors/AuthRequiredPage";
 
 import AdminDashboardPage from "@/pages/admin/DashboardPage";
-import AdminSystemAnalyticsPage from "@/pages/stitch/AdminSystemAnalyticsPage";
 
-import EmployerJDGeneratorPage from "@/pages/stitch/RecruiterJDGeneratorPage";
 import { normalizeRoles } from "@/helper/auth-roles";
 import type { RoleName } from "@/types/auth";
 import JobListPage from "@/pages/jobs/JobListPage";
 import EmployerDashboard from "@/pages/employer/dashboard/EmployerDashboardPage";
 import PostJobPage from "@/pages/employer/post-job/PostJobPage";
+import CreateCompanyPage from "@/pages/employer/create-company/CreateCompanyPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -105,7 +104,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "analytics/system",
-                element: <AdminSystemAnalyticsPage />,
+                element: <PlaceholderPage title="System Analytics" />,
               },
             ],
           },
@@ -125,6 +124,10 @@ export const router = createBrowserRouter([
               {
                 path: "employer/jobs",
                 element: <PlaceholderPage title="My Jobs" />,
+              },
+              {
+                path: "employer/settings/company-profile",
+                element: <CreateCompanyPage />,
               },
             ],
           },
