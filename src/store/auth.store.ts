@@ -11,9 +11,11 @@ interface AuthState {
   user: AuthUser | null;
   accessToken: string | null;
   avatarUrl: string | null;
+  company: AuthUser["company"] | null;
   isAuthenticated: boolean;
   setAuth: (user: AuthUser, accessToken: string) => void;
   setAvatar: (avatarUrl: string | null) => void;
+  setCompany: (company: AuthUser["company"] | null) => void;
   setRoles: (roles: RoleName[]) => void;
   logout: () => void;
 }
@@ -25,6 +27,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: initialUser,
   accessToken: initialAccessToken,
   avatarUrl: initialUser?.avatarUrl ?? null,
+  company: initialUser?.company ?? null,
   isAuthenticated: !!initialUser && !!initialAccessToken,
 
   setAuth: (user, accessToken) => {
@@ -39,6 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       user: authUser,
       accessToken,
       avatarUrl: authUser.avatarUrl,
+      company: authUser.company ?? null,
       isAuthenticated: true,
     });
   },
@@ -54,6 +58,21 @@ export const useAuthStore = create<AuthState>((set) => ({
       return {
         user,
         avatarUrl,
+      };
+    });
+  },
+
+  setCompany: (company) => {
+    set((state) => {
+      const user = state.user ? { ...state.user, company } : null;
+
+      if (user && state.accessToken) {
+        saveAuthToStorage(user, state.accessToken);
+      }
+
+      return {
+        user,
+        company,
       };
     });
   },
@@ -79,6 +98,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       user: null,
       accessToken: null,
       avatarUrl: null,
+      company: null,
       isAuthenticated: false,
     });
   },

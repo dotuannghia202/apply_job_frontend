@@ -123,9 +123,15 @@ const AppHeader = () => {
         });
 
         const responseRoles = normalizeRoles(response.data?.roles);
-        const updatedRoles = responseRoles.length > 0 ? responseRoles : nextRoles;
+        const updatedRoles =
+          responseRoles.length > 0 ? responseRoles : nextRoles;
+        const hasCompany = Boolean(profile?.company?.id ?? user.company?.id);
         const targetPath =
-          nextRole === "EMPLOYER" ? "/employer/dashboard" : "/jobs";
+          nextRole === "EMPLOYER"
+            ? hasCompany
+              ? "/employer/dashboard"
+              : "/employer/onboarding/company"
+            : "/jobs";
 
         if (nextRole === "CANDIDATE") {
           navigate(targetPath, { replace: true, flushSync: true });

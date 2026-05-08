@@ -126,7 +126,7 @@ export const router = createBrowserRouter([
                 element: <PlaceholderPage title="My Jobs" />,
               },
               {
-                path: "employer/settings/company-profile",
+                path: "employer/onboarding/company",
                 element: <CreateCompanyPage />,
               },
             ],

@@ -4,8 +4,12 @@ export interface AuthUser {
   id: number;
   email: string;
   name: string;
-  avatarUrl?: string | null;
+  avatarUrl: string | null;
   roles: Array<RoleName>;
+  company: {
+    id: number;
+    name: string;
+  } | null;
 }
 
 export interface LoginRequest {
@@ -14,7 +18,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  access_token: string;
+  accessToken: string;
   user: AuthUser;
 }
 

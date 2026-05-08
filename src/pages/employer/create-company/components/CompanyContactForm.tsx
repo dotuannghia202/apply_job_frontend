@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { MapPin, PhoneCall } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,14 +15,35 @@ const inputCls =
   "text-[#2d3338] placeholder:text-[#596065]/60 " +
   "text-sm font-normal";
 
-export function CompanyContactForm() {
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [links, setLinks] = useState("");
+type CompanyContactFormProps = {
+  address: string;
+  city: string;
+  country: string;
+  phone: string;
+  email: string;
+  links: string;
+  onAddressChange: (value: string) => void;
+  onCityChange: (value: string) => void;
+  onCountryChange: (value: string) => void;
+  onPhoneChange: (value: string) => void;
+  onEmailChange: (value: string) => void;
+  onLinksChange: (value: string) => void;
+};
 
+export function CompanyContactForm({
+  address,
+  city,
+  country,
+  phone,
+  email,
+  links,
+  onAddressChange,
+  onCityChange,
+  onCountryChange,
+  onPhoneChange,
+  onEmailChange,
+  onLinksChange,
+}: CompanyContactFormProps) {
   return (
     <section className="lg:col-span-6 space-y-8">
       <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
@@ -39,7 +59,7 @@ export function CompanyContactForm() {
             </Label>
             <Textarea
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e) => onAddressChange(e.target.value)}
               placeholder="Street, building, district"
               rows={3}
               className={`${inputCls} resize-none`}
@@ -53,7 +73,7 @@ export function CompanyContactForm() {
               </Label>
               <Input
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={(e) => onCityChange(e.target.value)}
                 placeholder="e.g. Ho Chi Minh"
                 className={inputCls}
               />
@@ -65,7 +85,7 @@ export function CompanyContactForm() {
               </Label>
               <Input
                 value={country}
-                onChange={(e) => setCountry(e.target.value)}
+                onChange={(e) => onCountryChange(e.target.value)}
                 placeholder="e.g. Vietnam"
                 className={inputCls}
               />
@@ -79,7 +99,7 @@ export function CompanyContactForm() {
               </Label>
               <Input
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => onPhoneChange(e.target.value)}
                 placeholder="e.g. +84 912 345 678"
                 className={inputCls}
               />
@@ -91,7 +111,7 @@ export function CompanyContactForm() {
               </Label>
               <Input
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => onEmailChange(e.target.value)}
                 placeholder="hr@yourcompany.com"
                 className={inputCls}
               />
@@ -104,7 +124,7 @@ export function CompanyContactForm() {
             </Label>
             <Textarea
               value={links}
-              onChange={(e) => setLinks(e.target.value)}
+              onChange={(e) => onLinksChange(e.target.value)}
               placeholder="LinkedIn, Facebook, Github..."
               rows={3}
               className={`${inputCls} resize-none`}

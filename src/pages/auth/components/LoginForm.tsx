@@ -71,9 +71,9 @@ export const LoginForm = () => {
       try {
         const res = await authApi.login(formLogin);
         if (res.statusCode === 200 && res.data) {
-          const { access_token, user } = res.data;
+          const { accessToken, user } = res.data;
 
-          setAuth(user, access_token);
+          setAuth(user, accessToken);
           navigate("/");
         }
       } catch (error) {
