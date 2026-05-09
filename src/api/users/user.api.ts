@@ -22,7 +22,15 @@ export const createUser = async (userData: CreateUserRequest) => {
 };
 
 export const updateUser = async ({ id, data }: UpdateUserPayload) => {
-  return axiosClient.put(`/users/${id}`, data) as Promise<BackendResponse<User>>;
+  return axiosClient.put(`/users/${id}`, data) as Promise<
+    BackendResponse<User>
+  >;
+};
+
+export const assignCompanyToCurrentUser = async (companyId: number) => {
+  return axiosClient.put("/assign-company", companyId) as Promise<
+    BackendResponse<void>
+  >;
 };
 
 export const deleteUser = async (id: number) => {

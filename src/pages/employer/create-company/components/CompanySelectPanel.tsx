@@ -8,8 +8,7 @@ import { useGetCompanies } from "@/api/companies/company.queries";
 import { useDebounce } from "@/hooks/useDebounce";
 import type { Company } from "@/types/company";
 import { useAuthStore } from "@/store/auth.store";
-import { useUpdateUser } from "@/api/users/user.queries";
-import { fetchUserById } from "@/api/users/user.api";
+import { useAssignCompany } from "@/api/users/user.queries";
 
 const inputCls =
   "w-full px-4 py-3 " +
@@ -24,6 +23,7 @@ const inputCls =
 export function CompanySelectPanel() {
   const [companySearch, setCompanySearch] = useState("");
   const [isAssigningCompany, setIsAssigningCompany] = useState(false);
+  const [confirmCompany, setConfirmCompany] = useState<Company | null>(null);
   const debouncedSearch = useDebounce(companySearch.trim(), 400);
   const companiesQuery = useGetCompanies({
     page: 1,
@@ -33,36 +33,26 @@ export function CompanySelectPanel() {
   const companies = companiesQuery.data?.data?.result ?? [];
   const user = useAuthStore((state) => state.user);
   const setCompany = useAuthStore((state) => state.setCompany);
-  const updateUserMutation = useUpdateUser();
+  const assignCompanyMutation = useAssignCompany();
   const currentCompanyId = user?.company?.id ?? null;
 
-  const handleSelectCompany = async (company: Company) => {
-    if (!user || isAssigningCompany || updateUserMutation.isPending) return;
+  const handleConfirmOpen = (company: Company) => {
+    if (!user || isAssigningCompany || assignCompanyMutation.isPending) return;
+    if (currentCompanyId === company.id) return;
+    setConfirmCompany(company);
+  };
+
+  const handleAssignCompany = async () => {
+    if (!confirmCompany || !user) return;
 
     setIsAssigningCompany(true);
 
     try {
-      const profileResponse = await fetchUserById(user.id);
-      const profile = profileResponse.data;
-      const roles = profile?.roles ?? user.roles ?? [];
-
-      await updateUserMutation.mutateAsync({
-        id: user.id,
-        data: {
-          name: profile?.name ?? user.name,
-          avatarUrl: profile?.avatarUrl ?? user.avatarUrl ?? null,
-          age: profile?.age ?? 0,
-          gender: profile?.gender ?? null,
-          address: profile?.address ?? null,
-          isActive: profile?.isActive ?? true,
-          companyId: company.id,
-          roles,
-        },
-      });
-
-      setCompany({ id: company.id, name: company.name });
+      await assignCompanyMutation.mutateAsync(confirmCompany.id);
+      setCompany({ id: confirmCompany.id, name: confirmCompany.name });
+      setConfirmCompany(null);
     } catch (error) {
-      console.error("Failed to set company for user", error);
+      console.error("Failed to assign company to user", error);
     } finally {
       setIsAssigningCompany(false);
     }
@@ -93,7 +83,16 @@ export function CompanySelectPanel() {
           {companies.map((company) => (
             <div
               key={company.id}
-              className="rounded-xl border border-slate-200/70 bg-[#f7f9fc] p-4 flex flex-col gap-3"
+              className="rounded-xl border border-slate-200/70 bg-[#f7f9fc] p-4 flex flex-col gap-3 transition-shadow hover:shadow-sm"
+              onClick={() => handleConfirmOpen(company)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  handleConfirmOpen(company);
+                }
+              }}
             >
               <div className="flex items-center gap-3">
                 <div className="size-12 rounded-xl bg-white border border-slate-200/70 flex items-center justify-center overflow-hidden">
@@ -124,10 +123,13 @@ export function CompanySelectPanel() {
                 className="border-slate-200"
                 disabled={
                   isAssigningCompany ||
-                  updateUserMutation.isPending ||
+                  assignCompanyMutation.isPending ||
                   currentCompanyId === company.id
                 }
-                onClick={() => handleSelectCompany(company)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleConfirmOpen(company);
+                }}
               >
                 {currentCompanyId === company.id ? "Selected" : "Select"}
               </Button>
@@ -139,6 +141,41 @@ export function CompanySelectPanel() {
           <p className="text-xs text-[#7a848b]">No companies found.</p>
         )}
       </div>
+
+      {confirmCompany ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <h3 className="text-lg font-bold text-[#2d3338]">
+              Confirm company selection
+            </h3>
+            <p className="mt-2 text-sm text-[#596065]">
+              Assign{" "}
+              <span className="font-semibold">{confirmCompany.name}</span> to
+              your employer account?
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                className="border-slate-200"
+                onClick={() => setConfirmCompany(null)}
+                disabled={isAssigningCompany || assignCompanyMutation.isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                onClick={handleAssignCompany}
+                disabled={isAssigningCompany || assignCompanyMutation.isPending}
+              >
+                {isAssigningCompany || assignCompanyMutation.isPending
+                  ? "Assigning..."
+                  : "Continue"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

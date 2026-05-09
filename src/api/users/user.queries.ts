@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  assignCompanyToCurrentUser,
   createUser,
   deleteUser,
   fetchUserById,
@@ -65,6 +66,17 @@ export const useDeleteUser = () => {
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
       queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });
+    },
+  });
+};
+
+export const useAssignCompany = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: assignCompanyToCurrentUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: userKeys.lists() });
     },
   });
 };

@@ -1,5 +1,3 @@
-"use client";
-
 import type { ChangeEvent, DragEvent } from "react";
 import { Building2, UploadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +6,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
 const inputCls =
+  "w-full h-12 px-4 py-0 " +
+  "bg-[#dde3e9] " +
+  "border-0 shadow-none " +
+  "rounded-md " +
+  "focus-visible:ring-2 focus-visible:ring-[#72b183]/20 focus-visible:ring-offset-0 " +
+  "transition-all " +
+  "text-[#2d3338] placeholder:text-[#596065]/60 " +
+  "text-sm font-normal";
+
+const textareaCls =
   "w-full px-4 py-3 " +
   "bg-[#dde3e9] " +
   "border-0 shadow-none " +
@@ -101,7 +109,7 @@ export function CompanyProfileForm({
                   type="file"
                   accept="image/*"
                   onChange={handleLogoInputChange}
-                  className={inputCls}
+                  className={`${inputCls} leading-[3rem] file:h-12 file:leading-[3rem] file:py-0`}
                 />
                 <p className="text-xs text-[#7a848b]">PNG or JPG up to 10MB.</p>
               </div>
@@ -141,7 +149,7 @@ export function CompanyProfileForm({
               onChange={(e) => onDescriptionChange(e.target.value)}
               placeholder="Describe your company mission and culture..."
               rows={5}
-              className={`${inputCls} resize-none`}
+              className={`${textareaCls} resize-none`}
             />
           </div>
         </div>
