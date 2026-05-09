@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import type { Job } from "@/types/job";
-import { formatVND, getCityFromAddress } from "../helper";
+import { formatSalaryRange, getCityFromAddress } from "../../helper";
 
 interface JobPopupProps {
   job: Job;
@@ -21,9 +22,10 @@ export const JobPopup = ({
   onMouseLeave,
 }: JobPopupProps) => {
   const popupRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const companyName = job.company?.name ?? "Unknown";
   const companyLogo = job.company?.logo;
-  const salaryText = formatVND(job.salary);
+  const salaryText = formatSalaryRange(job.minSalary, job.maxSalary);
   const city = getCityFromAddress(job.location);
   const specialization = job.specialization?.name;
   const levelsText = job.levels?.length ? job.levels.join(", ") : undefined;
@@ -88,12 +90,12 @@ export const JobPopup = ({
         role="dialog"
         aria-label={job.name}
         className="fixed z-50 flex w-95 flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
-        style={{ maxHeight: "calc(100vh - 32px)" }}
+        style={{ maxWidth: "480px", maxHeight: "510px" }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave ?? onClose}
       >
         {/* Scrollable body */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {/* Header */}
           <div className="p-5 pb-4">
             <div className="flex items-start gap-4">
@@ -150,13 +152,42 @@ export const JobPopup = ({
             <div className="px-5 py-4">
               <h3 className="mb-3 flex items-center gap-2 text-[15px] font-bold text-slate-900">
                 <span className="h-5 w-1 rounded-full bg-green-500" />
-                Mô tả công việc
+                Job description
               </h3>
               <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-line">
                 {job.description}
               </p>
             </div>
           )}
+
+          {job.workingHours && (
+            <div className="px-5 py-4">
+              <h3 className="mb-3 flex items-center gap-2 text-[15px] font-bold text-slate-900">
+                <span className="h-5 w-1 rounded-full bg-green-500" />
+                Working hours
+              </h3>
+              <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-line">
+                {job.workingHours}
+              </p>
+            </div>
+          )}
+
+          {job.benefits?.length ? (
+            <div className="px-5 py-4">
+              <h3 className="mb-3 flex items-center gap-2 text-[15px] font-bold text-slate-900">
+                <span className="h-5 w-1 rounded-full bg-green-500" />
+                Benefits
+              </h3>
+              <ul className="space-y-2 text-sm text-slate-700">
+                {job.benefits.map((benefit, index) => (
+                  <li key={`${benefit}-${index}`} className="flex gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-slate-400" />
+                    <span className="flex-1">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           {/* Extra bottom padding so last content isn't hidden behind buttons */}
           <div className="h-4" />
@@ -172,15 +203,16 @@ export const JobPopup = ({
                 /* handle apply */
               }}
             >
-              Ứng tuyển
+              Apply now
             </Button>
             <Button
               className="flex-1 rounded-xl bg-green-500 font-semibold text-white hover:bg-green-600"
               onClick={() => {
-                /* handle view detail */
+                onClose();
+                navigate(`/jobs/detail/${job.id}`);
               }}
             >
-              Xem chi tiết
+              View details
             </Button>
           </div>
         </div>

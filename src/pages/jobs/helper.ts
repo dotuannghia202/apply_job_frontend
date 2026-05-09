@@ -27,6 +27,24 @@ export function formatVND(value?: number | null): string {
   }).format(value);
 }
 
+export function formatSalaryRange(
+  minSalary?: number | null,
+  maxSalary?: number | null,
+): string {
+  const hasMin = minSalary !== null && minSalary !== undefined;
+  const hasMax = maxSalary !== null && maxSalary !== undefined;
+
+  if (!hasMin && !hasMax) {
+    return "Agree on salary";
+  }
+
+  if (hasMin && hasMax) {
+    return `${formatVND(minSalary)} - ${formatVND(maxSalary)}`;
+  }
+
+  return formatVND(hasMin ? minSalary : maxSalary);
+}
+
 export function getCityFromAddress(address?: string | null): string {
   const safe = address?.trim();
   if (!safe) return "";

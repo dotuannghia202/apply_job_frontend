@@ -17,10 +17,11 @@ import AdminDashboardPage from "@/pages/admin/DashboardPage";
 
 import { normalizeRoles } from "@/helper/auth-roles";
 import type { RoleName } from "@/types/auth";
-import JobListPage from "@/pages/jobs/JobListPage";
+import JobListPage from "@/pages/jobs/list-jobs/JobListPage";
 import EmployerDashboard from "@/pages/employer/dashboard/EmployerDashboardPage";
 import PostJobPage from "@/pages/employer/post-job/PostJobPage";
 import CreateCompanyPage from "@/pages/employer/create-company/CreateCompanyPage";
+import JobDetailPage from "@/pages/jobs/job-detail/JobDetailPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -151,6 +152,10 @@ export const router = createBrowserRouter([
               {
                 path: "jobs",
                 element: <JobListPage />,
+              },
+              {
+                path: "jobs/detail/:id",
+                element: <JobDetailPage />,
               },
               {
                 path: "jobs/applications",

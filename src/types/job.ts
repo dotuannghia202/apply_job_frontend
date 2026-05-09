@@ -2,7 +2,8 @@ export interface Job {
   id: number;
   name: string;
   location: string;
-  salary: number;
+  minSalary?: number;
+  maxSalary?: number;
   quantity: number;
   levels: string[];
   description: string;
@@ -14,6 +15,7 @@ export interface Job {
   endDate: string;
   requirements?: string[];
   benefits?: string[];
+  workingHours?: string;
   isSaved: boolean;
 }
 

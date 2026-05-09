@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight, Grid2x2, List } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import JobCard from "@/pages/jobs/components/JobCard";
+import JobCard from "@/pages/jobs/list-jobs/components/JobCard";
 import { useGetJobs } from "@/api/jobs/job.queries";
 import type { Job, JobListFilters } from "@/types/job";
 import { Button } from "@/components/ui/button";

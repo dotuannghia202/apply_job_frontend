@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 import type { Job } from "@/types/job";
-import { formatVND, getCityFromAddress } from "../helper";
-import { JobPopup } from "@/pages/jobs/components/JobPopup";
+import { formatSalaryRange, getCityFromAddress } from "../../helper";
+import { JobPopup } from "@/pages/jobs/list-jobs/components/JobPopup";
 
 const JobCard = ({ job }: { job: Job }) => {
   const anchorRef = useRef<HTMLElement | null>(null);
@@ -18,7 +18,7 @@ const JobCard = ({ job }: { job: Job }) => {
 
   const companyName = job.company?.name ?? "Unknown";
   const companyLogo = job.company?.logo;
-  const salaryText = formatVND(job.salary);
+  const salaryText = formatSalaryRange(job.minSalary, job.maxSalary);
   const isSaved = job.isSaved;
 
   const openPopup = () => {

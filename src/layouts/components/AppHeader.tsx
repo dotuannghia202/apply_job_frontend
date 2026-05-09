@@ -7,7 +7,7 @@ import { useUpdateUser } from "@/api/users/user.queries";
 import { Switch } from "@/components/ui/switch";
 import { normalizeRoles } from "@/helper/auth-roles";
 import { cn } from "@/lib/utils";
-import UserAvatarMenu from "@/pages/jobs/components/UserAvatarMenu";
+import UserAvatarMenu from "@/layouts/components/UserAvatarMenu";
 import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 

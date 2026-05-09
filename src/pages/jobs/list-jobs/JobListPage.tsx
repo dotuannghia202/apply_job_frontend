@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import JobListSection from "@/pages/jobs/components/JobListSection";
+import JobListSection from "@/pages/jobs/list-jobs/components/JobListSection";
 
 import JobCategoryHero from "./components/JobCategoryHero";
 import type { JobListFilters } from "@/types/job";
