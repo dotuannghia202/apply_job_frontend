@@ -1,5 +1,5 @@
 import { Heart } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -7,19 +7,37 @@ import { cn } from "@/lib/utils";
 import type { Job } from "@/types/job";
 import { formatSalaryRange, getCityFromAddress } from "../../helper";
 import { JobPopup } from "@/pages/jobs/list-jobs/components/JobPopup";
+import { useToggleSaveJob } from "@/api/users/user.queries";
 
 const JobCard = ({ job }: { job: Job }) => {
   const anchorRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<number | null>(null);
   const openTimerRef = useRef<number | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isSaved, setIsSaved] = useState(job.isSaved);
+  const toggleSaveMutation = useToggleSaveJob();
 
   const OPEN_DELAY_MS = 400;
 
   const companyName = job.company?.name ?? "Unknown";
   const companyLogo = job.company?.logo;
   const salaryText = formatSalaryRange(job.minSalary, job.maxSalary);
-  const isSaved = job.isSaved;
+  const isSaving = toggleSaveMutation.isPending;
+
+  useEffect(() => {
+    setIsSaved(job.isSaved);
+  }, [job.isSaved]);
+
+  const handleToggleSave = async () => {
+    if (isSaving) return;
+
+    try {
+      const response = await toggleSaveMutation.mutateAsync(job.id);
+      setIsSaved(Boolean(response.data));
+    } catch (error) {
+      console.error("Failed to toggle saved job", error);
+    }
+  };
 
   const openPopup = () => {
     if (openTimerRef.current) {
@@ -139,12 +157,14 @@ const JobCard = ({ job }: { job: Job }) => {
               variant="ghost"
               size="icon"
               aria-label={`${isSaved ? "Unsave" : "Save"} ${job.name}`}
+              disabled={isSaving}
               className={cn(
                 "size-9 shrink-0 rounded-full border transition-colors",
                 isSaved
                   ? "border-rose-200 bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600"
                   : "border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600",
               )}
+              onClick={handleToggleSave}
             >
               <Heart className={cn("size-4", isSaved && "fill-current")} />
             </Button>

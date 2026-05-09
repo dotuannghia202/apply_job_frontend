@@ -1,8 +1,3 @@
-import { Bell } from "lucide-react";
-
-const pillCls =
-  "px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium border border-slate-200";
-
 type JobDetailInfoProps = {
   requirements: string[];
   specialties: string[];
@@ -36,7 +31,10 @@ export function JobDetailInfo({
           </span>
           <div className="flex flex-wrap gap-2 flex-grow">
             {specialties.map((item) => (
-              <span key={item} className={pillCls}>
+              <span
+                key={item}
+                className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium border border-slate-200"
+              >
                 {item}
               </span>
             ))}

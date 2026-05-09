@@ -8,6 +8,9 @@ type JobDetailHeaderProps = {
   experience: string;
   deadlineLabel: string;
   timeLeftLabel: string;
+  isSaved: boolean;
+  onToggleSave: () => void;
+  isSaving?: boolean;
 };
 
 export function JobDetailHeader({
@@ -17,6 +20,9 @@ export function JobDetailHeader({
   experience,
   deadlineLabel,
   timeLeftLabel,
+  isSaved,
+  onToggleSave,
+  isSaving = false,
 }: JobDetailHeaderProps) {
   return (
     <section className="bg-slate-50 rounded-xl p-6 md:p-8 flex flex-col gap-6 relative shadow-sm border border-slate-100">
@@ -71,9 +77,11 @@ export function JobDetailHeader({
           <Button
             variant="outline"
             className="bg-white text-slate-800 px-6 py-3 rounded-lg font-medium border border-slate-200 hover:bg-primary-hover/10 hover:text-primary-hover transition-colors flex items-center gap-2"
+            onClick={onToggleSave}
+            disabled={isSaving}
           >
-            <Heart size={18} />
-            Save job
+            <Heart size={18} className={isSaved ? "fill-current" : undefined} />
+            {isSaved ? "Saved" : "Save job"}
           </Button>
         </div>
       </div>

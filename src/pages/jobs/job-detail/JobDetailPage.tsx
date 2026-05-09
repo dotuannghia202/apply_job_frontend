@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetJobById } from "@/api/jobs/job.queries";
+import { useToggleSaveJob } from "@/api/users/user.queries";
 import { CandidateList } from "./components/CandidateList";
 import { JobDetailHeader } from "./components/JobDetailHeader";
 import { JobDetailInfo } from "./components/JobDetailInfo";
@@ -10,7 +12,9 @@ export default function JobDetailPage() {
   const { id } = useParams();
   const jobId = Number(id);
   const jobQuery = useGetJobById(jobId);
+  const toggleSaveMutation = useToggleSaveJob();
   const job = jobQuery.data?.data;
+  const [isSaved, setIsSaved] = useState(false);
 
   const deadlineLabel = "Application deadline:";
   const formatDateLabel = (value?: string | null) => {
@@ -69,6 +73,21 @@ export default function JobDetailPage() {
     );
   }
 
+  useEffect(() => {
+    setIsSaved(job.isSaved);
+  }, [job.isSaved]);
+
+  const handleToggleSave = async () => {
+    if (toggleSaveMutation.isPending) return;
+
+    try {
+      const response = await toggleSaveMutation.mutateAsync(job.id);
+      setIsSaved(Boolean(response.data));
+    } catch (error) {
+      console.error("Failed to toggle saved job", error);
+    }
+  };
+
   const salaryText = formatSalaryRange(job.minSalary, job.maxSalary);
   const city = getCityFromAddress(job.location) || job.location || "Unknown";
   const timeLeftLabel = `${formatDateLabel(job.endDate)} ${getDaysLeftLabel(
@@ -100,6 +119,9 @@ export default function JobDetailPage() {
           experience="Not specified"
           deadlineLabel={deadlineLabel}
           timeLeftLabel={timeLeftLabel}
+          isSaved={isSaved}
+          isSaving={toggleSaveMutation.isPending}
+          onToggleSave={handleToggleSave}
         />
 
         <div className="flex flex-col lg:flex-row gap-6">

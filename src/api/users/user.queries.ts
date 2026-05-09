@@ -6,8 +6,10 @@ import {
   fetchUserById,
   fetchUsers,
   updateUser,
+  toggleSaveJob,
 } from "./user.api";
 import { userKeys } from "./user.keys";
+import { jobKeys } from "@/api/jobs/job.keys";
 import type { UserListFilters } from "@/types/user";
 
 export const useGetUsers = (filters: UserListFilters = {}) => {
@@ -66,6 +68,18 @@ export const useDeleteUser = () => {
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
       queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });
+    },
+  });
+};
+
+export const useToggleSaveJob = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: toggleSaveJob,
+    onSuccess: (_data, jobId) => {
+      queryClient.invalidateQueries({ queryKey: jobKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: jobKeys.detail(jobId) });
     },
   });
 };
