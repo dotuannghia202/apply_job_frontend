@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 const chipCls =
-  "px-3 py-1.5 bg-white text-slate-600 rounded-lg text-sm font-medium border border-slate-200 hover:bg-slate-50 transition-colors";
+  "px-3 py-1.5 bg-white text-slate-600 rounded-lg text-sm font-medium border border-slate-200 hover:bg-primary-hover/10 hover:text-primary-hover transition-colors";
 
 type JobDetailSidebarProps = {
   companyName: string;
@@ -81,7 +81,7 @@ export function JobDetailSidebar({
             </div>
           </div>
         </div>
-        <button className="text-emerald-600 font-semibold text-center mt-2 flex items-center justify-center gap-2 hover:underline">
+        <button className="text-primary font-semibold text-center mt-2 flex items-center justify-center gap-2 hover:text-primary-hover hover:underline">
           View company page
         </button>
       </div>
@@ -92,7 +92,7 @@ export function JobDetailSidebar({
         </h3>
         <div className="flex flex-col gap-5">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
               <BadgeCheck size={18} />
             </div>
             <div>
@@ -101,7 +101,7 @@ export function JobDetailSidebar({
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
               <GraduationCap size={18} />
             </div>
             <div>
@@ -112,7 +112,7 @@ export function JobDetailSidebar({
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
               <Users size={18} />
             </div>
             <div>
@@ -121,7 +121,7 @@ export function JobDetailSidebar({
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
               <Briefcase size={18} />
             </div>
             <div>

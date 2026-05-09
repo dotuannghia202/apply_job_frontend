@@ -56,7 +56,7 @@ export function CandidateList() {
             className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50/60 p-4 md:flex-row md:items-center md:justify-between"
           >
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-semibold">
+              <div className="h-12 w-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold">
                 {candidate.name
                   .split(" ")
                   .map((part) => part[0])
@@ -77,7 +77,7 @@ export function CandidateList() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
+              <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-primary border border-primary/20">
                 {candidate.stage}
               </span>
               <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 border border-slate-200">

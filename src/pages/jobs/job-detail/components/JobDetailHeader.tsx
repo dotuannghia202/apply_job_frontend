@@ -20,17 +20,17 @@ export function JobDetailHeader({
 }: JobDetailHeaderProps) {
   return (
     <section className="bg-slate-50 rounded-xl p-6 md:p-8 flex flex-col gap-6 relative shadow-sm border border-slate-100">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-emerald-100/60 to-transparent rounded-tr-xl" />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/20 to-transparent rounded-tr-xl" />
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 z-10">
         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight tracking-tight max-w-3xl">
           {title}
         </h1>
-        <BadgeCheck className="text-emerald-600" size={28} />
+        <BadgeCheck className="text-primary" size={28} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-200">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
             <span className="text-lg font-semibold">$</span>
           </div>
           <div>
@@ -39,7 +39,7 @@ export function JobDetailHeader({
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
             <MapPin size={20} />
           </div>
           <div>
@@ -48,7 +48,7 @@ export function JobDetailHeader({
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
             <Clock3 size={20} />
           </div>
           <div>
@@ -64,13 +64,13 @@ export function JobDetailHeader({
           <span className="font-semibold text-slate-900">{timeLeftLabel}</span>
         </div>
         <div className="flex gap-4 w-full md:w-auto">
-          <Button className="flex-grow md:flex-grow-0 bg-gradient-to-r from-emerald-600 to-emerald-400 text-white px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-sm">
+          <Button className="flex-grow md:flex-grow-0 bg-gradient-to-r from-primary to-primary-hover text-white px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-sm">
             <Send size={18} />
             Apply now
           </Button>
           <Button
             variant="outline"
-            className="bg-white text-slate-800 px-6 py-3 rounded-lg font-medium border border-slate-200 hover:bg-slate-50 transition-colors flex items-center gap-2"
+            className="bg-white text-slate-800 px-6 py-3 rounded-lg font-medium border border-slate-200 hover:bg-primary-hover/10 hover:text-primary-hover transition-colors flex items-center gap-2"
           >
             <Heart size={18} />
             Save job

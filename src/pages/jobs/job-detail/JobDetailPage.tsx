@@ -76,7 +76,7 @@ export default function JobDetailPage() {
   )}`.trim();
   const requirements = job.requirements?.length
     ? job.requirements
-    : ["Not specified"];
+    : ["No requirements"];
   const specialties = job.skills?.length
     ? job.skills
     : job.specialization?.name
@@ -84,9 +84,6 @@ export default function JobDetailPage() {
       : ["Not specified"];
   const benefits = job.benefits?.length ? job.benefits : ["Not specified"];
   const description = job.description || "Not specified";
-  const qualifications = job.requirements?.length
-    ? job.requirements
-    : ["Not specified"];
   const workplace = job.location || "Not specified";
   const workType = "Full-time";
   const education = "Not specified";
@@ -111,7 +108,6 @@ export default function JobDetailPage() {
               requirements={requirements}
               specialties={specialties}
               description={description}
-              qualifications={qualifications}
               benefits={benefits}
               workplace={workplace}
               applyInstruction="Submit your profile online by clicking Apply now below."
