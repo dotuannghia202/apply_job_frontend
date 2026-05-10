@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .agents
-.seed
+seed
 
 # Các file chứa biến môi trường
 .env
