@@ -1,10 +1,25 @@
-import { useState, type KeyboardEvent } from "react";
-import { CheckCircle2, Plus, X } from "lucide-react";
+import { useMemo, useState, type KeyboardEvent } from "react";
+import { Check, CheckCircle2, ChevronsUpDown, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import locationData from "@/assets/location-data/vietnam_provinces_wards_final.json";
+import { cn } from "@/lib/utils";
 
 export type PostJobFormData = {
   name: string;
@@ -48,6 +63,17 @@ type Props = {
   value: PostJobFormData;
   onChange: (next: PostJobFormData) => void;
   onSubmit?: () => void;
+};
+
+type Ward = {
+  name: string;
+  code: number;
+};
+
+type Province = {
+  name: string;
+  code: number;
+  wards: Ward[];
 };
 
 function SectionHeader({ title, note }: { title: string; note?: string }) {
@@ -145,9 +171,130 @@ function ListInput({
   );
 }
 
+type SearchableOption = {
+  value: string;
+  label: string;
+};
+
+function SearchableSelect({
+  label,
+  placeholder,
+  searchPlaceholder,
+  value,
+  options,
+  onChange,
+  disabled,
+}: {
+  label: string;
+  placeholder: string;
+  searchPlaceholder: string;
+  value: string;
+  options: SearchableOption[];
+  onChange: (next: string) => void;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const selected = options.find((item) => item.value === value);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Label className="text-xs font-semibold text-[#7b848a]">{label}</Label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            disabled={disabled}
+            className={cn(
+              "h-10 justify-between rounded-md border-0 bg-[#dde3e9] px-3 text-sm font-normal text-[#2d3338] shadow-none",
+              disabled && "opacity-50",
+            )}
+          >
+            {selected ? selected.label : placeholder}
+            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-60" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+          <Command>
+            <CommandInput placeholder={searchPlaceholder} />
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandList className="max-h-44">
+              <CommandGroup>
+                {options.map((item) => (
+                  <CommandItem
+                    key={item.value}
+                    value={item.label}
+                    onSelect={() => {
+                      onChange(item.value);
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 size-4",
+                        item.value === value ? "opacity-100" : "opacity-0",
+                      )}
+                    />
+                    {item.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+
 export function PostJobForm({ value, onChange, onSubmit }: Props) {
   const update = (patch: Partial<PostJobFormData>) =>
     onChange({ ...value, ...patch });
+
+  const provinces = locationData as Province[];
+  const [provinceCode, setProvinceCode] = useState("");
+  const [wardCode, setWardCode] = useState("");
+  const [street, setStreet] = useState("");
+  const provinceId = provinceCode ? Number(provinceCode) : null;
+  const wardId = wardCode ? Number(wardCode) : null;
+
+  const selectedProvince = useMemo(
+    () => provinces.find((item) => item.code === provinceId),
+    [provinces, provinceId],
+  );
+
+  const selectedWard = useMemo(
+    () => selectedProvince?.wards.find((ward) => ward.code === wardId),
+    [selectedProvince, wardId],
+  );
+
+  function buildLocation(nextStreet: string, ward?: Ward, province?: Province) {
+    const parts = [nextStreet, ward?.name, province?.name].filter(Boolean);
+    return parts.join(", ");
+  }
+
+  function handleProvinceChange(next: string) {
+    setProvinceCode(next);
+    setWardCode("");
+    setStreet("");
+    const province = provinces.find((item) => item.code === Number(next));
+    update({ location: buildLocation("", undefined, province) });
+  }
+
+  function handleWardChange(next: string) {
+    setWardCode(next);
+    const ward = selectedProvince?.wards.find(
+      (item) => item.code === Number(next),
+    );
+    update({ location: buildLocation(street, ward, selectedProvince) });
+  }
+
+  function handleStreetChange(next: string) {
+    setStreet(next);
+    update({ location: buildLocation(next, selectedWard, selectedProvince) });
+  }
 
   function toggleLevel(level: string) {
     if (value.levels.includes(level)) {
@@ -184,14 +331,44 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
               className={inputCls}
             />
           </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <Label className="text-sm font-semibold text-[#596065]">
+            Location
+          </Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SearchableSelect
+              label="Province / City"
+              placeholder="Select province/city"
+              searchPlaceholder="Search province..."
+              value={provinceCode}
+              options={provinces.map((province) => ({
+                value: province.code.toString(),
+                label: province.name,
+              }))}
+              onChange={handleProvinceChange}
+            />
+            <SearchableSelect
+              label="Ward / Commune"
+              placeholder="Select ward/commune"
+              searchPlaceholder="Search ward..."
+              value={wardCode}
+              options={(selectedProvince?.wards ?? []).map((ward) => ({
+                value: ward.code.toString(),
+                label: ward.name,
+              }))}
+              onChange={handleWardChange}
+            />
+          </div>
+
           <div className="flex flex-col gap-2">
-            <Label className="text-sm font-semibold text-[#596065]">
-              Location
+            <Label className="text-xs font-semibold text-[#7b848a]">
+              Street / House No.
             </Label>
             <Input
-              value={value.location}
-              onChange={(event) => update({ location: event.target.value })}
-              placeholder="e.g. Ho Chi Minh City"
+              value={street}
+              onChange={(event) => handleStreetChange(event.target.value)}
+              placeholder="Enter house number, street, hamlet..."
               className={inputCls}
             />
           </div>
@@ -220,6 +397,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
             <Input
               type="number"
               value={value.minSalary}
+              min={0}
               onChange={(event) => update({ minSalary: event.target.value })}
               placeholder="0"
               className={inputCls}
@@ -231,6 +409,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
             </Label>
             <Input
               type="number"
+              min={0}
               value={value.maxSalary}
               onChange={(event) => update({ maxSalary: event.target.value })}
               placeholder="0"
@@ -243,6 +422,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
             </Label>
             <Input
               type="number"
+              min={1}
               value={value.quantity}
               onChange={(event) => update({ quantity: event.target.value })}
               placeholder="1"
