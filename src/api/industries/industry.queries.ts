@@ -10,11 +10,11 @@ import type { IndustryListFilters } from "@/types/industry";
 
 export const useGetIndustries = (filters: IndustryListFilters = {}) => {
   const normalizedFilters: Required<
-    Pick<IndustryListFilters, "page" | "pageSize">
+    Pick<IndustryListFilters, "page" | "size">
   > &
     IndustryListFilters = {
     page: filters.page ?? 1,
-    pageSize: filters.pageSize ?? 10,
+    size: filters.size ?? 10,
     ...filters,
   };
 

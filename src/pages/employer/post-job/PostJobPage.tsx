@@ -18,7 +18,7 @@ export default function PostJobPage() {
     active: true,
     benefits: [],
     workingHours: "",
-    companyId: "",
+    industryId: "",
     specializationId: "",
     skillIds: [],
   });

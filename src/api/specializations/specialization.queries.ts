@@ -13,11 +13,11 @@ export const useGetSpecializations = (
   filters: SpecializationListFilters = {},
 ) => {
   const normalizedFilters: Required<
-    Pick<SpecializationListFilters, "page" | "pageSize">
+    Pick<SpecializationListFilters, "page" | "size">
   > &
     SpecializationListFilters = {
     page: filters.page ?? 1,
-    pageSize: filters.pageSize ?? 10,
+    size: filters.size ?? 10,
     ...filters,
   };
 

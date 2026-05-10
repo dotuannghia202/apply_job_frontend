@@ -28,13 +28,13 @@ export interface CreateSpecializationRequest {
 
 export interface IndustryListFilters {
   page?: number;
-  pageSize?: number;
+  size?: number;
   name?: string;
 }
 
 export interface SpecializationListFilters {
   page?: number;
-  pageSize?: number;
+  size?: number;
   name?: string;
   industryId?: number;
 }

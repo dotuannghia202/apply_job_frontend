@@ -60,7 +60,7 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
               label="Levels"
               value={value.levels.length ? value.levels.join(", ") : "-"}
             />
-            <PreviewRow label="Company ID" value={value.companyId || "-"} />
+            <PreviewRow label="Industry ID" value={value.industryId || "-"} />
             <PreviewRow
               label="Specialization ID"
               value={value.specializationId || "-"}
@@ -69,6 +69,15 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
               label="Skill IDs"
               value={value.skillIds.length ? value.skillIds.join(", ") : "-"}
             />
+          </div>
+
+          <div className="border-t border-[#eaeef3] pt-4">
+            <p className="text-xs font-bold text-[#72b183] uppercase tracking-[0.2em] mb-2">
+              Description
+            </p>
+            <p className="text-sm text-[#596065] leading-relaxed">
+              {value.description || "No description"}
+            </p>
           </div>
 
           <div className="space-y-3 border-t border-[#eaeef3] pt-4">
@@ -112,15 +121,6 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
                 <p className="text-sm text-[#7b848a]">No benefits</p>
               )}
             </div>
-          </div>
-
-          <div className="border-t border-[#eaeef3] pt-4">
-            <p className="text-xs font-bold text-[#72b183] uppercase tracking-[0.2em] mb-2">
-              Description
-            </p>
-            <p className="text-sm text-[#596065] leading-relaxed">
-              {value.description || "No description"}
-            </p>
           </div>
         </div>
       </div>

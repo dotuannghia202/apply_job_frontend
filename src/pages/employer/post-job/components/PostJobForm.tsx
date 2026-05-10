@@ -19,6 +19,10 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import locationData from "@/assets/location-data/vietnam_provinces_wards_final.json";
+import { useGetIndustries } from "@/api/industries/industry.queries";
+import { useGetSpecializationsByIndustryId } from "@/api/specializations/specialization.queries";
+import { useGetSkills } from "@/api/skills/skill.queries";
+import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 
 export type PostJobFormData = {
@@ -35,7 +39,7 @@ export type PostJobFormData = {
   active: boolean;
   benefits: string[];
   workingHours: string;
-  companyId: string;
+  industryId: string;
   specializationId: string;
   skillIds: number[];
 };
@@ -184,6 +188,9 @@ function SearchableSelect({
   options,
   onChange,
   disabled,
+  searchValue,
+  onSearchChange,
+  onOpenChange,
 }: {
   label: string;
   placeholder: string;
@@ -192,14 +199,28 @@ function SearchableSelect({
   options: SearchableOption[];
   onChange: (next: string) => void;
   disabled?: boolean;
+  searchValue?: string;
+  onSearchChange?: (next: string) => void;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
   const selected = options.find((item) => item.value === value);
+  const commandInputProps = onSearchChange
+    ? {
+        value: searchValue ?? "",
+        onValueChange: onSearchChange,
+      }
+    : undefined;
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  };
 
   return (
     <div className="flex flex-col gap-2">
       <Label className="text-xs font-semibold text-[#7b848a]">{label}</Label>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
             type="button"
@@ -218,7 +239,10 @@ function SearchableSelect({
         </PopoverTrigger>
         <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
           <Command>
-            <CommandInput placeholder={searchPlaceholder} />
+            <CommandInput
+              placeholder={searchPlaceholder}
+              {...commandInputProps}
+            />
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandList className="max-h-44">
               <CommandGroup>
@@ -257,8 +281,31 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
   const [provinceCode, setProvinceCode] = useState("");
   const [wardCode, setWardCode] = useState("");
   const [street, setStreet] = useState("");
+  const [industrySearch, setIndustrySearch] = useState("");
+  const [skillSearch, setSkillSearch] = useState("");
+  const [selectedSkillLabels, setSelectedSkillLabels] = useState<
+    Record<number, string>
+  >({});
   const provinceId = provinceCode ? Number(provinceCode) : null;
   const wardId = wardCode ? Number(wardCode) : null;
+  const industryId = value.industryId ? Number(value.industryId) : 0;
+  const debouncedIndustrySearch = useDebounce(industrySearch);
+  const debouncedSkillSearch = useDebounce(skillSearch);
+
+  const { data: industriesData } = useGetIndustries({
+    page: 1,
+    size: 8,
+    name: debouncedIndustrySearch || undefined,
+  });
+
+  const { data: specializationsData } =
+    useGetSpecializationsByIndustryId(industryId);
+
+  const { data: skillsData } = useGetSkills({
+    page: 1,
+    size: 8,
+    name: debouncedSkillSearch || undefined,
+  });
 
   const selectedProvince = useMemo(
     () => provinces.find((item) => item.code === provinceId),
@@ -269,6 +316,37 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
     () => selectedProvince?.wards.find((ward) => ward.code === wardId),
     [selectedProvince, wardId],
   );
+
+  const industryOptions = useMemo(
+    () =>
+      (industriesData?.data?.result ?? []).map((industry) => ({
+        value: industry.id.toString(),
+        label: industry.name,
+      })),
+    [industriesData],
+  );
+
+  const specializationOptions = useMemo(
+    () =>
+      (specializationsData?.data ?? []).map((specialization) => ({
+        value: specialization.id.toString(),
+        label: specialization.name,
+      })),
+    [specializationsData],
+  );
+
+  const skillOptions = useMemo(
+    () => skillsData?.data?.result ?? [],
+    [skillsData],
+  );
+
+  const skillOptionLabels = useMemo(() => {
+    const map: Record<number, string> = {};
+    skillOptions.forEach((skill) => {
+      map[skill.id] = skill.name;
+    });
+    return map;
+  }, [skillOptions]);
 
   function buildLocation(nextStreet: string, ward?: Ward, province?: Province) {
     const parts = [nextStreet, ward?.name, province?.name].filter(Boolean);
@@ -296,6 +374,10 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
     update({ location: buildLocation(next, selectedWard, selectedProvince) });
   }
 
+  function handleIndustryChange(next: string) {
+    update({ industryId: next, specializationId: "" });
+  }
+
   function toggleLevel(level: string) {
     if (value.levels.includes(level)) {
       update({ levels: value.levels.filter((l) => l !== level) });
@@ -304,15 +386,19 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
     update({ levels: [...value.levels, level] });
   }
 
-  function addSkillId(raw: string) {
-    const parsed = Number(raw);
-    if (!Number.isFinite(parsed) || parsed <= 0) return;
-    if (value.skillIds.includes(parsed)) return;
-    update({ skillIds: [...value.skillIds, parsed] });
+  function addSkill(id: number, label: string) {
+    if (value.skillIds.includes(id)) return;
+    update({ skillIds: [...value.skillIds, id] });
+    setSelectedSkillLabels((prev) => ({ ...prev, [id]: label }));
   }
 
-  function removeSkillId(index: number) {
-    update({ skillIds: value.skillIds.filter((_, i) => i !== index) });
+  function removeSkill(id: number) {
+    update({ skillIds: value.skillIds.filter((skillId) => skillId !== id) });
+    setSelectedSkillLabels((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
   }
 
   return (
@@ -523,47 +609,106 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
       </div>
 
       <div className="bg-white rounded-xl p-8 border border-[#eaeef3]/60 space-y-6">
-        <SectionHeader title="Company & Specialization" note="Required" />
+        <SectionHeader title="Industry & Specialization" note="Required" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <Label className="text-sm font-semibold text-[#596065]">
-              Company ID
-            </Label>
-            <Input
-              type="number"
-              value={value.companyId}
-              onChange={(event) => update({ companyId: event.target.value })}
-              placeholder="e.g. 101"
-              className={inputCls}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label className="text-sm font-semibold text-[#596065]">
-              Specialization ID
-            </Label>
-            <Input
-              type="number"
-              value={value.specializationId}
-              onChange={(event) =>
-                update({ specializationId: event.target.value })
-              }
-              placeholder="e.g. 12"
-              className={inputCls}
-            />
-          </div>
+          <SearchableSelect
+            label="Industry"
+            placeholder="Select industry"
+            searchPlaceholder="Search industry..."
+            value={value.industryId}
+            options={industryOptions}
+            onChange={handleIndustryChange}
+            searchValue={industrySearch}
+            onSearchChange={setIndustrySearch}
+            onOpenChange={(open) => {
+              if (!open) setIndustrySearch("");
+            }}
+          />
+          <SearchableSelect
+            label="Specialization"
+            placeholder="Select specialization"
+            searchPlaceholder="Search specialization..."
+            value={value.specializationId}
+            options={specializationOptions}
+            onChange={(next) => update({ specializationId: next })}
+            disabled={!value.industryId}
+          />
         </div>
       </div>
 
       <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
         <SectionHeader title="Skills" note="Required" />
-        <ListInput
-          label="Skill IDs"
-          placeholder="Add skill ID"
-          items={value.skillIds.map((id) => id.toString())}
-          onAdd={addSkillId}
-          onRemove={removeSkillId}
-          hint="Enter numeric IDs only"
-        />
+        <div className="flex flex-col gap-3">
+          <Label className="text-sm font-semibold text-[#596065]">Skills</Label>
+          {value.skillIds.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {value.skillIds.map((id) => (
+                <Tag
+                  key={id}
+                  label={
+                    selectedSkillLabels[id] ??
+                    skillOptionLabels[id] ??
+                    `Skill #${id}`
+                  }
+                  onRemove={() => removeSkill(id)}
+                />
+              ))}
+            </div>
+          ) : null}
+          <Popover
+            onOpenChange={(open) => {
+              if (!open) setSkillSearch("");
+            }}
+          >
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className="justify-between rounded-md border-0 bg-[#dde3e9] px-3 text-sm font-normal text-[#2d3338] shadow-none"
+              >
+                {value.skillIds.length
+                  ? `Selected ${value.skillIds.length} skill(s)`
+                  : "Select skills"}
+                <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-60" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+              <Command>
+                <CommandInput
+                  placeholder="Search skills..."
+                  value={skillSearch}
+                  onValueChange={setSkillSearch}
+                />
+                <CommandEmpty>No skills found.</CommandEmpty>
+                <CommandList className="max-h-44">
+                  <CommandGroup>
+                    {skillOptions.map((skill) => {
+                      const isSelected = value.skillIds.includes(skill.id);
+                      return (
+                        <CommandItem
+                          key={skill.id}
+                          value={skill.name}
+                          onSelect={() => addSkill(skill.id, skill.name)}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 size-4",
+                              isSelected ? "opacity-100" : "opacity-0",
+                            )}
+                          />
+                          {skill.name}
+                        </CommandItem>
+                      );
+                    })}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+          <p className="text-xs text-[#7b848a]">
+            Type to search skills, then click to add.
+          </p>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl p-8 border border-[#eaeef3]/60 space-y-6">
