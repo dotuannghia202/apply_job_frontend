@@ -37,6 +37,12 @@ export default function JobDetailPage() {
     return `(${daysLeft} days left)`;
   };
 
+  useEffect(() => {
+    if (job) {
+      setIsSaved(job.isSaved);
+    }
+  }, [job]);
+
   if (!id || Number.isNaN(jobId)) {
     return (
       <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
@@ -72,10 +78,6 @@ export default function JobDetailPage() {
       </main>
     );
   }
-
-  useEffect(() => {
-    setIsSaved(job.isSaved);
-  }, [job.isSaved]);
 
   const handleToggleSave = async () => {
     if (toggleSaveMutation.isPending) return;

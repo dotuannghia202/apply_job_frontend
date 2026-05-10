@@ -22,6 +22,7 @@ import EmployerDashboard from "@/pages/employer/dashboard/EmployerDashboardPage"
 import PostJobPage from "@/pages/employer/post-job/PostJobPage";
 import CreateCompanyPage from "@/pages/employer/create-company/CreateCompanyPage";
 import JobDetailPage from "@/pages/jobs/job-detail/JobDetailPage";
+import AIGenerationJob from "@/pages/employer/post-job/AIGenerationJob";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -139,6 +140,10 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "jobs/jd-generator",
+                element: <AIGenerationJob />,
+              },
+              {
+                path: "jobs/publish",
                 element: <PostJobPage />,
               },
             ],

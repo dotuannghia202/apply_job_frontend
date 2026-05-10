@@ -26,7 +26,7 @@ export function JobDetailHeader({
 }: JobDetailHeaderProps) {
   return (
     <section className="bg-slate-50 rounded-xl p-6 md:p-8 flex flex-col gap-6 relative shadow-sm border border-slate-100">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/20 to-transparent rounded-tr-xl" />
+      <div className="absolute top-0 right-0 w-24 h-24 linear-to-bl from-primary/20 to-transparent rounded-tr-xl" />
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 z-10">
         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight tracking-tight max-w-3xl">
           {title}
@@ -70,18 +70,18 @@ export function JobDetailHeader({
           <span className="font-semibold text-slate-900">{timeLeftLabel}</span>
         </div>
         <div className="flex gap-4 w-full md:w-auto">
-          <Button className="flex-grow md:flex-grow-0 bg-gradient-to-r from-primary to-primary-hover text-white px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-sm">
+          <Button className="grow md:grow-0 bg-green-500 text-white hover:bg-green-50 hover:border hover:border-green-400 hover:text-green-500 px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 ">
             <Send size={18} />
             Apply now
           </Button>
           <Button
             variant="outline"
-            className="bg-white text-slate-800 px-6 py-3 rounded-lg font-medium border border-slate-200 hover:bg-primary-hover/10 hover:text-primary-hover transition-colors flex items-center gap-2"
+            className={`bg-white  py-3 rounded-lg font-medium border  transition-colors flex items-center gap-2 ${isSaved ? "border-rose-200 bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600" : "border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600"}`}
             onClick={onToggleSave}
             disabled={isSaving}
           >
             <Heart size={18} className={isSaved ? "fill-current" : undefined} />
-            {isSaved ? "Saved" : "Save job"}
+            {isSaved ? "Unsave" : "Save job"}
           </Button>
         </div>
       </div>
