@@ -26,6 +26,8 @@ import AIGenerationJob from "@/pages/employer/post-job/AIGenerationJob";
 import MyCV from "@/pages/candidate/cvs/MyCV";
 import SavedJobPage from "@/pages/candidate/saved-jobs/SavedJobPage";
 
+import MyApplicationsList from "@/pages/candidate/my-applycations/MyApplicationsList";
+
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
   if (!rawUser) return [];
@@ -166,7 +168,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "jobs/applications",
-                element: <PlaceholderPage title="My Applications" />,
+                element: <MyApplicationsList />,
               },
               {
                 path: "jobs/my-cv",

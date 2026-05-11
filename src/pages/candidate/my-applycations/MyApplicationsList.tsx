@@ -30,7 +30,7 @@ const applications: ApplicationItem[] = [
   },
 ];
 
-const MyApplycationsList = () => {
+const MyApplicationsList = () => {
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12">
       <section>
@@ -53,4 +53,4 @@ const MyApplycationsList = () => {
   );
 };
 
-export default MyApplycationsList;
+export default MyApplicationsList;
