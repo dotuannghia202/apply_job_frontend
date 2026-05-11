@@ -16,7 +16,12 @@ export type JobCardItem = {
 };
 
 export function formatVND(value?: number | null): string {
-  if (value === null || value === undefined || Number.isNaN(value)) {
+  if (
+    value === null ||
+    value === undefined ||
+    Number.isNaN(value) ||
+    value <= 0
+  ) {
     return "Agree on salary";
   }
 
@@ -31,18 +36,24 @@ export function formatSalaryRange(
   minSalary?: number | null,
   maxSalary?: number | null,
 ): string {
-  const hasMin = minSalary !== null && minSalary !== undefined;
-  const hasMax = maxSalary !== null && maxSalary !== undefined;
+  const min = minSalary ?? 0;
+  const max = maxSalary ?? 0;
+  const hasMin = min > 0;
+  const hasMax = max > 0;
 
   if (!hasMin && !hasMax) {
     return "Agree on salary";
   }
 
-  if (hasMin && hasMax) {
-    return `${formatVND(minSalary)} - ${formatVND(maxSalary)}`;
+  if (hasMin && !hasMax) {
+    return `Salary from ${formatVND(min)}`;
   }
 
-  return formatVND(hasMin ? minSalary : maxSalary);
+  if (!hasMin && hasMax) {
+    return `Salary up to ${formatVND(max)}`;
+  }
+
+  return `${formatVND(min)} - ${formatVND(max)}`;
 }
 
 export function getCityFromAddress(address?: string | null): string {

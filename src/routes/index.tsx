@@ -23,6 +23,8 @@ import PostJobPage from "@/pages/employer/post-job/PostJobPage";
 import CreateCompanyPage from "@/pages/employer/create-company/CreateCompanyPage";
 import JobDetailPage from "@/pages/jobs/job-detail/JobDetailPage";
 import AIGenerationJob from "@/pages/employer/post-job/AIGenerationJob";
+import MyCV from "@/pages/candidate/cvs/MyCV";
+import SavedJobPage from "@/pages/candidate/saved-jobs/SavedJobPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -168,11 +170,11 @@ export const router = createBrowserRouter([
               },
               {
                 path: "jobs/my-cv",
-                element: <PlaceholderPage title="My CV" />,
+                element: <MyCV />,
               },
               {
                 path: "jobs/saved",
-                element: <PlaceholderPage title="Saved Jobs" />,
+                element: <SavedJobPage />,
               },
             ],
           },
