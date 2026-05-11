@@ -25,29 +25,29 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
         <div className="relative bg-white rounded-lg p-8 shadow-xl border border-[#eaeef3]/50 space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-bold text-[#72b183] uppercase tracking-[0.2em] mb-2">
+              <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-2">
                 Payload Preview
               </p>
               <h3 className="text-2xl font-extrabold text-[#2d3338]">
                 {value.name || "Untitled Role"}
               </h3>
             </div>
-            <span className="text-xs font-bold text-[#72b183] bg-[#e8f4ec] px-3 py-1 rounded-full">
+            <span className="text-xs font-bold text-primary bg-[#e8f4ec] px-3 py-1 rounded-full">
               {value.active ? "Active" : "Inactive"}
             </span>
           </div>
 
           <div className="grid grid-cols-1 gap-4">
             <div className="flex items-center gap-2 text-sm text-[#596065]">
-              <MapPin size={16} className="text-[#72b183]" />
+              <MapPin size={16} className="text-primary" />
               {value.location || "Location not set"}
             </div>
             <div className="flex items-center gap-2 text-sm text-[#596065]">
-              <Wallet size={16} className="text-[#72b183]" />
+              <Wallet size={16} className="text-primary" />
               {salaryLabel}
             </div>
             <div className="flex items-center gap-2 text-sm text-[#596065]">
-              <Timer size={16} className="text-[#72b183]" />
+              <Timer size={16} className="text-primary" />
               {value.startDate && value.endDate
                 ? `${value.startDate} - ${value.endDate}`
                 : "Timeline not set"}
@@ -60,19 +60,21 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
               label="Levels"
               value={value.levels.length ? value.levels.join(", ") : "-"}
             />
-            <PreviewRow label="Industry ID" value={value.industryId || "-"} />
+            <PreviewRow label="Industry" value={value.industryName || "-"} />
             <PreviewRow
-              label="Specialization ID"
-              value={value.specializationId || "-"}
+              label="Specialization"
+              value={value.specializationName || "-"}
             />
             <PreviewRow
-              label="Skill IDs"
-              value={value.skillIds.length ? value.skillIds.join(", ") : "-"}
+              label="Skills"
+              value={
+                value.skillNames.length ? value.skillNames.join(", ") : "-"
+              }
             />
           </div>
 
           <div className="border-t border-[#eaeef3] pt-4">
-            <p className="text-xs font-bold text-[#72b183] uppercase tracking-[0.2em] mb-2">
+            <p className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-2">
               Description
             </p>
             <p className="text-sm text-[#596065] leading-relaxed">
@@ -82,7 +84,7 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
 
           <div className="space-y-3 border-t border-[#eaeef3] pt-4">
             <div>
-              <p className="text-xs font-bold text-[#72b183] uppercase tracking-[0.2em] mb-2">
+              <p className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-2">
                 Requirements
               </p>
               {value.requirements.length ? (
@@ -91,9 +93,11 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
                     <li key={`${item}-${index}`} className="flex gap-2 text-sm">
                       <CheckCircle2
                         size={14}
-                        className="text-[#72b183] mt-0.5"
+                        className="text-primary mt-0.5 shrink-0"
                       />
-                      <span className="text-[#596065]">{item}</span>
+                      <span className="text-[#596065] leading-relaxed">
+                        {item}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -103,7 +107,7 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
             </div>
 
             <div>
-              <p className="text-xs font-bold text-[#72b183] uppercase tracking-[0.2em] mb-2">
+              <p className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-2">
                 Benefits
               </p>
               {value.benefits.length ? (

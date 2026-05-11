@@ -1,5 +1,12 @@
 import { useMemo, useState, type KeyboardEvent } from "react";
-import { Check, CheckCircle2, ChevronsUpDown, Plus, X } from "lucide-react";
+import {
+  Check,
+  CheckCircle2,
+  ChevronsUpDown,
+  Plus,
+  Save,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -40,8 +47,11 @@ export type PostJobFormData = {
   benefits: string[];
   workingHours: string;
   industryId: string;
+  industryName: string;
   specializationId: string;
+  specializationName: string;
   skillIds: number[];
+  skillNames: string[];
 };
 
 const LEVEL_OPTIONS = [
@@ -375,7 +385,15 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
   }
 
   function handleIndustryChange(next: string) {
-    update({ industryId: next, specializationId: "" });
+    const selectedIndustry = industryOptions.find(
+      (option) => option.value === next,
+    );
+    update({
+      industryId: next,
+      industryName: selectedIndustry?.label ?? "",
+      specializationId: "",
+      specializationName: "",
+    });
   }
 
   function toggleLevel(level: string) {
@@ -388,12 +406,20 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
 
   function addSkill(id: number, label: string) {
     if (value.skillIds.includes(id)) return;
-    update({ skillIds: [...value.skillIds, id] });
+    update({
+      skillIds: [...value.skillIds, id],
+      skillNames: [...value.skillNames, label],
+    });
     setSelectedSkillLabels((prev) => ({ ...prev, [id]: label }));
   }
 
   function removeSkill(id: number) {
-    update({ skillIds: value.skillIds.filter((skillId) => skillId !== id) });
+    const index = value.skillIds.findIndex((skillId) => skillId === id);
+    const nextSkillIds = value.skillIds.filter((skillId) => skillId !== id);
+    const nextSkillNames = value.skillNames.filter(
+      (_name, nameIndex) => nameIndex !== index,
+    );
+    update({ skillIds: nextSkillIds, skillNames: nextSkillNames });
     setSelectedSkillLabels((prev) => {
       const next = { ...prev };
       delete next[id];
@@ -630,7 +656,15 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
             searchPlaceholder="Search specialization..."
             value={value.specializationId}
             options={specializationOptions}
-            onChange={(next) => update({ specializationId: next })}
+            onChange={(next) => {
+              const selectedSpecialization = specializationOptions.find(
+                (option) => option.value === next,
+              );
+              update({
+                specializationId: next,
+                specializationName: selectedSpecialization?.label ?? "",
+              });
+            }}
             disabled={!value.industryId}
           />
         </div>
@@ -729,21 +763,15 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex justify-end">
         <Button
           type="button"
           onClick={onSubmit}
-          className="rounded-full font-bold text-white px-6 shadow-md hover:shadow-lg transition-shadow"
-          style={{
-            background: "linear-gradient(135deg, #72b183 0%, #aed6ba 100%)",
-          }}
+          className="bg-primary hover:bg-primary-hover rounded-md px-6! font-bold text-white shadow-md hover:shadow-lg transition-shadow"
         >
-          <CheckCircle2 size={16} className="mr-2" />
-          Create Job
+          <Save size={16} className="mr-1" />
+          Save
         </Button>
-        <span className="text-xs text-[#7b848a]">
-          Make sure the required fields are filled.
-        </span>
       </div>
     </section>
   );
