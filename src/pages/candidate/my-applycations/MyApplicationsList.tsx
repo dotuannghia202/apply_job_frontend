@@ -60,13 +60,18 @@ const mapApplicationToItem = (application: Application): ApplicationItem => {
   return {
     id: String(application.id),
     title: application.job?.name ?? "Untitled role",
-    company: application.job?.company?.name ?? "Unknown company",
+    company: application.job?.companyName ?? "Unknown company",
     location: application.job?.location ?? "Unknown location",
     appliedOn: formatAppliedDate(application.appliedAt),
     resumeName: application.resume?.fileName ?? "Resume",
+    resumeUrl: application.resume?.fileUrl ?? undefined,
     fitScore: Math.max(0, Math.min(100, score)),
     status,
-    logoUrl: application.job?.company?.logo ?? undefined,
+    logoUrl: application.job?.companyLogo ?? undefined,
+    coverLetter: application.coverLetter ?? null,
+    hasCoverLetter: application.hasCoverLetter ?? null,
+    candidateName: application.candidate?.name ?? null,
+    candidateEmail: application.candidate?.email ?? null,
   };
 };
 

@@ -7,23 +7,24 @@ export type ApplicationStatus =
   | "ACCEPTED"
   | "REJECTED";
 
-export interface ApplicationJobCompany {
+export interface ApplicationJobInfo {
   id: number;
   name: string;
-  logo?: string | null;
-}
-
-export interface ApplicationJob {
-  id: number;
-  name: string;
+  companyName?: string | null;
   location?: string | null;
-  company?: ApplicationJobCompany | null;
+  companyLogo?: string | null;
 }
 
-export interface ApplicationResume {
+export interface ApplicationResumeInfo {
   id: number;
   fileName?: string | null;
   fileUrl?: string | null;
+}
+
+export interface ApplicationCandidateInfo {
+  id: number;
+  name?: string | null;
+  email?: string | null;
 }
 
 export interface Application {
@@ -31,9 +32,11 @@ export interface Application {
   status: ApplicationStatus;
   matchScore?: number | null;
   coverLetter?: string | null;
+  hasCoverLetter?: boolean | null;
   appliedAt?: string | null;
-  job?: ApplicationJob | null;
-  resume?: ApplicationResume | null;
+  job?: ApplicationJobInfo | null;
+  resume?: ApplicationResumeInfo | null;
+  candidate?: ApplicationCandidateInfo | null;
 }
 
 export interface ApplicationListFilters extends Pick<

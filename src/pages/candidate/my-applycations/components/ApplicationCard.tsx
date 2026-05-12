@@ -43,17 +43,38 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
       </div>
       <div className="flex items-center gap-2">
         <Link2 className="h-4 w-4 text-primary" aria-hidden="true" />
-        <a href="#" className="font-medium text-primary hover:underline">
-          {item.resumeName}
-        </a>
+        {item.resumeUrl ? (
+          <a
+            href={`https://docs.google.com/viewer?url=${encodeURIComponent(item.resumeUrl)}`}
+            className="font-medium text-primary hover:underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {item.resumeName}
+          </a>
+        ) : (
+          <span className="font-medium text-muted-foreground">
+            {item.resumeName}
+          </span>
+        )}
       </div>
-      <button
-        type="button"
-        className="flex items-center gap-2 text-muted-foreground hover:text-primary"
-      >
+      <div className="flex items-center gap-2 text-muted-foreground">
         <FileText className="h-4 w-4" aria-hidden="true" />
-        View Cover Letter
-      </button>
+        {item.hasCoverLetter || item.coverLetter
+          ? "Cover letter attached"
+          : "No cover letter"}
+      </div>
+      {item.coverLetter ? (
+        <p className="line-clamp-2 text-xs text-muted-foreground">
+          {item.coverLetter}
+        </p>
+      ) : null}
+      {(item.candidateName || item.candidateEmail) && (
+        <div className="text-xs text-muted-foreground">
+          Candidate: {item.candidateName ?? "Unknown"}
+          {item.candidateEmail ? ` (${item.candidateEmail})` : ""}
+        </div>
+      )}
     </div>
 
     <div className="flex-1">
