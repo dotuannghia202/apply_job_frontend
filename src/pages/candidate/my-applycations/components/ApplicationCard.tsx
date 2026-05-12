@@ -1,4 +1,4 @@
-import { Calendar, FileText, Link2, MapPin } from "lucide-react";
+import { Calendar, FileText, Link2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,8 @@ const statusStyles = {
   Pending: "bg-secondary text-foreground/70",
   Reviewing: "bg-secondary text-foreground/70",
   Interview: "bg-primary/15 text-primary",
-  Resolved: "bg-muted text-muted-foreground",
+  Accepted: "bg-emerald-100 text-emerald-700",
+  Rejected: "bg-rose-100 text-rose-700",
 } as const;
 
 const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
@@ -61,7 +62,9 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
 
     <div className="flex flex-1 flex-col items-end gap-4">
       <Badge
-        className={`uppercase tracking-wider ${statusStyles[item.status]}`}
+        className={`uppercase tracking-wider ${
+          statusStyles[item.status] ?? "bg-muted text-muted-foreground"
+        }`}
       >
         {item.statusLabel ?? item.status}
       </Badge>

@@ -2,7 +2,8 @@ export type ApplicationStatus =
   | "Pending"
   | "Reviewing"
   | "Interview"
-  | "Resolved";
+  | "Accepted"
+  | "Rejected";
 
 export type ApplicationItem = {
   id: string;

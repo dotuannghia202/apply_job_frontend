@@ -1,36 +1,95 @@
-import ApplicationCard from "@/pages/candidate/my-applycations/components/ApplicationCard";
-import ApplicationsTabs from "@/pages/candidate/my-applycations/components/ApplicationsTabs";
-import type { ApplicationItem } from "@/pages/candidate/my-applycations/components/types";
+import { useMemo, useState } from "react";
 
-const applications: ApplicationItem[] = [
-  {
-    id: "app-1",
-    title: "Senior Backend Engineer",
-    company: "TechNova Systems",
-    location: "San Francisco, CA",
-    appliedOn: "12 May, 2026",
-    resumeName: "My_Backend_CV.pdf",
-    fitScore: 85,
-    status: "Pending",
-    logoUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDIJ6s7oHQN3-Ui2bQZTVrAAVxY8-0YNdAuML3XqxXxlzdoej_fJqUHv5c_d-QUQsNN2uzCHwxmf7n2Om5DjqtIvCityvFobwolRf9-xvxZxK7JDMT3Tg27ynyPXvZBJP6wPhroGa0k7yXxKtnGZh-lXYyeR4uR5Fc7W1fb8slY87-lmMEPbrLNipC3No5FFMYxMsKrJn2wFBP5DaixqAzX3YEyQFSHCU0WQuywgZwgCTpGFBMPbMYMAPw8jMiju6sPodvaEYNYUwyV",
-  },
-  {
-    id: "app-2",
-    title: "Lead Product Designer",
-    company: "Elevate Studios",
-    location: "Remote",
-    appliedOn: "05 May, 2026",
-    resumeName: "Design_Portfolio_2026.pdf",
-    fitScore: 92,
-    status: "Interview",
-    statusTone: "accent",
-    logoUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAXSB9Zx3Fpw5vSAWNMJwoovaD20ZkTlmoC0jb2Ud6WNGnSl13CUUYYkfjX-SphI7wi027cCjoIr8Ble_X4XjDPUjzbTtsdZX-qUX8X4u7wF6-3WisiYE8EKIP11yO_UcwkrAAgXvMDYkI1lDmPELifJbP11gW2rjRcmIL5OHZb3kgeWH7nCPZIjeXnovxzTAZOnZ9WG3ZdwUneuY_6AYrb2e1sUQUgK4N56_sqUUpQHDTwc-cZ_A9jfkjYVdOjlBed6-Q_6WzHm0oq",
-  },
-];
+import { useGetApplications } from "@/api/applications/application.queries";
+import ApplicationCard from "@/pages/candidate/my-applycations/components/ApplicationCard";
+import ApplicationsTabs, {
+  type ApplicationTab,
+} from "@/pages/candidate/my-applycations/components/ApplicationsTabs";
+import type { ApplicationItem } from "@/pages/candidate/my-applycations/components/types";
+import type {
+  Application,
+  ApplicationListFilters,
+  ApplicationStatus,
+} from "@/types/application";
+
+const PAGE_SIZE = 10;
+
+const statusParamMap: Record<
+  Exclude<ApplicationTab, "All">,
+  ApplicationStatus
+> = {
+  Pending: "PENDING",
+  Reviewing: "REVIEWING",
+  Interview: "INTERVIEW",
+  Accepted: "ACCEPTED",
+  Rejected: "REJECTED",
+};
+
+const statusLabelMap: Record<ApplicationStatus, ApplicationItem["status"]> = {
+  PENDING: "Pending",
+  REVIEWING: "Reviewing",
+  INTERVIEW: "Interview",
+  ACCEPTED: "Accepted",
+  REJECTED: "Rejected",
+};
+
+const formatAppliedDate = (value?: string | null) => {
+  if (!value) return "N/A";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "N/A";
+  return new Intl.DateTimeFormat("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+};
+
+const getStatusLabel = (value?: string | null): ApplicationItem["status"] => {
+  if (!value) return "Pending";
+  const normalized = value.trim().toUpperCase();
+  return statusLabelMap[normalized as ApplicationStatus] ?? "Pending";
+};
+
+const mapApplicationToItem = (application: Application): ApplicationItem => {
+  const status = getStatusLabel(application.status);
+  const score =
+    typeof application.matchScore === "number"
+      ? Math.round(application.matchScore)
+      : 0;
+
+  return {
+    id: String(application.id),
+    title: application.job?.name ?? "Untitled role",
+    company: application.job?.company?.name ?? "Unknown company",
+    location: application.job?.location ?? "Unknown location",
+    appliedOn: formatAppliedDate(application.appliedAt),
+    resumeName: application.resume?.fileName ?? "Resume",
+    fitScore: Math.max(0, Math.min(100, score)),
+    status,
+    logoUrl: application.job?.company?.logo ?? undefined,
+  };
+};
 
 const MyApplicationsList = () => {
+  const [activeStatus, setActiveStatus] = useState<ApplicationTab>("All");
+
+  const queryFilters = useMemo<ApplicationListFilters>(() => {
+    const status =
+      activeStatus === "All" ? undefined : statusParamMap[activeStatus];
+
+    return {
+      page: 1,
+      size: PAGE_SIZE,
+      status,
+    };
+  }, [activeStatus]);
+
+  const { data, isLoading, isError } = useGetApplications(queryFilters);
+  const items = useMemo(
+    () => (data?.data?.result ?? []).map(mapApplicationToItem),
+    [data?.data?.result],
+  );
+
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12">
       <section>
@@ -42,10 +101,28 @@ const MyApplicationsList = () => {
         </p>
       </section>
 
-      <ApplicationsTabs />
+      <ApplicationsTabs activeTab={activeStatus} onChange={setActiveStatus} />
 
       <section className="flex flex-col gap-6">
-        {applications.map((item) => (
+        {isError ? (
+          <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground">
+            Failed to load applications. Please try again.
+          </div>
+        ) : null}
+
+        {isLoading ? (
+          <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground">
+            Loading applications...
+          </div>
+        ) : null}
+
+        {!isLoading && !isError && items.length === 0 ? (
+          <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground">
+            No applications found for this status.
+          </div>
+        ) : null}
+
+        {items.map((item) => (
           <ApplicationCard key={item.id} item={item} />
         ))}
       </section>

@@ -1,19 +1,34 @@
 import { Button } from "@/components/ui/button";
 
-const tabs = ["All", "Pending", "Reviewing", "Interview", "Resolved"] as const;
+export const applicationTabs = [
+  "All",
+  "Pending",
+  "Reviewing",
+  "Interview",
+  "Accepted",
+  "Rejected",
+] as const;
 
-const ApplicationsTabs = () => (
-  <div className="flex gap-2 overflow-x-auto border-b border-border pb-[1px]">
-    {tabs.map((tab, index) => (
+export type ApplicationTab = (typeof applicationTabs)[number];
+
+interface ApplicationsTabsProps {
+  activeTab: ApplicationTab;
+  onChange: (tab: ApplicationTab) => void;
+}
+
+const ApplicationsTabs = ({ activeTab, onChange }: ApplicationsTabsProps) => (
+  <div className="flex gap-2 overflow-x-auto border-b border-border pb-px">
+    {applicationTabs.map((tab) => (
       <Button
         key={tab}
         variant="ghost"
-        className={`rounded-none px-4 py-2 text-sm font-medium ${
-          index === 0
+        className={`rounded-none px-4 py-2 text-sm font-medium hover:bg-transparent ${
+          tab === activeTab
             ? "border-b-2 border-primary text-primary"
             : "text-muted-foreground hover:text-primary"
         }`}
         type="button"
+        onClick={() => onChange(tab)}
       >
         {tab}
       </Button>

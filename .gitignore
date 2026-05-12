@@ -25,6 +25,7 @@ dist-ssr
 .agents
 seed
 
+
 # Các file chứa biến môi trường
 .env
 .env.local
