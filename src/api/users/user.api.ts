@@ -3,6 +3,7 @@ import axiosClient from "../axiosClient";
 import type {
   CreateUserRequest,
   UpdateUserPayload,
+  UpdateUserRolesPayload,
   User,
   UserListFilters,
 } from "@/types/user";
@@ -17,12 +18,24 @@ export const fetchUserById = async (id: number) => {
   return axiosClient.get(`/users/${id}`) as Promise<BackendResponse<User>>;
 };
 
+export const fetchAccountInfo = async () => {
+  return axiosClient.get("/auth/account") as Promise<
+    BackendResponse<User | { user: User }>
+  >;
+};
+
 export const createUser = async (userData: CreateUserRequest) => {
   return axiosClient.post("/users", userData) as Promise<BackendResponse<User>>;
 };
 
 export const updateUser = async ({ id, data }: UpdateUserPayload) => {
   return axiosClient.put(`/users/${id}`, data) as Promise<
+    BackendResponse<User>
+  >;
+};
+
+export const updateUserRoles = async ({ id, data }: UpdateUserRolesPayload) => {
+  return axiosClient.put(`/users/${id}/roles`, data) as Promise<
     BackendResponse<User>
   >;
 };

@@ -1,40 +1,103 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
+import authApi from "./authApi";
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
+type RetryRequestConfig = InternalAxiosRequestConfig & {
+  _retry?: boolean;
+};
 
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true,
+  baseURL: baseUrl,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
+
+const publicEndpoints = ["/auth/login", "/auth/register", "/auth/refresh"];
+
+function isPublicEndpoint(url?: string) {
+  return publicEndpoints.some((endpoint) => url?.includes(endpoint));
+}
+
+function clearAuthAndRedirect() {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("authUser");
+  window.location.href = "/401";
+}
 
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
 
-    const publicEndpoints = ["/auth/login", "/auth/register", "/auth/refresh"];
-
-    const isPublicEndpoint = publicEndpoints.some((endpoint) =>
-      config.url?.includes(endpoint),
-    );
-
-    if (token && config.headers && !isPublicEndpoint) {
+    if (token && config.headers && !isPublicEndpoint(config.url)) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
 
 axiosClient.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    if (error.response?.statusCode === 401) {
-      localStorage.removeItem("accessToken");
-      window.location.href = "/login";
+  (response) => {
+    if (response.config?.responseType === "blob") {
+      return response;
     }
+
+    return response.data;
+  },
+
+  async (error) => {
+    const originalRequest = error.config as RetryRequestConfig | undefined;
+
+    if (!originalRequest) {
+      return Promise.reject(error);
+    }
+
+    const status = error.response?.status;
+    const url = originalRequest.url || "";
+
+    if (status === 401 && !originalRequest._retry) {
+      // Không refresh cho login / register / refresh
+      if (isPublicEndpoint(url)) {
+        if (url.includes("/auth/refresh")) {
+          clearAuthAndRedirect();
+        }
+
+        return Promise.reject(error);
+      }
+
+      originalRequest._retry = true;
+
+      try {
+        /**
+         * BE của bạn hiện đang dùng @GetMapping("/refresh")
+         * nên dùng GET.
+         *
+         * Nếu sau này đổi BE sang @PostMapping("/refresh")
+         * thì đổi dòng này thành:
+         * const refreshResponse = await axiosClient.post<RefreshTokenResponse>("/auth/refresh");
+         */
+        const refreshResponse = await authApi.refreshToken();
+
+        const newAccessToken = refreshResponse.data?.accessToken;
+
+        if (!newAccessToken) {
+          throw new Error("Missing accessToken from refresh response");
+        }
+
+        localStorage.setItem("accessToken", newAccessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        return axiosClient(originalRequest);
+      } catch (refreshError) {
+        clearAuthAndRedirect();
+        return Promise.reject(refreshError);
+      }
+    }
+
     return Promise.reject(error);
   },
 );

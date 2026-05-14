@@ -13,6 +13,10 @@ export const fetchResumes = async (params: ResumeListFilters = {}) => {
   }) as Promise<BackendResponse<Pagination<Resume>>>;
 };
 
+export const fetchMyResumes = async () => {
+  return axiosClient.get("/my-cvs") as Promise<BackendResponse<Resume[]>>;
+};
+
 export const fetchResumeById = async (id: number) => {
   return axiosClient.get(`/resumes/${id}`) as Promise<BackendResponse<Resume>>;
 };

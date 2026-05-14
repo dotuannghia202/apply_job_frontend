@@ -20,8 +20,10 @@ export interface User {
   roles?: Array<RoleName>;
 }
 
-export interface UserListFilters
-  extends Pick<QueryParams, "page" | "size" | "name" | "email"> {
+export interface UserListFilters extends Pick<
+  QueryParams,
+  "page" | "size" | "name" | "email"
+> {
   role?: RoleName;
 }
 
@@ -47,7 +49,16 @@ export interface UpdateUserRequest {
   roles: Array<RoleName>;
 }
 
+export interface UpdateUserRolesRequest {
+  roles: Array<RoleName>;
+}
+
 export interface UpdateUserPayload {
   id: number;
   data: UpdateUserRequest;
+}
+
+export interface UpdateUserRolesPayload {
+  id: number;
+  data: UpdateUserRolesRequest;
 }

@@ -10,12 +10,12 @@ const footerLinks = [
 
 const AppFooter = () => {
   return (
-    <footer className="mt-16 border-t border-slate-200 bg-white">
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-6 px-6 py-10 md:flex-row">
+    <footer className="pt-6 pb-4 border-t border-slate-200 bg-white">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-6 py-10 px-6 md:flex-row">
         <div className="text-center md:text-left">
-          <p className="text-lg font-bold text-slate-900">CognitiveBridge AI</p>
+          <p className="text-lg font-bold text-slate-900">Job Portal</p>
           <p className="mt-1 text-xs text-slate-500">
-            © 2026 CognitiveBridge AI. Human-Centric Recruitment.
+            © 2026 Job Portal. Human-Centric Recruitment.
           </p>
         </div>
 

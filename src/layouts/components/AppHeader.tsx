@@ -2,8 +2,9 @@ import { Bell, MessageCircleMore } from "lucide-react";
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { fetchUserById } from "@/api/users/user.api";
-import { useUpdateUser } from "@/api/users/user.queries";
+import { fetchAccountInfo } from "@/api/users/user.api";
+import { useUpdateUserRoles } from "@/api/users/user.queries";
+import authApi from "@/api/authApi";
 import { Switch } from "@/components/ui/switch";
 import { normalizeRoles } from "@/helper/auth-roles";
 import { cn } from "@/lib/utils";
@@ -85,14 +86,16 @@ const AppHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  const setRoles = useAuthStore((state) => state.setRoles);
-  const updateUserMutation = useUpdateUser();
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const updateUserRolesMutation = useUpdateUserRoles();
   const roles = user?.roles ?? [];
   const mode = getHeaderMode(location.pathname, roles);
   const navLinks = getNavLinks(mode);
   const canSwitchCandidateEmployer = mode !== "ADMIN";
   const isEmployerMode = mode === "EMPLOYER";
-  const isModeSwitchPending = isSwitchingRole || updateUserMutation.isPending;
+  const isModeSwitchPending =
+    isSwitchingRole || updateUserRolesMutation.isPending;
 
   const handleModeChange = (checked: boolean) => {
     if (!user || isModeSwitchPending) return;
@@ -106,18 +109,9 @@ const AppHeader = () => {
       setIsSwitchingRole(true);
 
       try {
-        const profileResponse = await fetchUserById(user.id);
-        const profile = profileResponse.data;
-        const response = await updateUserMutation.mutateAsync({
+        const response = await updateUserRolesMutation.mutateAsync({
           id: user.id,
           data: {
-            name: profile?.name ?? user.name,
-            avatarUrl: profile?.avatarUrl ?? user.avatarUrl ?? null,
-            age: profile?.age ?? 0,
-            gender: profile?.gender ?? null,
-            address: profile?.address ?? null,
-            isActive: profile?.isActive ?? true,
-            companyId: profile?.company?.id,
             roles: nextRoles,
           },
         });
@@ -125,6 +119,48 @@ const AppHeader = () => {
         const responseRoles = normalizeRoles(response.data?.roles);
         const updatedRoles =
           responseRoles.length > 0 ? responseRoles : nextRoles;
+
+        const refreshResponse = await authApi.refreshToken();
+        const nextAccessToken = refreshResponse.data?.accessToken;
+        if (nextAccessToken) {
+          localStorage.setItem("accessToken", nextAccessToken);
+        }
+
+        const profileResponse = await fetchAccountInfo();
+        const profileData = profileResponse.data ?? null;
+        const profile =
+          profileData && "user" in profileData ? profileData.user : profileData;
+        const resolvedAccessToken =
+          nextAccessToken ?? accessToken ?? localStorage.getItem("accessToken");
+
+        if (profile && resolvedAccessToken) {
+          setAuth(
+            {
+              id: profile.id,
+              email: profile.email,
+              name: profile.name,
+              avatarUrl: profile.avatarUrl ?? null,
+              isActive: profile.isActive ?? null,
+              roles: normalizeRoles(profile.roles ?? []),
+              company: profile.company ?? null,
+            },
+            resolvedAccessToken,
+          );
+        } else if (resolvedAccessToken) {
+          setAuth(
+            {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              avatarUrl: user.avatarUrl ?? null,
+              isActive: user.isActive ?? null,
+              roles: updatedRoles,
+              company: user.company ?? null,
+            },
+            resolvedAccessToken,
+          );
+        }
+
         const hasCompany = Boolean(profile?.company?.id ?? user.company?.id);
         const targetPath =
           nextRole === "EMPLOYER"
@@ -135,11 +171,8 @@ const AppHeader = () => {
 
         if (nextRole === "CANDIDATE") {
           navigate(targetPath, { replace: true, flushSync: true });
-          setRoles(updatedRoles);
           return;
         }
-
-        setRoles(updatedRoles);
         navigate(targetPath, { replace: true, flushSync: true });
       } catch (error) {
         console.error("Failed to switch user role", error);

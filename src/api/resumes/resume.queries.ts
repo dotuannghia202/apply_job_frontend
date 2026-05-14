@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createResume,
   deleteResume,
+  fetchMyResumes,
   fetchResumeById,
   fetchResumes,
   updateResume,
@@ -24,6 +25,14 @@ export const useGetResumes = (filters: ResumeListFilters = {}) => {
   });
 };
 
+export const useGetMyResumes = () => {
+  return useQuery({
+    queryKey: resumeKeys.mine(),
+    queryFn: fetchMyResumes,
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
 export const useGetResumeById = (id: number) => {
   return useQuery({
     queryKey: resumeKeys.detail(id),
@@ -39,6 +48,7 @@ export const useCreateResume = () => {
     mutationFn: createResume,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: resumeKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: resumeKeys.mine() });
     },
   });
 };
@@ -50,6 +60,7 @@ export const useUpdateResume = () => {
     mutationFn: updateResume,
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: resumeKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: resumeKeys.mine() });
       queryClient.invalidateQueries({ queryKey: resumeKeys.detail(id) });
     },
   });
@@ -62,6 +73,7 @@ export const useDeleteResume = () => {
     mutationFn: deleteResume,
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: resumeKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: resumeKeys.mine() });
       queryClient.invalidateQueries({ queryKey: resumeKeys.detail(id) });
     },
   });

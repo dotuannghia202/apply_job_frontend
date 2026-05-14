@@ -34,6 +34,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     const authUser = {
       ...user,
       avatarUrl: user.avatarUrl ?? null,
+      isActive: user.isActive ?? null,
     };
 
     saveAuthToStorage(authUser, accessToken);

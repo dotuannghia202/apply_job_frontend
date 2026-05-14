@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 
 import { useGetApplications } from "@/api/applications/application.queries";
-import ApplicationCard from "@/pages/candidate/my-applycations/components/ApplicationCard";
+import ApplicationCard from "@/pages/candidate/my-applications/components/ApplicationCard";
 import ApplicationsTabs, {
   type ApplicationTab,
-} from "@/pages/candidate/my-applycations/components/ApplicationsTabs";
-import type { ApplicationItem } from "@/pages/candidate/my-applycations/components/types";
+} from "@/pages/candidate/my-applications/components/ApplicationsTabs";
+import type { ApplicationItem } from "@/pages/candidate/my-applications/components/types";
 import type {
   Application,
   ApplicationListFilters,

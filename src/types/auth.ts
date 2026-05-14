@@ -5,6 +5,7 @@ export interface AuthUser {
   email: string;
   name: string;
   avatarUrl: string | null;
+  isActive?: boolean | null;
   roles: Array<RoleName>;
   company: {
     id: number;

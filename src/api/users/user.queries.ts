@@ -3,9 +3,11 @@ import {
   assignCompanyToCurrentUser,
   createUser,
   deleteUser,
+  fetchAccountInfo,
   fetchUserById,
   fetchUsers,
   updateUser,
+  updateUserRoles,
   toggleSaveJob,
 } from "./user.api";
 import { userKeys } from "./user.keys";
@@ -37,6 +39,14 @@ export const useGetUserById = (id: number) => {
   });
 };
 
+export const useGetAccountInfo = () => {
+  return useQuery({
+    queryKey: userKeys.account(),
+    queryFn: fetchAccountInfo,
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
 
@@ -53,6 +63,18 @@ export const useUpdateUser = () => {
 
   return useMutation({
     mutationFn: updateUser,
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });
+    },
+  });
+};
+
+export const useUpdateUserRoles = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateUserRoles,
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
       queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });

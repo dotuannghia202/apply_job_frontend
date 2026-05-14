@@ -1,30 +1,33 @@
 import CvCard from "@/pages/candidate/cvs/components/CvCard";
 import UploadDropzone from "@/pages/candidate/cvs/components/UploadDropzone";
 import type { CvItem } from "@/pages/candidate/cvs/components/types";
+import { useGetMyResumes } from "@/api/resumes/resume.queries";
 
-const cvItems: CvItem[] = [
-  {
-    id: "cv-1",
-    fileName: "CV_Do_Tuan_Nghia_Backend.pdf",
-    updatedAt: "10/05/2026",
-    skills: ["Java", "Spring Boot", "Microservices", "AWS"],
-    isDefault: true,
-  },
-  {
-    id: "cv-2",
-    fileName: "Nghia_Do_Fullstack_Eng.pdf",
-    updatedAt: "01/03/2026",
-    skills: ["ReactJS", "Node.js", "TypeScript"],
-  },
-  {
-    id: "cv-3",
-    fileName: "Resume_DoTuanNghia_General.pdf",
-    updatedAt: "15/12/2025",
-    skills: ["Project Management", "Agile", "Scrum"],
-  },
-];
+const formatDate = (value?: string | null) => {
+  if (!value) {
+    return "-";
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleDateString("en-GB");
+};
 
 const MyCV = () => {
+  const { data, isLoading, isError } = useGetMyResumes();
+  const resumes = data?.data ?? [];
+
+  const cvItems: CvItem[] = resumes.map((resume) => ({
+    id: String(resume.id),
+    fileName: resume.fileName,
+    updatedAt: formatDate(resume.updatedAt ?? resume.createdAt),
+    skills: resume.skills ?? [],
+    isDefault: resume.active,
+  }));
+
   return (
     <main className="mx-auto max-w-7xl px-6 py-12 md:py-16">
       <header className="mb-12">
@@ -44,11 +47,21 @@ const MyCV = () => {
         <h2 className="mb-6 text-xl font-medium text-foreground">
           Uploaded CVs
         </h2>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {cvItems.map((item) => (
-            <CvCard key={item.id} item={item} />
-          ))}
-        </div>
+        {isError ? (
+          <p className="text-sm text-destructive">
+            Unable to load CVs right now. Please try again.
+          </p>
+        ) : isLoading ? (
+          <p className="text-sm text-muted-foreground">Loading CVs...</p>
+        ) : cvItems.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No CVs uploaded yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {cvItems.map((item) => (
+              <CvCard key={item.id} item={item} />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

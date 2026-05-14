@@ -3,8 +3,8 @@ import { Calendar, FileText, Link2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import FitScoreCard from "@/pages/candidate/my-applycations/components/FitScoreCard";
-import type { ApplicationItem } from "@/pages/candidate/my-applycations/components/types";
+import FitScoreCard from "@/pages/candidate/my-applications/components/FitScoreCard";
+import type { ApplicationItem } from "@/pages/candidate/my-applications/components/types";
 
 const statusStyles = {
   Pending: "bg-secondary text-foreground/70",
