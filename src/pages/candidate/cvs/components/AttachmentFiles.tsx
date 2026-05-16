@@ -35,9 +35,17 @@ const AttachmentFiles = ({ files }: { files: AttachmentFile[] }) => (
               <p className="text-xs text-muted-foreground">{file.size}</p>
             </div>
           </div>
-          <Button variant="outline" size="sm">
-            Download
-          </Button>
+          {file.url ? (
+            <Button asChild variant="outline" size="sm">
+              <a href={file.url} download={file.name} target="_blank" rel="noreferrer">
+                Download
+              </a>
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" disabled>
+              Download
+            </Button>
+          )}
         </div>
       ))}
     </div>

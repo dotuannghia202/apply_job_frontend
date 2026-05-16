@@ -26,6 +26,7 @@ export type ApplicationItem = {
 
 export type CandidateProfile = {
   name: string;
+  email?: string | null;
   title: string;
   location: string;
   experienceYears: number;

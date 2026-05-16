@@ -27,6 +27,8 @@ export interface UserListFilters extends Pick<
   role?: RoleName;
 }
 
+export interface SavedJobsFilters extends Pick<QueryParams, "page" | "size"> {}
+
 export interface CreateUserRequest {
   name: string;
   email: string;

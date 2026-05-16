@@ -3,7 +3,6 @@ import {
   BriefcaseBusiness,
   CalendarDays,
   Check,
-  ChevronRight,
   Clock3,
   FileText,
   MapPin,
@@ -16,6 +15,7 @@ import type { ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { useGetApplicationById } from "@/api/applications/application.queries";
+import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatSalaryRange } from "@/pages/jobs/helper";
@@ -266,23 +266,13 @@ const MyApplicationDetail = () => {
     <main className="min-h-screen bg-slate-50/70">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <header className="flex flex-col gap-6">
-          <nav
-            className="flex flex-wrap items-center gap-2 text-sm text-slate-500"
-            aria-label="Breadcrumb"
-          >
-            <Link to="/jobs" className="transition hover:text-slate-900">
-              Jobs
-            </Link>
-            <ChevronRight className="size-4" aria-hidden="true" />
-            <Link
-              to="/jobs/applications"
-              className="transition hover:text-slate-900"
-            >
-              My Applications
-            </Link>
-            <ChevronRight className="size-4" aria-hidden="true" />
-            <span className="font-medium text-slate-900">{jobTitle}</span>
-          </nav>
+          <AppBreadcrumb
+            items={[
+              { label: "Jobs", to: "/jobs" },
+              { label: "My Applications", to: "/jobs/applications" },
+              { label: jobTitle },
+            ]}
+          />
 
           <div className="flex flex-col justify-between gap-5 rounded-xl border border-slate-200 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)] md:flex-row md:items-start">
             <div className="flex min-w-0 gap-4">

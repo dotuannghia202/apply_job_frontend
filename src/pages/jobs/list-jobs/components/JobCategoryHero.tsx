@@ -59,7 +59,7 @@ const inputClassName =
 
 type JobSearchFilters = Pick<
   JobListFilters,
-  "keyword" | "location" | "maxSalary"
+  "keyword" | "location" | "minSalary" | "maxSalary"
 >;
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -216,7 +216,12 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
   const [hoveredIndustry, setHoveredIndustry] = useState<Industry | null>(null);
   const [keyword, setKeyword] = useState(filters.keyword ?? "");
   const [location, setLocation] = useState(filters.location ?? "");
-  const [salary, setSalary] = useState(filters.maxSalary?.toString() ?? "");
+  const [minSalary, setMinSalary] = useState(
+    filters.minSalary?.toString() ?? "",
+  );
+  const [maxSalary, setMaxSalary] = useState(
+    filters.maxSalary?.toString() ?? "",
+  );
   const leaveTimerRef = useRef<number | null>(null);
 
   // Fetch industries from API
@@ -240,8 +245,9 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
   useEffect(() => {
     setKeyword(filters.keyword ?? "");
     setLocation(filters.location ?? "");
-    setSalary(filters.maxSalary?.toString() ?? "");
-  }, [filters.keyword, filters.location, filters.maxSalary]);
+    setMinSalary(filters.minSalary?.toString() ?? "");
+    setMaxSalary(filters.maxSalary?.toString() ?? "");
+  }, [filters.keyword, filters.location, filters.minSalary, filters.maxSalary]);
 
   const handleCategoryEnter = (industry: Industry) => {
     if (leaveTimerRef.current) {
@@ -273,15 +279,25 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const trimmedKeyword = keyword.trim();
-    const trimmedSalary = salary.trim();
-    const normalizedSalary = trimmedSalary ? Number(trimmedSalary) : undefined;
+    const normalizedMinSalary = minSalary.trim()
+      ? Number(minSalary.trim())
+      : undefined;
+    const normalizedMaxSalary = maxSalary.trim()
+      ? Number(maxSalary.trim())
+      : undefined;
 
     onSearch({
       keyword: trimmedKeyword || undefined,
       location: location.trim() || undefined,
+      minSalary:
+        normalizedMinSalary !== undefined &&
+        Number.isFinite(normalizedMinSalary)
+          ? normalizedMinSalary
+          : undefined,
       maxSalary:
-        normalizedSalary !== undefined && Number.isFinite(normalizedSalary)
-          ? normalizedSalary
+        normalizedMaxSalary !== undefined &&
+        Number.isFinite(normalizedMaxSalary)
+          ? normalizedMaxSalary
           : undefined,
     });
   };
@@ -317,13 +333,24 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
           </div>
           <div className="hidden h-8 w-px bg-slate-200 lg:block" />
           <div className="flex flex-1 items-center gap-3 rounded-2xl px-4 py-2">
-            <Banknote className="size-4 text-primary" />
+            <Banknote className="size-4 shrink-0 text-primary" />
             <input
               type="text"
               inputMode="numeric"
-              value={salary}
+              value={minSalary}
               onChange={(event) =>
-                setSalary(event.target.value.replace(/\D/g, ""))
+                setMinSalary(event.target.value.replace(/\D/g, ""))
+              }
+              placeholder="Min salary"
+              className={inputClassName}
+            />
+            <span className="text-xs font-semibold text-slate-300">to</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={maxSalary}
+              onChange={(event) =>
+                setMaxSalary(event.target.value.replace(/\D/g, ""))
               }
               placeholder="Max salary"
               className={inputClassName}

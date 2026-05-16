@@ -23,6 +23,7 @@ const MyCV = () => {
   const cvItems: CvItem[] = resumes.map((resume) => ({
     id: String(resume.id),
     fileName: resume.fileName,
+    fileUrl: resume.fileUrl,
     updatedAt: formatDate(resume.updatedAt ?? resume.createdAt),
     skills: resume.skills ?? [],
     isDefault: resume.active,

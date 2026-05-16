@@ -1,4 +1,5 @@
 import { Building2, Heart, MapPin, Palette, CircleX } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,7 +10,13 @@ const logoFallbackStyles = {
   creative: "bg-primary/15 text-primary",
 };
 
-const SavedJobCard = ({ job }: { job: SavedJob }) => (
+type SavedJobCardProps = {
+  job: SavedJob;
+  isUnsaving?: boolean;
+  onUnsave?: (jobId: string) => void;
+};
+
+const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => (
   <Card
     className={`group flex flex-col items-start justify-between gap-6 border-border p-6 shadow-[0_4px_32px_rgba(25,28,25,0.06)] transition-all duration-300 hover:shadow-[0_8px_40px_rgba(25,28,25,0.08)] sm:flex-row sm:items-center ${
       job.isClosed ? "bg-secondary/40" : "bg-card"
@@ -65,16 +72,19 @@ const SavedJobCard = ({ job }: { job: SavedJob }) => (
       )}
       <div className="flex w-full items-center gap-3 sm:w-auto">
         <Button
+          asChild={!job.isClosed}
           className="flex-1 whitespace-nowrap bg-gradient-to-r from-primary to-primary/70 text-primary-foreground sm:flex-none"
           disabled={job.isClosed}
         >
-          Apply now
+          {job.isClosed ? "Apply now" : <Link to={`/jobs/detail/${job.id}`}>Apply now</Link>}
         </Button>
         <Button
           variant="ghost"
           size="icon"
           className="text-destructive"
           aria-label="Unsave job"
+          disabled={isUnsaving}
+          onClick={() => onUnsave?.(job.id)}
         >
           <Heart className="h-4 w-4" fill="currentColor" aria-hidden="true" />
         </Button>

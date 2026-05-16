@@ -1,7 +1,9 @@
 import type { BackendResponse, Pagination } from "@/types/common";
+import type { Job } from "@/types/job";
 import axiosClient from "../axiosClient";
 import type {
   CreateUserRequest,
+  SavedJobsFilters,
   UpdateUserPayload,
   UpdateUserRolesPayload,
   User,
@@ -22,6 +24,12 @@ export const fetchAccountInfo = async () => {
   return axiosClient.get("/auth/account") as Promise<
     BackendResponse<User | { user: User }>
   >;
+};
+
+export const fetchSavedJobs = async (params: SavedJobsFilters = {}) => {
+  return axiosClient.get("/saved-jobs", {
+    params,
+  }) as Promise<BackendResponse<Pagination<Job>>>;
 };
 
 export const createUser = async (userData: CreateUserRequest) => {

@@ -20,12 +20,16 @@ export interface Job {
 }
 
 export interface JobListFilters {
-  location?: string;
   page?: number;
   size?: number;
+  location?: string;
   levels?: string[];
   specialization?: number;
+  company?: string;
+  minSalary?: number;
   maxSalary?: number;
-  skill?: string;
+  name?: string;
   keyword?: string;
+  skill?: string;
+  active?: boolean;
 }

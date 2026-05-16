@@ -4,6 +4,7 @@ import {
   createUser,
   deleteUser,
   fetchAccountInfo,
+  fetchSavedJobs,
   fetchUserById,
   fetchUsers,
   updateUser,
@@ -12,7 +13,7 @@ import {
 } from "./user.api";
 import { userKeys } from "./user.keys";
 import { jobKeys } from "@/api/jobs/job.keys";
-import type { UserListFilters } from "@/types/user";
+import type { SavedJobsFilters, UserListFilters } from "@/types/user";
 
 export const useGetUsers = (filters: UserListFilters = {}) => {
   const normalizedFilters: Required<Pick<UserListFilters, "page" | "size">> &
@@ -43,6 +44,20 @@ export const useGetAccountInfo = () => {
   return useQuery({
     queryKey: userKeys.account(),
     queryFn: fetchAccountInfo,
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useGetSavedJobs = (filters: SavedJobsFilters = {}) => {
+  const normalizedFilters: Required<Pick<SavedJobsFilters, "page" | "size">> =
+    {
+      page: filters.page ?? 1,
+      size: filters.size ?? 10,
+    };
+
+  return useQuery({
+    queryKey: userKeys.savedJobs(normalizedFilters),
+    queryFn: () => fetchSavedJobs(normalizedFilters),
     staleTime: 5 * 60 * 1000,
   });
 };
@@ -102,6 +117,7 @@ export const useToggleSaveJob = () => {
     onSuccess: (_data, jobId) => {
       queryClient.invalidateQueries({ queryKey: jobKeys.lists() });
       queryClient.invalidateQueries({ queryKey: jobKeys.detail(jobId) });
+      queryClient.invalidateQueries({ queryKey: userKeys.all });
     },
   });
 };

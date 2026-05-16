@@ -1,4 +1,4 @@
-import { Mail, MapPin, UserRound } from "lucide-react";
+import { Download, Mail, MapPin, UserRound } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,13 @@ const statusToneStyles = {
   hired: "bg-emerald-100 text-emerald-700",
 } as const;
 
-const CandidateProfileCard = ({ profile }: { profile: CandidateProfile }) => (
+const CandidateProfileCard = ({
+  profile,
+  onDownload,
+}: {
+  profile: CandidateProfile;
+  onDownload?: () => void;
+}) => (
   <Card className="flex flex-col gap-6 border-border p-6 shadow-[0_12px_40px_rgba(25,28,25,0.08)]">
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div className="flex items-center gap-4">
@@ -62,11 +68,23 @@ const CandidateProfileCard = ({ profile }: { profile: CandidateProfile }) => (
     </div>
 
     <div className="flex flex-wrap gap-3">
-      <Button className="gap-2">
-        <Mail className="h-4 w-4" aria-hidden="true" />
-        Contact
+      <Button asChild={Boolean(profile.email)} className="gap-2">
+        {profile.email ? (
+          <a href={`mailto:${profile.email}`}>
+            <Mail className="h-4 w-4" aria-hidden="true" />
+            Contact
+          </a>
+        ) : (
+          <>
+            <Mail className="h-4 w-4" aria-hidden="true" />
+            Contact
+          </>
+        )}
       </Button>
-      <Button variant="secondary">Download CV</Button>
+      <Button variant="secondary" type="button" onClick={onDownload}>
+        <Download className="h-4 w-4" aria-hidden="true" />
+        Download CV
+      </Button>
     </div>
   </Card>
 );

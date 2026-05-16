@@ -5,14 +5,27 @@ import type { JobListFilters } from "@/types/job";
 
 // 1. Hook GET ALL (Dùng useQuery vì lấy dữ liệu)
 export const useGetJobs = (filters: JobListFilters = {}) => {
+  const cleanText = (value?: string) => value?.trim() || undefined;
+  const cleanNumber = (value?: number) =>
+    typeof value === "number" && Number.isFinite(value) ? value : undefined;
+  const cleanLevels = filters.levels
+    ?.map((level) => level.trim())
+    .filter(Boolean);
+
   const normalizedFilters: Required<Pick<JobListFilters, "page" | "size">> &
     JobListFilters = {
-    ...filters,
-    keyword: filters.keyword?.trim() || undefined,
-    location: filters.location?.trim() || undefined,
-    maxSalary: filters.maxSalary,
     page: filters.page ?? 1,
     size: filters.size ?? 10,
+    location: cleanText(filters.location),
+    levels: cleanLevels?.length ? cleanLevels : undefined,
+    specialization: cleanNumber(filters.specialization),
+    company: cleanText(filters.company),
+    minSalary: cleanNumber(filters.minSalary),
+    maxSalary: cleanNumber(filters.maxSalary),
+    name: cleanText(filters.name),
+    keyword: cleanText(filters.keyword),
+    skill: cleanText(filters.skill),
+    active: typeof filters.active === "boolean" ? filters.active : undefined,
   };
 
   return useQuery({
