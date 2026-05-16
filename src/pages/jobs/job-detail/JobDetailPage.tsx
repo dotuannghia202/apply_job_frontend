@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetJobById } from "@/api/jobs/job.queries";
 import { useToggleSaveJob } from "@/api/users/user.queries";
+import { ApplyJobModal } from "@/pages/jobs/components/ApplyJobModal";
 import { CandidateList } from "./components/CandidateList";
 import { JobDetailHeader } from "./components/JobDetailHeader";
 import { JobDetailInfo } from "./components/JobDetailInfo";
@@ -15,6 +16,7 @@ export default function JobDetailPage() {
   const toggleSaveMutation = useToggleSaveJob();
   const job = jobQuery.data?.data;
   const [isSaved, setIsSaved] = useState(false);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
 
   const deadlineLabel = "Application deadline:";
   const formatDateLabel = (value?: string | null) => {
@@ -123,6 +125,7 @@ export default function JobDetailPage() {
           timeLeftLabel={timeLeftLabel}
           isSaved={isSaved}
           isSaving={toggleSaveMutation.isPending}
+          onApply={() => setIsApplyModalOpen(true)}
           onToggleSave={handleToggleSave}
         />
 
@@ -156,6 +159,13 @@ export default function JobDetailPage() {
           />
         </div>
       </div>
+      {isApplyModalOpen ? (
+        <ApplyJobModal
+          job={job}
+          open={isApplyModalOpen}
+          onClose={() => setIsApplyModalOpen(false)}
+        />
+      ) : null}
     </main>
   );
 }

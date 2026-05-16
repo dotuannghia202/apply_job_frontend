@@ -226,7 +226,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
     error: industriesError,
   } = useGetIndustries({
     page: categoryPage,
-    pageSize: PAGE_SIZE,
+    size: PAGE_SIZE,
   });
 
   // Fetch specializations for hovered industry

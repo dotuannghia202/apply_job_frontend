@@ -1,7 +1,6 @@
 import { useMemo, useState, type KeyboardEvent } from "react";
 import {
   Check,
-  CheckCircle2,
   ChevronsUpDown,
   Plus,
   Save,

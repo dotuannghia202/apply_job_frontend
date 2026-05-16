@@ -28,11 +28,22 @@ export interface ResumeListFilters extends Pick<QueryParams, "page" | "size"> {
 }
 
 export interface CreateResumeRequest {
-  [key: string]: unknown;
+  candidateId: number;
+  fileName: string;
+  fileUrl: string;
+  parsedText?: string;
+  active: boolean;
+  skillIds?: number[];
+  specializationId?: number;
 }
 
 export interface UpdateResumeRequest {
-  [key: string]: unknown;
+  fileName?: string;
+  fileUrl?: string;
+  parsedText?: string;
+  active?: boolean;
+  skillIds?: number[];
+  specializationId?: number;
 }
 
 export interface UpdateResumePayload {

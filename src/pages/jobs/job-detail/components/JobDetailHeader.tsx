@@ -9,6 +9,7 @@ type JobDetailHeaderProps = {
   deadlineLabel: string;
   timeLeftLabel: string;
   isSaved: boolean;
+  onApply: () => void;
   onToggleSave: () => void;
   isSaving?: boolean;
 };
@@ -21,6 +22,7 @@ export function JobDetailHeader({
   deadlineLabel,
   timeLeftLabel,
   isSaved,
+  onApply,
   onToggleSave,
   isSaving = false,
 }: JobDetailHeaderProps) {
@@ -70,7 +72,10 @@ export function JobDetailHeader({
           <span className="font-semibold text-slate-900">{timeLeftLabel}</span>
         </div>
         <div className="flex gap-4 w-full md:w-auto">
-          <Button className="grow md:grow-0 bg-green-500 text-white hover:bg-green-50 hover:border hover:border-green-400 hover:text-green-500 px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 ">
+          <Button
+            className="grow md:grow-0 bg-green-500 text-white hover:bg-green-50 hover:border hover:border-green-400 hover:text-green-500 px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 "
+            onClick={onApply}
+          >
             <Send size={18} />
             Apply now
           </Button>

@@ -27,6 +27,7 @@ import MyCV from "@/pages/candidate/cvs/MyCV";
 import SavedJobPage from "@/pages/candidate/saved-jobs/SavedJobPage";
 
 import MyApplicationsList from "@/pages/candidate/my-applications/MyApplicationsList";
+import MyApplicationDetail from "@/pages/candidate/my-applications/MyApplicationDetail";
 
 import CVDetailCandidate from "@/pages/candidate/cvs/CVDetailCandidate";
 
@@ -174,7 +175,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "jobs/applications/:id",
-                element: "#",
+                element: <MyApplicationDetail />,
               },
               {
                 path: "jobs/my-cv",

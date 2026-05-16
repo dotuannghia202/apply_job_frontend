@@ -11,6 +11,7 @@ interface JobPopupProps {
   job: Job;
   anchorRef: RefObject<HTMLElement | null>;
   onClose: () => void;
+  onApply: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -18,6 +19,7 @@ export const JobPopup = ({
   job,
   anchorRef,
   onClose,
+  onApply,
   onMouseEnter,
   onMouseLeave,
 }: JobPopupProps) => {
@@ -199,9 +201,7 @@ export const JobPopup = ({
             <Button
               variant="outline"
               className="flex-1 rounded-xl border-green-500 font-semibold text-green-600 hover:bg-green-50 hover:text-green-700"
-              onClick={() => {
-                /* handle apply */
-              }}
+              onClick={onApply}
             >
               Apply now
             </Button>

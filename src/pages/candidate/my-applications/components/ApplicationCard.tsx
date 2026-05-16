@@ -1,4 +1,5 @@
 import { Calendar, FileText, Link2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -89,8 +90,8 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
       >
         {item.statusLabel ?? item.status}
       </Badge>
-      <Button variant="secondary" className="w-full lg:w-auto">
-        View Details
+      <Button asChild variant="secondary" className="w-full lg:w-auto">
+        <Link to={`/jobs/applications/${item.id}`}>View Details</Link>
       </Button>
     </div>
   </Card>

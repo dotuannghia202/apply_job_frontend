@@ -13,6 +13,8 @@ export interface ApplicationJobInfo {
   companyName?: string | null;
   location?: string | null;
   companyLogo?: string | null;
+  minSalary?: number | null;
+  maxSalary?: number | null;
 }
 
 export interface ApplicationResumeInfo {

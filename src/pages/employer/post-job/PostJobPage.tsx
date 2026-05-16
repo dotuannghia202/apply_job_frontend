@@ -29,7 +29,7 @@ export default function PostJobPage() {
     skillNames: [],
   });
   const companyId = useAuthStore((state) => state.company?.id ?? null);
-  const { mutate: createJob, isPending } = useCreateJob();
+  const { mutate: createJob } = useCreateJob();
 
   const handleSubmit = () => {
     if (!companyId) return;

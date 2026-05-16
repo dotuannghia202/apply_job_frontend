@@ -8,12 +8,14 @@ import type { Job } from "@/types/job";
 import { formatSalaryRange, getCityFromAddress } from "../../helper";
 import { JobPopup } from "@/pages/jobs/list-jobs/components/JobPopup";
 import { useToggleSaveJob } from "@/api/users/user.queries";
+import { ApplyJobModal } from "@/pages/jobs/components/ApplyJobModal";
 
 const JobCard = ({ job }: { job: Job }) => {
   const anchorRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<number | null>(null);
   const openTimerRef = useRef<number | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [isSaved, setIsSaved] = useState(job.isSaved);
   const toggleSaveMutation = useToggleSaveJob();
 
@@ -93,6 +95,11 @@ const JobCard = ({ job }: { job: Job }) => {
       closeTimerRef.current = null;
     }
     setIsPopupOpen(false);
+  };
+
+  const openApplyModal = () => {
+    closePopup();
+    setIsApplyModalOpen(true);
   };
 
   return (
@@ -193,8 +200,17 @@ const JobCard = ({ job }: { job: Job }) => {
           job={job}
           anchorRef={anchorRef}
           onClose={closePopup}
+          onApply={openApplyModal}
           onMouseEnter={openPopup}
           onMouseLeave={scheduleClosePopup}
+        />
+      ) : null}
+
+      {isApplyModalOpen ? (
+        <ApplyJobModal
+          job={job}
+          open={isApplyModalOpen}
+          onClose={() => setIsApplyModalOpen(false)}
         />
       ) : null}
     </>
