@@ -142,7 +142,7 @@ const CVDetailCandidate = () => {
         <AppBreadcrumb
           items={[
             { label: "Jobs", to: "/jobs" },
-            { label: "My CV", to: "/jobs/my-cv" },
+            { label: "My CV", to: "/my-cv" },
             { label: resume.fileName },
           ]}
         />

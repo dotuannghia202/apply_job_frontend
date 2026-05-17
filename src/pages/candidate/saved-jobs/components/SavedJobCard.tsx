@@ -1,4 +1,4 @@
-import { Building2, Heart, MapPin, Palette, CircleX } from "lucide-react";
+import { Building2, CircleX, Eye, Heart, MapPin, Palette } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
@@ -70,30 +70,43 @@ const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => (
           {job.daysLeft} days left to apply
         </span>
       )}
-      <div className="flex w-full items-center gap-3 sm:w-auto">
+      <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
         <Button
-          asChild={!job.isClosed && !job.isApplied}
-          className="flex-1 whitespace-nowrap bg-gradient-to-r from-primary to-primary/70 text-primary-foreground sm:flex-none"
-          disabled={job.isClosed || job.isApplied}
+          asChild
+          variant="outline"
+          className="w-full whitespace-nowrap sm:w-auto"
         >
-          {job.isApplied ? (
-            "Applied"
-          ) : job.isClosed ? (
-            "Apply now"
-          ) : (
-            <Link to={`/jobs/detail/${job.id}`}>Apply now</Link>
-          )}
+          <Link to={`/jobs/detail/${job.id}`}>
+            <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
+            View details
+          </Link>
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-destructive"
-          aria-label="Unsave job"
-          disabled={isUnsaving}
-          onClick={() => onUnsave?.(job.id)}
-        >
-          <Heart className="h-4 w-4" fill="currentColor" aria-hidden="true" />
-        </Button>
+
+        <div className="flex w-full items-center gap-3 sm:w-auto">
+          <Button
+            asChild={!job.isClosed && !job.isApplied}
+            className="flex-1 whitespace-nowrap bg-gradient-to-r from-primary to-primary/70 text-primary-foreground sm:flex-none"
+            disabled={job.isClosed || job.isApplied}
+          >
+            {job.isApplied ? (
+              "Applied"
+            ) : job.isClosed ? (
+              "Apply now"
+            ) : (
+              <Link to={`/jobs/detail/${job.id}`}>Apply now</Link>
+            )}
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-destructive"
+            aria-label="Unsave job"
+            disabled={isUnsaving}
+            onClick={() => onUnsave?.(job.id)}
+          >
+            <Heart className="h-4 w-4" fill="currentColor" aria-hidden="true" />
+          </Button>
+        </div>
       </div>
     </div>
   </Card>

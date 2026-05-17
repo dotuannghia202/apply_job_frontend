@@ -20,8 +20,8 @@ type HeaderNavLink = {
 
 const candidateNavLinks: HeaderNavLink[] = [
   { label: "Find Jobs", to: "/jobs", end: true },
-  { label: "My Applications", to: "/jobs/applications" },
-  { label: "My CV", to: "/jobs/my-cv" },
+  { label: "My Applications", to: "/applications" },
+  { label: "My CV", to: "/my-cv" },
   { label: "Saved Jobs", to: "/jobs/saved" },
 ];
 

@@ -91,7 +91,7 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
         {item.statusLabel ?? item.status}
       </Badge>
       <Button asChild variant="secondary" className="w-full lg:w-auto">
-        <Link to={`/jobs/applications/${item.id}`}>View Details</Link>
+        <Link to={`/applications/${item.id}`}>View Details</Link>
       </Button>
     </div>
   </Card>

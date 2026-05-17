@@ -118,6 +118,32 @@ export const router = createBrowserRouter([
             ],
           },
 
+          {
+            element: <RequireRoles allowedRoles={["CANDIDATE"]} />,
+            children: [
+              {
+                path: "applications",
+                element: <MyApplicationsList />,
+              },
+              {
+                path: "applications/:id",
+                element: <MyApplicationDetail />,
+              },
+              {
+                path: "my-cv",
+                element: <MyCV />,
+              },
+              {
+                path: "my-cv/:id",
+                element: <CVDetailCandidate />,
+              },
+              {
+                path: "jobs/saved",
+                element: <SavedJobPage />,
+              },
+            ],
+          },
+
           // EMPLOYER only
           {
             element: <RequireRoles allowedRoles={["EMPLOYER"]} />,
@@ -168,26 +194,6 @@ export const router = createBrowserRouter([
               {
                 path: "jobs/detail/:id",
                 element: <JobDetailPage />,
-              },
-              {
-                path: "jobs/applications",
-                element: <MyApplicationsList />,
-              },
-              {
-                path: "jobs/applications/:id",
-                element: <MyApplicationDetail />,
-              },
-              {
-                path: "jobs/my-cv",
-                element: <MyCV />,
-              },
-              {
-                path: "jobs/my-cv/:id",
-                element: <CVDetailCandidate />,
-              },
-              {
-                path: "jobs/saved",
-                element: <SavedJobPage />,
               },
             ],
           },

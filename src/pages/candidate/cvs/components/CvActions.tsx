@@ -25,7 +25,7 @@ const CvActions = ({
       className="text-muted-foreground hover:text-primary"
       title="View CV"
     >
-      <Link to={`/jobs/my-cv/${item.id}`}>
+      <Link to={`/my-cv/${item.id}`}>
         <Eye className="h-4 w-4" aria-hidden="true" />
       </Link>
     </Button>

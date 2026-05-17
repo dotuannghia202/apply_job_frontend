@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -82,6 +83,13 @@ const SavedJobPage = () => {
 
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
+      <AppBreadcrumb
+        items={[
+          { label: "Jobs", to: "/jobs" },
+          { label: "Saved Jobs" },
+        ]}
+      />
+
       <SavedJobHeader savedCount={total} />
 
       {savedJobsQuery.isError ? (

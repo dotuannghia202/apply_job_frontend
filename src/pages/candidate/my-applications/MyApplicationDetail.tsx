@@ -64,7 +64,8 @@ const getCompanyInitial = (companyName: string) =>
   companyName.trim().slice(0, 1).toUpperCase() || "?";
 
 const getTimelineStates = (status: ApplicationStatus): TimelineState[] => {
-  if (status === "INTERVIEW") return ["completed", "completed", "active", "muted"];
+  if (status === "INTERVIEW")
+    return ["completed", "completed", "active", "muted"];
   if (status === "ACCEPTED" || status === "REJECTED") {
     return ["completed", "completed", "completed", "active"];
   }
@@ -88,7 +89,8 @@ const getTimelineSteps = (status: ApplicationStatus) => {
     },
     {
       title: "Interview",
-      description: "Interview scheduling appears here when you are shortlisted.",
+      description:
+        "Interview scheduling appears here when you are shortlisted.",
       state: states[2],
     },
     {
@@ -226,8 +228,10 @@ const MyApplicationDetail = () => {
     );
   }
 
-  const application = applicationQuery.data
-    ?.data as ApplicationWithOptionalDetails | null | undefined;
+  const application = applicationQuery.data?.data as
+    | ApplicationWithOptionalDetails
+    | null
+    | undefined;
 
   if (!application) {
     return <PageMessage>Application not found.</PageMessage>;
@@ -245,9 +249,9 @@ const MyApplicationDetail = () => {
   );
   const matchedSkills =
     application.matchedSkills?.length || job?.skills?.length
-      ? (application.matchedSkills?.length
+      ? ((application.matchedSkills?.length
           ? application.matchedSkills
-          : job?.skills) ?? []
+          : job?.skills) ?? [])
       : defaultMatchedSkills;
   const missingSkills = application.missingSkills?.length
     ? application.missingSkills
@@ -269,7 +273,7 @@ const MyApplicationDetail = () => {
           <AppBreadcrumb
             items={[
               { label: "Jobs", to: "/jobs" },
-              { label: "My Applications", to: "/jobs/applications" },
+              { label: "My Applications", to: "/applications" },
               { label: jobTitle },
             ]}
           />
