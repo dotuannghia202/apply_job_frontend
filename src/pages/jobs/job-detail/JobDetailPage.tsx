@@ -92,6 +92,12 @@ export default function JobDetailPage() {
     }
   };
 
+  const handleApply = () => {
+    if (job.isApplied) return;
+
+    setIsApplyModalOpen(true);
+  };
+
   const salaryText = formatSalaryRange(job.minSalary, job.maxSalary);
   const city = getCityFromAddress(job.location) || job.location || "Unknown";
   const timeLeftLabel = `${formatDateLabel(job.endDate)} ${getDaysLeftLabel(
@@ -124,8 +130,9 @@ export default function JobDetailPage() {
           deadlineLabel={deadlineLabel}
           timeLeftLabel={timeLeftLabel}
           isSaved={isSaved}
+          isApplied={job.isApplied}
           isSaving={toggleSaveMutation.isPending}
-          onApply={() => setIsApplyModalOpen(true)}
+          onApply={handleApply}
           onToggleSave={handleToggleSave}
         />
 

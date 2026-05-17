@@ -17,6 +17,7 @@ export interface Job {
   benefits?: string[];
   workingHours?: string;
   isSaved: boolean;
+  isApplied: boolean;
 }
 
 export interface JobListFilters {

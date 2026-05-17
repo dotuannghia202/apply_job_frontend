@@ -72,11 +72,17 @@ const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => (
       )}
       <div className="flex w-full items-center gap-3 sm:w-auto">
         <Button
-          asChild={!job.isClosed}
+          asChild={!job.isClosed && !job.isApplied}
           className="flex-1 whitespace-nowrap bg-gradient-to-r from-primary to-primary/70 text-primary-foreground sm:flex-none"
-          disabled={job.isClosed}
+          disabled={job.isClosed || job.isApplied}
         >
-          {job.isClosed ? "Apply now" : <Link to={`/jobs/detail/${job.id}`}>Apply now</Link>}
+          {job.isApplied ? (
+            "Applied"
+          ) : job.isClosed ? (
+            "Apply now"
+          ) : (
+            <Link to={`/jobs/detail/${job.id}`}>Apply now</Link>
+          )}
         </Button>
         <Button
           variant="ghost"

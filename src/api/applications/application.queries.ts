@@ -7,6 +7,8 @@ import {
   updateApplicationStatus,
 } from "./application.api";
 import { applicationKeys } from "./application.keys";
+import { jobKeys } from "@/api/jobs/job.keys";
+import { userKeys } from "@/api/users/user.keys";
 import type { ApplicationListFilters } from "@/types/application";
 
 export const useGetApplications = (filters: ApplicationListFilters = {}) => {
@@ -39,8 +41,11 @@ export const useCreateApplication = () => {
 
   return useMutation({
     mutationFn: createApplication,
-    onSuccess: () => {
+    onSuccess: (_data, { jobId }) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: jobKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: jobKeys.detail(jobId) });
+      queryClient.invalidateQueries({ queryKey: userKeys.all });
     },
   });
 };

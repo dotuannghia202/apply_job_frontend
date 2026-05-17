@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import JobCard from "@/pages/jobs/list-jobs/components/JobCard";
 import { useGetJobs } from "@/api/jobs/job.queries";
-import type { Job, JobListFilters } from "@/types/job";
+import type { JobListFilters } from "@/types/job";
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -24,7 +24,6 @@ const PAGE_SIZE = 12;
 
 const JobListSection = ({ filters = {} }: JobListSectionProps) => {
   const [page, setPage] = useState(1);
-  const [items, setItems] = useState<Job[]>([]);
 
   const keyword = filters.keyword?.trim() || undefined;
   const location = filters.location?.trim() || undefined;
@@ -48,14 +47,10 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
   );
   const { data, isLoading, isError, isFetching } = useGetJobs(queryFilters);
 
-  const apiJobs = data?.data?.result ?? [];
+  const jobs = data?.data?.result ?? [];
   const meta = data?.data?.meta;
-  const total = meta?.total ?? items.length;
+  const total = meta?.total ?? jobs.length;
   const hasNextPage = meta ? meta.page < meta.pages : false;
-
-  useEffect(() => {
-    setItems(apiJobs);
-  }, [apiJobs, data?.data, page]);
 
   return (
     <section className="flex-1">
@@ -93,7 +88,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
       ) : null}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {items.map((job) => (
+        {jobs.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}
       </div>

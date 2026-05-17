@@ -201,9 +201,10 @@ export const JobPopup = ({
             <Button
               variant="outline"
               className="flex-1 rounded-xl border-green-500 font-semibold text-green-600 hover:bg-green-50 hover:text-green-700"
+              disabled={job.isApplied}
               onClick={onApply}
             >
-              Apply now
+              {job.isApplied ? "Applied" : "Apply now"}
             </Button>
             <Button
               className="flex-1 rounded-xl bg-green-500 font-semibold text-white hover:bg-green-600"

@@ -51,6 +51,7 @@ const mapJobToSavedJob = (job: Job): SavedJob => {
     location: city,
     daysLeft: getDaysLeft(job.endDate),
     isClosed: isJobClosed(job),
+    isApplied: job.isApplied,
     logoUrl: job.company?.logo || undefined,
     logoAlt: `${companyName} logo`,
     logoFallback: "building",

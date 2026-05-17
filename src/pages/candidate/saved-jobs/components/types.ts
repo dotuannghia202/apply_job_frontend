@@ -6,6 +6,7 @@ export type SavedJob = {
   location: string;
   daysLeft?: number;
   isClosed?: boolean;
+  isApplied?: boolean;
   logoUrl?: string;
   logoAlt?: string;
   logoFallback?: "building" | "creative";

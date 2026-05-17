@@ -98,6 +98,8 @@ const JobCard = ({ job }: { job: Job }) => {
   };
 
   const openApplyModal = () => {
+    if (job.isApplied) return;
+
     closePopup();
     setIsApplyModalOpen(true);
   };
