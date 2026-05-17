@@ -20,7 +20,7 @@ export interface Resume {
   updatedAt?: string | null;
   skills: string[];
   candidate: ResumeCandidate;
-  specialization: ResumeSpecialization;
+  specialization: ResumeSpecialization | null;
 }
 
 export interface ResumeListFilters extends Pick<QueryParams, "page" | "size"> {
@@ -28,11 +28,9 @@ export interface ResumeListFilters extends Pick<QueryParams, "page" | "size"> {
 }
 
 export interface CreateResumeRequest {
-  candidateId: number;
   fileName: string;
   fileUrl: string;
-  parsedText?: string;
-  active: boolean;
+  active?: boolean;
   skillIds?: number[];
   specializationId?: number;
 }
@@ -40,7 +38,6 @@ export interface CreateResumeRequest {
 export interface UpdateResumeRequest {
   fileName?: string;
   fileUrl?: string;
-  parsedText?: string;
   active?: boolean;
   skillIds?: number[];
   specializationId?: number;

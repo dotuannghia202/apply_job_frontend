@@ -8,7 +8,10 @@ import {
 import { skillKeys } from "./skill.keys";
 import type { SkillListFilters } from "@/types/skill";
 
-export const useGetSkills = (filters: SkillListFilters = {}) => {
+export const useGetSkills = (
+  filters: SkillListFilters = {},
+  options: { enabled?: boolean } = {},
+) => {
   const normalizedFilters: Required<Pick<SkillListFilters, "page" | "size">> &
     SkillListFilters = {
     page: filters.page ?? 1,
@@ -20,6 +23,7 @@ export const useGetSkills = (filters: SkillListFilters = {}) => {
   return useQuery({
     queryKey: skillKeys.list(normalizedFilters),
     queryFn: () => fetchSkills(normalizedFilters),
+    enabled: options.enabled ?? true,
     staleTime: 5 * 60 * 1000,
   });
 };

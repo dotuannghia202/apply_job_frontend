@@ -11,6 +11,7 @@ import type { SpecializationListFilters } from "@/types/industry";
 
 export const useGetSpecializations = (
   filters: SpecializationListFilters = {},
+  options: { enabled?: boolean } = {},
 ) => {
   const normalizedFilters: Required<
     Pick<SpecializationListFilters, "page" | "size">
@@ -24,6 +25,7 @@ export const useGetSpecializations = (
   return useQuery({
     queryKey: specializationKeys.list(normalizedFilters),
     queryFn: () => fetchSpecializations(normalizedFilters),
+    enabled: options.enabled ?? true,
     staleTime: 5 * 60 * 1000,
   });
 };

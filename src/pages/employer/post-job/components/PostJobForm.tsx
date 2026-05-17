@@ -1,11 +1,5 @@
 import { useMemo, useState, type KeyboardEvent } from "react";
-import {
-  Check,
-  ChevronsUpDown,
-  Plus,
-  Save,
-  X,
-} from "lucide-react";
+import { Check, ChevronsUpDown, Plus, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -769,7 +763,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
           className="bg-primary hover:bg-primary-hover rounded-md px-6! font-bold text-white shadow-md hover:shadow-lg transition-shadow"
         >
           <Save size={16} className="mr-1" />
-          Save
+          Publish
         </Button>
       </div>
     </section>

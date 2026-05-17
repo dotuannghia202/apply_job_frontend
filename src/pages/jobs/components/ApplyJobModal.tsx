@@ -25,7 +25,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/store/auth.store";
 import type { Job } from "@/types/job";
 
 type ApplyMessage = {
@@ -73,7 +72,6 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
   const titleId = useId();
   const fileInputId = useId();
   const coverLetterId = useId();
-  const user = useAuthStore((state) => state.user);
   const myResumesQuery = useGetMyResumes();
   const createApplicationMutation = useCreateApplication();
   const createResumeMutation = useCreateResume();
@@ -147,14 +145,6 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
       return;
     }
 
-    if (!user?.id) {
-      setMessage({
-        type: "error",
-        text: "Unable to identify the current candidate.",
-      });
-      return;
-    }
-
     setIsUploadingResume(true);
     setMessage(null);
 
@@ -167,10 +157,8 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
       }
 
       const createResponse = await createResumeMutation.mutateAsync({
-        candidateId: user.id,
         fileName: file.name,
         fileUrl,
-        active: resumes.length === 0,
       });
 
       await myResumesQuery.refetch();

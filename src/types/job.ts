@@ -16,6 +16,7 @@ export interface Job {
   requirements?: string[];
   benefits?: string[];
   workingHours?: string;
+  skillIds?: number[];
   isSaved: boolean;
   isApplied: boolean;
 }
@@ -33,4 +34,23 @@ export interface JobListFilters {
   keyword?: string;
   skill?: string;
   active?: boolean;
+}
+
+export interface JobUpdatePayload {
+  name?: string;
+  location?: string;
+  minSalary?: number;
+  maxSalary?: number;
+  quantity?: number;
+  description?: string;
+  requirements?: string[];
+  levels?: string[];
+  startDate?: string;
+  endDate?: string;
+  isActive?: boolean;
+  benefits?: string[];
+  workingHours?: string;
+  companyId?: number;
+  specializationId?: number;
+  skillIds?: number[];
 }

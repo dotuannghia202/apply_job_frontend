@@ -1,7 +1,18 @@
+import { useState } from "react";
+
+import { uploadResumeFile } from "@/api/files/file.api";
+import {
+  useCreateResume,
+  useGetMyResumes,
+} from "@/api/resumes/resume.queries";
+import { Card } from "@/components/ui/card";
+import {
+  CreateResumeForm,
+  type UploadedResumeDraft,
+} from "@/pages/candidate/cvs/components/CreateResumeForm";
 import CvCard from "@/pages/candidate/cvs/components/CvCard";
 import UploadDropzone from "@/pages/candidate/cvs/components/UploadDropzone";
 import type { CvItem } from "@/pages/candidate/cvs/components/types";
-import { useGetMyResumes } from "@/api/resumes/resume.queries";
 
 const formatDate = (value?: string | null) => {
   if (!value) {
@@ -18,6 +29,12 @@ const formatDate = (value?: string | null) => {
 
 const MyCV = () => {
   const { data, isLoading, isError } = useGetMyResumes();
+  const createResumeMutation = useCreateResume();
+  const [uploadedDraft, setUploadedDraft] =
+    useState<UploadedResumeDraft | null>(null);
+  const [uploadError, setUploadError] = useState("");
+  const [createError, setCreateError] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const resumes = data?.data ?? [];
 
   const cvItems: CvItem[] = resumes.map((resume) => ({
@@ -28,6 +45,70 @@ const MyCV = () => {
     skills: resume.skills ?? [],
     isDefault: resume.active,
   }));
+
+  const handleUploadFile = async (file: File) => {
+    const isPdf =
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf");
+
+    if (!isPdf) {
+      setUploadError("Please upload a PDF file.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("PDF file must be 5MB or smaller.");
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadError("");
+    setCreateError("");
+
+    try {
+      const uploadResponse = await uploadResumeFile(file);
+      const uploadedFile = uploadResponse.data;
+      const fileUrl = uploadedFile?.filePath;
+
+      if (!fileUrl) {
+        throw new Error("Upload CV failed");
+      }
+
+      setUploadedDraft({
+        fileName: uploadedFile.fileName || file.name,
+        fileUrl,
+      });
+    } catch (error) {
+      console.error("Failed to upload CV", error);
+      setUploadError("Unable to upload this CV. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleCreateResume = async (data: {
+    fileName: string;
+    specializationId?: number;
+    skillIds?: number[];
+  }) => {
+    if (!uploadedDraft || createResumeMutation.isPending) return;
+
+    setCreateError("");
+
+    try {
+      await createResumeMutation.mutateAsync({
+        fileName: data.fileName,
+        fileUrl: uploadedDraft.fileUrl,
+        specializationId: data.specializationId,
+        skillIds: data.skillIds,
+      });
+
+      setUploadedDraft(null);
+    } catch (error) {
+      console.error("Failed to create CV", error);
+      setCreateError("Unable to save this CV. Please check the form and retry.");
+    }
+  };
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-12 md:py-16">
@@ -40,8 +121,36 @@ const MyCV = () => {
         </p>
       </header>
 
-      <section className="mb-16">
-        <UploadDropzone />
+      <section className="mb-16 space-y-6">
+        <UploadDropzone
+          isUploading={isUploading}
+          onFileSelect={handleUploadFile}
+        />
+
+        {uploadError ? (
+          <Card className="border-destructive/30 bg-destructive/10 p-4 text-sm font-medium text-destructive">
+            {uploadError}
+          </Card>
+        ) : null}
+
+        {uploadedDraft ? (
+          <div className="space-y-3">
+            <CreateResumeForm
+              draft={uploadedDraft}
+              isSubmitting={createResumeMutation.isPending}
+              onCancel={() => {
+                setUploadedDraft(null);
+                setCreateError("");
+              }}
+              onSubmit={handleCreateResume}
+            />
+            {createError ? (
+              <Card className="border-destructive/30 bg-destructive/10 p-4 text-sm font-medium text-destructive">
+                {createError}
+              </Card>
+            ) : null}
+          </div>
+        ) : null}
       </section>
 
       <section>
