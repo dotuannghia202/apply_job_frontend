@@ -3,6 +3,7 @@ import {
   createApplication,
   fetchApplicationById,
   fetchApplications,
+  fetchHrApplications,
   updateApplicationByCandidate,
   updateApplicationStatus,
 } from "./application.api";
@@ -24,6 +25,26 @@ export const useGetApplications = (filters: ApplicationListFilters = {}) => {
   return useQuery({
     queryKey: applicationKeys.list(normalizedFilters),
     queryFn: () => fetchApplications(normalizedFilters),
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useGetHrApplications = (
+  filters: ApplicationListFilters = {},
+) => {
+  const normalizedFilters: Required<
+    Pick<ApplicationListFilters, "page" | "size">
+  > &
+    ApplicationListFilters = {
+    page: filters.page ?? 1,
+    size: filters.size ?? 10,
+    ...filters,
+    filter: filters.filter?.trim() || undefined,
+  };
+
+  return useQuery({
+    queryKey: applicationKeys.hrList(normalizedFilters),
+    queryFn: () => fetchHrApplications(normalizedFilters),
     staleTime: 5 * 60 * 1000,
   });
 };
@@ -57,6 +78,7 @@ export const useUpdateApplicationByCandidate = () => {
     mutationFn: updateApplicationByCandidate,
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: applicationKeys.hrLists() });
       queryClient.invalidateQueries({ queryKey: applicationKeys.detail(id) });
     },
   });
@@ -69,6 +91,7 @@ export const useUpdateApplicationStatus = () => {
     mutationFn: updateApplicationStatus,
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: applicationKeys.hrLists() });
       queryClient.invalidateQueries({ queryKey: applicationKeys.detail(id) });
     },
   });

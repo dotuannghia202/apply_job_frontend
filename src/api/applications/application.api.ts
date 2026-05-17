@@ -16,6 +16,14 @@ export const fetchApplications = async (
   }) as Promise<BackendResponse<Pagination<Application>>>;
 };
 
+export const fetchHrApplications = async (
+  params: ApplicationListFilters = {},
+) => {
+  return axiosClient.get("/applications/hr", {
+    params,
+  }) as Promise<BackendResponse<Pagination<Application>>>;
+};
+
 export const fetchApplicationById = async (id: number) => {
   return axiosClient.get(`/applications/${id}`) as Promise<
     BackendResponse<Application>

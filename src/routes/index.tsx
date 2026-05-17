@@ -19,6 +19,7 @@ import { normalizeRoles } from "@/helper/auth-roles";
 import type { RoleName } from "@/types/auth";
 import JobListPage from "@/pages/jobs/list-jobs/JobListPage";
 import EmployerDashboard from "@/pages/employer/dashboard/EmployerDashboardPage";
+import EmployerApplicationsPage from "@/pages/employer/applications-my-company/EmployerApplicationsPage";
 import EmployerJobsPage from "@/pages/employer/jobs-my-company/EmployerJobsPage";
 import PostJobPage from "@/pages/employer/post-job/PostJobPage";
 import CreateCompanyPage from "@/pages/employer/create-company/CreateCompanyPage";
@@ -155,7 +156,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "employer/applicants",
-                element: <PlaceholderPage title="Applicants" />,
+                element: <EmployerApplicationsPage />,
               },
               {
                 path: "employer/jobs",
