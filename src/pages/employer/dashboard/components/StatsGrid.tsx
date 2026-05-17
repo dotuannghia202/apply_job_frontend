@@ -4,45 +4,78 @@ import { Badge } from "@/components/ui/badge";
 import { Briefcase, Sparkles, Users } from "lucide-react";
 import type { StatCard } from "../../types";
 import { cn } from "@/lib/utils";
+import type { HrDashboardStats } from "@/types/user";
 
-const STATS: StatCard[] = [
-  {
-    id: "jobs",
-    label: "Total Active Jobs",
-    value: "12",
-    badge: "+2 this week",
-    icon: "briefcase",
-    variant: "default",
-  },
-  {
-    id: "applicants",
-    label: "Total Applicants",
-    value: "1,482",
-    badge: "+124 new",
-    icon: "users",
-    variant: "secondary",
-  },
-  {
-    id: "match",
-    label: "Avg. AI Match Rate",
-    value: "88.4%",
-    badge: "AI OPTIMIZED",
-    icon: "sparkles",
-    variant: "ai",
-  },
-];
+interface StatsGridProps {
+  stats?: HrDashboardStats | null;
+  isLoading?: boolean;
+  isError?: boolean;
+}
 
-export function StatsGrid() {
+const formatNumber = (value?: number) =>
+  new Intl.NumberFormat("en-US").format(value ?? 0);
+
+const formatPercent = (value?: number) =>
+  `${new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 1,
+    minimumFractionDigits: 0,
+  }).format(value ?? 0)}%`;
+
+function createStats(stats?: HrDashboardStats | null): StatCard[] {
+  return [
+    {
+      id: "jobs",
+      label: "Total Active Jobs",
+      value: formatNumber(stats?.totalActiveJobs),
+      badge: "Live data",
+      icon: "briefcase",
+      variant: "default",
+    },
+    {
+      id: "applicants",
+      label: "Total Applicants",
+      value: formatNumber(stats?.totalApplicants),
+      badge: "All jobs",
+      icon: "users",
+      variant: "secondary",
+    },
+    {
+      id: "match",
+      label: "Avg. AI Match Rate",
+      value: formatPercent(stats?.avgAiMatchRate),
+      badge: "AI optimized",
+      icon: "sparkles",
+      variant: "ai",
+    },
+  ];
+}
+
+export function StatsGrid({ stats, isLoading, isError }: StatsGridProps) {
+  const statItems = createStats(stats);
+
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-      {STATS.map((stat) => (
-        <StatCardItem key={stat.id} stat={stat} />
+      {statItems.map((stat) => (
+        <StatCardItem
+          key={stat.id}
+          stat={stat}
+          isLoading={isLoading}
+          isError={isError}
+        />
       ))}
     </section>
   );
 }
 
-function StatCardItem({ stat }: { stat: StatCard }) {
+function StatCardItem({
+  stat,
+  isLoading,
+  isError,
+}: {
+  stat: StatCard;
+  isLoading?: boolean;
+  isError?: boolean;
+}) {
   const isAI = stat.variant === "ai";
   const isSecondary = stat.variant === "secondary";
 
@@ -51,7 +84,7 @@ function StatCardItem({ stat }: { stat: StatCard }) {
       className={cn(
         "h-40 border-transparent transition-all",
         isAI
-          ? "bg-linear-to-br from-[#6f26f6] to-[#6302ea] text-white shadow-purple-200"
+          ? "bg-linear-to-br from-emerald-600 to-green-700 text-white shadow-emerald-200"
           : "hover:border-primary/30",
       )}
     >
@@ -80,7 +113,7 @@ function StatCardItem({ stat }: { stat: StatCard }) {
                   : "text-primary",
             )}
           >
-            {stat.badge}
+            {isError ? "Unavailable" : stat.badge}
           </Badge>
         </div>
         <div>
@@ -92,7 +125,18 @@ function StatCardItem({ stat }: { stat: StatCard }) {
           >
             {stat.label}
           </p>
-          <h3 className="text-3xl font-extrabold mt-1">{stat.value}</h3>
+          {isLoading ? (
+            <div
+              className={cn(
+                "mt-3 h-9 w-28 animate-pulse rounded-md",
+                isAI ? "bg-white/25" : "bg-slate-200",
+              )}
+            />
+          ) : (
+            <h3 className="text-3xl font-extrabold mt-1">
+              {isError ? "--" : stat.value}
+            </h3>
+          )}
         </div>
       </CardContent>
     </Card>

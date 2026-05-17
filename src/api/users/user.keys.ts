@@ -7,6 +7,7 @@ export const userKeys = {
   savedJobs: (filters: SavedJobsFilters) =>
     [...userKeys.all, "saved-jobs", filters] as const,
   account: () => [...userKeys.all, "account"] as const,
+  hrDashboardStats: () => [...userKeys.all, "hr", "dashboard-stats"] as const,
   details: () => [...userKeys.all, "detail"] as const,
   detail: (id: number) => [...userKeys.details(), id] as const,
 };

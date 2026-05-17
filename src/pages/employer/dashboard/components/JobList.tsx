@@ -9,37 +9,33 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { Job } from "@/types/job";
+import { Link } from "react-router-dom";
 
-import type { JobPosted } from "../../types";
+interface ActiveJobListingsProps {
+  jobs: Job[];
+  isLoading?: boolean;
+  isError?: boolean;
+}
 
-const JOBS: JobPosted[] = [
-  {
-    id: 1,
-    name: "Senior UX Designer",
+const formatDate = (value?: string | null) => {
+  if (!value) return "N/A";
 
-    status: "Open",
-    applicants: 42,
-    postedDate: "Oct 12, 2023",
-  },
-  {
-    id: 2,
-    name: "Lead Data Scientist",
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "N/A";
 
-    status: "Open",
-    applicants: 18,
-    postedDate: "Oct 10, 2023",
-  },
-  {
-    id: 3,
-    name: "Marketing Director",
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  }).format(date);
+};
 
-    status: "Closed",
-    applicants: 156,
-    postedDate: "Sept 28, 2023",
-  },
-];
-
-export function ActiveJobListings() {
+export function ActiveJobListings({
+  jobs,
+  isLoading,
+  isError,
+}: ActiveJobListingsProps) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -49,8 +45,9 @@ export function ActiveJobListings() {
         <Button
           variant="link"
           className="text-primary hover:text-primary-hover p-0 h-auto font-semibold"
+          asChild
         >
-          View All
+          <Link to="/employer/jobs">View All</Link>
         </Button>
       </div>
 
@@ -73,9 +70,16 @@ export function ActiveJobListings() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {JOBS.map((job) => (
-              <JobRow key={job.id} job={job} />
-            ))}
+            {isLoading ? <LoadingRows /> : null}
+            {!isLoading && isError ? (
+              <MessageRow message="Unable to load active jobs." />
+            ) : null}
+            {!isLoading && !isError && jobs.length === 0 ? (
+              <MessageRow message="No active jobs found." />
+            ) : null}
+            {!isLoading && !isError
+              ? jobs.map((job) => <JobRow key={job.id} job={job} />)
+              : null}
           </TableBody>
         </Table>
       </div>
@@ -83,8 +87,8 @@ export function ActiveJobListings() {
   );
 }
 
-function JobRow({ job }: { job: JobPosted }) {
-  const isOpen = job.status === "Open";
+function JobRow({ job }: { job: Job }) {
+  const isOpen = job.active;
 
   return (
     <TableRow className="hover:bg-primary/10 transition-colors h-16">
@@ -101,15 +105,50 @@ function JobRow({ job }: { job: JobPosted }) {
               : "rounded-full bg-destructive/10 text-destructive/80 font-bold border-0"
           }
         >
-          {job.status}
+          {isOpen ? "Open" : "Closed"}
         </Badge>
       </TableCell>
 
       <TableCell className="text-center font-medium text-[#2d3338]">
-        {job.applicants}
+        {job.applicantCount ?? 0}
       </TableCell>
 
-      <TableCell className="text-[#596065] text-sm">{job.postedDate}</TableCell>
+      <TableCell className="text-[#596065] text-sm">
+        {formatDate(job.createdAt ?? job.startDate)}
+      </TableCell>
+    </TableRow>
+  );
+}
+
+function LoadingRows() {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <TableRow key={index} className="h-16">
+          <TableCell>
+            <div className="ml-3 h-4 w-44 animate-pulse rounded bg-slate-200" />
+          </TableCell>
+          <TableCell>
+            <div className="h-6 w-16 animate-pulse rounded-full bg-slate-200" />
+          </TableCell>
+          <TableCell>
+            <div className="mx-auto h-4 w-8 animate-pulse rounded bg-slate-200" />
+          </TableCell>
+          <TableCell>
+            <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  );
+}
+
+function MessageRow({ message }: { message: string }) {
+  return (
+    <TableRow>
+      <TableCell colSpan={4} className="h-28 text-center text-sm text-[#596065]">
+        {message}
+      </TableCell>
     </TableRow>
   );
 }

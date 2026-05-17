@@ -13,10 +13,13 @@ export interface Job {
   skills: string[];
   startDate: string;
   endDate: string;
+  createdAt?: string;
+  updatedAt?: string;
   requirements?: string[];
   benefits?: string[];
   workingHours?: string;
   skillIds?: number[];
+  applicantCount?: number;
   isSaved: boolean;
   isApplied: boolean;
 }
@@ -34,6 +37,7 @@ export interface JobListFilters {
   keyword?: string;
   skill?: string;
   active?: boolean;
+  sort?: string;
 }
 
 export interface JobUpdatePayload {

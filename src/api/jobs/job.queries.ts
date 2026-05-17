@@ -32,6 +32,7 @@ const normalizeJobFilters = (filters: JobListFilters = {}) => {
     keyword: cleanText(filters.keyword),
     skill: cleanText(filters.skill),
     active: typeof filters.active === "boolean" ? filters.active : undefined,
+    sort: cleanText(filters.sort),
   } satisfies Required<Pick<JobListFilters, "page" | "size">> &
     JobListFilters;
 };

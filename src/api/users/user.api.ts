@@ -3,6 +3,7 @@ import type { Job } from "@/types/job";
 import axiosClient from "../axiosClient";
 import type {
   CreateUserRequest,
+  HrDashboardStats,
   SavedJobsFilters,
   UpdateUserPayload,
   UpdateUserRolesPayload,
@@ -23,6 +24,12 @@ export const fetchUserById = async (id: number) => {
 export const fetchAccountInfo = async () => {
   return axiosClient.get("/auth/account") as Promise<
     BackendResponse<User | { user: User }>
+  >;
+};
+
+export const fetchHrDashboardStats = async () => {
+  return axiosClient.get("/hr/dashboard-stats") as Promise<
+    BackendResponse<HrDashboardStats>
   >;
 };
 

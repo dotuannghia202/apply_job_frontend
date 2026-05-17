@@ -4,6 +4,7 @@ import {
   createUser,
   deleteUser,
   fetchAccountInfo,
+  fetchHrDashboardStats,
   fetchSavedJobs,
   fetchUserById,
   fetchUsers,
@@ -44,6 +45,14 @@ export const useGetAccountInfo = () => {
   return useQuery({
     queryKey: userKeys.account(),
     queryFn: fetchAccountInfo,
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useGetHrDashboardStats = () => {
+  return useQuery({
+    queryKey: userKeys.hrDashboardStats(),
+    queryFn: fetchHrDashboardStats,
     staleTime: 5 * 60 * 1000,
   });
 };

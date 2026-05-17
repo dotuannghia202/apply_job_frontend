@@ -29,6 +29,12 @@ export interface UserListFilters extends Pick<
 
 export interface SavedJobsFilters extends Pick<QueryParams, "page" | "size"> {}
 
+export interface HrDashboardStats {
+  totalActiveJobs: number;
+  totalApplicants: number;
+  avgAiMatchRate: number;
+}
+
 export interface CreateUserRequest {
   name: string;
   email: string;
