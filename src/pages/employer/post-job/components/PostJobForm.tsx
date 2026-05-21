@@ -47,6 +47,21 @@ export type PostJobFormData = {
   skillNames: string[];
 };
 
+export type PostJobFormErrors = Partial<
+  Record<
+    | "startDate"
+    | "endDate"
+    | "industryId"
+    | "specializationId"
+    | "workingHours"
+    | "skillIds"
+    | "description"
+    | "requirements"
+    | "benefits",
+    string
+  >
+>;
+
 const LEVEL_OPTIONS = [
   "INTERN",
   "JUNIOR",
@@ -70,6 +85,7 @@ type Props = {
   value: PostJobFormData;
   onChange: (next: PostJobFormData) => void;
   onSubmit?: () => void;
+  errors?: PostJobFormErrors;
 };
 
 type Ward = {
@@ -117,6 +133,7 @@ function ListInput({
   onAdd,
   onRemove,
   hint,
+  errorMessage,
 }: {
   label: string;
   placeholder: string;
@@ -124,6 +141,7 @@ function ListInput({
   onAdd: (value: string) => void;
   onRemove: (index: number) => void;
   hint?: string;
+  errorMessage?: string;
 }) {
   const [value, setValue] = useState("");
 
@@ -145,6 +163,9 @@ function ListInput({
     <div className="flex flex-col gap-2">
       <Label className="text-sm font-semibold text-[#596065]">{label}</Label>
       {hint ? <p className="text-xs text-[#7b848a]">{hint}</p> : null}
+      {errorMessage ? (
+        <p className="text-xs text-red-500">{errorMessage}</p>
+      ) : null}
       {items.length > 0 ? (
         <div className="flex flex-wrap gap-2">
           {items.map((item, index) => (
@@ -163,7 +184,10 @@ function ListInput({
           onKeyDown={handleKeyDown}
           onBlur={addItem}
           placeholder={placeholder}
-          className={inputCls}
+          className={cn(
+            inputCls,
+            errorMessage && "ring-2 ring-red-300 bg-red-50",
+          )}
         />
         <Button
           type="button"
@@ -194,6 +218,7 @@ function SearchableSelect({
   searchValue,
   onSearchChange,
   onOpenChange,
+  errorMessage,
 }: {
   label: string;
   placeholder: string;
@@ -205,6 +230,7 @@ function SearchableSelect({
   searchValue?: string;
   onSearchChange?: (next: string) => void;
   onOpenChange?: (open: boolean) => void;
+  errorMessage?: string;
 }) {
   const [open, setOpen] = useState(false);
   const selected = options.find((item) => item.value === value);
@@ -234,6 +260,7 @@ function SearchableSelect({
             className={cn(
               "h-10 justify-between rounded-md border-0 bg-[#dde3e9] px-3 text-sm font-normal text-[#2d3338] shadow-none",
               disabled && "opacity-50",
+              errorMessage && "ring-2 ring-red-300 bg-red-50",
             )}
           >
             {selected ? selected.label : placeholder}
@@ -272,13 +299,19 @@ function SearchableSelect({
           </Command>
         </PopoverContent>
       </Popover>
+      {errorMessage ? (
+        <p className="text-xs text-red-500">{errorMessage}</p>
+      ) : null}
     </div>
   );
 }
 
-export function PostJobForm({ value, onChange, onSubmit }: Props) {
+export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
   const update = (patch: Partial<PostJobFormData>) =>
     onChange({ ...value, ...patch });
+  const todayIso = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 10);
 
   const provinces = locationData as Province[];
   const [provinceCode, setProvinceCode] = useState("");
@@ -487,8 +520,14 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
             onChange={(event) => update({ description: event.target.value })}
             placeholder="Describe the mission, scope, and expectations..."
             rows={5}
-            className={`${inputCls} resize-none`}
+            className={cn(
+              `${inputCls} resize-none`,
+              errors?.description && "ring-2 ring-red-300 bg-red-50",
+            )}
           />
+          {errors?.description ? (
+            <p className="text-xs text-red-500">{errors.description}</p>
+          ) : null}
         </div>
       </div>
 
@@ -548,8 +587,15 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
               type="date"
               value={value.startDate}
               onChange={(event) => update({ startDate: event.target.value })}
-              className={inputCls}
+              min={todayIso}
+              className={cn(
+                inputCls,
+                errors?.startDate && "ring-2 ring-red-300 bg-red-50",
+              )}
             />
+            {errors?.startDate ? (
+              <p className="text-xs text-red-500">{errors.startDate}</p>
+            ) : null}
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
@@ -559,8 +605,15 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
               type="date"
               value={value.endDate}
               onChange={(event) => update({ endDate: event.target.value })}
-              className={inputCls}
+              min={todayIso}
+              className={cn(
+                inputCls,
+                errors?.endDate && "ring-2 ring-red-300 bg-red-50",
+              )}
             />
+            {errors?.endDate ? (
+              <p className="text-xs text-red-500">{errors.endDate}</p>
+            ) : null}
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
@@ -570,8 +623,14 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
               value={value.workingHours}
               onChange={(event) => update({ workingHours: event.target.value })}
               placeholder="Mon-Fri, 9:00-18:00"
-              className={inputCls}
+              className={cn(
+                inputCls,
+                errors?.workingHours && "ring-2 ring-red-300 bg-red-50",
+              )}
             />
+            {errors?.workingHours ? (
+              <p className="text-xs text-red-500">{errors.workingHours}</p>
+            ) : null}
           </div>
         </div>
       </div>
@@ -591,6 +650,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
             })
           }
           hint="Minimum list for BE: at least 1 requirement"
+          errorMessage={errors?.requirements}
         />
         <ListInput
           label="Benefits"
@@ -600,6 +660,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
           onRemove={(index) =>
             update({ benefits: value.benefits.filter((_, i) => i !== index) })
           }
+          errorMessage={errors?.benefits}
         />
       </div>
 
@@ -642,6 +703,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
             onOpenChange={(open) => {
               if (!open) setIndustrySearch("");
             }}
+            errorMessage={errors?.industryId}
           />
           <SearchableSelect
             label="Specialization"
@@ -659,6 +721,7 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
               });
             }}
             disabled={!value.industryId}
+            errorMessage={errors?.specializationId}
           />
         </div>
       </div>
@@ -669,10 +732,11 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
           <Label className="text-sm font-semibold text-[#596065]">Skills</Label>
           {value.skillIds.length > 0 ? (
             <div className="flex flex-wrap gap-2">
-              {value.skillIds.map((id) => (
+              {value.skillIds.map((id, index) => (
                 <Tag
                   key={id}
                   label={
+                    value.skillNames[index] ??
                     selectedSkillLabels[id] ??
                     skillOptionLabels[id] ??
                     `Skill #${id}`
@@ -691,7 +755,10 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
               <Button
                 type="button"
                 variant="outline"
-                className="justify-between rounded-md border-0 bg-[#dde3e9] px-3 text-sm font-normal text-[#2d3338] shadow-none"
+                className={cn(
+                  "justify-between rounded-md border-0 bg-[#dde3e9] px-3 text-sm font-normal text-[#2d3338] shadow-none",
+                  errors?.skillIds && "ring-2 ring-red-300 bg-red-50",
+                )}
               >
                 {value.skillIds.length
                   ? `Selected ${value.skillIds.length} skill(s)`
@@ -732,6 +799,9 @@ export function PostJobForm({ value, onChange, onSubmit }: Props) {
               </Command>
             </PopoverContent>
           </Popover>
+          {errors?.skillIds ? (
+            <p className="text-xs text-red-500">{errors.skillIds}</p>
+          ) : null}
           <p className="text-xs text-[#7b848a]">
             Type to search skills, then click to add.
           </p>

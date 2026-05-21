@@ -2,6 +2,18 @@ import type { BackendResponse, Pagination } from "@/types/common";
 import axiosClient from "../axiosClient";
 import type { Job, JobListFilters, JobUpdatePayload } from "@/types/job";
 
+export type GenerateJdAiPayload = {
+  title: string;
+  skills: string;
+  levels: string;
+};
+
+export type GenerateJdAiResult = {
+  description: string;
+  requirements: string[];
+  benefits: string[];
+};
+
 const serializeJobParams = (params: JobListFilters) => {
   const searchParams = new URLSearchParams();
 
@@ -61,4 +73,10 @@ export const updateJob = async ({
 
 export const deleteJob = async (id: number) => {
   return axiosClient.delete(`/jobs/${id}`) as Promise<BackendResponse<void>>;
+};
+
+export const generateJdAi = async (payload: GenerateJdAiPayload) => {
+  return axiosClient.post("/jobs/generate-jd", payload) as Promise<
+    BackendResponse<GenerateJdAiResult>
+  >;
 };

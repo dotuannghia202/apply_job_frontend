@@ -4,38 +4,11 @@ import {
   Stethoscope,
   PlaneTakeoff,
   BrainCircuit,
-  Network,
-  Paintbrush,
-  CloudCog,
-  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Responsibility, RequirementItem, BenefitItem } from "../../types";
 
 // ── Static preview data ────────────────────────────────────────────
-const RESPONSIBILITIES: Responsibility[] = [
-  {
-    id: "1",
-    icon: "architecture",
-    text: "Design and maintain scalable microservices using Node.js and GraphQL.",
-  },
-  {
-    id: "2",
-    icon: "brush",
-    text: "Collaborate with designers to implement high-fidelity, accessible UIs in React.",
-  },
-  {
-    id: "3",
-    icon: "cloud",
-    text: "Optimize cloud infrastructure for performance and global availability.",
-  },
-  {
-    id: "4",
-    icon: "groups",
-    text: "Mentor junior developers and drive technical excellence across the squad.",
-  },
-];
-
 const REQUIREMENTS: RequirementItem[] = [
   { id: "1", text: "5+ years in full-stack development." },
   { id: "2", text: "Deep expertise in React & TypeScript." },
@@ -48,16 +21,6 @@ const BENEFITS: BenefitItem[] = [
   { id: "3", icon: "mind", text: "Learning & mental health budget." },
 ];
 
-// ── Icon helpers ───────────────────────────────────────────────────
-function ResponsibilityIcon({ icon }: { icon: string }) {
-  const cls = "text-[#6f26f6] mb-3";
-  const props = { size: 22, className: cls };
-  if (icon === "brush") return <Paintbrush {...props} />;
-  if (icon === "cloud") return <CloudCog {...props} />;
-  if (icon === "groups") return <Users {...props} />;
-  return <Network {...props} />; // default: architecture
-}
-
 function BenefitIcon({ icon }: { icon: string }) {
   const cls = "text-[#6f26f6]";
   const props = { size: 16, className: cls };
@@ -67,7 +30,26 @@ function BenefitIcon({ icon }: { icon: string }) {
 }
 
 // ── Sub-components ─────────────────────────────────────────────────
-function PreviewHeader() {
+type JDPreviewData = {
+  title?: string;
+  description?: string;
+  requirements?: string[];
+  benefits?: string[];
+};
+
+type PreviewHeaderProps = {
+  onRegenerate?: () => void;
+  onPublish?: () => void;
+  isGenerating?: boolean;
+  isPublishDisabled?: boolean;
+};
+
+function PreviewHeader({
+  onRegenerate,
+  onPublish,
+  isGenerating,
+  isPublishDisabled,
+}: PreviewHeaderProps) {
   return (
     <div className="flex justify-between items-center mb-8 pb-6 border-b border-[#eaeef3]">
       <div className="flex items-center gap-3">
@@ -105,9 +87,11 @@ function PreviewHeader() {
           variant="ghost"
           size="sm"
           className="text-[#596065] hover:shadow-lg transition-shadow hover:bg-[#f1f4f7] rounded-xl font-bold gap-2"
+          onClick={onRegenerate}
+          disabled={isGenerating}
         >
           <RefreshCw size={14} />
-          Regenerate
+          {isGenerating ? "Generating..." : "Regenerate"}
         </Button>
         <Button
           size="sm"
@@ -115,6 +99,8 @@ function PreviewHeader() {
           style={{
             background: "linear-gradient(135deg, #72b183 0%, #aed6ba 100%)",
           }}
+          onClick={onPublish}
+          disabled={isPublishDisabled}
         >
           Publish Job
         </Button>
@@ -123,47 +109,30 @@ function PreviewHeader() {
   );
 }
 
-function RoleSection() {
+function RoleSection({ title, description }: JDPreviewData) {
   return (
     <div>
       <p className="text-[10px] font-bold text-[#72b183] uppercase tracking-[0.2em] mb-3">
         The Role
       </p>
       <h2 className="text-3xl font-extrabold text-[#2d3338] mb-3">
-        Senior Full Stack Engineer
+        {title || "Role title will appear here"}
       </h2>
       <p className="text-[#596065] leading-relaxed text-sm">
-        As a pivotal member of our CognitiveBridge core team, you will bridge
-        the gap between complex AI logic and intuitive user experiences. We
-        aren't just looking for a coder; we're looking for an architect who
-        values clean systems and human-centric design.
+        {description ||
+          "Generate a JD to preview the role summary and requirements."}
       </p>
     </div>
   );
 }
 
-function ResponsibilitiesSection() {
-  return (
-    <div>
-      <p className="text-[10px] font-bold text-[#72b183] uppercase tracking-[0.2em] mb-5">
-        Responsibilities
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {RESPONSIBILITIES.map((r) => (
-          <div
-            key={r.id}
-            className="bg-[#f7f9fc] p-5 rounded-lg border border-[#eaeef3]/50"
-          >
-            <ResponsibilityIcon icon={r.icon} />
-            <p className="text-sm font-medium text-[#2d3338]">{r.text}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function RequirementsAndBenefits() {
+function RequirementsAndBenefits({
+  requirements,
+  benefits,
+}: {
+  requirements: string[];
+  benefits: string[];
+}) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* Requirements */}
@@ -172,15 +141,18 @@ function RequirementsAndBenefits() {
           Requirements
         </p>
         <ul className="space-y-3">
-          {REQUIREMENTS.map((req) => (
-            <li key={req.id} className="flex gap-3 text-sm text-[#596065]">
+          {requirements.map((req, index) => (
+            <li
+              key={`${req}-${index}`}
+              className="flex gap-3 text-sm text-[#596065]"
+            >
               <CheckCircle2
                 size={16}
                 className="text-[#72b183] shrink-0 mt-0.5"
                 fill="#72b183"
                 stroke="white"
               />
-              {req.text}
+              {req}
             </li>
           ))}
         </ul>
@@ -192,10 +164,15 @@ function RequirementsAndBenefits() {
           Benefits
         </p>
         <ul className="space-y-3">
-          {BENEFITS.map((b) => (
-            <li key={b.id} className="flex gap-3 text-sm text-[#596065]">
-              <BenefitIcon icon={b.icon} />
-              {b.text}
+          {benefits.map((b, index) => (
+            <li
+              key={`${b}-${index}`}
+              className="flex gap-3 text-sm text-[#596065]"
+            >
+              <BenefitIcon
+                icon={BENEFITS[index % BENEFITS.length]?.icon || "health"}
+              />
+              {b}
             </li>
           ))}
         </ul>
@@ -218,7 +195,27 @@ function MatchBadge() {
 }
 
 // ── Main export ────────────────────────────────────────────────────
-export function JDPreview() {
+export function JDPreview({
+  data,
+  onPublish,
+  onRegenerate,
+  isGenerating,
+}: {
+  data?: JDPreviewData;
+  onPublish?: () => void;
+  onRegenerate?: () => void;
+  isGenerating?: boolean;
+}) {
+  const requirements =
+    data?.requirements && data.requirements.length
+      ? data.requirements
+      : REQUIREMENTS.map((item) => item.text);
+  const benefits =
+    data?.benefits && data.benefits.length
+      ? data.benefits
+      : BENEFITS.map((item) => item.text);
+  const isPublishDisabled = !data?.description;
+
   return (
     <section className="lg:col-span-7">
       <div className="relative group">
@@ -226,11 +223,18 @@ export function JDPreview() {
         <div className="absolute -inset-1 bg-linear-to-r from-[#72b183] via-[#6f26f6] to-[#006b60] opacity-15 group-hover:opacity-30 blur transition duration-1000 group-hover:duration-200 rounded-lg" />
 
         {/* Card */}
-        <div className="relative bg-white rounded-lg p-8 min-h-150 shadow-xl border border-[#eaeef3]/50 space-y-8">
-          <PreviewHeader />
-          <RoleSection />
-          <ResponsibilitiesSection />
-          <RequirementsAndBenefits />
+        <div className="relative bg-white rounded-lg p-8 min-h-122 shadow-xl border border-[#eaeef3]/50 space-y-8">
+          <PreviewHeader
+            onRegenerate={onRegenerate}
+            onPublish={onPublish}
+            isGenerating={isGenerating}
+            isPublishDisabled={isPublishDisabled}
+          />
+          <RoleSection title={data?.title} description={data?.description} />
+          <RequirementsAndBenefits
+            requirements={requirements}
+            benefits={benefits}
+          />
           <MatchBadge />
         </div>
       </div>

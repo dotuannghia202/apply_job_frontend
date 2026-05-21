@@ -6,6 +6,7 @@ import {
   fetchHrJobs,
   fetchJobById,
   fetchJobs,
+  generateJdAi,
   updateJob,
 } from "./job.api";
 import { jobKeys } from "./job.keys";
@@ -33,8 +34,7 @@ const normalizeJobFilters = (filters: JobListFilters = {}) => {
     skill: cleanText(filters.skill),
     active: typeof filters.active === "boolean" ? filters.active : undefined,
     sort: cleanText(filters.sort),
-  } satisfies Required<Pick<JobListFilters, "page" | "size">> &
-    JobListFilters;
+  } satisfies Required<Pick<JobListFilters, "page" | "size">> & JobListFilters;
 };
 
 export const useGetJobs = (filters: JobListFilters = {}) => {
@@ -100,5 +100,11 @@ export const useDeleteJob = () => {
       queryClient.invalidateQueries({ queryKey: jobKeys.hrLists() });
       queryClient.invalidateQueries({ queryKey: jobKeys.detail(id) });
     },
+  });
+};
+
+export const useGenerateJdAi = () => {
+  return useMutation({
+    mutationFn: generateJdAi,
   });
 };

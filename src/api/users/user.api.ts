@@ -56,7 +56,7 @@ export const updateUserRoles = async ({ id, data }: UpdateUserRolesPayload) => {
 };
 
 export const assignCompanyToCurrentUser = async (companyId: number) => {
-  return axiosClient.put("/assign-company", companyId) as Promise<
+  return axiosClient.put(`/users/assign-company/${companyId}`) as Promise<
     BackendResponse<void>
   >;
 };

@@ -5,7 +5,6 @@ import type {
   RegisterRequest,
 } from "../types/auth";
 
-import type { User } from "../types/user";
 import type { BackendResponse } from "@/types/common";
 const authApi = {
   login(data: LoginRequest): Promise<BackendResponse<LoginResponse>> {
@@ -18,11 +17,6 @@ const authApi = {
   register(data: RegisterRequest): Promise<BackendResponse<void>> {
     const url = `/auth/register`;
     return axiosClient.post(url, data);
-  },
-
-  getProfile(): Promise<BackendResponse<User>> {
-    const url = `/auth/account`;
-    return axiosClient.get(url);
   },
 
   refreshToken(): Promise<BackendResponse<{ accessToken: string }>> {

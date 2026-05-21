@@ -9,6 +9,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import type { Company } from "@/types/company";
 import { useAuthStore } from "@/store/auth.store";
 import { useAssignCompany } from "@/api/users/user.queries";
+import { useNavigate } from "react-router";
 
 const inputCls =
   "w-full px-4 py-3 " +
@@ -30,6 +31,7 @@ export function CompanySelectPanel() {
     size: 6,
     name: debouncedSearch || undefined,
   });
+  const navigate = useNavigate();
   const companies = companiesQuery.data?.data?.result ?? [];
   const user = useAuthStore((state) => state.user);
   const setCompany = useAuthStore((state) => state.setCompany);
@@ -51,9 +53,10 @@ export function CompanySelectPanel() {
       await assignCompanyMutation.mutateAsync(confirmCompany.id);
       setCompany({ id: confirmCompany.id, name: confirmCompany.name });
       setConfirmCompany(null);
+      setIsAssigningCompany(false);
+      navigate("/employer/dashboard", { replace: true });
     } catch (error) {
       console.error("Failed to assign company to user", error);
-    } finally {
       setIsAssigningCompany(false);
     }
   };

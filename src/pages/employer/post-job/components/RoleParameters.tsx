@@ -1,26 +1,45 @@
 "use client";
 
 // RoleParametersForm.tsx
-import { useState, type KeyboardEvent } from "react";
-import { Sparkles, Lightbulb, PenLine } from "lucide-react";
+import { useState } from "react";
+import {
+  Check,
+  ChevronsUpDown,
+  Sparkles,
+  Lightbulb,
+  PenLine,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+
 import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useGetSkills } from "@/api/skills/skill.queries";
+import { useDebounce } from "@/hooks/useDebounce";
+import { cn } from "@/lib/utils";
 import { SkillTag } from "../components/SkillTag";
 import type { Skill } from "../../types";
 
-const DEFAULT_SKILLS: Skill[] = [
-  { id: "1", label: "React" },
-  { id: "2", label: "Node.js" },
-  { id: "3", label: "AWS" },
-];
+const DEFAULT_SKILLS: Skill[] = [];
 
 interface Props {
   onGenerate?: (data: {
     jobTitle: string;
     skills: Skill[];
-    culture: string;
+
+    levels: string[];
   }) => void;
 }
 
@@ -35,29 +54,46 @@ const inputCls =
   "text-[#2d3338] placeholder:text-[#596065]/60 " +
   "text-sm font-normal";
 
+const LEVEL_OPTIONS = [
+  "INTERN",
+  "JUNIOR",
+  "MIDDLE",
+  "SENIOR",
+  "LEAD",
+  "MANAGER",
+];
+
 export function RoleParametersForm({ onGenerate }: Props) {
   const [jobTitle, setJobTitle] = useState("");
   const [skills, setSkills] = useState<Skill[]>(DEFAULT_SKILLS);
-  const [skillInput, setSkillInput] = useState("");
-  const [culture, setCulture] = useState("");
+  const [skillSearch, setSkillSearch] = useState("");
+  const [skillOpen, setSkillOpen] = useState(false);
 
-  function addSkill() {
-    const trimmed = skillInput.trim();
-    if (!trimmed) return;
-    if (skills.some((s) => s.label.toLowerCase() === trimmed.toLowerCase()))
+  const [levels, setLevels] = useState<string[]>([]);
+
+  const debouncedSkillSearch = useDebounce(skillSearch);
+  const { data: skillsData } = useGetSkills(
+    {
+      page: 1,
+      size: 8,
+      name: debouncedSkillSearch || undefined,
+    },
+    { enabled: skillOpen },
+  );
+  const skillOptions = skillsData?.data?.result ?? [];
+
+  function addSkillFromOption(skill: { id: number; name: string }) {
+    if (skills.some((s) => s.label.toLowerCase() === skill.name.toLowerCase()))
       return;
-    setSkills((prev) => [
-      ...prev,
-      { id: Date.now().toString(), label: trimmed },
-    ]);
-    setSkillInput("");
+    setSkills((prev) => [...prev, { id: String(skill.id), label: skill.name }]);
   }
 
-  function handleSkillKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      addSkill();
+  function toggleLevel(level: string) {
+    if (levels.includes(level)) {
+      setLevels((prev) => prev.filter((item) => item !== level));
+      return;
     }
+    setLevels((prev) => [...prev, level]);
   }
 
   return (
@@ -104,34 +140,101 @@ export function RoleParametersForm({ onGenerate }: Props) {
               </div>
             )}
 
-            <Input
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              onKeyDown={handleSkillKeyDown}
-              onBlur={addSkill}
-              placeholder="Add a skill..."
-              className={inputCls}
-            />
+            <Popover
+              open={skillOpen}
+              onOpenChange={(open) => {
+                setSkillOpen(open);
+                if (!open) setSkillSearch("");
+              }}
+            >
+              <PopoverTrigger asChild>
+                <div className="relative">
+                  <Input
+                    value={skillSearch}
+                    onChange={(e) => {
+                      setSkillSearch(e.target.value);
+                      setSkillOpen(true);
+                    }}
+                    placeholder="Search skills..."
+                    className={`${inputCls} pr-10`}
+                  />
+                  <ChevronsUpDown className="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#596065]/70" />
+                </div>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-[--radix-popover-trigger-width] p-0"
+                align="start"
+              >
+                <Command>
+                  <CommandInput
+                    placeholder="Search skills..."
+                    value={skillSearch}
+                    onValueChange={setSkillSearch}
+                  />
+                  <CommandEmpty>No skills found.</CommandEmpty>
+                  <CommandList className="max-h-44">
+                    <CommandGroup>
+                      {skillOptions.map((skill) => {
+                        const isSelected = skills.some(
+                          (item) =>
+                            item.label.toLowerCase() ===
+                            skill.name.toLowerCase(),
+                        );
+
+                        return (
+                          <CommandItem
+                            key={skill.id}
+                            value={skill.name}
+                            onSelect={() => addSkillFromOption(skill)}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 size-4",
+                                isSelected ? "opacity-100" : "opacity-0",
+                              )}
+                            />
+                            {skill.name}
+                          </CommandItem>
+                        );
+                      })}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
-          {/* Company Culture */}
+          {/* Levels */}
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Company Culture
+              Levels
             </Label>
-            <Textarea
-              value={culture}
-              onChange={(e) => setCulture(e.target.value)}
-              placeholder="Describe the vibe, values, and team dynamic..."
-              rows={4}
-              className={`${inputCls} resize-none`}
-            />
+            <div className="grid grid-cols-2 gap-2">
+              {LEVEL_OPTIONS.map((level) => (
+                <label
+                  key={level}
+                  className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold border transition ${
+                    levels.includes(level)
+                      ? "bg-[#72b183]/15 border-[#72b183] text-[#2d3338]"
+                      : "bg-white border-[#eaeef3] text-[#596065]"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={levels.includes(level)}
+                    onChange={() => toggleLevel(level)}
+                    className="accent-[#72b183]"
+                  />
+                  {level}
+                </label>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Generate button */}
         <Button
-          onClick={() => onGenerate?.({ jobTitle, skills, culture })}
+          onClick={() => onGenerate?.({ jobTitle, skills, levels })}
           className="w-full py-6 rounded-lg font-bold text-white shadow-lg hover:scale-[1.02] active:scale-95 transition-all border-0"
           style={{
             background: "linear-gradient(135deg, #72b183 0%, #aed6ba 100%)",
