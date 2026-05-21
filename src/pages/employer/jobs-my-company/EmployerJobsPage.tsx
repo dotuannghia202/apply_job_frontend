@@ -2,7 +2,11 @@ import { BriefcaseBusiness, Plus } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 
-import { useGetHrJobs, useUpdateJob } from "@/api/jobs/job.queries";
+import {
+  useDeleteJob,
+  useGetHrJobs,
+  useUpdateJob,
+} from "@/api/jobs/job.queries";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +14,6 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import { EmployerJobStats } from "@/pages/employer/jobs-my-company/components/EmployerJobStats";
 import { EmployerJobsFilterPanel } from "@/pages/employer/jobs-my-company/components/EmployerJobsFilterPanel";
 import { EmployerJobsTable } from "@/pages/employer/jobs-my-company/components/EmployerJobsTable";
 import { UpdateJobPanel } from "@/pages/employer/jobs-my-company/components/UpdateJobPanel";
@@ -24,17 +27,29 @@ import {
   type UpdateJobFormState,
 } from "@/pages/employer/jobs-my-company/helper";
 import type { Job } from "@/types/job";
+import { NotificationPopup } from "@/components/NotificationPopup";
 
 export default function EmployerJobsPage() {
-  const [filters, setFilters] = useState<EmployerJobFilters>(
-    createInitialFilters,
-  );
-  const [appliedFilters, setAppliedFilters] = useState<EmployerJobFilters>(
-    createInitialFilters,
-  );
+  const [filters, setFilters] =
+    useState<EmployerJobFilters>(createInitialFilters);
+  const [appliedFilters, setAppliedFilters] =
+    useState<EmployerJobFilters>(createInitialFilters);
   const [page, setPage] = useState(1);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [updateForm, setUpdateForm] = useState<UpdateJobFormState | null>(null);
+  const [deletingJobId, setDeletingJobId] = useState<number | null>(null);
+  const [pendingDeleteJob, setPendingDeleteJob] = useState<Job | null>(null);
+  const [popup, setPopup] = useState<{
+    open: boolean;
+    variant: "success" | "error";
+    title: string;
+    message?: string;
+  }>({
+    open: false,
+    variant: "success",
+    title: "",
+    message: "",
+  });
   const queryFilters = useMemo(
     () => toQueryFilters(appliedFilters, page, DEFAULT_PAGE_SIZE),
     [appliedFilters, page],
@@ -42,12 +57,11 @@ export default function EmployerJobsPage() {
 
   const hrJobsQuery = useGetHrJobs(queryFilters);
   const updateJobMutation = useUpdateJob();
+  const deleteJobMutation = useDeleteJob();
 
   const jobs = hrJobsQuery.data?.data?.result ?? [];
   const meta = hrJobsQuery.data?.data?.meta;
   const total = meta?.total ?? jobs.length;
-  const activeCount = jobs.filter((job) => job.active).length;
-  const inactiveCount = jobs.length - activeCount;
   const hasNextPage = meta ? meta.page < meta.pages : false;
 
   const updateFilters = (patch: Partial<EmployerJobFilters>) => {
@@ -92,6 +106,41 @@ export default function EmployerJobsPage() {
     );
   };
 
+  const handleDeleteJob = (job: Job) => {
+    if (deleteJobMutation.isPending) return;
+
+    setDeletingJobId(job.id);
+    deleteJobMutation.mutate(job.id, {
+      onSuccess: () => {
+        if (editingJob?.id === job.id) {
+          closeUpdatePanel();
+        }
+        setPopup({
+          open: true,
+          variant: "success",
+          title: "Job deleted successfully",
+          message: "The job has been removed from the list.",
+        });
+      },
+      onError: () => {
+        setPopup({
+          open: true,
+          variant: "error",
+          title: "Job deletion failed",
+          message: "Please try again.",
+        });
+      },
+      onSettled: () => {
+        setDeletingJobId(null);
+        hrJobsQuery.refetch();
+      },
+    });
+  };
+
+  const handleRequestDelete = (job: Job) => {
+    setPendingDeleteJob(job);
+  };
+
   return (
     <main className="min-h-screen bg-slate-50/80 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
@@ -116,20 +165,18 @@ export default function EmployerJobsPage() {
               update active listings.
             </p>
           </div>
-
-          <Button asChild>
-            <Link to="/jobs/jd-generator">
-              <Plus className="size-4" aria-hidden="true" />
-              Post new job
-            </Link>
-          </Button>
+          <div className="flex flex-col items-start gap-2 md:items-end">
+            <Button asChild>
+              <Link to="/jobs/jd-generator">
+                <Plus className="size-4" aria-hidden="true" />
+                Post new job
+              </Link>
+            </Button>
+            <div className="text-sm font-semibold text-slate-600">
+              Total jobs: <span className="text-primary">{total}</span>
+            </div>
+          </div>
         </header>
-
-        <EmployerJobStats
-          total={total}
-          activeCount={activeCount}
-          inactiveCount={inactiveCount}
-        />
 
         {editingJob && updateForm ? (
           <UpdateJobPanel
@@ -155,6 +202,8 @@ export default function EmployerJobsPage() {
           isLoading={hrJobsQuery.isLoading}
           isError={hrJobsQuery.isError}
           onUpdate={openUpdatePanel}
+          onDelete={handleRequestDelete}
+          deletingJobId={deletingJobId}
         />
 
         {meta && meta.pages > 1 ? (
@@ -194,6 +243,30 @@ export default function EmployerJobsPage() {
           </div>
         ) : null}
       </div>
+      <NotificationPopup
+        open={popup.open}
+        variant={popup.variant}
+        title={popup.title}
+        message={popup.message}
+        onDismiss={() => setPopup((prev) => ({ ...prev, open: false }))}
+      />
+      <NotificationPopup
+        open={!!pendingDeleteJob}
+        variant="confirm"
+        title="Delete job?"
+        message="This will remove the job from the active list."
+        confirmLabel="Delete"
+        confirmVariant="danger"
+        cancelLabel="Cancel"
+        onConfirm={() => {
+          if (pendingDeleteJob) {
+            handleDeleteJob(pendingDeleteJob);
+          }
+          setPendingDeleteJob(null);
+        }}
+        onCancel={() => setPendingDeleteJob(null)}
+        onDismiss={() => setPendingDeleteJob(null)}
+      />
     </main>
   );
 }

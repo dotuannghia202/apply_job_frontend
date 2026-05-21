@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
@@ -50,7 +49,9 @@ export function UpdateJobPanel({
   });
 
   const currentSkillNames = getJobSkillNames(job);
-  const selectedSkillIds = new Set(form.selectedSkills.map((skill) => skill.id));
+  const selectedSkillIds = new Set(
+    form.selectedSkills.map((skill) => skill.id),
+  );
 
   const update = (patch: Partial<UpdateJobFormState>) =>
     onChange({ ...form, ...patch });
@@ -177,23 +178,6 @@ export function UpdateJobPanel({
         </div>
 
         <aside className="space-y-5">
-          <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <Label className="text-sm font-semibold text-slate-700">
-                  Active
-                </Label>
-                <p className="text-xs text-slate-500">
-                  Maps to `isActive` in update payload.
-                </p>
-              </div>
-              <Switch
-                checked={form.isActive}
-                onCheckedChange={(isActive) => update({ isActive })}
-              />
-            </div>
-          </div>
-
           <div className="flex flex-col gap-1.5">
             <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
               Specialization

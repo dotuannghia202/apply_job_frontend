@@ -4,16 +4,11 @@ import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 import { FilterTextField } from "@/pages/employer/jobs-my-company/components/FilterTextField";
 import { LevelToggleGroup } from "@/pages/employer/jobs-my-company/components/LevelToggleGroup";
 import { SkillFilterPopover } from "@/pages/employer/jobs-my-company/components/SkillFilterPopover";
 import { SpecializationFilterPopover } from "@/pages/employer/jobs-my-company/components/SpecializationFilterPopover";
-import {
-  fieldClass,
-  type ActiveFilter,
-  type EmployerJobFilters,
-} from "@/pages/employer/jobs-my-company/helper";
+import { type EmployerJobFilters } from "@/pages/employer/jobs-my-company/helper";
 
 type EmployerJobsFilterPanelProps = {
   filters: EmployerJobFilters;
@@ -94,25 +89,6 @@ export function EmployerJobsFilterPanel({
             value={filters.maxSalary}
             onChange={(maxSalary) => onFilterChange({ maxSalary })}
           />
-
-          <div className="flex flex-col gap-1.5">
-            <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-              Status
-            </Label>
-            <select
-              value={filters.active}
-              onChange={(event) =>
-                onFilterChange({
-                  active: event.target.value as ActiveFilter,
-                })
-              }
-              className={cn(fieldClass, "px-3")}
-            >
-              <option value="all">All statuses</option>
-              <option value="true">Active</option>
-              <option value="false">Inactive</option>
-            </select>
-          </div>
 
           <SpecializationFilterPopover
             value={filters.specialization}

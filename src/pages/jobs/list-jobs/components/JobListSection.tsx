@@ -42,6 +42,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
       location,
       minSalary,
       maxSalary,
+      active: true,
     }),
     [keyword, location, minSalary, maxSalary, page],
   );

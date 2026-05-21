@@ -15,8 +15,6 @@ export const DEFAULT_PAGE_SIZE = 6;
 export const fieldClass =
   "h-10 rounded-md border-slate-200 bg-white text-sm text-slate-800 shadow-none focus-visible:ring-primary/20";
 
-export type ActiveFilter = "all" | "true" | "false";
-
 export type EmployerJobFilters = {
   name: string;
   keyword: string;
@@ -27,7 +25,6 @@ export type EmployerJobFilters = {
   minSalary: string;
   maxSalary: string;
   skill: string;
-  active: ActiveFilter;
 };
 
 export type SelectedSkill = {
@@ -46,7 +43,6 @@ export type UpdateJobFormState = {
   levels: string[];
   startDate: string;
   endDate: string;
-  isActive: boolean;
   benefits: string[];
   workingHours: string;
   specializationId: string;
@@ -63,7 +59,6 @@ export const createInitialFilters = (): EmployerJobFilters => ({
   minSalary: "",
   maxSalary: "",
   skill: "",
-  active: "all",
 });
 
 export const parseOptionalNumber = (value: string) => {
@@ -112,7 +107,6 @@ export const mapJobToUpdateForm = (job: Job): UpdateJobFormState => {
     levels: job.levels ?? [],
     startDate: toDateInputValue(job.startDate),
     endDate: toDateInputValue(job.endDate),
-    isActive: Boolean(job.active),
     benefits: job.benefits ?? [],
     workingHours: job.workingHours ?? "",
     specializationId: job.specialization?.id?.toString() ?? "",
@@ -136,7 +130,7 @@ export function toQueryFilters(
     name: filters.name,
     keyword: filters.keyword,
     skill: filters.skill,
-    active: filters.active === "all" ? undefined : filters.active === "true",
+    active: true,
   };
 }
 
@@ -152,7 +146,6 @@ export function getUpdatePayload(form: UpdateJobFormState): JobUpdatePayload {
     levels: form.levels,
     startDate: form.startDate ? toUtcMidnightIso(form.startDate) : undefined,
     endDate: form.endDate ? toUtcMidnightIso(form.endDate) : undefined,
-    isActive: form.isActive,
     benefits: form.benefits.map((item) => item.trim()).filter(Boolean),
     workingHours: form.workingHours.trim() || undefined,
     specializationId: parseOptionalNumber(form.specializationId),

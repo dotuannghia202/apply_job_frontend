@@ -1,4 +1,11 @@
-import { CalendarDays, Eye, MapPin, PencilLine, WalletCards } from "lucide-react";
+import {
+  CalendarDays,
+  Eye,
+  MapPin,
+  PencilLine,
+  Trash2,
+  WalletCards,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { JobStatusBadge } from "@/pages/employer/jobs-my-company/components/JobStatusBadge";
 import { formatDateLabel } from "@/pages/employer/jobs-my-company/helper";
 import { formatSalaryRange } from "@/pages/jobs/helper";
 import type { Job } from "@/types/job";
@@ -22,6 +28,8 @@ type EmployerJobsTableProps = {
   isLoading: boolean;
   isError: boolean;
   onUpdate: (job: Job) => void;
+  onDelete: (job: Job) => void;
+  deletingJobId: number | null;
 };
 
 export function EmployerJobsTable({
@@ -29,6 +37,8 @@ export function EmployerJobsTable({
   isLoading,
   isError,
   onUpdate,
+  onDelete,
+  deletingJobId,
 }: EmployerJobsTableProps) {
   return (
     <Card className="overflow-hidden border-slate-200 bg-white p-0 shadow-[0_18px_50px_rgba(15,23,42,0.05)]">
@@ -49,19 +59,16 @@ export function EmployerJobsTable({
               <TableHead className="px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
                 Job
               </TableHead>
-              <TableHead className="px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-                Status
-              </TableHead>
-              <TableHead className="px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
                 Salary
               </TableHead>
-              <TableHead className="px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
                 Location
               </TableHead>
-              <TableHead className="px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
                 Dates
               </TableHead>
-              <TableHead className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
                 Actions
               </TableHead>
             </TableRow>
@@ -85,9 +92,6 @@ export function EmployerJobsTable({
                         </Badge>
                       ))}
                     </div>
-                  </TableCell>
-                  <TableCell className="px-4 py-4">
-                    <JobStatusBadge active={job.active} />
                   </TableCell>
                   <TableCell className="px-4 py-4 text-sm font-semibold text-slate-700">
                     <span className="inline-flex items-center gap-2">
@@ -135,6 +139,17 @@ export function EmployerJobsTable({
                         <PencilLine className="size-4" aria-hidden="true" />
                         Update
                       </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                        onClick={() => onDelete(job)}
+                        disabled={deletingJobId === job.id}
+                      >
+                        <Trash2 className="size-4" aria-hidden="true" />
+                        {deletingJobId === job.id ? "Deleting..." : "Delete"}
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -142,7 +157,7 @@ export function EmployerJobsTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={5}
                   className="px-4 py-10 text-center text-sm text-slate-500"
                 >
                   No jobs match the current filters.
