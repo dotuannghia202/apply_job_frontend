@@ -9,6 +9,9 @@ const uploadFile = async (file: File, folder: string) => {
   formData.append("folder", folder);
 
   return axiosClient.post("/files", formData, {
+    params: {
+      folder,
+    },
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -21,4 +24,8 @@ export const uploadCompanyLogo = async (file: File) => {
 
 export const uploadResumeFile = async (file: File) => {
   return uploadFile(file, "cv");
+};
+
+export const uploadAvatarFile = async (file: File) => {
+  return uploadFile(file, "avatars");
 };

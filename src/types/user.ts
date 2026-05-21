@@ -70,3 +70,9 @@ export interface UpdateUserRolesPayload {
   id: number;
   data: UpdateUserRolesRequest;
 }
+
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   assignCompanyToCurrentUser,
+  changePassword,
   createUser,
   deleteUser,
   fetchAccountInfo,
@@ -90,6 +91,7 @@ export const useUpdateUser = () => {
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
       queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: userKeys.account() });
     },
   });
 };
@@ -139,5 +141,11 @@ export const useAssignCompany = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
     },
+  });
+};
+
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: changePassword,
   });
 };

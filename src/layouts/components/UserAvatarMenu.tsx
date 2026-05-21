@@ -46,14 +46,9 @@ const personalSecuritySection: AccountMenuSection = {
   icon: ShieldCheck,
   items: [
     {
-      label: "Update Profile",
+      label: "Profile Settings",
       icon: UserCog,
-      to: "/profile",
-    },
-    {
-      label: "Change Password",
-      icon: LockKeyhole,
-      to: "/settings",
+      to: "/settings#profile",
     },
   ],
 };
@@ -410,7 +405,7 @@ const UserAvatarMenu = () => {
               type="button"
               onClick={handleLogout}
               disabled={isLoggingOut}
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-slate-100 text-base font-bold text-slate-700 transition-colors hover:bg-slate-300 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:pointer-events-none disabled:opacity-60"
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-slate-100 text-base font-bold text-slate-700 transition-colors hover:bg-slate-300 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:pointer-events-none disabled:opacity-60"
             >
               <LogOut className="size-5" />
               {isLoggingOut ? "Logging out..." : "Log out"}

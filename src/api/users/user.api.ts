@@ -3,6 +3,7 @@ import type { Job } from "@/types/job";
 import axiosClient from "../axiosClient";
 import type {
   CreateUserRequest,
+  ChangePasswordRequest,
   HrDashboardStats,
   SavedJobsFilters,
   UpdateUserPayload,
@@ -52,6 +53,12 @@ export const updateUser = async ({ id, data }: UpdateUserPayload) => {
 export const updateUserRoles = async ({ id, data }: UpdateUserRolesPayload) => {
   return axiosClient.put(`/users/${id}/roles`, data) as Promise<
     BackendResponse<User>
+  >;
+};
+
+export const changePassword = async (data: ChangePasswordRequest) => {
+  return axiosClient.put("/change-password", data) as Promise<
+    BackendResponse<void>
   >;
 };
 

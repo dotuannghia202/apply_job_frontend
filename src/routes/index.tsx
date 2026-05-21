@@ -33,6 +33,7 @@ import MyApplicationsList from "@/pages/candidate/my-applications/MyApplications
 import MyApplicationDetail from "@/pages/candidate/my-applications/MyApplicationDetail";
 
 import CVDetailCandidate from "@/pages/candidate/cvs/CVDetailCandidate";
+import AccountSettingPage from "@/pages/settings/AccountSettingPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -205,11 +206,15 @@ export const router = createBrowserRouter([
           // Shared for all authenticated users
           {
             path: "profile",
-            element: <div>Profile Page</div>,
+            element: <AccountSettingPage />,
           },
           {
             path: "settings",
-            element: <div>Settings Page</div>,
+            element: <AccountSettingPage />,
+          },
+          {
+            path: "change-password",
+            element: <AccountSettingPage />,
           },
         ],
       },
