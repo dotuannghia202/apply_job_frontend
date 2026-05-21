@@ -1,5 +1,6 @@
 import axiosClient from "./axiosClient";
 import type {
+  ForgotPasswordRequest,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
@@ -16,6 +17,11 @@ const authApi = {
 
   register(data: RegisterRequest): Promise<BackendResponse<void>> {
     const url = `/auth/register`;
+    return axiosClient.post(url, data);
+  },
+
+  forgotPassword(data: ForgotPasswordRequest): Promise<BackendResponse<void>> {
+    const url = `/auth/forgot-password`;
     return axiosClient.post(url, data);
   },
 

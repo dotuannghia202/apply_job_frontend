@@ -14,7 +14,12 @@ const axiosClient = axios.create({
   withCredentials: true,
 });
 
-const publicEndpoints = ["/auth/login", "/auth/register", "/auth/refresh"];
+const publicEndpoints = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/forgot-password",
+  "/auth/refresh",
+];
 
 function isPublicEndpoint(url?: string) {
   return publicEndpoints.some((endpoint) => url?.includes(endpoint));

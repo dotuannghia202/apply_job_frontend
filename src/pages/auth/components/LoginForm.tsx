@@ -171,6 +171,7 @@ export const LoginForm = () => {
       <div className="text-right">
         <button
           type="button"
+          onClick={() => navigate("/forgot-password")}
           className="text-sm text-gray-500 hover:text-gray-300 underline underline-offset-4 cursor-pointer"
         >
           Forgot Password

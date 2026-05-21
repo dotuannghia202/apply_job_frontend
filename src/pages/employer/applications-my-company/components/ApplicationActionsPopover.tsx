@@ -1,5 +1,6 @@
 import {
   CalendarPlus,
+  CheckCircle2,
   Download,
   LoaderCircle,
   MoreHorizontal,
@@ -28,7 +29,7 @@ export function ApplicationActionsPopover({
   const resumeUrl = application.resume?.fileUrl ?? "";
   const isUpdating = updateStatusMutation.isPending;
 
-  const updateStatus = (status: "INTERVIEW" | "REJECTED") => {
+  const updateStatus = (status: "INTERVIEW" | "REJECTED" | "ACCEPTED") => {
     updateStatusMutation.mutate(
       {
         id: application.id,
@@ -87,6 +88,16 @@ export function ApplicationActionsPopover({
               <CalendarPlus className="size-4" aria-hidden="true" />
             )}
             Schedule Interview
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            className="justify-start gap-2 rounded-md px-3 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+            disabled={isUpdating}
+            onClick={() => updateStatus("ACCEPTED")}
+          >
+            <CheckCircle2 className="size-4" aria-hidden="true" />
+            Accept Candidate
           </Button>
           <Button
             type="button"
