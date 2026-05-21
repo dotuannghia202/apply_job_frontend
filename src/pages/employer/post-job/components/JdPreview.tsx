@@ -6,7 +6,7 @@ import {
   BrainCircuit,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Responsibility, RequirementItem, BenefitItem } from "../../types";
+import type { RequirementItem, BenefitItem } from "../../types";
 
 // ── Static preview data ────────────────────────────────────────────
 const REQUIREMENTS: RequirementItem[] = [

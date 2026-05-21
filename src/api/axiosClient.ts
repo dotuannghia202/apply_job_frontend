@@ -64,7 +64,7 @@ axiosClient.interceptors.response.use(
     const url = originalRequest.url || "";
 
     if (status === 401 && !originalRequest._retry) {
-      // Không refresh cho login / register / refresh
+      // Do not refresh for login / register / refresh.
       if (isPublicEndpoint(url)) {
         if (url.includes("/auth/refresh")) {
           clearAuthAndRedirect();
@@ -77,11 +77,9 @@ axiosClient.interceptors.response.use(
 
       try {
         /**
-         * BE của bạn hiện đang dùng @GetMapping("/refresh")
-         * nên dùng GET.
+         * The backend currently uses @GetMapping("/refresh"), so this must use GET.
          *
-         * Nếu sau này đổi BE sang @PostMapping("/refresh")
-         * thì đổi dòng này thành:
+         * If the backend changes to @PostMapping("/refresh"), change this to:
          * const refreshResponse = await axiosClient.post<RefreshTokenResponse>("/auth/refresh");
          */
         const refreshResponse = await authApi.refreshToken();

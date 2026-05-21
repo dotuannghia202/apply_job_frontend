@@ -1,6 +1,7 @@
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 type PopupVariant = "confirm" | "success" | "error" | "info" | "warning";
 
@@ -211,9 +212,9 @@ export function NotificationPopup({
     if (closeOnBackdrop) onDismiss?.();
   };
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-4"
       onClick={handleBackdrop}
     >
       <div
@@ -291,7 +292,8 @@ export function NotificationPopup({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

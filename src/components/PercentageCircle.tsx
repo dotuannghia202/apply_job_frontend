@@ -17,7 +17,7 @@ export default function ScoreRing({ score }: { score: number }) {
         text={`${score}%`}
         strokeWidth={5}
         styles={buildStyles({
-          // Thời gian chạy animation
+          // Animation duration
           pathTransitionDuration: 1.2,
           pathTransition: "stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1)",
           textSize: "24px",

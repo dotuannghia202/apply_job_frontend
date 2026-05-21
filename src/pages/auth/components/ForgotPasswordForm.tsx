@@ -152,8 +152,8 @@ function ForgotPasswordForm() {
         open={showSuccessPopup}
         variant="success"
         title="Job Portal"
-        message="Job Portal đã gửi mật khẩu mới đến email. Vui lòng kiểm tra email để lấy mật khẩu mới."
-        dismissLabel="Đã hiểu"
+        message="Job Portal has sent a new password to your email. Please check your inbox to get the new password."
+        dismissLabel="Got it"
         onDismiss={handleSuccessDismiss}
       />
     </>

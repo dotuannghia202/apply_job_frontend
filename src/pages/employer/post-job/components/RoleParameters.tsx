@@ -43,7 +43,7 @@ interface Props {
   }) => void;
 }
 
-// Shared class cho mọi input/textarea — khớp với bản gốc HTML
+// Shared class for every input/textarea, matching the original HTML.
 const inputCls =
   "w-full px-4 py-3 " +
   "bg-[#dde3e9] " +
