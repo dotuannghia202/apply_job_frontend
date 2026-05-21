@@ -57,7 +57,8 @@ export type PostJobFormErrors = Partial<
     | "skillIds"
     | "description"
     | "requirements"
-    | "benefits",
+    | "benefits"
+    | "levels",
     string
   >
 >;
@@ -666,6 +667,9 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
 
       <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
         <SectionHeader title="Levels" note="Required" />
+        {errors?.levels ? (
+          <p className="text-xs text-red-500">{errors.levels}</p>
+        ) : null}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {LEVEL_OPTIONS.map((level) => (
             <label

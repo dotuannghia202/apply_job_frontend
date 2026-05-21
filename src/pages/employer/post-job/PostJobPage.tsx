@@ -18,6 +18,28 @@ export default function PostJobPage() {
     (location.state as { generatedJob?: Partial<PostJobFormData> } | null)
       ?.generatedJob ?? null;
 
+  const emptyFormData: PostJobFormData = {
+    name: "",
+    location: "",
+    minSalary: "",
+    maxSalary: "",
+    quantity: "",
+    description: "",
+    requirements: [],
+    levels: [],
+    startDate: "",
+    endDate: "",
+    active: true,
+    benefits: [],
+    workingHours: "",
+    industryId: "",
+    industryName: "",
+    specializationId: "",
+    specializationName: "",
+    skillIds: [],
+    skillNames: [],
+  };
+
   const [formData, setFormData] = useState<PostJobFormData>(() => ({
     name: prefill?.name ?? "",
     location: prefill?.location ?? "",
@@ -75,6 +97,9 @@ export default function PostJobPage() {
     if (!formData.benefits.length) {
       nextErrors.benefits = "Please add at least one benefit.";
     }
+    if (!formData.levels.length) {
+      nextErrors.levels = "Please select at least one level.";
+    }
 
     if (!formData.endDate.trim()) {
       nextErrors.endDate = "Please select an end date.";
@@ -95,6 +120,65 @@ export default function PostJobPage() {
     }
 
     return nextErrors;
+  };
+
+  const clearResolvedErrors = (
+    nextData: PostJobFormData,
+    currentErrors: PostJobFormErrors,
+  ): PostJobFormErrors => {
+    const nextErrors = { ...currentErrors };
+    const todayIso = new Date(
+      Date.now() - new Date().getTimezoneOffset() * 60000,
+    )
+      .toISOString()
+      .slice(0, 10);
+
+    if (
+      nextErrors.startDate &&
+      (!nextData.startDate || nextData.startDate >= todayIso)
+    ) {
+      delete nextErrors.startDate;
+    }
+
+    if (nextErrors.endDate) {
+      if (!nextData.endDate.trim()) {
+        // keep error until a value is provided
+      } else if (nextData.endDate >= todayIso) {
+        delete nextErrors.endDate;
+      }
+    }
+
+    if (nextErrors.description && nextData.description.trim()) {
+      delete nextErrors.description;
+    }
+    if (nextErrors.requirements && nextData.requirements.length) {
+      delete nextErrors.requirements;
+    }
+    if (nextErrors.benefits && nextData.benefits.length) {
+      delete nextErrors.benefits;
+    }
+    if (nextErrors.levels && nextData.levels.length) {
+      delete nextErrors.levels;
+    }
+    if (nextErrors.workingHours && nextData.workingHours.trim()) {
+      delete nextErrors.workingHours;
+    }
+    if (nextErrors.industryId && nextData.industryId) {
+      delete nextErrors.industryId;
+    }
+    if (nextErrors.specializationId && nextData.specializationId) {
+      delete nextErrors.specializationId;
+    }
+    if (nextErrors.skillIds && nextData.skillIds.length) {
+      delete nextErrors.skillIds;
+    }
+
+    return nextErrors;
+  };
+
+  const handleFormChange = (nextData: PostJobFormData) => {
+    setFormData(nextData);
+    setErrors((prev) => clearResolvedErrors(nextData, prev));
   };
 
   const handleSubmit = async () => {
@@ -129,6 +213,8 @@ export default function PostJobPage() {
           : undefined,
         skillIds: formData.skillIds,
       });
+      setFormData(emptyFormData);
+      setErrors({});
       setPopup({
         open: true,
         variant: "success",
@@ -152,7 +238,7 @@ export default function PostJobPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <PostJobForm
             value={formData}
-            onChange={setFormData}
+            onChange={handleFormChange}
             onSubmit={handleSubmit}
             errors={errors}
           />
