@@ -77,8 +77,9 @@ export const LoginForm = () => {
           navigate("/");
         }
       } catch (error) {
+        console.error("Login error:", error);
         if (isAxiosError(error)) {
-          if (error.response?.data.statusCode === 400) {
+          if (error.response?.data.statusCode === 401) {
             setErrors((prev) => ({
               ...prev,
               server: "Incorrect email or password!",

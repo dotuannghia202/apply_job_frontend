@@ -2,16 +2,11 @@ import React from "react";
 import { AlertCircle, Settings2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
-import { useGetAccountInfo } from "@/api/users/user.queries";
+import { useGetUserById } from "@/api/users/user.queries";
 import { useAuthStore } from "@/store/auth.store";
 import type { User } from "@/types/user";
 import ChangePasswordForm from "./components/ChangePasswordForm";
 import ProfileForm from "./components/ProfileForm";
-
-function resolveAccountUser(payload: User | { user: User } | null | undefined) {
-  if (!payload) return null;
-  return "user" in payload ? payload.user : payload;
-}
 
 function AccountSettingSkeleton() {
   return (
@@ -25,9 +20,9 @@ function AccountSettingSkeleton() {
 export default function AccountSettingPage() {
   const location = useLocation();
   const storeUser = useAuthStore((state) => state.user);
-  const accountQuery = useGetAccountInfo();
+  const accountQuery = useGetUserById(storeUser?.id ?? 0);
 
-  const accountUser = resolveAccountUser(accountQuery.data?.data);
+  const accountUser = accountQuery.data?.data ?? null;
   const fallbackUser = storeUser ? ({ ...storeUser } as User) : null;
   const user = accountUser ?? fallbackUser;
 
