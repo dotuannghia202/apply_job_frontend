@@ -61,6 +61,10 @@ export interface UpdateUserRolesRequest {
   roles: Array<RoleName>;
 }
 
+export interface UpdateUserStatusRequest {
+  isActive: boolean;
+}
+
 export interface UpdateUserPayload {
   id: number;
   data: UpdateUserRequest;
@@ -69,6 +73,11 @@ export interface UpdateUserPayload {
 export interface UpdateUserRolesPayload {
   id: number;
   data: UpdateUserRolesRequest;
+}
+
+export interface UpdateUserStatusPayload {
+  id: number;
+  data: UpdateUserStatusRequest;
 }
 
 export interface ChangePasswordRequest {

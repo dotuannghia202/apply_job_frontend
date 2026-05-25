@@ -8,6 +8,7 @@ import type {
   SavedJobsFilters,
   UpdateUserPayload,
   UpdateUserRolesPayload,
+  UpdateUserStatusPayload,
   User,
   UserListFilters,
 } from "@/types/user";
@@ -53,6 +54,15 @@ export const updateUser = async ({ id, data }: UpdateUserPayload) => {
 export const updateUserRoles = async ({ id, data }: UpdateUserRolesPayload) => {
   return axiosClient.put(`/users/${id}/roles`, data) as Promise<
     BackendResponse<User>
+  >;
+};
+
+export const updateUserStatus = async ({
+  id,
+  data,
+}: UpdateUserStatusPayload) => {
+  return axiosClient.put(`/users/${id}/status`, data) as Promise<
+    BackendResponse<void>
   >;
 };
 

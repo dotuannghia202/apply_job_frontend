@@ -11,6 +11,7 @@ import {
   fetchUsers,
   updateUser,
   updateUserRoles,
+  updateUserStatus,
   toggleSaveJob,
 } from "./user.api";
 import { userKeys } from "./user.keys";
@@ -59,11 +60,10 @@ export const useGetHrDashboardStats = () => {
 };
 
 export const useGetSavedJobs = (filters: SavedJobsFilters = {}) => {
-  const normalizedFilters: Required<Pick<SavedJobsFilters, "page" | "size">> =
-    {
-      page: filters.page ?? 1,
-      size: filters.size ?? 10,
-    };
+  const normalizedFilters: Required<Pick<SavedJobsFilters, "page" | "size">> = {
+    page: filters.page ?? 1,
+    size: filters.size ?? 10,
+  };
 
   return useQuery({
     queryKey: userKeys.savedJobs(normalizedFilters),
@@ -104,6 +104,17 @@ export const useUpdateUserRoles = () => {
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
       queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });
+    },
+  });
+};
+
+export const useUpdateUserStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateUserStatus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: userKeys.lists() });
     },
   });
 };
