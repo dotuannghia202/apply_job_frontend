@@ -14,7 +14,7 @@ import NotFoundPage from "@/pages/errors/NotFoundPage";
 import UnauthorizedPage from "@/pages/errors/UnauthorizedPage";
 import AuthRequiredPage from "@/pages/errors/AuthRequiredPage";
 
-import AdminDashboardPage from "@/pages/admin/DashboardPage";
+import AdminDashboardPage from "@/pages/admin/dashboard/DashboardPage";
 
 import { normalizeRoles } from "@/helper/auth-roles";
 import type { RoleName } from "@/types/auth";
@@ -123,8 +123,9 @@ export const router = createBrowserRouter([
             ],
           },
 
+          // Candidate routes (allow ADMIN too)
           {
-            element: <RequireRoles allowedRoles={["CANDIDATE"]} />,
+            element: <RequireRoles allowedRoles={["CANDIDATE", "ADMIN"]} />,
             children: [
               {
                 path: "applications",
@@ -149,9 +150,9 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // EMPLOYER only
+          // Employer routes (allow ADMIN too)
           {
-            element: <RequireRoles allowedRoles={["EMPLOYER"]} />,
+            element: <RequireRoles allowedRoles={["EMPLOYER", "ADMIN"]} />,
             children: [
               {
                 path: "employer/dashboard",
@@ -187,6 +188,7 @@ export const router = createBrowserRouter([
             ],
           },
 
+          // Public jobs listing (available to all auth roles)
           {
             element: (
               <RequireRoles allowedRoles={["CANDIDATE", "EMPLOYER", "ADMIN"]} />

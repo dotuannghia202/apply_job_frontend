@@ -113,9 +113,6 @@ export default function ChangePasswordForm() {
 
   const validate = () => {
     const nextErrors: ChangePasswordErrors = {};
-    const hasLowercase = /[a-z]/.test(form.newPassword);
-    const hasUppercase = /[A-Z]/.test(form.newPassword);
-    const hasNumber = /\d/.test(form.newPassword);
 
     if (!form.currentPassword) {
       nextErrors.currentPassword = "Current password is required.";
@@ -123,11 +120,8 @@ export default function ChangePasswordForm() {
 
     if (!form.newPassword) {
       nextErrors.newPassword = "New password is required.";
-    } else if (form.newPassword.length < 8) {
-      nextErrors.newPassword = "New password must be at least 8 characters.";
-    } else if (!hasLowercase || !hasUppercase || !hasNumber) {
-      nextErrors.newPassword =
-        "Use uppercase, lowercase, and at least one number.";
+    } else if (form.newPassword.length < 6) {
+      nextErrors.newPassword = "New password must be at least 6 characters.";
     } else if (form.newPassword === form.currentPassword) {
       nextErrors.newPassword =
         "New password must be different from current password.";
@@ -188,7 +182,7 @@ export default function ChangePasswordForm() {
               Change Password
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              Use a strong password to keep your account secure.
+              Use at least 6 characters for your new password.
             </p>
           </div>
         </div>

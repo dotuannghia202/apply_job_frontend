@@ -8,7 +8,6 @@ import {
   FileText,
   FileUser,
   Heart,
-  LockKeyhole,
   LogOut,
   PanelTop,
   Send,
