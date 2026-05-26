@@ -1,4 +1,5 @@
 import { Eye, Lock, Mail, Unlock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import avatarPlaceholder from "@/assets/images/avatar-placeholder.webp";
@@ -170,8 +171,11 @@ export default function ManageUserTable({
                           size="icon-sm"
                           className="border border-slate-200 text-slate-600 hover:bg-slate-100"
                           aria-label="Xem chi tiet"
+                          asChild
                         >
-                          <Eye className="size-4" />
+                          <Link to={`/admin/users/detail/${row.id}`}>
+                            <Eye className="size-4" />
+                          </Link>
                         </Button>
                         <Button
                           type="button"

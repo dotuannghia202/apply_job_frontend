@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { NotificationPopup } from "@/components/NotificationPopup";
 import { useGetUsers, useUpdateUserStatus } from "@/api/users/user.queries";
 import type { RoleName } from "@/types/auth";
 import type { User } from "@/types/user";
+import { useDebounce } from "@/hooks/useDebounce";
 
 import ManageUserFilters from "./components/ManageUserFilters";
 import ManageUserHeader from "./components/ManageUserHeader";
@@ -36,8 +37,25 @@ const mapUserToRow = (user: User): ManageUserRow => {
 
 export default function ManageUserPage() {
   const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const [role, setRole] = useState<"" | RoleName>("");
+  const [status, setStatus] = useState<"" | "active" | "inactive">("");
   const [confirmUser, setConfirmUser] = useState<ManageUserRow | null>(null);
-  const usersQuery = useGetUsers({ page, size: PAGE_SIZE });
+  const debouncedKeyword = useDebounce(keyword);
+  const isActiveFilter =
+    status === "" ? undefined : status === "active" ? true : false;
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedKeyword, role, status]);
+
+  const usersQuery = useGetUsers({
+    page,
+    size: PAGE_SIZE,
+    keyword: debouncedKeyword || undefined,
+    role: role || undefined,
+    isActive: isActiveFilter,
+  });
   const updateStatusMutation = useUpdateUserStatus();
   const users = usersQuery.data?.data?.result ?? [];
   const meta = usersQuery.data?.data?.meta;
@@ -72,6 +90,13 @@ export default function ManageUserPage() {
   const hasPrevPage = meta ? meta.page > 1 : page > 1;
   const hasNextPage = meta ? meta.page < meta.pages : false;
 
+  const handleResetFilters = () => {
+    setKeyword("");
+    setRole("");
+    setStatus("");
+    setPage(1);
+  };
+
   return (
     <main className="min-h-screen bg-[#f7f9fc]">
       <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
@@ -83,7 +108,15 @@ export default function ManageUserPage() {
         />
         <ManageUserHeader />
 
-        <ManageUserFilters />
+        <ManageUserFilters
+          keyword={keyword}
+          role={role}
+          status={status}
+          onKeywordChange={setKeyword}
+          onRoleChange={setRole}
+          onStatusChange={setStatus}
+          onReset={handleResetFilters}
+        />
         <ManageUserTable
           rows={rows}
           isLoading={usersQuery.isLoading}

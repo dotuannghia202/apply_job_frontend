@@ -35,6 +35,7 @@ import MyApplicationDetail from "@/pages/candidate/my-applications/MyApplication
 import CVDetailCandidate from "@/pages/candidate/cvs/CVDetailCandidate";
 import AccountSettingPage from "@/pages/settings/AccountSettingPage";
 import ManageUserPage from "@/pages/candidate/management-users/ManageUserPage";
+import UserDetail from "@/pages/candidate/management-users/UserDetail";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -112,6 +113,10 @@ export const router = createBrowserRouter([
               {
                 path: "admin/users",
                 element: <ManageUserPage />,
+              },
+              {
+                path: "admin/users/detail/:id",
+                element: <UserDetail />,
               },
               {
                 path: "admin/company-approval",

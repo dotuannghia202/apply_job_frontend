@@ -22,8 +22,10 @@ export const useGetUsers = (filters: UserListFilters = {}) => {
   const normalizedFilters: Required<Pick<UserListFilters, "page" | "size">> &
     UserListFilters = {
     ...filters,
-    name: filters.name?.trim() || undefined,
-    email: filters.email?.trim() || undefined,
+    keyword: filters.keyword?.trim() || undefined,
+    isActive:
+      typeof filters.isActive === "boolean" ? filters.isActive : undefined,
+    role: filters.role ?? undefined,
     page: filters.page ?? 1,
     size: filters.size ?? 10,
   };

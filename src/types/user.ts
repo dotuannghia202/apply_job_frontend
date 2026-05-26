@@ -20,10 +20,9 @@ export interface User {
   roles?: Array<RoleName>;
 }
 
-export interface UserListFilters extends Pick<
-  QueryParams,
-  "page" | "size" | "name" | "email"
-> {
+export interface UserListFilters extends Pick<QueryParams, "page" | "size"> {
+  keyword?: string;
+  isActive?: boolean;
   role?: RoleName;
 }
 
