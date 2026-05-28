@@ -6,9 +6,14 @@ import type { RoleName } from "@/types/auth";
 interface CompanyOverviewProps {
   role: RoleName;
   about: string;
+  onAboutChange?: (value: string) => void;
 }
 
-export default function CompanyOverview({ role, about }: CompanyOverviewProps) {
+export default function CompanyOverview({
+  role,
+  about,
+  onAboutChange,
+}: CompanyOverviewProps) {
   const canEdit = role === "EMPLOYER";
 
   return (
@@ -31,7 +36,8 @@ export default function CompanyOverview({ role, about }: CompanyOverviewProps) {
         {canEdit ? (
           <Textarea
             className="min-h-[180px] border-0 bg-transparent text-sm text-slate-700 shadow-none focus-visible:ring-0"
-            defaultValue={about}
+            value={about}
+            onChange={(event) => onAboutChange?.(event.target.value)}
           />
         ) : (
           <div className="space-y-3 px-4 py-3 text-sm text-slate-700">

@@ -7,12 +7,16 @@ interface CompanyGeneralInfoProps {
   role: RoleName;
   name: string;
   address: string;
+  onNameChange?: (value: string) => void;
+  onAddressChange?: (value: string) => void;
 }
 
 export default function CompanyGeneralInfo({
   role,
   name,
   address,
+  onNameChange,
+  onAddressChange,
 }: CompanyGeneralInfoProps) {
   const canEdit = role === "EMPLOYER";
 
@@ -33,7 +37,8 @@ export default function CompanyGeneralInfo({
           {canEdit ? (
             <Input
               className="h-11 rounded-lg border-slate-200 bg-slate-50 text-slate-900 shadow-none"
-              defaultValue={name}
+              value={name}
+              onChange={(event) => onNameChange?.(event.target.value)}
             />
           ) : (
             <div className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-700">
@@ -48,7 +53,8 @@ export default function CompanyGeneralInfo({
           {canEdit ? (
             <Input
               className="h-11 rounded-lg border-slate-200 bg-slate-50 text-slate-900 shadow-none"
-              defaultValue={address}
+              value={address}
+              onChange={(event) => onAddressChange?.(event.target.value)}
             />
           ) : (
             <div className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-700">

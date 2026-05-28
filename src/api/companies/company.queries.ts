@@ -5,6 +5,7 @@ import {
   fetchCompanyDashboardStats,
   fetchCompanies,
   fetchCompanyById,
+  fetchMyCompany,
   updateCompany,
 } from "./company.api";
 import { companyKeys } from "./company.keys";
@@ -39,6 +40,14 @@ export const useGetCompanyById = (id: number) => {
     queryKey: companyKeys.detail(id),
     queryFn: () => fetchCompanyById(id),
     enabled: !!id,
+  });
+};
+
+export const useGetMyCompany = (enabled = true) => {
+  return useQuery({
+    queryKey: companyKeys.myCompany(),
+    queryFn: fetchMyCompany,
+    enabled,
   });
 };
 

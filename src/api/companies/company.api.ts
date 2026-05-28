@@ -26,6 +26,10 @@ export const fetchCompanyById = async (id: number) => {
   >;
 };
 
+export const fetchMyCompany = async () => {
+  return axiosClient.get("/my-company") as Promise<BackendResponse<Company>>;
+};
+
 export const createCompany = async (companyData: RequestCreateCompany) => {
   return axiosClient.post("/companies", companyData) as Promise<
     BackendResponse<Company>
