@@ -2,6 +2,7 @@ import type { BackendResponse, Pagination } from "@/types/common";
 import axiosClient from "../axiosClient";
 import type {
   Company,
+  CompanyDashboardStats,
   CompanyListFilters,
   RequestCreateCompany,
   UpdateCompanyPayload,
@@ -11,6 +12,12 @@ export const fetchCompanies = async (params: CompanyListFilters = {}) => {
   return axiosClient.get("/companies", {
     params,
   }) as Promise<BackendResponse<Pagination<Company>>>;
+};
+
+export const fetchCompanyDashboardStats = async () => {
+  return axiosClient.get("/companies/dashboard-stats") as Promise<
+    BackendResponse<CompanyDashboardStats>
+  >;
 };
 
 export const fetchCompanyById = async (id: number) => {

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createCompany,
   deleteCompany,
+  fetchCompanyDashboardStats,
   fetchCompanies,
   fetchCompanyById,
   updateCompany,
@@ -21,6 +22,14 @@ export const useGetCompanies = (filters: CompanyListFilters = {}) => {
   return useQuery({
     queryKey: companyKeys.list(normalizedFilters),
     queryFn: () => fetchCompanies(normalizedFilters),
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useGetCompanyDashboardStats = () => {
+  return useQuery({
+    queryKey: companyKeys.stats(),
+    queryFn: fetchCompanyDashboardStats,
     staleTime: 5 * 60 * 1000,
   });
 };

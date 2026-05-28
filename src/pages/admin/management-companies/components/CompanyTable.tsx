@@ -1,5 +1,7 @@
 import { MoreHorizontal } from "lucide-react";
 
+import type { CompanyStatus } from "@/types/company";
+
 import { Button } from "@/components/ui/button";
 
 export type CompanyRow = {
@@ -8,7 +10,7 @@ export type CompanyRow = {
   industry: string;
   employerName: string;
   employerEmail: string;
-  status: "Approved" | "Pending" | "Rejected";
+  status?: CompanyStatus;
   jobs: number;
   createdAt: string;
 };
@@ -17,10 +19,16 @@ interface CompanyTableProps {
   rows: CompanyRow[];
 }
 
-const statusStyles: Record<CompanyRow["status"], string> = {
-  Approved: "bg-emerald-50 text-emerald-700",
-  Pending: "bg-rose-50 text-rose-700",
-  Rejected: "bg-rose-100 text-rose-700",
+const statusStyles: Record<CompanyStatus, string> = {
+  APPROVED: "bg-emerald-50 text-emerald-700",
+  PENDING: "bg-rose-50 text-rose-700",
+  REJECTED: "bg-rose-100 text-rose-700",
+};
+
+const statusLabels: Record<CompanyStatus, string> = {
+  APPROVED: "Approved",
+  PENDING: "Pending",
+  REJECTED: "Rejected",
 };
 
 export default function CompanyTable({ rows }: CompanyTableProps) {
@@ -70,9 +78,13 @@ export default function CompanyTable({ rows }: CompanyTableProps) {
                 <td className="px-6 py-4 text-slate-700">{row.createdAt}</td>
                 <td className="px-6 py-4">
                   <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[row.status]}`}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      row.status
+                        ? statusStyles[row.status]
+                        : "bg-slate-100 text-slate-600"
+                    }`}
                   >
-                    {row.status}
+                    {row.status ? statusLabels[row.status] : "Unknown"}
                   </span>
                 </td>
                 <td className="px-6 py-4">

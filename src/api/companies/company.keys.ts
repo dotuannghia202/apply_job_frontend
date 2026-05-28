@@ -5,6 +5,7 @@ export const companyKeys = {
   lists: () => [...companyKeys.all, "list"] as const,
   list: (filters: CompanyListFilters) =>
     [...companyKeys.lists(), filters] as const,
+  stats: () => [...companyKeys.all, "stats"] as const,
   details: () => [...companyKeys.all, "detail"] as const,
   detail: (id: number) => [...companyKeys.details(), id] as const,
 };

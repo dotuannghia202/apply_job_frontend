@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { useGetCompanies } from "@/api/companies/company.queries";
+import { useDebounce } from "@/hooks/useDebounce";
+
 import CompanyFilters, {
   type CompanyStatusFilter,
 } from "./components/CompanyFilters";
@@ -10,84 +13,48 @@ import PaginationBar from "./components/PaginationBar";
 
 const PAGE_SIZE = 6;
 
-const companies: CompanyRow[] = [
-  {
-    id: 1201,
-    name: "TechNova Solutions",
-    status: "Pending",
-    industry: "Information Technology",
-    employerName: "Marcus Thorne",
-    employerEmail: "m.thorne@technova.io",
-    jobs: 34,
-    createdAt: "Oct 24, 2023",
-  },
-  {
-    id: 1202,
-    name: "GreenLeaf Logistics",
-    status: "Approved",
-    industry: "Transport & Supply Chain",
-    employerName: "Sarah Jenkins",
-    employerEmail: "s.jenkins@greenleaf.com",
-    jobs: 12,
-    createdAt: "Oct 22, 2023",
-  },
-  {
-    id: 1203,
-    name: "FinServe Alpha",
-    status: "Pending",
-    industry: "Financial Services",
-    employerName: "David Chen",
-    employerEmail: "chen.d@finserve.co",
-    jobs: 19,
-    createdAt: "Oct 21, 2023",
-  },
-  {
-    id: 1204,
-    name: "BioGrowth Systems",
-    status: "Rejected",
-    industry: "Agriculture Technology",
-    employerName: "Elara Vance",
-    employerEmail: "vance.elara@biogrowth.com",
-    jobs: 9,
-    createdAt: "Oct 20, 2023",
-  },
-];
-
 export default function ManagementCompaniesPage() {
   const [keyword, setKeyword] = useState("");
   const [status, setStatus] = useState<CompanyStatusFilter>("");
   const [page, setPage] = useState(1);
+  const debouncedKeyword = useDebounce(keyword);
 
-  const filteredRows = useMemo(() => {
-    return companies.filter((row) => {
-      const matchesKeyword = keyword
-        ? row.name.toLowerCase().includes(keyword.toLowerCase())
-        : true;
-      const matchesStatus = status
-        ? status === "active"
-          ? row.status === "Approved"
-          : status === "pending"
-            ? row.status === "Pending"
-            : row.status === "Rejected"
-        : true;
+  const companiesQuery = useGetCompanies({
+    page,
+    size: PAGE_SIZE,
+    name: debouncedKeyword || undefined,
+    status: status || undefined,
+  });
 
-      return matchesKeyword && matchesStatus;
-    });
-  }, [keyword, status]);
+  const companies = companiesQuery.data?.data?.result ?? [];
+  const meta = companiesQuery.data?.data?.meta;
 
-  const total = filteredRows.length;
-  const startIndex = (page - 1) * PAGE_SIZE;
-  const pageRows = filteredRows.slice(startIndex, startIndex + PAGE_SIZE);
+  const rows = useMemo<CompanyRow[]>(() => {
+    return companies.map((company) => ({
+      id: company.id,
+      name: company.name,
+      industry: company.description || "--",
+      employerName: company.createdBy || company.employerName || "--",
+      employerEmail: company.employerEmail || "--",
+      status: company.status,
+      jobs: 0,
+      createdAt: company.createdAt,
+    }));
+  }, [companies]);
+
+  const total = meta?.total ?? rows.length;
+  const pageRows = rows;
+  const currentPage = meta?.page ?? page;
 
   useEffect(() => {
     setPage(1);
-  }, [keyword, status]);
+  }, [debouncedKeyword, status]);
 
   useEffect(() => {
-    if (page > 1 && startIndex >= filteredRows.length) {
-      setPage(1);
+    if (page > 1 && meta && page > meta.pages) {
+      setPage(meta.pages || 1);
     }
-  }, [page, startIndex, filteredRows.length]);
+  }, [page, meta]);
 
   return (
     <main className="min-h-screen bg-[#f7f9fc]">
@@ -101,18 +68,28 @@ export default function ManagementCompaniesPage() {
             onKeywordChange={setKeyword}
             onStatusChange={setStatus}
           />
-          <CompanyTable rows={pageRows} />
+          {companiesQuery.isError ? (
+            <div className="rounded-2xl bg-white p-6 text-sm text-rose-600 shadow-sm">
+              Khong the tai danh sach cong ty. Vui long thu lai.
+            </div>
+          ) : null}
+          {companiesQuery.isLoading ? (
+            <div className="rounded-2xl bg-white p-6 text-sm text-slate-500 shadow-sm">
+              Dang tai danh sach cong ty...
+            </div>
+          ) : null}
+          {!companiesQuery.isLoading && !companiesQuery.isError ? (
+            <CompanyTable rows={pageRows} />
+          ) : null}
           <PaginationBar
-            page={page}
-            pageSize={PAGE_SIZE}
+            page={currentPage}
+            pageSize={meta?.pageSize ?? PAGE_SIZE}
             total={total}
             onPrev={() => {
               setPage((prev) => Math.max(1, prev - 1));
             }}
             onNext={() => {
-              setPage((prev) =>
-                Math.min(Math.ceil(total / PAGE_SIZE) || 1, prev + 1),
-              );
+              setPage((prev) => Math.min(meta?.pages ?? 1, prev + 1));
             }}
           />
         </div>

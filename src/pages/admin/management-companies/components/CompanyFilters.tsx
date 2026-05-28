@@ -1,9 +1,11 @@
 import { Search, SlidersHorizontal } from "lucide-react";
 
+import type { CompanyStatus } from "@/types/company";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export type CompanyStatusFilter = "" | "active" | "pending" | "locked";
+export type CompanyStatusFilter = "" | CompanyStatus;
 
 interface CompanyFiltersProps {
   keyword: string;
@@ -42,9 +44,9 @@ export default function CompanyFilters({
             }
           >
             <option value="">All Statuses</option>
-            <option value="active">Approved</option>
-            <option value="pending">Pending</option>
-            <option value="locked">Rejected</option>
+            <option value="APPROVED">Approved</option>
+            <option value="PENDING">Pending</option>
+            <option value="REJECTED">Rejected</option>
           </select>
           <Button
             type="button"

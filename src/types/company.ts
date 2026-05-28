@@ -11,16 +11,30 @@ export interface Company {
   description: string;
   address: string;
   logo: string;
+  status?: CompanyStatus;
+  employerName?: string;
+  employerEmail?: string;
   createdAt: string;
   updatedAt: string | null;
   createdBy: string;
   updatedBy: string | null;
 }
 
+export type CompanyStatus = "PENDING" | "APPROVED" | "REJECTED";
+
 export interface CompanyListFilters {
   page?: number;
   size?: number;
   name?: string;
+  status?: CompanyStatus;
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface CompanyDashboardStats {
+  totalCompanies: number;
+  pendingApproval: number;
+  approved: number;
 }
 
 export interface UpdateCompanyRequest {

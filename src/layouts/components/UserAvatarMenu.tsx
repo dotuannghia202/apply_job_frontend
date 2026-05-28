@@ -128,7 +128,7 @@ const menuSectionsByMode: Record<RoleName, AccountMenuSection[]> = {
         {
           label: "Company Profile",
           icon: Building2,
-          to: "/employer/onboarding/company",
+          to: "/employer/company-profile",
         },
       ],
     },
