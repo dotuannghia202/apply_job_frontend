@@ -34,8 +34,9 @@ import MyApplicationDetail from "@/pages/candidate/my-applications/MyApplication
 
 import CVDetailCandidate from "@/pages/candidate/cvs/CVDetailCandidate";
 import AccountSettingPage from "@/pages/settings/AccountSettingPage";
-import ManageUserPage from "@/pages/candidate/management-users/ManageUserPage";
-import UserDetail from "@/pages/candidate/management-users/UserDetail";
+import ManageUserPage from "@/pages/admin/management-users/ManageUserPage";
+import UserDetail from "@/pages/admin/management-users/UserDetail";
+import ManagementCompaniesPage from "@/pages/admin/management-companies/ManagementCompaniesPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -119,8 +120,8 @@ export const router = createBrowserRouter([
                 element: <UserDetail />,
               },
               {
-                path: "admin/company-approval",
-                element: <PlaceholderPage title="Company Approval" />,
+                path: "admin/companies",
+                element: <ManagementCompaniesPage />,
               },
               {
                 path: "analytics/system",

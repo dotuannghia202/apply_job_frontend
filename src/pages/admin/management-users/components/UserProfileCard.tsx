@@ -59,12 +59,6 @@ export default function UserProfileCard({ profile }: UserProfileCardProps) {
           <div className="grid gap-4 text-sm text-slate-600 sm:grid-cols-2">
             <div>
               <p className="text-xs uppercase tracking-wide text-slate-400">
-                User ID
-              </p>
-              <p className="font-semibold text-slate-800">{profile.userId}</p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-slate-400">
                 Gender
               </p>
               <p className="font-semibold text-slate-800">{profile.gender}</p>

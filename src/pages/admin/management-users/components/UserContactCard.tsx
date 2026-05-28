@@ -3,7 +3,6 @@ import { MapPin } from "lucide-react";
 type UserContact = {
   address: string;
   phone: string;
-  preferredCommunication: string;
 };
 
 type UserContactCardProps = {
@@ -37,14 +36,6 @@ export default function UserContactCard({ contact }: UserContactCardProps) {
               Personal Phone
             </p>
             <p className="mt-2 font-semibold text-slate-900">{contact.phone}</p>
-          </div>
-          <div>
-            <p className="text-xs uppercase tracking-wide text-slate-400">
-              Preferred Communication
-            </p>
-            <p className="mt-2 font-semibold text-slate-900">
-              {contact.preferredCommunication}
-            </p>
           </div>
         </div>
       </div>

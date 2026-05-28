@@ -35,7 +35,7 @@ const employerNavLinks: HeaderNavLink[] = [
 const adminNavLinks: HeaderNavLink[] = [
   { label: "Dashboard", to: "/admin/dashboard", end: true },
   { label: "User Management", to: "/admin/users" },
-  { label: "Company Approval", to: "/admin/company-approval" },
+  { label: "Company Management", to: "/admin/companies" },
 ];
 
 const employerModePaths = ["/employer", "/jobs/jd-generator"];

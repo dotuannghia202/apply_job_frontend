@@ -25,14 +25,20 @@ export default function UserAccountStatusCard({
       </div>
 
       <div className="mt-5 rounded-2xl bg-slate-50 p-4">
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-start gap-4">
+          <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-slate-800">
               Account Access
             </p>
-            <p className="text-xs text-slate-500">User can log in and apply</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500 break-words">
+              User can log in and apply, post a job
+            </p>
           </div>
-          <Switch checked={isActive} aria-label="Toggle account access" />
+          <Switch
+            checked={isActive}
+            aria-label="Toggle account access"
+            className="mt-1 shrink-0"
+          />
         </div>
       </div>
     </section>

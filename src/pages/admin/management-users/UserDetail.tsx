@@ -2,17 +2,16 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 import { useGetUserById } from "@/api/users/user.queries";
+import AppBreadcrumb from "@/components/AppBreadcrumb";
 import type { RoleName } from "@/types/auth";
 import type { User } from "@/types/user";
 
 import UserAccountStatusCard from "./components/UserAccountStatusCard";
 import UserAuditCard from "./components/UserAuditCard";
 import UserContactCard from "./components/UserContactCard";
-import UserDetailHeader from "./components/UserDetailHeader";
-import UserGovernanceCard from "./components/UserGovernanceCard";
+
 import UserPrimaryAssociationCard from "./components/UserPrimaryAssociationCard";
 import UserProfileCard from "./components/UserProfileCard";
-import UserRolesCard from "./components/UserRolesCard";
 
 const getRoleLabel = (roles: RoleName[] = []) => {
   if (roles.includes("ADMIN")) return "Admin";
@@ -25,16 +24,6 @@ const getGenderLabel = (gender?: User["gender"] | null) => {
   if (gender === "MALE") return "Male";
   if (gender === "OTHER") return "Other";
   return "Not available";
-};
-
-const mapRoles = (roles: RoleName[] = []) => {
-  const mapped = new Set<"Candidate" | "Employer" | "Admin">();
-
-  if (roles.includes("CANDIDATE")) mapped.add("Candidate");
-  if (roles.includes("EMPLOYER")) mapped.add("Employer");
-  if (roles.includes("ADMIN")) mapped.add("Admin");
-
-  return mapped.size ? Array.from(mapped) : ["Candidate"];
 };
 
 const mapUserProfile = (user: User) => ({
@@ -60,7 +49,6 @@ export default function UserDetail() {
     () => ({
       address: user?.address?.trim() || "Not available",
       phone: "Not available",
-      preferredCommunication: "Not available",
     }),
     [user],
   );
@@ -73,11 +61,11 @@ export default function UserDetail() {
     }),
     [],
   );
-  const roles = useMemo(() => mapRoles(user?.roles ?? []), [user]);
   const association = useMemo(
     () => ({
       name: user?.company?.name ?? "No primary association",
       subtitle: user?.company?.name ? "Parent Enterprise" : "",
+      logoUrl: user?.company?.logo?.trim() || undefined,
     }),
     [user],
   );
@@ -85,8 +73,13 @@ export default function UserDetail() {
   return (
     <main className="min-h-screen bg-[#f7f9fc]">
       <div className="mx-auto w-full max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <UserDetailHeader />
-
+        <AppBreadcrumb
+          items={[
+            { label: "Quan tri", to: "/admin/dashboard" },
+            { label: "Quan ly nguoi dung", to: "/admin/users" },
+            { label: "Chi tiet nguoi dung" },
+          ]}
+        />
         {!isValidId ? (
           <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">
             Invalid user id.
@@ -115,9 +108,7 @@ export default function UserDetail() {
 
             <div className="space-y-6">
               <UserAccountStatusCard isActive={!!user.isActive} />
-              <UserRolesCard roles={roles} />
               <UserPrimaryAssociationCard association={association} />
-              <UserGovernanceCard />
             </div>
           </div>
         ) : null}
