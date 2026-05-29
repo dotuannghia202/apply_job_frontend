@@ -2,10 +2,12 @@ import { Image, UploadCloud } from "lucide-react";
 import { useId } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 
 interface CompanyLogoCardProps {
   role: RoleName;
+  companyId?: number | null;
   logoUrl?: string | null;
   onSelectFile?: (file: File) => void;
   isUploading?: boolean;
@@ -13,11 +15,15 @@ interface CompanyLogoCardProps {
 
 export default function CompanyLogoCard({
   role,
+  companyId,
   logoUrl,
   onSelectFile,
   isUploading = false,
 }: CompanyLogoCardProps) {
   const inputId = useId();
+  const authCompanyId = useAuthStore((state) => state.company?.id ?? null);
+  const canUpdateLogo =
+    role === "EMPLOYER" && companyId != null && companyId === authCompanyId;
 
   return (
     <section className="rounded-2xl bg-white p-6 shadow-sm">
@@ -34,15 +40,17 @@ export default function CompanyLogoCard({
           )}
         </div>
         <div className="flex flex-1 flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-sm font-semibold text-slate-900">
-              Upload New Logo
-            </p>
-            <p className="text-xs text-slate-500">
-              Recommended size: 400x400px. Max 5MB. Supports PNG, JPG, SVG.
-            </p>
-          </div>
-          {role === "EMPLOYER" ? (
+          {canUpdateLogo ? (
+            <div>
+              <p className="text-sm font-semibold text-slate-900">
+                Upload New Logo
+              </p>
+              <p className="text-xs text-slate-500">
+                Recommended size: 400x400px. Max 5MB. Supports PNG, JPG, SVG.
+              </p>
+            </div>
+          ) : null}
+          {canUpdateLogo ? (
             <div className="flex items-center gap-2">
               <input
                 id={inputId}

@@ -32,7 +32,7 @@ const resolveRole = (roles: RoleName[] = []): RoleName => {
   return "CANDIDATE";
 };
 
-export default function CompanyDetail() {
+export default function CompanyProfile() {
   const user = useAuthStore((state) => state.user);
   const role = resolveRole(user?.roles ?? []);
   const companyQuery = useGetMyCompany(role === "EMPLOYER");
@@ -148,6 +148,7 @@ export default function CompanyDetail() {
           <CompanyStatusBanners status={status} role={role} />
           <CompanyLogoCard
             role={role}
+            companyId={company?.id ?? null}
             logoUrl={logoPreview ?? resolvedCompany.logo}
             onSelectFile={handleSelectLogo}
             isUploading={updateCompanyMutation.isPending}

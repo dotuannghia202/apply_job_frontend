@@ -7,6 +7,7 @@ interface CompanyHeaderProps {
   status: CompanyStatus;
   role: RoleName;
   onStatusChange?: (nextStatus: CompanyStatus) => void;
+  showStatusControl?: boolean;
 }
 
 export default function CompanyHeader({
@@ -15,6 +16,7 @@ export default function CompanyHeader({
   status,
   role,
   onStatusChange,
+  showStatusControl = true,
 }: CompanyHeaderProps) {
   return (
     <header className="flex flex-col gap-4">
@@ -23,7 +25,7 @@ export default function CompanyHeader({
           <h1 className="text-2xl font-semibold text-slate-900">{title}</h1>
           <p className="mt-2 text-sm text-slate-500">{subtitle}</p>
         </div>
-        {role === "ADMIN" ? (
+        {role === "ADMIN" && showStatusControl ? (
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
               Update status

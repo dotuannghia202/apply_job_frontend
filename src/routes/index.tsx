@@ -37,8 +37,9 @@ import AccountSettingPage from "@/pages/settings/AccountSettingPage";
 import ManageUserPage from "@/pages/admin/management-users/ManageUserPage";
 import UserDetail from "@/pages/admin/management-users/UserDetail";
 import ManagementCompaniesPage from "@/pages/admin/management-companies/ManagementCompaniesPage";
-import CompanyDetail from "@/pages/companies/CompanyDetail";
+
 import CompaniesDetail from "@/pages/companies/CompaniesDetail";
+import CompanyProfile from "@/pages/companies/CompanyProfile";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -181,7 +182,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "employer/company-profile",
-                element: <CompanyDetail />,
+                element: <CompanyProfile />,
               },
             ],
           },
