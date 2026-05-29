@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { useGetCompanies } from "@/api/companies/company.queries";
+import {
+  useApproveCompany,
+  useGetCompanies,
+  useToggleSuspendCompany,
+} from "@/api/companies/company.queries";
 import { useDebounce } from "@/hooks/useDebounce";
 
 import CompanyFilters, {
@@ -10,6 +14,14 @@ import CompanyTable, { type CompanyRow } from "./components/CompanyTable";
 import KPIStats from "./components/KPIStats";
 import PageHeader from "./components/PageHeader";
 import PaginationBar from "./components/PaginationBar";
+import { NotificationPopup } from "@/components/NotificationPopup";
+
+type StatusAction = "approve" | "reject" | "suspend" | "restore";
+
+interface ConfirmState {
+  action: StatusAction;
+  company: CompanyRow;
+}
 
 const PAGE_SIZE = 6;
 
@@ -18,6 +30,12 @@ export default function ManagementCompaniesPage() {
   const [status, setStatus] = useState<CompanyStatusFilter>("");
   const [page, setPage] = useState(1);
   const debouncedKeyword = useDebounce(keyword);
+  const [confirmState, setConfirmState] = useState<ConfirmState | null>(null);
+  const [notice, setNotice] = useState<{
+    variant: "success" | "error";
+    title: string;
+    message: string;
+  } | null>(null);
 
   const companiesQuery = useGetCompanies({
     page,
@@ -25,6 +43,8 @@ export default function ManagementCompaniesPage() {
     name: debouncedKeyword || undefined,
     status: status || undefined,
   });
+  const approveCompanyMutation = useApproveCompany();
+  const toggleSuspendMutation = useToggleSuspendCompany();
 
   const companies = companiesQuery.data?.data?.result ?? [];
   const meta = companiesQuery.data?.data?.meta;
@@ -56,6 +76,104 @@ export default function ManagementCompaniesPage() {
     }
   }, [page, meta]);
 
+  const getConfirmContent = (action: StatusAction) => {
+    switch (action) {
+      case "approve":
+        return {
+          title: "Approve company?",
+          message: "This will approve the company and allow it to operate.",
+          confirmLabel: "Approve",
+          confirmVariant: "primary" as const,
+        };
+      case "reject":
+        return {
+          title: "Reject company?",
+          message: "This will mark the company as rejected.",
+          confirmLabel: "Reject",
+          confirmVariant: "danger" as const,
+        };
+      case "suspend":
+        return {
+          title: "Suspend company?",
+          message: "This will suspend the company from operating.",
+          confirmLabel: "Suspend",
+          confirmVariant: "danger" as const,
+        };
+      case "restore":
+        return {
+          title: "Restore company?",
+          message: "This will restore the company to active status.",
+          confirmLabel: "Restore",
+          confirmVariant: "primary" as const,
+        };
+      default:
+        return {
+          title: "Update status?",
+          message: "This will update the company status.",
+          confirmLabel: "Confirm",
+          confirmVariant: "primary" as const,
+        };
+    }
+  };
+
+  const setSuccessNotice = (message: string) => {
+    setNotice({ variant: "success", title: "Success", message });
+  };
+
+  const setErrorNotice = (message: string) => {
+    setNotice({ variant: "error", title: "Failed", message });
+  };
+
+  const handleStatusAction = (action: StatusAction, company: CompanyRow) => {
+    setConfirmState({ action, company });
+  };
+
+  const handleConfirmAction = () => {
+    if (!confirmState) return;
+
+    const { action, company } = confirmState;
+    setConfirmState(null);
+
+    if (action === "approve" || action === "reject") {
+      approveCompanyMutation.mutate(
+        { id: company.id, isApproved: action === "approve" },
+        {
+          onSuccess: () =>
+            setSuccessNotice(
+              action === "approve"
+                ? "Company approved successfully."
+                : "Company rejected successfully.",
+            ),
+          onError: () =>
+            setErrorNotice(
+              action === "approve"
+                ? "Failed to approve company. Please try again."
+                : "Failed to reject company. Please try again.",
+            ),
+        },
+      );
+      return;
+    }
+
+    toggleSuspendMutation.mutate(
+      { id: company.id, isSuspended: action === "suspend" },
+      {
+        onSuccess: () =>
+          setSuccessNotice(
+            action === "suspend"
+              ? "Company suspended successfully."
+              : "Company restored successfully.",
+          ),
+        onError: () =>
+          setErrorNotice(
+            action === "suspend"
+              ? "Failed to suspend company. Please try again."
+              : "Failed to restore company. Please try again.",
+          ),
+      },
+    );
+  };
+
   return (
     <main className="min-h-screen bg-[#f7f9fc]">
       <div className="mx-auto w-full max-w-6xl px-6 py-8">
@@ -79,7 +197,13 @@ export default function ManagementCompaniesPage() {
             </div>
           ) : null}
           {!companiesQuery.isLoading && !companiesQuery.isError ? (
-            <CompanyTable rows={pageRows} />
+            <CompanyTable
+              rows={pageRows}
+              onApprove={(company) => handleStatusAction("approve", company)}
+              onReject={(company) => handleStatusAction("reject", company)}
+              onSuspend={(company) => handleStatusAction("suspend", company)}
+              onRestore={(company) => handleStatusAction("restore", company)}
+            />
           ) : null}
           <PaginationBar
             page={currentPage}
@@ -94,6 +218,35 @@ export default function ManagementCompaniesPage() {
           />
         </div>
       </div>
+      <NotificationPopup
+        open={!!confirmState}
+        variant="confirm"
+        title={confirmState ? getConfirmContent(confirmState.action).title : ""}
+        message={
+          confirmState ? getConfirmContent(confirmState.action).message : ""
+        }
+        confirmLabel={
+          confirmState
+            ? getConfirmContent(confirmState.action).confirmLabel
+            : "Confirm"
+        }
+        confirmVariant={
+          confirmState
+            ? getConfirmContent(confirmState.action).confirmVariant
+            : "primary"
+        }
+        onConfirm={handleConfirmAction}
+        onCancel={() => setConfirmState(null)}
+        onDismiss={() => setConfirmState(null)}
+      />
+      <NotificationPopup
+        open={!!notice}
+        variant={notice?.variant ?? "success"}
+        title={notice?.title ?? ""}
+        message={notice?.message ?? ""}
+        onDismiss={() => setNotice(null)}
+        dismissLabel="Close"
+      />
     </main>
   );
 }

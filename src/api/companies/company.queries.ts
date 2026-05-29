@@ -1,15 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  approveCompany,
   createCompany,
   deleteCompany,
   fetchCompanyDashboardStats,
   fetchCompanies,
   fetchCompanyById,
   fetchMyCompany,
+  toggleSuspendCompany,
   updateCompany,
 } from "./company.api";
 import { companyKeys } from "./company.keys";
-import type { CompanyListFilters } from "@/types/company";
+import type {
+  ApproveCompanyPayload,
+  CompanyListFilters,
+  ToggleSuspendCompanyPayload,
+} from "@/types/company";
 
 export const useGetCompanies = (filters: CompanyListFilters = {}) => {
   const normalizedFilters: Required<Pick<CompanyListFilters, "page" | "size">> &
@@ -80,6 +86,31 @@ export const useDeleteCompany = () => {
   return useMutation({
     mutationFn: deleteCompany,
     onSuccess: (_data, id) => {
+      queryClient.invalidateQueries({ queryKey: companyKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: companyKeys.detail(id) });
+    },
+  });
+};
+
+export const useApproveCompany = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: ApproveCompanyPayload) => approveCompany(payload),
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: companyKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: companyKeys.detail(id) });
+    },
+  });
+};
+
+export const useToggleSuspendCompany = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: ToggleSuspendCompanyPayload) =>
+      toggleSuspendCompany(payload),
+    onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: companyKeys.lists() });
       queryClient.invalidateQueries({ queryKey: companyKeys.detail(id) });
     },

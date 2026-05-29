@@ -47,6 +47,7 @@ export default function CompanyFilters({
             <option value="APPROVED">Approved</option>
             <option value="PENDING">Pending</option>
             <option value="REJECTED">Rejected</option>
+            <option value="SUSPENDED">Suspended</option>
           </select>
           <Button
             type="button"

@@ -1,10 +1,12 @@
 import type { BackendResponse, Pagination } from "@/types/common";
 import axiosClient from "../axiosClient";
 import type {
+  ApproveCompanyPayload,
   Company,
   CompanyDashboardStats,
   CompanyListFilters,
   RequestCreateCompany,
+  ToggleSuspendCompanyPayload,
   UpdateCompanyPayload,
 } from "@/types/company";
 
@@ -46,4 +48,26 @@ export const deleteCompany = async (id: number) => {
   return axiosClient.delete(`/companies/${id}`) as Promise<
     BackendResponse<void>
   >;
+};
+
+export const approveCompany = async ({
+  id,
+  isApproved,
+}: ApproveCompanyPayload) => {
+  return axiosClient.put(`/companies/${id}/approve`, null, {
+    params: {
+      isApproved,
+    },
+  }) as Promise<BackendResponse<void>>;
+};
+
+export const toggleSuspendCompany = async ({
+  id,
+  isSuspended,
+}: ToggleSuspendCompanyPayload) => {
+  return axiosClient.put(`/companies/${id}/suspend`, null, {
+    params: {
+      isSuspended,
+    },
+  }) as Promise<BackendResponse<void>>;
 };

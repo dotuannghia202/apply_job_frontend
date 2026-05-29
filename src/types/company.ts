@@ -20,7 +20,7 @@ export interface Company {
   updatedBy: string | null;
 }
 
-export type CompanyStatus = "PENDING" | "APPROVED" | "REJECTED";
+export type CompanyStatus = "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED";
 
 export interface CompanyListFilters {
   page?: number;
@@ -47,4 +47,14 @@ export interface UpdateCompanyRequest {
 export interface UpdateCompanyPayload {
   id: number;
   data: UpdateCompanyRequest;
+}
+
+export interface ApproveCompanyPayload {
+  id: number;
+  isApproved: boolean;
+}
+
+export interface ToggleSuspendCompanyPayload {
+  id: number;
+  isSuspended: boolean;
 }

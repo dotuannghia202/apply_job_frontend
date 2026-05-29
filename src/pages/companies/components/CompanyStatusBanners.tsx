@@ -30,5 +30,14 @@ export default function CompanyStatusBanners({
     );
   }
 
+  if (status === "SUSPENDED") {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+        Your company has been suspended by admins. Please contact support for
+        assistance.
+      </div>
+    );
+  }
+
   return null;
 }
