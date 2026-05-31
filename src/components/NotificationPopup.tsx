@@ -1,55 +1,36 @@
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 type PopupVariant = "confirm" | "success" | "error" | "info" | "warning";
 
+type PopupActionStyle = "primary" | "outline" | "danger";
+
 interface PopupAction {
   label: ReactNode;
   onClick: () => void;
   disabled?: boolean;
-  /** Defaults to "primary" */
-  style?: "primary" | "outline" | "danger";
+  style?: PopupActionStyle;
 }
 
 interface PopupProps {
-  /** Controls visibility */
   open: boolean;
-  /** Visual theme of the popup */
   variant?: PopupVariant;
-  /** Bold heading */
   title: string;
-  /** Descriptive message — string or any JSX */
   message?: ReactNode;
-  /** Primary / secondary action buttons */
   actions?: PopupAction[];
-  /** Optional confirm handler (used when `actions` is not provided) */
   onConfirm?: () => void;
-  /** Optional cancel handler (used with `onConfirm`) */
   onCancel?: () => void;
-  /** Confirm button label when using `onConfirm` */
   confirmLabel?: string;
-  /** Confirm button style when using `onConfirm` */
   confirmVariant?: "primary" | "danger";
-  /** Cancel button label when using `onConfirm` */
   cancelLabel?: string;
-  /** Single "Got it" / dismiss button label. Used when `actions` is not provided */
   dismissLabel?: string;
   onDismiss?: () => void;
-  /** Click backdrop to close */
   closeOnBackdrop?: boolean;
 }
 
-// ─── Variant config ───────────────────────────────────────────────────────────
-
 const variantConfig: Record<
   PopupVariant,
-  {
-    icon: ReactNode;
-    iconBg: string;
-    primaryBtn: string;
-  }
+  { icon: ReactNode; iconBg: string; primaryBtn: string }
 > = {
   confirm: {
     icon: (
@@ -153,19 +134,15 @@ const variantConfig: Record<
   },
 };
 
-// ─── Button style map ─────────────────────────────────────────────────────────
+const baseButtonCls =
+  "inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
 
-const actionButtonStyles: Record<NonNullable<PopupAction["style"]>, string> = {
-  primary: "", // filled in dynamically from variant
+const actionButtonStyles: Record<PopupActionStyle, string> = {
+  primary: "",
   outline:
     "border border-slate-200 bg-white text-[#2d3338] hover:bg-slate-50 focus-visible:ring-slate-300",
   danger: "bg-red-600 hover:bg-red-700 text-white focus-visible:ring-red-400",
 };
-
-const baseButtonCls =
-  "inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function NotificationPopup({
   open,
@@ -219,9 +196,8 @@ export function NotificationPopup({
     >
       <div
         className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
-        {/* Icon + Title row */}
         <div className="flex items-start gap-4">
           <div
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${config.iconBg}`}
@@ -236,25 +212,19 @@ export function NotificationPopup({
           </div>
         </div>
 
-        {/* Actions */}
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
-          {actions && actions.length > 0 ? (
-            actions.map((action, i) => {
-              const isFirst = i === 0;
-              const styleName =
-                action.style ?? (isFirst ? "outline" : "primary");
-              const btnCls =
-                styleName === "primary"
-                  ? config.primaryBtn
-                  : actionButtonStyles[styleName];
+          {actions?.length ? (
+            actions.map((action, index) => {
+              const style = action.style ?? "primary";
+              const primaryClass = style === "primary" ? config.primaryBtn : "";
 
               return (
                 <button
-                  key={i}
+                  key={`${index}-${String(action.label)}`}
                   type="button"
-                  className={`${baseButtonCls} ${btnCls}`}
                   onClick={action.onClick}
                   disabled={action.disabled}
+                  className={`${baseButtonCls} ${actionButtonStyles[style]} ${primaryClass}`}
                 >
                   {action.label}
                 </button>
@@ -264,19 +234,19 @@ export function NotificationPopup({
             <>
               <button
                 type="button"
+                onClick={onCancel}
                 className={`${baseButtonCls} ${actionButtonStyles.outline}`}
-                onClick={onCancel ?? onDismiss}
               >
                 {cancelLabel}
               </button>
               <button
                 type="button"
+                onClick={onConfirm}
                 className={`${baseButtonCls} ${
                   confirmVariant === "danger"
                     ? actionButtonStyles.danger
                     : config.primaryBtn
                 }`}
-                onClick={onConfirm}
               >
                 {confirmLabel}
               </button>
@@ -284,8 +254,8 @@ export function NotificationPopup({
           ) : (
             <button
               type="button"
-              className={`${baseButtonCls} ${config.primaryBtn}`}
               onClick={onDismiss}
+              className={`${baseButtonCls} ${config.primaryBtn}`}
             >
               {dismissLabel}
             </button>
@@ -296,36 +266,3 @@ export function NotificationPopup({
     document.body,
   );
 }
-
-// ─── Usage examples (remove when integrating) ─────────────────────────────────
-//
-// 1. Simple "Got it" (success / error / info / warning)
-// <ConfirmPopup
-//   open={showSuccess}
-//   variant="success"
-//   title="Profile updated"
-//   message="Your changes have been saved successfully."
-//   onDismiss={() => setShowSuccess(false)}
-// />
-//
-// 2. Confirmation with two actions
-// <ConfirmPopup
-//   open={!!confirmCompany}
-//   variant="confirm"
-//   title="Confirm company selection"
-//   message={<>Assign <span className="font-semibold">{confirmCompany?.name}</span> to your employer account?</>}
-//   actions={[
-//     { label: "Cancel",   style: "outline",  onClick: () => setConfirmCompany(null) },
-//     { label: isLoading ? "Assigning…" : "Continue", style: "primary", onClick: handleAssign, disabled: isLoading },
-//   ]}
-// />
-//
-// 3. Error with dismiss
-// <ConfirmPopup
-//   open={hasError}
-//   variant="error"
-//   title="Something went wrong"
-//   message="Failed to connect to the server. Please try again."
-//   dismissLabel="Try again"
-//   onDismiss={retryFn}
-// />
