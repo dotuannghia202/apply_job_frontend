@@ -40,6 +40,7 @@ import ManagementCompaniesPage from "@/pages/admin/management-companies/Manageme
 
 import CompaniesDetail from "@/pages/companies/CompaniesDetail";
 import CompanyProfile from "@/pages/companies/CompanyProfile";
+import PlaceholderPage from "@/pages/static/PlaceholderPage";
 
 function getUserRoles(): RoleName[] {
   const rawUser = localStorage.getItem("authUser");
@@ -71,7 +72,7 @@ function HomeRedirect() {
   return <Navigate to={getDefaultHomePath(roles)} replace />;
 }
 
-function PlaceholderPage({ title }: { title: string }) {
+function SimplePage({ title }: { title: string }) {
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-10">
       <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
@@ -128,7 +129,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "analytics/system",
-                element: <PlaceholderPage title="System Analytics" />,
+                element: <SimplePage title="System Analytics" />,
               },
             ],
           },
@@ -235,6 +236,26 @@ export const router = createBrowserRouter([
           {
             path: "change-password",
             element: <AccountSettingPage />,
+          },
+          {
+            path: "privacy-policy",
+            element: <PlaceholderPage type="privacy" />,
+          },
+          {
+            path: "terms-of-service",
+            element: <PlaceholderPage type="terms" />,
+          },
+          {
+            path: "cookie-settings",
+            element: <PlaceholderPage type="cookies" />,
+          },
+          {
+            path: "accessibility",
+            element: <PlaceholderPage type="accessibility" />,
+          },
+          {
+            path: "support",
+            element: <PlaceholderPage type="support" />,
           },
         ],
       },
