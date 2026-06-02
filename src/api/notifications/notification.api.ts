@@ -19,8 +19,8 @@ export const markAsRead = async (id: number) => {
   >;
 };
 
-export const markAllAsRead = async () => {
-  return axiosClient.put("/notifications/read-all") as Promise<
-    BackendResponse<void>
-  >;
+export const markAllAsRead = async (role: NotificationListFilters["role"]) => {
+  return axiosClient.put("/notifications/read-all", null, {
+    params: { role },
+  }) as Promise<BackendResponse<void>>;
 };

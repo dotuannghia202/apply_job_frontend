@@ -8,6 +8,7 @@ import authApi from "@/api/authApi";
 import { Switch } from "@/components/ui/switch";
 import { normalizeRoles } from "@/helper/auth-roles";
 import { cn } from "@/lib/utils";
+import NotificationDropdown from "@/layouts/components/NotificationDropdown";
 import UserAvatarMenu from "@/layouts/components/UserAvatarMenu";
 import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
@@ -83,6 +84,7 @@ function replaceCandidateEmployerRole(
 
 const AppHeader = () => {
   const [isSwitchingRole, setIsSwitchingRole] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
@@ -246,9 +248,15 @@ const AppHeader = () => {
               type="button"
               aria-label="Notifications"
               className="rounded-full p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-primary"
+              onClick={() => setIsNotificationOpen((prev) => !prev)}
             >
               <Bell className="size-5" />
             </button>
+            {isNotificationOpen && (
+              <NotificationDropdown
+                onClose={() => setIsNotificationOpen(false)}
+              />
+            )}
             <button
               type="button"
               aria-label="Messages"

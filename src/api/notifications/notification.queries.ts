@@ -25,6 +25,7 @@ export const useGetNotifications = (
     queryFn: () => fetchNotifications(normalizedFilters),
     enabled: options.enabled ?? true,
     staleTime: 60 * 1000,
+    retry: false,
   });
 };
 

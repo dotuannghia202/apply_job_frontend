@@ -1,3 +1,4 @@
+import type { RoleName } from "./auth";
 import type { QueryParams } from "./common";
 
 export interface INotification {
@@ -15,4 +16,5 @@ export interface NotificationListFilters extends Pick<
   "page" | "size"
 > {
   isRead?: boolean;
+  role?: RoleName;
 }
