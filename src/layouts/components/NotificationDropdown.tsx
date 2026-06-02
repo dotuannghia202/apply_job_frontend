@@ -58,7 +58,7 @@ const NotificationDropdown = ({ onClose }: NotificationDropdownProps) => {
   );
 
   const notifications: INotification[] = notifData?.data?.result || [];
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  // const unreadCount = notifications.filter((n) => !n.read).length;
 
   const { mutate: markRead } = useMarkAsRead();
   const { mutate: markAllRead } = useMarkAllAsRead();

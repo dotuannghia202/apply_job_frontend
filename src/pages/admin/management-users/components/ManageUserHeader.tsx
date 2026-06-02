@@ -1,7 +1,3 @@
-import { Download, Plus, ShieldCheck } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-
 export default function ManageUserHeader() {
   return (
     <section className="flex flex-col gap-6 rounded-3xl border border-slate-200/70 bg-white/90 p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
