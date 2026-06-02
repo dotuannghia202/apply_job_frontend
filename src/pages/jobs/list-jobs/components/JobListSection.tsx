@@ -13,7 +13,12 @@ import {
 
 type JobSearchFilters = Pick<
   JobListFilters,
-  "keyword" | "location" | "minSalary" | "maxSalary"
+  | "name"
+  | "companyName"
+  | "location"
+  | "minSalary"
+  | "maxSalary"
+  | "specialization"
 >;
 
 interface JobListSectionProps {
@@ -25,26 +30,38 @@ const PAGE_SIZE = 12;
 const JobListSection = ({ filters = {} }: JobListSectionProps) => {
   const [page, setPage] = useState(1);
 
-  const keyword = filters.keyword?.trim() || undefined;
+  const jobTitle = filters.name?.trim() || undefined;
+  const companyName = filters.companyName?.trim() || undefined;
   const location = filters.location?.trim() || undefined;
+  const specialization = filters.specialization;
   const minSalary = filters.minSalary;
   const maxSalary = filters.maxSalary;
 
   useEffect(() => {
     setPage(1);
-  }, [keyword, location, minSalary, maxSalary]);
+  }, [jobTitle, companyName, location, specialization, minSalary, maxSalary]);
 
   const queryFilters = useMemo<JobListFilters>(
     () => ({
       page,
       size: PAGE_SIZE,
-      keyword,
+      name: jobTitle,
+      companyName: companyName,
       location,
+      specialization,
       minSalary,
       maxSalary,
       active: true,
     }),
-    [keyword, location, minSalary, maxSalary, page],
+    [
+      jobTitle,
+      companyName,
+      location,
+      specialization,
+      minSalary,
+      maxSalary,
+      page,
+    ],
   );
   const { data, isLoading, isError, isFetching } = useGetJobs(queryFilters);
 

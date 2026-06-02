@@ -7,7 +7,12 @@ import type { JobListFilters } from "@/types/job";
 
 type JobSearchFilters = Pick<
   JobListFilters,
-  "keyword" | "location" | "minSalary" | "maxSalary"
+  | "name"
+  | "companyName"
+  | "location"
+  | "minSalary"
+  | "maxSalary"
+  | "specialization"
 >;
 
 const JobListPage = () => {

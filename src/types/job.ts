@@ -30,7 +30,7 @@ export interface JobListFilters {
   location?: string;
   levels?: string[];
   specialization?: number;
-  company?: string;
+  companyName?: string;
   minSalary?: number;
   maxSalary?: number;
   name?: string;

@@ -59,7 +59,12 @@ const inputClassName =
 
 type JobSearchFilters = Pick<
   JobListFilters,
-  "keyword" | "location" | "minSalary" | "maxSalary"
+  | "name"
+  | "companyName"
+  | "location"
+  | "minSalary"
+  | "maxSalary"
+  | "specialization"
 >;
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -150,12 +155,16 @@ interface SubcategoryPanelProps {
   industryName: string;
   specializations: Specialization[] | undefined;
   isLoading: boolean;
+  selectedSpecializationId?: number;
+  onSelect: (specializationId: number) => void;
 }
 
 const SubcategoryPanel = ({
   industryName,
   specializations,
   isLoading,
+  selectedSpecializationId,
+  onSelect,
 }: SubcategoryPanelProps) => {
   if (isLoading) {
     return (
@@ -186,7 +195,12 @@ const SubcategoryPanel = ({
             <button
               key={specialization.id}
               type="button"
-              className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+              onClick={() => onSelect(specialization.id)}
+              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                specialization.id === selectedSpecializationId
+                  ? "border-primary/40 bg-primary/10 text-primary"
+                  : "border-slate-200 bg-slate-50 text-slate-600 hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+              }`}
             >
               {specialization.name}
             </button>
@@ -214,8 +228,12 @@ interface JobCategoryHeroProps {
 const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
   const [categoryPage, setCategoryPage] = useState(1);
   const [hoveredIndustry, setHoveredIndustry] = useState<Industry | null>(null);
-  const [keyword, setKeyword] = useState(filters.keyword ?? "");
+  const [jobTitle, setJobTitle] = useState(filters.name ?? "");
+  const [companyName, setCompanyName] = useState(filters.companyName ?? "");
   const [location, setLocation] = useState(filters.location ?? "");
+  const [selectedSpecializationId, setSelectedSpecializationId] = useState<
+    number | undefined
+  >(filters.specialization);
   const [minSalary, setMinSalary] = useState(
     filters.minSalary?.toString() ?? "",
   );
@@ -243,11 +261,20 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
   const totalCategoryPages = Math.ceil(totalItems / PAGE_SIZE);
 
   useEffect(() => {
-    setKeyword(filters.keyword ?? "");
+    setJobTitle(filters.name ?? "");
+    setCompanyName(filters.companyName ?? "");
     setLocation(filters.location ?? "");
+    setSelectedSpecializationId(filters.specialization);
     setMinSalary(filters.minSalary?.toString() ?? "");
     setMaxSalary(filters.maxSalary?.toString() ?? "");
-  }, [filters.keyword, filters.location, filters.minSalary, filters.maxSalary]);
+  }, [
+    filters.name,
+    filters.companyName,
+    filters.location,
+    filters.specialization,
+    filters.minSalary,
+    filters.maxSalary,
+  ]);
 
   const handleCategoryEnter = (industry: Industry) => {
     if (leaveTimerRef.current) {
@@ -276,9 +303,9 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
     }, 150);
   };
 
-  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const trimmedKeyword = keyword.trim();
+  const buildFilters = (overrides: Partial<JobSearchFilters> = {}) => {
+    const trimmedJobTitle = jobTitle.trim();
+    const trimmedCompanyName = companyName.trim();
     const normalizedMinSalary = minSalary.trim()
       ? Number(minSalary.trim())
       : undefined;
@@ -286,9 +313,11 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
       ? Number(maxSalary.trim())
       : undefined;
 
-    onSearch({
-      keyword: trimmedKeyword || undefined,
+    return {
+      name: trimmedJobTitle || undefined,
+      companyName: trimmedCompanyName || undefined,
       location: location.trim() || undefined,
+      specialization: selectedSpecializationId,
       minSalary:
         normalizedMinSalary !== undefined &&
         Number.isFinite(normalizedMinSalary)
@@ -299,7 +328,26 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
         Number.isFinite(normalizedMaxSalary)
           ? normalizedMaxSalary
           : undefined,
-    });
+      ...overrides,
+    };
+  };
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onSearch(buildFilters());
+  };
+
+  const handleSpecializationSelect = (specializationId: number) => {
+    const nextSpecializationId =
+      selectedSpecializationId === specializationId
+        ? undefined
+        : specializationId;
+    setSelectedSpecializationId(nextSpecializationId);
+    onSearch(
+      buildFilters({
+        specialization: nextSpecializationId,
+      }),
+    );
   };
 
   return (
@@ -314,9 +362,20 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
             <Building2 className="size-4 text-primary" />
             <input
               type="text"
-              value={keyword}
-              onChange={(event) => setKeyword(event.target.value)}
-              placeholder="Job title or company name"
+              value={companyName}
+              onChange={(event) => setCompanyName(event.target.value)}
+              placeholder="Company name"
+              className={inputClassName}
+            />
+          </div>
+          <div className="hidden h-8 w-px bg-slate-200 lg:block" />
+          <div className="flex flex-1 items-center gap-3 rounded-2xl px-4 py-2">
+            <Search className="size-4 text-primary" />
+            <input
+              type="text"
+              value={jobTitle}
+              onChange={(event) => setJobTitle(event.target.value)}
+              placeholder="Job title"
               className={inputClassName}
             />
           </div>
@@ -332,7 +391,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
             />
           </div>
           <div className="hidden h-8 w-px bg-slate-200 lg:block" />
-          <div className="flex flex-1 items-center gap-3 rounded-2xl px-4 py-2">
+          <div className="flex flex-[1.25] items-center gap-3 rounded-2xl px-4 py-2">
             <Banknote className="size-4 shrink-0 text-primary" />
             <input
               type="text"
@@ -459,6 +518,8 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
                 industryName={hoveredIndustry.name}
                 specializations={specializationsData?.data ?? []}
                 isLoading={specializationsLoading}
+                selectedSpecializationId={selectedSpecializationId}
+                onSelect={handleSpecializationSelect}
               />
             ) : (
               <ImageSlider />
