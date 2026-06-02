@@ -33,25 +33,15 @@ const AppFooter = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
-          {footerLinks.map((item) =>
-            item.external ? (
-              <a
-                key={item.label}
-                href={item.to}
-                className="transition-colors hover:text-primary"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <Link
-                key={item.label}
-                to={item.to}
-                className="transition-colors hover:text-primary"
-              >
-                {item.label}
-              </Link>
-            ),
-          )}
+          {footerLinks.map((item) => (
+            <Link
+              key={item.label}
+              to={item.to}
+              className="transition-colors hover:text-primary"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
         <div className="flex items-center gap-3">
@@ -93,8 +83,10 @@ const AppFooter = () => {
             </PopoverContent>
           </Popover>
           <a
-            href="mailto:support@jobportal.com"
-            aria-label="Contact"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=support@jobportal.com&su=Job%20Portal%20Support%20Request"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Contact support"
             className="rounded-full bg-slate-100 p-2 text-slate-600 transition-colors hover:bg-primary hover:text-white"
           >
             <Mail className="size-4" />
