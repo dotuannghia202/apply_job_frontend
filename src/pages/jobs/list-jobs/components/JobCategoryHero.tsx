@@ -425,9 +425,12 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
         </form>
 
         {/* ── Category browser + right panel ── */}
-        <div className="flex gap-4" style={{ minHeight: 340 }}>
+        <div
+          className="flex flex-col md:flex-row gap-4"
+          style={{ minHeight: 340 }}
+        >
           {/* Left: Category list */}
-          <div className="flex w-64 shrink-0 flex-col rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex md:w-64 shrink-0 flex-col rounded-2xl border border-slate-200 bg-white shadow-sm">
             <ul className="flex-1 divide-y divide-slate-100">
               {industriesLoading ? (
                 <li className="flex items-center justify-center h-full">

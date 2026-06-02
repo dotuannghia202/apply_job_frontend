@@ -10,7 +10,14 @@ import { JobPopup } from "@/pages/jobs/list-jobs/components/JobPopup";
 import { useToggleSaveJob } from "@/api/users/user.queries";
 import { ApplyJobModal } from "@/pages/jobs/components/ApplyJobModal";
 
-const JobCard = ({ job }: { job: Job }) => {
+type JobCardViewMode = "grid" | "list";
+
+interface JobCardProps {
+  job: Job;
+  viewMode?: JobCardViewMode;
+}
+
+const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
   const anchorRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<number | null>(null);
   const openTimerRef = useRef<number | null>(null);
@@ -110,10 +117,20 @@ const JobCard = ({ job }: { job: Job }) => {
         ref={anchorRef}
         onMouseEnter={scheduleOpenPopup}
         onMouseLeave={scheduleClosePopup}
-        className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+        className={cn(
+          "flex rounded-2xl border border-slate-100 bg-white shadow-sm transition-shadow hover:shadow-md",
+          viewMode === "list"
+            ? "items-start gap-6 p-5"
+            : "items-center gap-4 p-4",
+        )}
       >
         {/* Logo */}
-        <div className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white p-1.5">
+        <div
+          className={cn(
+            "flex shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white p-1.5",
+            viewMode === "list" ? "size-20" : "size-16",
+          )}
+        >
           {companyLogo ? (
             <img
               src={companyLogo}
@@ -128,10 +145,9 @@ const JobCard = ({ job }: { job: Job }) => {
         </div>
 
         {/* Content */}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start gap-3">
-            <div className="min-w-0 flex-1">
-              {/* HOT badge + Title */}
+        {viewMode === "list" ? (
+          <div className="flex flex-col md:flex-row min-w-0 flex-1 items-center justify-start gap-6">
+            <div className="min-w-[320px]">
               <div className="flex flex-wrap items-center gap-1.5">
                 {job.active && (
                   <Badge className="rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white hover:bg-rose-600">
@@ -151,8 +167,6 @@ const JobCard = ({ job }: { job: Job }) => {
                   {job.name}
                 </h3>
               </div>
-
-              {/* Company name */}
               <p
                 className="mt-0.5 truncate text-[11.5px] font-medium uppercase tracking-wide text-slate-400"
                 title={companyName}
@@ -161,40 +175,107 @@ const JobCard = ({ job }: { job: Job }) => {
               </p>
             </div>
 
-            {/* Heart button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={`${isSaved ? "Unsave" : "Save"} ${job.name}`}
-              disabled={isSaving}
-              className={cn(
-                "size-9 shrink-0 rounded-full border transition-colors",
-                isSaved
-                  ? "border-rose-200 bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600"
-                  : "border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600",
-              )}
-              onClick={handleToggleSave}
-            >
-              <Heart className={cn("size-4", isSaved && "fill-current")} />
-            </Button>
+            <div className="flex shrink-0 flex-col items-start gap-2 md:min-w-[220px]">
+              <Badge
+                variant="secondary"
+                className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+              >
+                {salaryText}
+              </Badge>
+              <Badge
+                variant="secondary"
+                className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+              >
+                {getCityFromAddress(job.location)}
+              </Badge>
+            </div>
           </div>
+        ) : (
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-3">
+              <div className="min-w-0 flex-1">
+                {/* HOT badge + Title */}
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {job.active && (
+                    <Badge className="rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white hover:bg-rose-600">
+                      HOT
+                    </Badge>
+                  )}
+                  <h3
+                    className="min-w-0 flex-1 text-[15px] font-bold leading-snug text-slate-900"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                    title={job.name}
+                  >
+                    {job.name}
+                  </h3>
+                </div>
 
-          {/* Badges */}
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Badge
-              variant="secondary"
-              className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
-            >
-              {salaryText}
-            </Badge>
-            <Badge
-              variant="secondary"
-              className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
-            >
-              {getCityFromAddress(job.location)}
-            </Badge>
+                {/* Company name */}
+                <p
+                  className="mt-0.5 truncate text-[11.5px] font-medium uppercase tracking-wide text-slate-400"
+                  title={companyName}
+                >
+                  {companyName}
+                </p>
+              </div>
+
+              {/* Heart button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`${isSaved ? "Unsave" : "Save"} ${job.name}`}
+                disabled={isSaving}
+                className={cn(
+                  "size-9 shrink-0 rounded-full border transition-colors",
+                  isSaved
+                    ? "border-rose-200 bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600"
+                    : "border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600",
+                )}
+                onClick={handleToggleSave}
+              >
+                <Heart className={cn("size-4", isSaved && "fill-current")} />
+              </Button>
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Badge
+                variant="secondary"
+                className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+              >
+                {salaryText}
+              </Badge>
+              <Badge
+                variant="secondary"
+                className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+              >
+                {getCityFromAddress(job.location)}
+              </Badge>
+            </div>
           </div>
-        </div>
+        )}
+
+        {viewMode === "list" ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={`${isSaved ? "Unsave" : "Save"} ${job.name}`}
+            disabled={isSaving}
+            className={cn(
+              "size-9 shrink-0 rounded-full border transition-colors",
+              isSaved
+                ? "border-rose-200 bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600"
+                : "border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600",
+            )}
+            onClick={handleToggleSave}
+          >
+            <Heart className={cn("size-4", isSaved && "fill-current")} />
+          </Button>
+        ) : null}
       </article>
 
       {isPopupOpen && anchorRef.current ? (
