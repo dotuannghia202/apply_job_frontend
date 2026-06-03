@@ -1,5 +1,5 @@
-import { Bell, MessageCircleMore } from "lucide-react";
-import { useState } from "react";
+import { Bell, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { fetchAccountInfo } from "@/api/users/user.api";
@@ -85,6 +85,8 @@ function replaceCandidateEmployerRole(
 const AppHeader = () => {
   const [isSwitchingRole, setIsSwitchingRole] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
@@ -98,6 +100,11 @@ const AppHeader = () => {
   const isEmployerMode = mode === "EMPLOYER";
   const isModeSwitchPending =
     isSwitchingRole || updateUserRolesMutation.isPending;
+
+  // Đóng menu mobile khi chuyển trang
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const handleModeChange = (checked: boolean) => {
     if (!user || isModeSwitchPending) return;
@@ -188,12 +195,28 @@ const AppHeader = () => {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
-      <div className="mx-auto w-full max-w-7xl px-6">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
         <div className="flex items-center justify-between py-3">
-          <div className="flex items-center gap-8">
-            <span className="text-2xl font-extrabold tracking-tight text-primary">
+          <div className="flex items-center gap-3 md:gap-8">
+            {/* Nút Hamburger Menu (Mobile) */}
+            <button
+              type="button"
+              className="block rounded-md p-1.5 text-slate-600 transition-colors hover:bg-slate-100 hover:text-primary md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="size-6" />
+              ) : (
+                <Menu className="size-6" />
+              )}
+            </button>
+
+            <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary">
               Job Portal
             </span>
+
+            {/* Thanh Menu (Desktop) */}
             <div className="hidden gap-6 md:flex">
               {navLinks.map((link) => (
                 <NavLink
@@ -215,12 +238,13 @@ const AppHeader = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Nút Switch Role */}
             {canSwitchCandidateEmployer && (
-              <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-1.5 sm:px-3">
+              <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 sm:px-3 sm:py-1.5">
                 <span
                   className={cn(
-                    "hidden text-xs font-semibold transition-colors sm:inline",
+                    "hidden text-xs font-semibold transition-colors lg:inline", // Chuyển sm -> lg để không bị chật trên đt
                     !isEmployerMode ? "text-primary" : "text-slate-500",
                   )}
                 >
@@ -235,7 +259,7 @@ const AppHeader = () => {
                 />
                 <span
                   className={cn(
-                    "hidden text-xs font-semibold transition-colors sm:inline",
+                    "hidden text-xs font-semibold transition-colors lg:inline", // Chuyển sm -> lg để không bị chật trên đt
                     isEmployerMode ? "text-primary" : "text-slate-500",
                   )}
                 >
@@ -244,6 +268,7 @@ const AppHeader = () => {
               </div>
             )}
 
+            {/* Nút Notification */}
             <button
               type="button"
               aria-label="Notifications"
@@ -252,23 +277,42 @@ const AppHeader = () => {
             >
               <Bell className="size-5" />
             </button>
-            {isNotificationOpen && (
-              <NotificationDropdown
-                onClose={() => setIsNotificationOpen(false)}
-              />
-            )}
-            <button
-              type="button"
-              aria-label="Messages"
-              className="rounded-full p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-primary"
-            >
-              <MessageCircleMore className="size-5" />
-            </button>
 
             <UserAvatarMenu />
           </div>
         </div>
       </div>
+
+      {/* Menu Xổ Xuống (Mobile) */}
+      {isMobileMenuOpen && (
+        <div className="absolute left-0 top-full w-full border-b border-slate-200 bg-white shadow-lg md:hidden">
+          <div className="flex flex-col px-4 py-4 space-y-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.end}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  cn(
+                    "block rounded-md px-3 py-2.5 text-base font-medium transition-colors",
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-primary",
+                  )
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Dropdown Notification */}
+      {isNotificationOpen && (
+        <NotificationDropdown onClose={() => setIsNotificationOpen(false)} />
+      )}
     </nav>
   );
 };
