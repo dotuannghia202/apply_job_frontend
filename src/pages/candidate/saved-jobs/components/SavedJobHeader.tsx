@@ -3,8 +3,8 @@ type SavedJobHeaderProps = {
 };
 
 const SavedJobHeader = ({ savedCount }: SavedJobHeaderProps) => (
-  <header className="flex flex-col gap-2">
-    <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+  <header className="flex items-center justify-between -mt-6">
+    <h1 className="text-[2rem] font-bold tracking-tight text-foreground">
       Saved Jobs
     </h1>
     <p className="text-base text-muted-foreground">

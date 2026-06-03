@@ -22,7 +22,7 @@ const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => (
       job.isClosed ? "bg-secondary/40" : "bg-card"
     }`}
   >
-    <div className="flex w-full flex-1 items-start gap-4">
+    <div className="flex w-full flex-1 items-center gap-4">
       {job.logoUrl ? (
         <img
           src={job.logoUrl}
@@ -52,7 +52,10 @@ const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => (
         <div className="mt-2 flex flex-wrap items-center gap-4">
           <span className="text-base font-bold text-primary">{job.salary}</span>
           <div className="flex items-center text-sm text-muted-foreground">
-            <MapPin className="mr-1 h-4 w-4" aria-hidden="true" />
+            <MapPin
+              className="mr-1 h-4 w-4 text-destructive"
+              aria-hidden="true"
+            />
             {job.location}
           </div>
         </div>
@@ -77,7 +80,7 @@ const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => (
           className="w-full whitespace-nowrap sm:w-auto"
         >
           <Link to={`/jobs/detail/${job.id}`}>
-            <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
+            <Eye className=" h-4 w-4" aria-hidden="true" />
             View details
           </Link>
         </Button>
@@ -85,7 +88,7 @@ const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => (
         <div className="flex w-full items-center gap-3 sm:w-auto">
           <Button
             asChild={!job.isClosed && !job.isApplied}
-            className="flex-1 whitespace-nowrap bg-gradient-to-r from-primary to-primary/70 text-primary-foreground sm:flex-none"
+            className="w-25.75 flex-1  text-white hover:bg-primary/70 sm:flex-none disabled:pointer-events-auto disabled:cursor-not-allowed"
             disabled={job.isClosed || job.isApplied}
           >
             {job.isApplied ? (

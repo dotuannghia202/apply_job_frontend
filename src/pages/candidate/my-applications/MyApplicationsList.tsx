@@ -98,7 +98,7 @@ const MyApplicationsList = () => {
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12">
       <section>
-        <h1 className="mb-2 text-[2.75rem] font-bold leading-tight tracking-[-0.02em] text-foreground">
+        <h1 className="mb-2 text-[2rem] font-bold leading-tight tracking-[-0.02em] text-foreground">
           My Applications
         </h1>
         <p className="text-base text-muted-foreground">

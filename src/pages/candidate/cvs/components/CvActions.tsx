@@ -22,7 +22,7 @@ const CvActions = ({
       asChild
       variant="ghost"
       size="icon"
-      className="text-muted-foreground hover:text-primary"
+      className="text-primary hover:text-primary"
       title="View CV"
     >
       <Link to={`/my-cv/${item.id}`}>
@@ -32,7 +32,7 @@ const CvActions = ({
     <Button
       variant="ghost"
       size="icon"
-      className="text-muted-foreground hover:text-primary"
+      className="text-muted-foreground"
       title="Download"
       type="button"
       disabled={!item.fileUrl}

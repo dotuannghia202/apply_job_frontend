@@ -1,10 +1,7 @@
 import { useState } from "react";
 
 import { uploadResumeFile } from "@/api/files/file.api";
-import {
-  useCreateResume,
-  useGetMyResumes,
-} from "@/api/resumes/resume.queries";
+import { useCreateResume, useGetMyResumes } from "@/api/resumes/resume.queries";
 import { Card } from "@/components/ui/card";
 import {
   CreateResumeForm,
@@ -106,14 +103,16 @@ const MyCV = () => {
       setUploadedDraft(null);
     } catch (error) {
       console.error("Failed to create CV", error);
-      setCreateError("Unable to save this CV. Please check the form and retry.");
+      setCreateError(
+        "Unable to save this CV. Please check the form and retry.",
+      );
     }
   };
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+    <main className="mx-auto max-w-7xl px-6 py-12">
       <header className="mb-12">
-        <h1 className="mb-2 text-[2.75rem] font-semibold leading-tight tracking-[-0.02em] text-foreground">
+        <h1 className="mb-2 text-[2rem] font-bold leading-tight tracking-[-0.02em] text-foreground">
           My CV Management
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
@@ -121,7 +120,7 @@ const MyCV = () => {
         </p>
       </header>
 
-      <section className="mb-16 space-y-6">
+      <section className="mb-12 space-y-6">
         <UploadDropzone
           isUploading={isUploading}
           onFileSelect={handleUploadFile}

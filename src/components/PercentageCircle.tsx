@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-export default function ScoreRing({ score }: { score: number }) {
+export default function ScoreRing({
+  score,
+  size,
+}: {
+  score: number;
+  size?: number;
+}) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -11,7 +17,7 @@ export default function ScoreRing({ score }: { score: number }) {
   }, [score]);
 
   return (
-    <div className="w-10 h-10">
+    <div className={`w-${size || 10} h-${size || 10}`}>
       <CircularProgressbar
         value={value}
         text={`${score}%`}

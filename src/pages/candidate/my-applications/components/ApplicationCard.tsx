@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import FitScoreCard from "@/pages/candidate/my-applications/components/FitScoreCard";
+
 import type { ApplicationItem } from "@/pages/candidate/my-applications/components/types";
+import ScoreRing from "@/components/PercentageCircle";
 
 const statusStyles = {
-  Pending: "bg-secondary text-foreground/70",
+  Pending: "bg-chart-4 text-white",
   Reviewing: "bg-secondary text-foreground/70",
   Interview: "bg-primary/15 text-primary",
   Accepted: "bg-emerald-100 text-emerald-700",
@@ -31,7 +32,7 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
         <h3 className="text-[1.375rem] font-bold text-foreground">
           {item.title}
         </h3>
-        <p className="text-base text-muted-foreground">
+        <p className="text-[14px] text-muted-foreground">
           {item.company} - {item.location}
         </p>
       </div>
@@ -78,11 +79,13 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
       )}
     </div>
 
-    <div className="flex-1">
-      <FitScoreCard score={item.fitScore} />
+    <div className="flex flex-col gap-4 flex-1 items-center justify-start">
+      {/* <FitScoreCard score={item.fitScore} /> */}
+      <span className="text-muted-foreground text-[1rem]">AI Fit Score</span>
+      <ScoreRing score={item.fitScore} size={14} />
     </div>
 
-    <div className="flex flex-1 flex-col items-end gap-4">
+    <div className="flex flex-1 flex-col items-center gap-4">
       <Badge
         className={`uppercase tracking-wider ${
           statusStyles[item.status] ?? "bg-muted text-muted-foreground"
@@ -90,8 +93,8 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => (
       >
         {item.statusLabel ?? item.status}
       </Badge>
-      <Button asChild variant="secondary" className="w-full lg:w-auto">
-        <Link to={`/applications/${item.id}`}>View Details</Link>
+      <Button asChild variant="default" className="w-full lg:w-auto">
+        <Link to={`/applications/${item.id}`}>View Detail</Link>
       </Button>
     </div>
   </Card>

@@ -8,10 +8,7 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import {
-  useGetSavedJobs,
-  useToggleSaveJob,
-} from "@/api/users/user.queries";
+import { useGetSavedJobs, useToggleSaveJob } from "@/api/users/user.queries";
 import SavedJobCard from "@/pages/candidate/saved-jobs/components/SavedJobCard";
 import SavedJobEmptyState from "@/pages/candidate/saved-jobs/components/SavedJobEmptyState";
 import SavedJobHeader from "@/pages/candidate/saved-jobs/components/SavedJobHeader";
@@ -81,13 +78,12 @@ const SavedJobPage = () => {
     toggleSaveMutation.mutate(numericJobId);
   };
 
+  // console.log("Saved jobs data:", savedJobs);
+
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
+    <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12">
       <AppBreadcrumb
-        items={[
-          { label: "Jobs", to: "/jobs" },
-          { label: "Saved Jobs" },
-        ]}
+        items={[{ label: "Jobs", to: "/jobs" }, { label: "Saved Jobs" }]}
       />
 
       <SavedJobHeader savedCount={total} />
