@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  type UseQueryOptions,
+} from "@tanstack/react-query";
 import {
   fetchNotifications,
   markAsRead,
@@ -9,7 +14,7 @@ import type { NotificationListFilters } from "@/types/notification";
 
 export const useGetNotifications = (
   filters: NotificationListFilters = {},
-  options: { enabled?: boolean } = {},
+  options: Partial<UseQueryOptions<any, Error>>,
 ) => {
   const normalizedFilters: Required<
     Pick<NotificationListFilters, "page" | "size">
@@ -26,6 +31,7 @@ export const useGetNotifications = (
     enabled: options.enabled ?? true,
     staleTime: 60 * 1000,
     retry: false,
+    ...options,
   });
 };
 

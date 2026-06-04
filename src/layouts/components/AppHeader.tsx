@@ -1,6 +1,8 @@
 import { Bell, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+// 🚨 IMPORT THÊM HOOK CỦA i18n
+import { useTranslation } from "react-i18next";
 
 import { fetchAccountInfo } from "@/api/users/user.api";
 import { useUpdateUserRoles } from "@/api/users/user.queries";
@@ -12,32 +14,13 @@ import NotificationDropdown from "@/layouts/components/NotificationDropdown";
 import UserAvatarMenu from "@/layouts/components/UserAvatarMenu";
 import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
+import LanguageSwitch from "./LanguageSwitch";
 
 type HeaderNavLink = {
   label: string;
   to: string;
   end?: boolean;
 };
-
-const candidateNavLinks: HeaderNavLink[] = [
-  { label: "Find Jobs", to: "/jobs", end: true },
-  { label: "My Applications", to: "/applications" },
-  { label: "My CV", to: "/my-cv" },
-  { label: "Saved Jobs", to: "/jobs/saved" },
-];
-
-const employerNavLinks: HeaderNavLink[] = [
-  { label: "Dashboard", to: "/employer/dashboard", end: true },
-  { label: "Applicants", to: "/employer/applicants" },
-  { label: "My Jobs", to: "/employer/jobs" },
-  { label: "Post a Job", to: "/jobs/jd-generator" },
-];
-
-const adminNavLinks: HeaderNavLink[] = [
-  { label: "Dashboard", to: "/admin/dashboard", end: true },
-  { label: "User Management", to: "/admin/users" },
-  { label: "Company Management", to: "/admin/companies" },
-];
 
 const employerModePaths = ["/employer", "/jobs/jd-generator"];
 const adminModePaths = ["/admin", "/analytics/system"];
@@ -64,13 +47,6 @@ function getHeaderMode(pathname: string, roles: RoleName[]): RoleName {
   return "CANDIDATE";
 }
 
-function getNavLinks(mode: RoleName) {
-  if (mode === "ADMIN") return adminNavLinks;
-  if (mode === "EMPLOYER") return employerNavLinks;
-
-  return candidateNavLinks;
-}
-
 function replaceCandidateEmployerRole(
   roles: RoleName[],
   nextRole: "CANDIDATE" | "EMPLOYER",
@@ -83,8 +59,9 @@ function replaceCandidateEmployerRole(
 }
 
 const AppHeader = () => {
+  const { t } = useTranslation();
+
   const [isSwitchingRole, setIsSwitchingRole] = useState(false);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const location = useLocation();
@@ -95,7 +72,56 @@ const AppHeader = () => {
   const updateUserRolesMutation = useUpdateUserRoles();
   const roles = user?.roles ?? [];
   const mode = getHeaderMode(location.pathname, roles);
+
+  // 🚨 CHUYỂN LOGIC GET LINKS VÀO ĐÂY ĐỂ DÙNG HÀM t()
+  const getNavLinks = (currentMode: RoleName): HeaderNavLink[] => {
+    if (currentMode === "ADMIN") {
+      return [
+        {
+          label: t("header.adminDashboard", "Dashboard"),
+          to: "/admin/dashboard",
+          end: true,
+        },
+        {
+          label: t("header.userManagement", "User Management"),
+          to: "/admin/users",
+        },
+        {
+          label: t("header.companyManagement", "Company Management"),
+          to: "/admin/companies",
+        },
+      ];
+    }
+    if (currentMode === "EMPLOYER") {
+      return [
+        {
+          label: t("header.employerDashboard", "Dashboard"),
+          to: "/employer/dashboard",
+          end: true,
+        },
+        {
+          label: t("header.applicants", "Applicants"),
+          to: "/employer/applicants",
+        },
+        { label: t("header.myJobs", "My Jobs"), to: "/employer/jobs" },
+        { label: t("header.postJob", "Post a Job"), to: "/jobs/jd-generator" },
+      ];
+    }
+
+    // Mặc định là CANDIDATE
+    return [
+      { label: t("header.findJobs", "Find Jobs"), to: "/jobs", end: true },
+      {
+        label: t("header.myApplications", "My Applications"),
+        to: "/applications",
+      },
+      { label: t("header.myCv", "My CV"), to: "/my-cv" },
+      { label: t("header.savedJobs", "Saved Jobs"), to: "/jobs/saved" },
+    ];
+  };
+
   const navLinks = getNavLinks(mode);
+
   const canSwitchCandidateEmployer = mode !== "ADMIN";
   const isEmployerMode = mode === "EMPLOYER";
   const isModeSwitchPending =
@@ -239,16 +265,18 @@ const AppHeader = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <LanguageSwitch />
+
             {/* Nút Switch Role */}
             {canSwitchCandidateEmployer && (
               <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 sm:px-3 sm:py-1.5">
                 <span
                   className={cn(
-                    "hidden text-xs font-semibold transition-colors lg:inline", // Chuyển sm -> lg để không bị chật trên đt
+                    "hidden text-xs font-semibold transition-colors lg:inline",
                     !isEmployerMode ? "text-primary" : "text-slate-500",
                   )}
                 >
-                  Candidate
+                  {t("header.candidate", "Candidate")}
                 </span>
                 <Switch
                   checked={isEmployerMode}
@@ -259,24 +287,17 @@ const AppHeader = () => {
                 />
                 <span
                   className={cn(
-                    "hidden text-xs font-semibold transition-colors lg:inline", // Chuyển sm -> lg để không bị chật trên đt
+                    "hidden text-xs font-semibold transition-colors lg:inline",
                     isEmployerMode ? "text-primary" : "text-slate-500",
                   )}
                 >
-                  Employer
+                  {t("header.employer", "Employer")}
                 </span>
               </div>
             )}
 
             {/* Nút Notification */}
-            <button
-              type="button"
-              aria-label="Notifications"
-              className="rounded-full p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-primary"
-              onClick={() => setIsNotificationOpen((prev) => !prev)}
-            >
-              <Bell className="size-5" />
-            </button>
+            <NotificationDropdown currentRole={mode} />
 
             <UserAvatarMenu />
           </div>
@@ -307,11 +328,6 @@ const AppHeader = () => {
             ))}
           </div>
         </div>
-      )}
-
-      {/* Dropdown Notification */}
-      {isNotificationOpen && (
-        <NotificationDropdown onClose={() => setIsNotificationOpen(false)} />
       )}
     </nav>
   );

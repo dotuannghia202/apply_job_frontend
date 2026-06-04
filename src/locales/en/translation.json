@@ -1,0 +1,17 @@
+{
+  "header": {
+    "candidate": "Candidate",
+    "employer": "Employer",
+    "findJobs": "Find Jobs",
+    "myApplications": "My Applications",
+    "myCv": "My CV",
+    "savedJobs": "Saved Jobs",
+    "employerDashboard": "Dashboard",
+    "applicants": "Applicants",
+    "myJobs": "My Jobs",
+    "postJob": "Post a Job",
+    "adminDashboard": "Dashboard",
+    "userManagement": "User Management",
+    "companyManagement": "Company Management"
+  }
+}

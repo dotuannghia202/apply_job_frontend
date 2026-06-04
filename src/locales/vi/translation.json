@@ -1,0 +1,17 @@
+{
+  "header": {
+    "candidate": "Ứng viên",
+    "employer": "Nhà tuyển dụng",
+    "findJobs": "Tìm việc làm",
+    "myApplications": "Việc làm đã nộp",
+    "myCv": "Hồ sơ của tôi",
+    "savedJobs": "Việc làm đã lưu",
+    "employerDashboard": "Bảng điều khiển",
+    "applicants": "Quản lý Ứng viên",
+    "myJobs": "Quản lý Tin đăng",
+    "postJob": "Đăng tin mới",
+    "adminDashboard": "Bảng điều khiển",
+    "userManagement": "Quản lý Người dùng",
+    "companyManagement": "Quản lý Công ty"
+  }
+}
