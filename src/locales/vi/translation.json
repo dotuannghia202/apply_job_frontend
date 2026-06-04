@@ -105,6 +105,34 @@
         "deleteCv": "Xóa CV"
       }
     },
+    "form": {
+      "title": "Hoàn tất thông tin CV",
+      "subtitle": "Tệp đã được tải lên thành công. Hãy bổ sung thông tin trước khi lưu vào hồ sơ của bạn.",
+      "uploadedFileUrl": "Đường dẫn tệp đã tải lên",
+      "fileName": "Tên tệp",
+      "specialization": {
+        "label": "Chuyên môn",
+        "select": "Chọn chuyên môn",
+        "search": "Tìm chuyên môn...",
+        "loading": "Đang tải chuyên môn...",
+        "empty": "Không tìm thấy chuyên môn.",
+        "clear": "Xóa chuyên môn đã chọn"
+      },
+      "skills": {
+        "label": "Kỹ năng",
+        "select": "Chọn kỹ năng",
+        "selectedCount": "Đã chọn {{count}} kỹ năng",
+        "search": "Tìm kỹ năng...",
+        "loading": "Đang tải kỹ năng...",
+        "empty": "Không tìm thấy kỹ năng.",
+        "remove": "Xóa {{skillName}}"
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "saving": "Đang lưu CV...",
+        "save": "Lưu CV"
+      }
+    },
     "errors": {
       "notPdf": "Vui lòng tải lên file định dạng PDF.",
       "fileTooLarge": "File PDF phải có dung lượng từ 5MB trở xuống.",

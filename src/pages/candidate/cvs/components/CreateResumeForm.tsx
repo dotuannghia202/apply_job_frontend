@@ -1,5 +1,6 @@
 import { Check, ChevronsUpDown, FileText, LoaderCircle, X } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useGetSkills } from "@/api/skills/skill.queries";
 import { useGetSpecializations } from "@/api/specializations/specialization.queries";
@@ -56,6 +57,7 @@ function SpecializationSelect({
   value: SelectedSpecialization;
   onChange: (next: SelectedSpecialization) => void;
 }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
@@ -73,7 +75,7 @@ function SpecializationSelect({
   return (
     <div className="flex flex-col gap-2">
       <Label className="text-sm font-semibold text-slate-700">
-        Specialization
+        {t("myCVManagement.form.specialization.label")}
       </Label>
       <Popover
         open={open}
@@ -92,7 +94,7 @@ function SpecializationSelect({
             onFocus={() => setOpen(true)}
           >
             <span className={cn("truncate", !value && "text-slate-400")}>
-              {value?.name ?? "Select specialization"}
+              {value?.name ?? t("myCVManagement.form.specialization.select")}
             </span>
             <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-60" />
           </Button>
@@ -102,13 +104,13 @@ function SpecializationSelect({
             <CommandInput
               value={search}
               onValueChange={setSearch}
-              placeholder="Search specialization..."
+              placeholder={t("myCVManagement.form.specialization.search")}
             />
             <CommandList>
               <CommandEmpty>
                 {specializationsQuery.isFetching
-                  ? "Loading specializations..."
-                  : "No specialization found."}
+                  ? t("myCVManagement.form.specialization.loading")
+                  : t("myCVManagement.form.specialization.empty")}
               </CommandEmpty>
               <CommandGroup>
                 {value ? (
@@ -120,7 +122,7 @@ function SpecializationSelect({
                     }}
                   >
                     <X className="mr-2 size-4 opacity-70" />
-                    Clear specialization
+                    {t("myCVManagement.form.specialization.clear")}
                   </CommandItem>
                 ) : null}
                 {specializations.map((specialization) => (
@@ -162,6 +164,7 @@ function SkillSelect({
   value: Skill[];
   onChange: (next: Skill[]) => void;
 }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
@@ -188,7 +191,9 @@ function SkillSelect({
 
   return (
     <div className="flex flex-col gap-2">
-      <Label className="text-sm font-semibold text-slate-700">Skills</Label>
+      <Label className="text-sm font-semibold text-slate-700">
+        {t("myCVManagement.form.skills.label")}
+      </Label>
       {value.length ? (
         <div className="flex flex-wrap gap-2">
           {value.map((skill) => (
@@ -200,7 +205,9 @@ function SkillSelect({
               {skill.name}
               <button
                 type="button"
-                aria-label={`Remove ${skill.name}`}
+                aria-label={t("myCVManagement.form.skills.remove", {
+                  skillName: skill.name,
+                })}
                 onClick={() =>
                   onChange(value.filter((item) => item.id !== skill.id))
                 }
@@ -229,7 +236,11 @@ function SkillSelect({
             onFocus={() => setOpen(true)}
           >
             <span className={cn("truncate", !value.length && "text-slate-400")}>
-              {value.length ? `${value.length} skill(s) selected` : "Select skills"}
+              {value.length
+                ? t("myCVManagement.form.skills.selectedCount", {
+                    count: value.length,
+                  })
+                : t("myCVManagement.form.skills.select")}
             </span>
             <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-60" />
           </Button>
@@ -239,11 +250,13 @@ function SkillSelect({
             <CommandInput
               value={search}
               onValueChange={setSearch}
-              placeholder="Search skills..."
+              placeholder={t("myCVManagement.form.skills.search")}
             />
             <CommandList>
               <CommandEmpty>
-                {skillsQuery.isFetching ? "Loading skills..." : "No skill found."}
+                {skillsQuery.isFetching
+                  ? t("myCVManagement.form.skills.loading")
+                  : t("myCVManagement.form.skills.empty")}
               </CommandEmpty>
               <CommandGroup>
                 {skills.map((skill) => {
@@ -280,6 +293,7 @@ export function CreateResumeForm({
   onCancel,
   onSubmit,
 }: CreateResumeFormProps) {
+  const { t } = useTranslation();
   const [fileName, setFileName] = useState(draft.fileName);
   const [specialization, setSpecialization] =
     useState<SelectedSpecialization>(null);
@@ -308,11 +322,10 @@ export function CreateResumeForm({
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-950">
-                Complete CV information
+                {t("myCVManagement.form.title")}
               </h2>
               <p className="mt-1 text-sm text-slate-500">
-                File uploaded successfully. Add the metadata before saving it to
-                your profile.
+                {t("myCVManagement.form.subtitle")}
               </p>
             </div>
           </div>
@@ -323,13 +336,13 @@ export function CreateResumeForm({
             onClick={onCancel}
           >
             <X className="size-4" />
-            Cancel
+            {t("myCVManagement.form.actions.cancel")}
           </Button>
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-            Uploaded file URL
+            {t("myCVManagement.form.uploadedFileUrl")}
           </p>
           <a
             href={draft.fileUrl}
@@ -343,8 +356,11 @@ export function CreateResumeForm({
 
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="resume-file-name" className="text-sm font-semibold text-slate-700">
-              File name
+            <Label
+              htmlFor="resume-file-name"
+              className="text-sm font-semibold text-slate-700"
+            >
+              {t("myCVManagement.form.fileName")}
             </Label>
             <Input
               id="resume-file-name"
@@ -370,16 +386,16 @@ export function CreateResumeForm({
             disabled={isSubmitting}
             onClick={onCancel}
           >
-            Cancel
+            {t("myCVManagement.form.actions.cancel")}
           </Button>
           <Button type="submit" disabled={isSubmitting || !fileName.trim()}>
             {isSubmitting ? (
               <>
                 <LoaderCircle className="size-4 animate-spin" />
-                Saving CV...
+                {t("myCVManagement.form.actions.saving")}
               </>
             ) : (
-              "Save CV"
+              t("myCVManagement.form.actions.save")
             )}
           </Button>
         </div>

@@ -105,6 +105,34 @@
         "deleteCv": "Delete CV"
       }
     },
+    "form": {
+      "title": "Complete CV information",
+      "subtitle": "File uploaded successfully. Add the metadata before saving it to your profile.",
+      "uploadedFileUrl": "Uploaded file URL",
+      "fileName": "File name",
+      "specialization": {
+        "label": "Specialization",
+        "select": "Select specialization",
+        "search": "Search specialization...",
+        "loading": "Loading specializations...",
+        "empty": "No specialization found.",
+        "clear": "Clear specialization"
+      },
+      "skills": {
+        "label": "Skills",
+        "select": "Select skills",
+        "selectedCount": "{{count}} skill(s) selected",
+        "search": "Search skills...",
+        "loading": "Loading skills...",
+        "empty": "No skill found.",
+        "remove": "Remove {{skillName}}"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "saving": "Saving CV...",
+        "save": "Save CV"
+      }
+    },
     "errors": {
       "notPdf": "Please upload a PDF file.",
       "fileTooLarge": "PDF file must be 5MB or smaller.",
