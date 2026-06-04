@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
 import { LoaderCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ import { useAuthStore } from "@/store/auth.store";
 
 export const LoginForm = () => {
   console.count("Render LoginForm");
+  const { t } = useTranslation();
 
   const [formLogin, setFormLogin] = React.useState<LoginRequest>({
     username: "",
@@ -46,18 +48,18 @@ export const LoginForm = () => {
     const newErrors = { email: "", password: "", server: "" };
 
     if (!formLogin.username) {
-      newErrors.email = "Email is required!";
+      newErrors.email = t("auth.validation.emailRequired");
       valid = false;
     } else if (!/\S+@\S+\.\S+/.test(formLogin.username.toString())) {
-      newErrors.email = "Email is invalid!";
+      newErrors.email = t("auth.validation.emailInvalid");
       valid = false;
     }
 
     if (!formLogin.password) {
-      newErrors.password = "Password is required!";
+      newErrors.password = t("auth.validation.passwordRequired");
       valid = false;
     } else if (formLogin.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters!";
+      newErrors.password = t("auth.validation.passwordMinLength");
       valid = false;
     }
     setErrors(newErrors);
@@ -82,12 +84,12 @@ export const LoginForm = () => {
           if (error.response?.data.statusCode === 401) {
             setErrors((prev) => ({
               ...prev,
-              server: "Incorrect email or password!",
+              server: t("auth.login.errors.invalidCredentials"),
             }));
           } else if (error.request) {
             setErrors((prev) => ({
               ...prev,
-              server: "Network error! please check your internet connection.",
+              server: t("auth.errors.network"),
             }));
           } else {
             setErrors((prev) => ({
@@ -98,7 +100,7 @@ export const LoginForm = () => {
         } else {
           setErrors((prev) => ({
             ...prev,
-            server: "An unexpected error occurred.",
+            server: t("auth.errors.unexpected"),
           }));
         }
       } finally {
@@ -122,14 +124,14 @@ export const LoginForm = () => {
           htmlFor="user_name"
           className={errors.email ? "text-red-500" : "text-white"}
         >
-          Email
+          {t("auth.fields.email")}
         </Label>
         <Input
           id="user_name"
           name="username"
           onKeyDown={preventSpaceKey}
           onChange={handleChange}
-          placeholder="Johndoe@gmail.com"
+          placeholder={t("auth.placeholders.emailExample")}
           className={`h-12 transition-all duration-200 focus-visible:ring-green-500/50 ${
             errors.email
               ? "bg-white border-red-500 border-2 text-black shadow-[0_0_10px_rgba(239,68,68,0.2)]"
@@ -148,14 +150,14 @@ export const LoginForm = () => {
           htmlFor="password"
           className={errors.password ? "text-red-500" : "text-white"}
         >
-          Password
+          {t("auth.fields.password")}
         </Label>
         <PasswordInput
           id="password"
           name="password"
           onKeyDown={preventSpaceKey}
           onChange={handleChange}
-          placeholder="Enter your password ..."
+          placeholder={t("auth.placeholders.password")}
           className={`h-12 transition-all duration-200 focus-visible:ring-green-500/50 ${
             errors.password
               ? "bg-white border-red-500 border-2 text-black shadow-[0_0_10px_rgba(239,68,68,0.2)]"
@@ -175,7 +177,7 @@ export const LoginForm = () => {
           onClick={() => navigate("/forgot-password")}
           className="text-sm text-gray-500 hover:text-gray-300 underline underline-offset-4 cursor-pointer"
         >
-          Forgot Password
+          {t("auth.login.forgotPassword")}
         </button>
       </div>
 
@@ -187,7 +189,7 @@ export const LoginForm = () => {
         {isLoading ? (
           <LoaderCircle className="w-5 h-5 animate-spin" />
         ) : (
-          "Sign in"
+          t("auth.login.submit")
         )}
       </Button>
 

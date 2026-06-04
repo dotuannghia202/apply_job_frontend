@@ -481,5 +481,72 @@
         "save": "Lưu"
       }
     }
+  },
+  "languageSwitch": {
+    "toggle": "Chuyển đổi ngôn ngữ"
+  },
+  "auth": {
+    "brand": "Job Portal",
+    "common": {
+      "gotIt": "Đã hiểu"
+    },
+    "errors": {
+      "network": "Lỗi mạng! Vui lòng kiểm tra kết nối internet của bạn.",
+      "unexpected": "Đã xảy ra lỗi không mong muốn."
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Mật khẩu",
+      "fullName": "Họ và tên"
+    },
+    "placeholders": {
+      "email": "Nhập email của bạn ...",
+      "emailExample": "nguyenvana@gmail.com",
+      "password": "Nhập mật khẩu của bạn ...",
+      "fullName": "Nhập họ và tên ..."
+    },
+    "validation": {
+      "emailRequired": "Vui lòng nhập email!",
+      "emailInvalid": "Email không hợp lệ!",
+      "passwordRequired": "Vui lòng nhập mật khẩu!",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự!",
+      "nameRequired": "Vui lòng nhập tên!"
+    },
+    "layout": {
+      "bannerTitle": "Người tìm việc nói gì về chúng tôi.",
+      "bannerQuote": "Tìm kiếm và ứng tuyển công việc mơ ước giờ đây dễ dàng hơn bao giờ hết. Chỉ cần duyệt việc làm và ứng tuyển khi bạn muốn.",
+      "cardTitle": "Tìm đúng việc, đúng nơi và ứng tuyển ngay",
+      "cardSubtitle": "Hãy là một trong những người đầu tiên trải nghiệm cách bắt đầu dễ dàng nhất."
+    },
+    "login": {
+      "title": "Chào mừng trở lại",
+      "subtitle": "Vui lòng nhập thông tin tài khoản của bạn",
+      "createAccount": "Bạn chưa có tài khoản? Tạo tài khoản",
+      "forgotPassword": "Quên mật khẩu",
+      "submit": "Đăng nhập",
+      "errors": {
+        "invalidCredentials": "Email hoặc mật khẩu không chính xác!"
+      }
+    },
+    "register": {
+      "title": "Tham gia cùng chúng tôi để tìm công việc phù hợp với bạn.",
+      "subtitle": "Bắt đầu hành trình của bạn bằng cách đăng ký tài khoản.",
+      "login": "Đã có tài khoản? Đăng nhập",
+      "submit": "Đăng ký",
+      "success": "Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản.",
+      "errors": {
+        "failed": "Đăng ký thất bại! Vui lòng thử lại."
+      }
+    },
+    "forgotPassword": {
+      "title": "Quên mật khẩu",
+      "subtitle": "Nhập email để nhận mật khẩu mới.",
+      "backToLogin": "Quay lại đăng nhập",
+      "submit": "Gửi mật khẩu mới",
+      "successMessage": "Job Portal đã gửi mật khẩu mới đến email của bạn. Vui lòng kiểm tra hộp thư để lấy mật khẩu mới.",
+      "errors": {
+        "failed": "Quên mật khẩu thất bại! Vui lòng thử lại."
+      }
+    }
   }
 }

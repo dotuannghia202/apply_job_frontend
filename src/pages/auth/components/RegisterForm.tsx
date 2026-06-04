@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ import { LoaderCircle } from "lucide-react";
 import { preventSpaceKey } from "@/helper";
 
 function RegisterForm() {
+  const { t } = useTranslation();
   const [formRegister, setFormRegister] = React.useState<RegisterRequest>({
     name: "",
     email: "",
@@ -42,14 +44,14 @@ function RegisterForm() {
     const newErrors = { email: "", name: "", server: "" };
 
     if (!formRegister.email) {
-      newErrors.email = "Email is required!";
+      newErrors.email = t("auth.validation.emailRequired");
       valid = false;
     } else if (!/\S+@\S+\.\S+/.test(formRegister.email.toString())) {
-      newErrors.email = "Email is invalid!";
+      newErrors.email = t("auth.validation.emailInvalid");
       valid = false;
     }
     if (!formRegister.name) {
-      newErrors.name = "Name is required!";
+      newErrors.name = t("auth.validation.nameRequired");
       valid = false;
     }
     setErrors(newErrors);
@@ -64,9 +66,7 @@ function RegisterForm() {
       try {
         const res = await authApi.register(formRegister);
         if (res.statusCode === 201) {
-          alert(
-            "Register successfully! Please check your email to verify your account.",
-          );
+          alert(t("auth.register.success"));
         }
       } catch (error) {
         if (isAxiosError(error)) {
@@ -75,12 +75,12 @@ function RegisterForm() {
               ...prev,
               server:
                 error.response?.data.message ||
-                "Registration failed! Please try again.",
+                t("auth.register.errors.failed"),
             }));
           } else {
             setErrors((prev) => ({
               ...prev,
-              server: "Network error! please check your internet connection.",
+              server: t("auth.errors.network"),
             }));
           }
         }
@@ -103,12 +103,12 @@ function RegisterForm() {
           htmlFor="fullName"
           className={errors.name ? "text-red-500" : "text-white"}
         >
-          Full name
+          {t("auth.fields.fullName")}
         </Label>
         <Input
           id="fullName"
           name="name"
-          placeholder="Enter full name ..."
+          placeholder={t("auth.placeholders.fullName")}
           className={`h-12 transition-all duration-200 focus-visible:ring-green-500/50 ${
             errors.name
               ? "bg-white border-red-500 border-2 text-black shadow-[0_0_10px_rgba(239,68,68,0.2)]"
@@ -127,12 +127,12 @@ function RegisterForm() {
           htmlFor="email"
           className={errors.email ? "text-red-500" : "text-white"}
         >
-          Email
+          {t("auth.fields.email")}
         </Label>
         <Input
           id="email"
           name="email"
-          placeholder="Enter your email ..."
+          placeholder={t("auth.placeholders.email")}
           className={`h-12 transition-all duration-200 focus-visible:ring-green-500/50 ${
             errors.email
               ? "bg-white border-red-500 border-2 text-black shadow-[0_0_10px_rgba(239,68,68,0.2)]"
@@ -155,7 +155,7 @@ function RegisterForm() {
         {isLoading ? (
           <LoaderCircle className="w-5 h-5 animate-spin" />
         ) : (
-          "Register"
+          t("auth.register.submit")
         )}
       </Button>
     </form>

@@ -1,6 +1,7 @@
 import React from "react";
 import { isAxiosError } from "axios";
 import { LoaderCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import authApi from "@/api/authApi";
@@ -14,6 +15,7 @@ import type { ForgotPasswordRequest } from "@/types/auth";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function ForgotPasswordForm() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [formForgotPassword, setFormForgotPassword] =
     React.useState<ForgotPasswordRequest>({
@@ -36,9 +38,9 @@ function ForgotPasswordForm() {
     const newErrors = { email: "", server: "" };
 
     if (!email) {
-      newErrors.email = "Email is required!";
+      newErrors.email = t("auth.validation.emailRequired");
     } else if (!emailRegex.test(email)) {
-      newErrors.email = "Email is invalid!";
+      newErrors.email = t("auth.validation.emailInvalid");
     }
 
     setErrors(newErrors);
@@ -47,7 +49,7 @@ function ForgotPasswordForm() {
 
   const getErrorMessage = (error: unknown) => {
     if (!isAxiosError(error)) {
-      return "An unexpected error occurred.";
+      return t("auth.errors.unexpected");
     }
 
     const responseMessage = error.response?.data?.message;
@@ -61,10 +63,10 @@ function ForgotPasswordForm() {
     }
 
     if (error.request) {
-      return "Network error! please check your internet connection.";
+      return t("auth.errors.network");
     }
 
-    return error.message || "Forgot password failed! Please try again.";
+    return error.message || t("auth.forgotPassword.errors.failed");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -112,7 +114,7 @@ function ForgotPasswordForm() {
             htmlFor="forgot-password-email"
             className={errors.email ? "text-red-500" : "text-white"}
           >
-            Email
+            {t("auth.fields.email")}
           </Label>
           <Input
             id="forgot-password-email"
@@ -121,7 +123,7 @@ function ForgotPasswordForm() {
             value={formForgotPassword.email}
             onKeyDown={preventSpaceKey}
             onChange={handleChange}
-            placeholder="Enter your email ..."
+            placeholder={t("auth.placeholders.email")}
             className={`h-12 transition-all duration-200 focus-visible:ring-green-500/50 ${
               errors.email
                 ? "bg-white border-red-500 border-2 text-black shadow-[0_0_10px_rgba(239,68,68,0.2)]"
@@ -143,7 +145,7 @@ function ForgotPasswordForm() {
           {isLoading ? (
             <LoaderCircle className="w-5 h-5 animate-spin" />
           ) : (
-            "Send new password"
+            t("auth.forgotPassword.submit")
           )}
         </Button>
       </form>
@@ -151,9 +153,9 @@ function ForgotPasswordForm() {
       <NotificationPopup
         open={showSuccessPopup}
         variant="success"
-        title="Job Portal"
-        message="Job Portal has sent a new password to your email. Please check your inbox to get the new password."
-        dismissLabel="Got it"
+        title={t("auth.brand")}
+        message={t("auth.forgotPassword.successMessage")}
+        dismissLabel={t("auth.common.gotIt")}
         onDismiss={handleSuccessDismiss}
       />
     </>

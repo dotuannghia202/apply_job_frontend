@@ -481,5 +481,72 @@
         "save": "Save"
       }
     }
+  },
+  "languageSwitch": {
+    "toggle": "Toggle language"
+  },
+  "auth": {
+    "brand": "Job Portal",
+    "common": {
+      "gotIt": "Got it"
+    },
+    "errors": {
+      "network": "Network error! Please check your internet connection.",
+      "unexpected": "An unexpected error occurred."
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "fullName": "Full name"
+    },
+    "placeholders": {
+      "email": "Enter your email ...",
+      "emailExample": "Johndoe@gmail.com",
+      "password": "Enter your password ...",
+      "fullName": "Enter full name ..."
+    },
+    "validation": {
+      "emailRequired": "Email is required!",
+      "emailInvalid": "Email is invalid!",
+      "passwordRequired": "Password is required!",
+      "passwordMinLength": "Password must be at least 6 characters!",
+      "nameRequired": "Name is required!"
+    },
+    "layout": {
+      "bannerTitle": "What's our Jobseekers Said.",
+      "bannerQuote": "Search and find your dream job is now easier than ever. Just browse a job and apply if you need to.",
+      "cardTitle": "Get your right job and right place apply now",
+      "cardSubtitle": "Be among the first founders to experience the easiest way to start."
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Please enter your account details",
+      "createAccount": "You haven't an account? Create an account",
+      "forgotPassword": "Forgot Password",
+      "submit": "Sign in",
+      "errors": {
+        "invalidCredentials": "Incorrect email or password!"
+      }
+    },
+    "register": {
+      "title": "Join us to find the perfect job for you.",
+      "subtitle": "Start your journey with us by registering an account.",
+      "login": "Already have an account? Login",
+      "submit": "Register",
+      "success": "Register successfully! Please check your email to verify your account.",
+      "errors": {
+        "failed": "Registration failed! Please try again."
+      }
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "subtitle": "Enter your email to receive a new password.",
+      "backToLogin": "Back to login",
+      "submit": "Send new password",
+      "successMessage": "Job Portal has sent a new password to your email. Please check your inbox to get the new password.",
+      "errors": {
+        "failed": "Forgot password failed! Please try again."
+      }
+    }
   }
 }

@@ -3,7 +3,7 @@ import VietnamFlag from "@/assets/images/Flag_of_Vietnam.svg.webp";
 import UKFlag from "@/assets/images/Flag_of_the_United_Kingdom_3-5.svg.webp";
 
 const LanguageSwitch = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Xác định ngôn ngữ hiện tại
   const isVi = i18n.language === "vi";
@@ -19,7 +19,7 @@ const LanguageSwitch = () => {
       type="button"
       onClick={toggleLanguage}
       className="relative flex items-center w-21 h-9 bg-white border border-slate-200 rounded-full shadow-inner overflow-hidden cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30"
-      aria-label="Toggle Language"
+      aria-label={t("languageSwitch.toggle")}
     >
       {/* ======================================= */}
       {/* LỚP 1: CHỮ NỀN (Nằm im ở dưới)          */}

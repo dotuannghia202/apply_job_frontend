@@ -12,8 +12,8 @@ import ProfileForm from "./components/ProfileForm";
 function AccountSettingSkeleton() {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
-      <div className="h-[620px] animate-pulse rounded-2xl border border-slate-200 bg-white" />
-      <div className="h-[430px] animate-pulse rounded-2xl border border-slate-200 bg-white" />
+      <div className="h-155 animate-pulse rounded-2xl border border-slate-200 bg-white" />
+      <div className="h-107.5 animate-pulse rounded-2xl border border-slate-200 bg-white" />
     </div>
   );
 }

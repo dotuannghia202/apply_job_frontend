@@ -1,10 +1,19 @@
 import { Star } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 
+import LanguageSwitch from "@/layouts/components/LanguageSwitch";
+
 const AuthLayout = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen w-full bg-[#0a0c0b] flex items-center justify-center p-4 lg:p-8 font-sans">
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 bg-[#121412] rounded-[40px] overflow-hidden shadow-2xl border border-white/5 min-h-165">
+      <div className="relative w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 bg-[#121412] rounded-[40px] overflow-hidden shadow-2xl border border-white/5 min-h-165">
+        <div className="absolute right-6 top-6 z-30">
+          <LanguageSwitch />
+        </div>
+
         {/* LEFT SIDE: page content */}
         <div className="p-8 lg:p-16 flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-75 h-75 bg-green-500/30 blur-[120px] rounded-full pointer-events-none" />
@@ -23,14 +32,13 @@ const AuthLayout = () => {
 
             <div className="relative z-10">
               <h2 className="text-5xl font-bold text-[#0a0c0b] leading-tight max-w-100">
-                What's our Jobseekers Said.
+                {t("auth.layout.bannerTitle")}
               </h2>
 
               <div className="flex mt-10">
                 <p className="text-[#0a0c0b]/80 text-lg leading-relaxed max-w-100">
                   <strong>"</strong>
-                  Search and find your dream job is now easier than ever. Just
-                  browse a job and apply if you need to.
+                  {t("auth.layout.bannerQuote")}
                   <strong>"</strong>
                 </p>
               </div>
@@ -39,11 +47,10 @@ const AuthLayout = () => {
             <div className="relative z-10 flex items-end justify-between">
               <div className="bg-white rounded-2xl p-4 shadow-xl max-w-60 transform translate-y-4">
                 <p className="text-xs font-bold text-gray-800 leading-tight">
-                  Get your right job and right place apply now
+                  {t("auth.layout.cardTitle")}
                 </p>
                 <p className="text-[10px] text-gray-400 mt-2">
-                  Be among the first founders to experience the easiest way to
-                  start.
+                  {t("auth.layout.cardSubtitle")}
                 </p>
 
                 <div className="flex items-center mt-3">
