@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BarChart3,
   BriefcaseBusiness,
@@ -26,13 +27,13 @@ import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 
 type AccountMenuItem = {
-  label: string;
+  labelKey: string;
   icon: LucideIcon;
   to: string;
 };
 
 type AccountMenuSection = {
-  title: string;
+  titleKey: string;
   icon: LucideIcon;
   items: AccountMenuItem[];
 };
@@ -41,11 +42,11 @@ const employerModePaths = ["/employer", "/jobs/jd-generator", "/jobs/publish"];
 const adminModePaths = ["/admin", "/analytics/system"];
 
 const personalSecuritySection: AccountMenuSection = {
-  title: "Personal & Security",
+  titleKey: "userAvatarMenu.sections.personalSecurity",
   icon: ShieldCheck,
   items: [
     {
-      label: "Profile Settings",
+      labelKey: "userAvatarMenu.items.profileSettings",
       icon: UserCog,
       to: "/settings#profile",
     },
@@ -55,32 +56,32 @@ const personalSecuritySection: AccountMenuSection = {
 const menuSectionsByMode: Record<RoleName, AccountMenuSection[]> = {
   CANDIDATE: [
     {
-      title: "Job Search Management",
+      titleKey: "userAvatarMenu.sections.jobSearchManagement",
       icon: BriefcaseBusiness,
       items: [
         {
-          label: "Saved Jobs",
+          labelKey: "userAvatarMenu.items.savedJobs",
           icon: Heart,
           to: "/jobs/saved",
         },
         {
-          label: "Applied Jobs",
+          labelKey: "userAvatarMenu.items.appliedJobs",
           icon: Send,
           to: "/applications",
         },
         {
-          label: "Recommended Jobs",
+          labelKey: "userAvatarMenu.items.recommendedJobs",
           icon: Sparkles,
           to: "/jobs",
         },
       ],
     },
     {
-      title: "CV Management",
+      titleKey: "userAvatarMenu.sections.cvManagement",
       icon: FileText,
       items: [
         {
-          label: "My CV List",
+          labelKey: "userAvatarMenu.items.myCvList",
           icon: FileUser,
           to: "/my-cv",
         },
@@ -90,43 +91,43 @@ const menuSectionsByMode: Record<RoleName, AccountMenuSection[]> = {
   ],
   EMPLOYER: [
     {
-      title: "Recruitment Management",
+      titleKey: "userAvatarMenu.sections.recruitmentManagement",
       icon: BriefcaseBusiness,
       items: [
         {
-          label: "Dashboard",
+          labelKey: "userAvatarMenu.items.dashboard",
           icon: BarChart3,
           to: "/employer/dashboard",
         },
         {
-          label: "Applicants",
+          labelKey: "userAvatarMenu.items.applicants",
           icon: UsersRound,
           to: "/employer/applicants",
         },
       ],
     },
     {
-      title: "Job Management",
+      titleKey: "userAvatarMenu.sections.jobManagement",
       icon: ClipboardList,
       items: [
         {
-          label: "My Jobs",
+          labelKey: "userAvatarMenu.items.myJobs",
           icon: FileText,
           to: "/employer/jobs",
         },
         {
-          label: "Post a Job",
+          labelKey: "userAvatarMenu.items.postJob",
           icon: BriefcaseBusiness,
           to: "/jobs/jd-generator",
         },
       ],
     },
     {
-      title: "Company",
+      titleKey: "userAvatarMenu.sections.company",
       icon: Building2,
       items: [
         {
-          label: "Company Profile",
+          labelKey: "userAvatarMenu.items.companyProfile",
           icon: Building2,
           to: "/employer/company-profile",
         },
@@ -136,37 +137,37 @@ const menuSectionsByMode: Record<RoleName, AccountMenuSection[]> = {
   ],
   ADMIN: [
     {
-      title: "System Administration",
+      titleKey: "userAvatarMenu.sections.systemAdministration",
       icon: ShieldCheck,
       items: [
         {
-          label: "Dashboard",
+          labelKey: "userAvatarMenu.items.dashboard",
           icon: BarChart3,
           to: "/admin/dashboard",
         },
         {
-          label: "Management User",
+          labelKey: "userAvatarMenu.items.managementUser",
           icon: UsersRound,
           to: "/admin/users",
         },
         {
-          label: "Company Approval",
+          labelKey: "userAvatarMenu.items.companyApproval",
           icon: Building2,
           to: "/admin/company-approval",
         },
       ],
     },
     {
-      title: "Job Management",
+      titleKey: "userAvatarMenu.sections.jobManagement",
       icon: ClipboardList,
       items: [
         {
-          label: "Job Listings",
+          labelKey: "userAvatarMenu.items.jobListings",
           icon: FileText,
           to: "/jobs",
         },
         {
-          label: "Post a Job",
+          labelKey: "userAvatarMenu.items.postJob",
           icon: BriefcaseBusiness,
           to: "/jobs/jd-generator",
         },
@@ -185,7 +186,7 @@ const allMenuSections = [
 const defaultOpenSections = allMenuSections.reduce<Record<string, boolean>>(
   (openSections, section) => ({
     ...openSections,
-    [section.title]: true,
+    [section.titleKey]: true,
   }),
   {},
 );
@@ -223,6 +224,7 @@ function AccountDropdownSection({
   onItemSelect: (to: string) => void;
   section: AccountMenuSection;
 }) {
+  const { t } = useTranslation();
   const SectionIcon = section.icon;
 
   return (
@@ -246,7 +248,7 @@ function AccountDropdownSection({
             isOpen ? "text-primary" : "text-slate-800"
           }`}
         >
-          {section.title}
+          {t(section.titleKey)}
         </span>
 
         <ChevronDown
@@ -268,14 +270,14 @@ function AccountDropdownSection({
 
               return (
                 <button
-                  key={item.label}
+                  key={item.labelKey}
                   type="button"
                   role="menuitem"
                   onClick={() => onItemSelect(item.to)}
                   className="flex w-full items-center gap-3 rounded-lg px-1 py-1.5 text-left text-[15px] font-semibold text-slate-500 transition-colors hover:text-primary focus-visible:text-primary focus-visible:outline-none"
                 >
                   <ItemIcon className="size-4 shrink-0" />
-                  <span>{item.label}</span>
+                  <span>{t(item.labelKey)}</span>
                 </button>
               );
             })}
@@ -287,6 +289,7 @@ function AccountDropdownSection({
 }
 
 const UserAvatarMenu = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAuthStore((state) => state.user);
@@ -302,8 +305,9 @@ const UserAvatarMenu = () => {
 
   const avatarSrc =
     avatarUrl?.trim() || user?.avatarUrl?.trim() || avatarPlaceholder;
-  const displayName = user?.name || "User";
-  const displayEmail = user?.email || "No email available";
+  const displayName = user?.name || t("userAvatarMenu.fallbacks.user");
+  const displayEmail =
+    user?.email || t("userAvatarMenu.fallbacks.noEmailAvailable");
 
   const handleToggleSection = (sectionTitle: string) => {
     setOpenSections((current) => ({
@@ -335,7 +339,7 @@ const UserAvatarMenu = () => {
     <div className="group relative">
       <button
         type="button"
-        aria-label="User account"
+        aria-label={t("userAvatarMenu.userAccount")}
         aria-haspopup="menu"
         className="block size-9 overflow-hidden rounded-full border border-slate-200 transition-all hover:ring-2 hover:ring-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
       >
@@ -376,10 +380,10 @@ const UserAvatarMenu = () => {
           <div>
             {accountMenuSections.map((section) => (
               <AccountDropdownSection
-                key={section.title}
+                key={section.titleKey}
                 section={section}
-                isOpen={openSections[section.title] ?? true}
-                onToggle={() => handleToggleSection(section.title)}
+                isOpen={openSections[section.titleKey] ?? true}
+                onToggle={() => handleToggleSection(section.titleKey)}
                 onItemSelect={handleItemSelect}
               />
             ))}
@@ -394,7 +398,7 @@ const UserAvatarMenu = () => {
                 className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary/10 text-sm font-bold text-primary transition-colors hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
               >
                 <PanelTop className="size-4" />
-                Open Admin Panel
+                {t("userAvatarMenu.actions.openAdminPanel")}
               </button>
             </div>
           )}
@@ -407,7 +411,9 @@ const UserAvatarMenu = () => {
               className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-slate-100 text-base font-bold text-slate-700 transition-colors hover:bg-slate-300 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:pointer-events-none disabled:opacity-60"
             >
               <LogOut className="size-5" />
-              {isLoggingOut ? "Logging out..." : "Log out"}
+              {isLoggingOut
+                ? t("userAvatarMenu.actions.loggingOut")
+                : t("userAvatarMenu.actions.logOut")}
             </button>
           </div>
         </div>

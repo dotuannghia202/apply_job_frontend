@@ -357,5 +357,41 @@
       "applyNow": "Ứng tuyển",
       "viewDetails": "Xem chi tiết"
     }
+  },
+  "userAvatarMenu": {
+    "userAccount": "Tài khoản người dùng",
+    "fallbacks": {
+      "user": "Người dùng",
+      "noEmailAvailable": "Chưa có email"
+    },
+    "sections": {
+      "personalSecurity": "Cá nhân & bảo mật",
+      "jobSearchManagement": "Quản lý tìm việc",
+      "cvManagement": "Quản lý CV",
+      "recruitmentManagement": "Quản lý tuyển dụng",
+      "jobManagement": "Quản lý việc làm",
+      "company": "Công ty",
+      "systemAdministration": "Quản trị hệ thống"
+    },
+    "items": {
+      "profileSettings": "Cài đặt hồ sơ",
+      "savedJobs": "Việc làm đã lưu",
+      "appliedJobs": "Việc làm đã ứng tuyển",
+      "recommendedJobs": "Việc làm gợi ý",
+      "myCvList": "Danh sách CV của tôi",
+      "dashboard": "Bảng điều khiển",
+      "applicants": "Ứng viên",
+      "myJobs": "Việc làm của tôi",
+      "postJob": "Đăng việc làm",
+      "companyProfile": "Hồ sơ công ty",
+      "managementUser": "Quản lý người dùng",
+      "companyApproval": "Duyệt công ty",
+      "jobListings": "Danh sách việc làm"
+    },
+    "actions": {
+      "openAdminPanel": "Mở trang quản trị",
+      "loggingOut": "Đang đăng xuất...",
+      "logOut": "Đăng xuất"
+    }
   }
 }

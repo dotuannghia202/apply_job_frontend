@@ -357,5 +357,41 @@
       "applyNow": "Apply now",
       "viewDetails": "View details"
     }
+  },
+  "userAvatarMenu": {
+    "userAccount": "User account",
+    "fallbacks": {
+      "user": "User",
+      "noEmailAvailable": "No email available"
+    },
+    "sections": {
+      "personalSecurity": "Personal & Security",
+      "jobSearchManagement": "Job Search Management",
+      "cvManagement": "CV Management",
+      "recruitmentManagement": "Recruitment Management",
+      "jobManagement": "Job Management",
+      "company": "Company",
+      "systemAdministration": "System Administration"
+    },
+    "items": {
+      "profileSettings": "Profile Settings",
+      "savedJobs": "Saved Jobs",
+      "appliedJobs": "Applied Jobs",
+      "recommendedJobs": "Recommended Jobs",
+      "myCvList": "My CV List",
+      "dashboard": "Dashboard",
+      "applicants": "Applicants",
+      "myJobs": "My Jobs",
+      "postJob": "Post a Job",
+      "companyProfile": "Company Profile",
+      "managementUser": "Management User",
+      "companyApproval": "Company Approval",
+      "jobListings": "Job Listings"
+    },
+    "actions": {
+      "openAdminPanel": "Open Admin Panel",
+      "loggingOut": "Logging out...",
+      "logOut": "Log out"
+    }
   }
 }
