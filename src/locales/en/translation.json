@@ -335,5 +335,27 @@
       "english": "English",
       "vietnamese": "Vietnamese"
     }
+  },
+  "jobPopup": {
+    "fallbacks": {
+      "unknownCompany": "Unknown company",
+      "unknownLocation": "Unknown location"
+    },
+    "companyLogoAlt": "{{company}} logo",
+    "salary": {
+      "agree": "Agree on salary",
+      "from": "Salary from {{salary}}",
+      "upTo": "Salary up to {{salary}}"
+    },
+    "sections": {
+      "description": "Job description",
+      "workingHours": "Working hours",
+      "benefits": "Benefits"
+    },
+    "actions": {
+      "applied": "Applied",
+      "applyNow": "Apply now",
+      "viewDetails": "View details"
+    }
   }
 }

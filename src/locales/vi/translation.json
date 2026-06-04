@@ -335,5 +335,27 @@
       "english": "Tiếng Anh",
       "vietnamese": "Tiếng Việt"
     }
+  },
+  "jobPopup": {
+    "fallbacks": {
+      "unknownCompany": "Công ty ẩn danh",
+      "unknownLocation": "Chưa cập nhật địa điểm"
+    },
+    "companyLogoAlt": "Logo {{company}}",
+    "salary": {
+      "agree": "Thỏa thuận lương",
+      "from": "Lương từ {{salary}}",
+      "upTo": "Lương lên đến {{salary}}"
+    },
+    "sections": {
+      "description": "Mô tả công việc",
+      "workingHours": "Thời gian làm việc",
+      "benefits": "Quyền lợi"
+    },
+    "actions": {
+      "applied": "Đã ứng tuyển",
+      "applyNow": "Ứng tuyển",
+      "viewDetails": "Xem chi tiết"
+    }
   }
 }

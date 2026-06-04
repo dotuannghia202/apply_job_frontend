@@ -1,11 +1,38 @@
 import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
+import type { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import type { Job } from "@/types/job";
-import { formatSalaryRange, getCityFromAddress } from "../../helper";
+import { formatVND, getCityFromAddress } from "../../helper";
+
+const formatPopupSalaryRange = (
+  minSalary: number | null | undefined,
+  maxSalary: number | null | undefined,
+  t: TFunction,
+) => {
+  const min = minSalary ?? 0;
+  const max = maxSalary ?? 0;
+  const hasMin = min > 0;
+  const hasMax = max > 0;
+
+  if (!hasMin && !hasMax) {
+    return t("jobPopup.salary.agree");
+  }
+
+  if (hasMin && !hasMax) {
+    return t("jobPopup.salary.from", { salary: formatVND(min) });
+  }
+
+  if (!hasMin && hasMax) {
+    return t("jobPopup.salary.upTo", { salary: formatVND(max) });
+  }
+
+  return `${formatVND(min)} - ${formatVND(max)}`;
+};
 
 interface JobPopupProps {
   job: Job;
@@ -23,12 +50,16 @@ export const JobPopup = ({
   onMouseEnter,
   onMouseLeave,
 }: JobPopupProps) => {
+  const { t } = useTranslation();
   const popupRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const companyName = job.company?.name ?? "Unknown";
+  const companyName = job.company?.name ?? t("jobPopup.fallbacks.unknownCompany");
   const companyLogo = job.company?.logo;
-  const salaryText = formatSalaryRange(job.minSalary, job.maxSalary);
-  const city = getCityFromAddress(job.location);
+  const salaryText = formatPopupSalaryRange(job.minSalary, job.maxSalary, t);
+  const city =
+    getCityFromAddress(job.location) ||
+    job.location ||
+    t("jobPopup.fallbacks.unknownLocation");
   const specialization = job.specialization?.name;
   const levelsText = job.levels?.length ? job.levels.join(", ") : undefined;
 
@@ -106,7 +137,9 @@ export const JobPopup = ({
                 {companyLogo ? (
                   <img
                     src={companyLogo}
-                    alt={`${companyName} logo`}
+                    alt={t("jobPopup.companyLogoAlt", {
+                      company: companyName,
+                    })}
                     className="size-full object-contain"
                   />
                 ) : (
@@ -154,7 +187,7 @@ export const JobPopup = ({
             <div className="px-5 py-4">
               <h3 className="mb-3 flex items-center gap-2 text-[15px] font-bold text-slate-900">
                 <span className="h-5 w-1 rounded-full bg-green-500" />
-                Job description
+                {t("jobPopup.sections.description")}
               </h3>
               <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-line">
                 {job.description}
@@ -166,7 +199,7 @@ export const JobPopup = ({
             <div className="px-5 py-4">
               <h3 className="mb-3 flex items-center gap-2 text-[15px] font-bold text-slate-900">
                 <span className="h-5 w-1 rounded-full bg-green-500" />
-                Working hours
+                {t("jobPopup.sections.workingHours")}
               </h3>
               <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-line">
                 {job.workingHours}
@@ -178,7 +211,7 @@ export const JobPopup = ({
             <div className="px-5 py-4">
               <h3 className="mb-3 flex items-center gap-2 text-[15px] font-bold text-slate-900">
                 <span className="h-5 w-1 rounded-full bg-green-500" />
-                Benefits
+                {t("jobPopup.sections.benefits")}
               </h3>
               <ul className="space-y-2 text-sm text-slate-700">
                 {job.benefits.map((benefit, index) => (
@@ -204,7 +237,9 @@ export const JobPopup = ({
               disabled={job.isApplied}
               onClick={onApply}
             >
-              {job.isApplied ? "Applied" : "Apply now"}
+              {job.isApplied
+                ? t("jobPopup.actions.applied")
+                : t("jobPopup.actions.applyNow")}
             </Button>
             <Button
               className="flex-1 rounded-xl bg-green-500 font-semibold text-white hover:bg-green-600"
@@ -213,7 +248,7 @@ export const JobPopup = ({
                 navigate(`/jobs/detail/${job.id}`);
               }}
             >
-              View details
+              {t("jobPopup.actions.viewDetails")}
             </Button>
           </div>
         </div>
