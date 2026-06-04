@@ -1,4 +1,5 @@
 import { Activity, ShieldCheck, TriangleAlert } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -12,25 +13,26 @@ export default function DashboardHeader({
   isLoading,
   isError,
 }: DashboardHeaderProps) {
+  const { t } = useTranslation();
+
   const statusLabel = isLoading
-    ? "Đang đồng bộ"
+    ? t("adminDashboard.header.status.syncing")
     : isError
-      ? "Không khả dụng"
-      : "Dữ liệu trực tiếp";
+      ? t("adminDashboard.header.status.unavailable")
+      : t("adminDashboard.header.status.liveData");
   const StatusIcon = isError ? TriangleAlert : isLoading ? Activity : ShieldCheck;
 
   return (
     <header className="flex flex-col gap-5 border-b border-[#dde3e9] pb-7 md:flex-row md:items-end md:justify-between">
       <div>
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#72b183]">
-          Thống kê hệ thống
+          {t("adminDashboard.header.eyebrow")}
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-[#2d3338] md:text-4xl">
-          Quản trị viên
+          {t("adminDashboard.header.title")}
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-[#596065]">
-          Tổng quan người dùng, công ty, việc làm và lượt ứng tuyển trong hệ
-          thống tuyển dụng.
+          {t("adminDashboard.header.description")}
         </p>
       </div>
       <Badge

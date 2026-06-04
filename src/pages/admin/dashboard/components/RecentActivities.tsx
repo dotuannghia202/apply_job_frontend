@@ -7,6 +7,7 @@ import {
   UserRoundCog,
   Users,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,68 +37,73 @@ type LedgerRow = {
   tone: string;
 };
 
-const formatNumber = (value?: number) =>
-  new Intl.NumberFormat("vi-VN").format(value ?? 0);
+const getLocale = (language: string) => (language === "vi" ? "vi-VN" : "en-US");
+
+const formatNumber = (value: number | undefined, locale: string) =>
+  new Intl.NumberFormat(locale).format(value ?? 0);
 
 export default function RecentActivities({
   stats,
   isLoading,
   isError,
 }: RecentActivitiesProps) {
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
+
   const rows: LedgerRow[] = [
     {
-      label: "Tổng người dùng",
+      label: t("adminDashboard.ledger.rows.totalUsers.label"),
       value: stats?.totalUsers,
-      scope: "Toàn hệ thống",
-      status: "Core",
+      scope: t("adminDashboard.ledger.rows.totalUsers.scope"),
+      status: t("adminDashboard.ledger.status.core"),
       icon: Users,
       tone: "bg-[#72b183]/10 text-[#5a936a]",
     },
     {
-      label: "Ứng viên",
+      label: t("adminDashboard.ledger.rows.candidates.label"),
       value: stats?.totalCandidates,
-      scope: "Tài khoản candidate",
-      status: "User",
+      scope: t("adminDashboard.ledger.rows.candidates.scope"),
+      status: t("adminDashboard.ledger.status.user"),
       icon: UserRoundCheck,
       tone: "bg-emerald-50 text-emerald-700",
     },
     {
-      label: "Nhà tuyển dụng",
+      label: t("adminDashboard.ledger.rows.employers.label"),
       value: stats?.totalEmployers,
-      scope: "Tài khoản employer",
-      status: "User",
+      scope: t("adminDashboard.ledger.rows.employers.scope"),
+      status: t("adminDashboard.ledger.status.user"),
       icon: UserRoundCog,
       tone: "bg-amber-50 text-amber-700",
     },
     {
-      label: "Công ty",
+      label: t("adminDashboard.ledger.rows.companies.label"),
       value: stats?.totalCompanies,
-      scope: "Hồ sơ doanh nghiệp",
-      status: "Org",
+      scope: t("adminDashboard.ledger.rows.companies.scope"),
+      status: t("adminDashboard.ledger.status.org"),
       icon: Building2,
       tone: "bg-cyan-50 text-cyan-700",
     },
     {
-      label: "Việc đang mở",
+      label: t("adminDashboard.ledger.rows.activeJobs.label"),
       value: stats?.totalActiveJobs,
-      scope: "Job active",
-      status: "Hiring",
+      scope: t("adminDashboard.ledger.rows.activeJobs.scope"),
+      status: t("adminDashboard.ledger.status.hiring"),
       icon: BriefcaseBusiness,
       tone: "bg-sky-50 text-sky-700",
     },
     {
-      label: "Lượt ứng tuyển",
+      label: t("adminDashboard.ledger.rows.applications.label"),
       value: stats?.totalApplications,
-      scope: "Application submitted",
-      status: "Flow",
+      scope: t("adminDashboard.ledger.rows.applications.scope"),
+      status: t("adminDashboard.ledger.status.flow"),
       icon: ClipboardList,
       tone: "bg-violet-50 text-violet-700",
     },
     {
-      label: "Ngành có việc làm",
-      value: stats?.industryStats.length,
-      scope: "Industry buckets",
-      status: "Taxonomy",
+      label: t("adminDashboard.ledger.rows.industries.label"),
+      value: stats?.industryStats?.length,
+      scope: t("adminDashboard.ledger.rows.industries.scope"),
+      status: t("adminDashboard.ledger.status.taxonomy"),
       icon: Layers3,
       tone: "bg-slate-100 text-slate-700",
     },
@@ -108,10 +114,10 @@ export default function RecentActivities({
       <CardHeader className="flex flex-col gap-4 border-b border-[#eaeef3] bg-[#f7f9fc] p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <CardTitle className="text-xl font-extrabold text-[#2d3338]">
-            Bảng chỉ số hệ thống
+            {t("adminDashboard.ledger.title")}
           </CardTitle>
           <p className="mt-2 text-sm text-[#596065]">
-            Tổng hợp dữ liệu theo phạm vi quản trị.
+            {t("adminDashboard.ledger.description")}
           </p>
         </div>
         <Badge
@@ -121,7 +127,9 @@ export default function RecentActivities({
             isError && "border-rose-200 bg-rose-50 text-rose-700",
           )}
         >
-          {isError ? "Mất kết nối" : "Quản trị"}
+          {isError
+            ? t("adminDashboard.ledger.badge.error")
+            : t("adminDashboard.ledger.badge.admin")}
         </Badge>
       </CardHeader>
       <CardContent className="p-0">
@@ -129,16 +137,16 @@ export default function RecentActivities({
           <TableHeader>
             <TableRow className="bg-[#e3e9ee] hover:bg-[#e3e9ee]">
               <TableHead className="px-6 py-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
-                Chỉ số
+                {t("adminDashboard.ledger.columns.metric")}
               </TableHead>
               <TableHead className="px-6 py-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
-                Phạm vi
+                {t("adminDashboard.ledger.columns.scope")}
               </TableHead>
               <TableHead className="px-6 py-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
-                Trạng thái
+                {t("adminDashboard.ledger.columns.status")}
               </TableHead>
               <TableHead className="px-6 py-4 text-right text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
-                Tổng
+                {t("adminDashboard.ledger.columns.total")}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -148,6 +156,7 @@ export default function RecentActivities({
                 key={row.label}
                 isError={isError}
                 isLoading={isLoading}
+                locale={locale}
                 row={row}
               />
             ))}
@@ -162,10 +171,12 @@ function LedgerTableRow({
   row,
   isLoading,
   isError,
+  locale,
 }: {
   row: LedgerRow;
   isLoading?: boolean;
   isError?: boolean;
+  locale: string;
 }) {
   const Icon = row.icon;
 
@@ -197,7 +208,7 @@ function LedgerTableRow({
           <div className="ml-auto h-5 w-16 animate-pulse rounded bg-slate-200" />
         ) : (
           <span className="text-base font-extrabold text-[#2d3338]">
-            {isError ? "--" : formatNumber(row.value)}
+            {isError ? "--" : formatNumber(row.value, locale)}
           </span>
         )}
       </TableCell>

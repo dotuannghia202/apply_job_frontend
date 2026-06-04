@@ -482,6 +482,126 @@
       }
     }
   },
+  "adminDashboard": {
+    "header": {
+      "eyebrow": "System statistics",
+      "title": "Administrator",
+      "description": "Overview of users, companies, jobs, and applications across the recruitment system.",
+      "status": {
+        "syncing": "Syncing",
+        "unavailable": "Unavailable",
+        "liveData": "Live data"
+      }
+    },
+    "overview": {
+      "totalUsers": "Total system users",
+      "roles": {
+        "candidates": "Candidates",
+        "employers": "Employers"
+      },
+      "roleBadge": {
+        "categorized": "Categorized",
+        "noData": "No data yet"
+      },
+      "metrics": {
+        "activeJobs": {
+          "label": "Open jobs",
+          "helper": "Active job posts"
+        },
+        "applications": {
+          "label": "Applications",
+          "helper": "Submitted resumes"
+        },
+        "candidates": {
+          "label": "Candidates",
+          "helper": "{{percent}}% of account roles"
+        },
+        "employers": {
+          "label": "Employers",
+          "helper": "{{percent}}% of account roles"
+        },
+        "companies": {
+          "label": "Companies",
+          "helper": "Business profiles"
+        },
+        "industryGroups": {
+          "label": "Industry groups",
+          "helper": "With job data"
+        }
+      }
+    },
+    "chart": {
+      "title": "Account distribution",
+      "description": "Compare candidates, employers, and companies.",
+      "error": "Could not load chart data.",
+      "series": {
+        "candidates": "Candidates",
+        "employers": "Employers",
+        "companies": "Companies"
+      }
+    },
+    "topIndustries": {
+      "title": "Top industries",
+      "description": "Number of jobs by industry.",
+      "error": "Could not load industry data.",
+      "empty": "No industry statistics yet.",
+      "jobsCount": "{{value}} jobs",
+      "percentLabel": "{{percent}}% of tracked industries",
+      "topBadge": "Top"
+    },
+    "ledger": {
+      "title": "System metrics table",
+      "description": "Aggregated data by admin scope.",
+      "badge": {
+        "admin": "Admin",
+        "error": "Disconnected"
+      },
+      "columns": {
+        "metric": "Metric",
+        "scope": "Scope",
+        "status": "Status",
+        "total": "Total"
+      },
+      "status": {
+        "core": "Core",
+        "user": "User",
+        "org": "Org",
+        "hiring": "Hiring",
+        "flow": "Flow",
+        "taxonomy": "Taxonomy"
+      },
+      "rows": {
+        "totalUsers": {
+          "label": "Total users",
+          "scope": "Whole system"
+        },
+        "candidates": {
+          "label": "Candidates",
+          "scope": "Candidate accounts"
+        },
+        "employers": {
+          "label": "Employers",
+          "scope": "Employer accounts"
+        },
+        "companies": {
+          "label": "Companies",
+          "scope": "Business profiles"
+        },
+        "activeJobs": {
+          "label": "Open jobs",
+          "scope": "Active jobs"
+        },
+        "applications": {
+          "label": "Applications",
+          "scope": "Submitted applications"
+        },
+        "industries": {
+          "label": "Industries with jobs",
+          "scope": "Industry buckets"
+        }
+      }
+    }
+  },
   "languageSwitch": {
     "toggle": "Toggle language"
   },

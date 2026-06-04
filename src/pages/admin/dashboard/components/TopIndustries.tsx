@@ -1,4 +1,5 @@
 import { BriefcaseBusiness, Layers3 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,14 +19,18 @@ const barStyles = [
   "from-amber-500 to-amber-200",
 ];
 
-const formatNumber = (value?: number) =>
-  new Intl.NumberFormat("vi-VN").format(value ?? 0);
+const getLocale = (language: string) => (language === "vi" ? "vi-VN" : "en-US");
+
+const formatNumber = (value: number | undefined, locale: string) =>
+  new Intl.NumberFormat(locale).format(value ?? 0);
 
 export default function TopIndustries({
   stats,
   isLoading,
   isError,
 }: TopIndustriesProps) {
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
   const industries = stats?.industryStats ?? [];
   const totalIndustryJobs = industries.reduce(
     (sum, industry) => sum + industry.jobCount,
@@ -38,10 +43,10 @@ export default function TopIndustries({
         <div className="flex items-start justify-between gap-4">
           <div>
             <CardTitle className="text-xl font-extrabold text-[#2d3338]">
-              Ngành nổi bật
+              {t("adminDashboard.topIndustries.title")}
             </CardTitle>
             <p className="mt-2 text-sm text-[#596065]">
-              Số lượng việc làm theo từng ngành.
+              {t("adminDashboard.topIndustries.description")}
             </p>
           </div>
           <span className="flex size-10 items-center justify-center rounded-lg bg-[#72b183]/10 text-[#5a936a]">
@@ -54,11 +59,11 @@ export default function TopIndustries({
           <IndustrySkeleton />
         ) : isError ? (
           <div className="rounded-lg bg-rose-50 p-4 text-sm font-semibold text-rose-700">
-            Không tải được dữ liệu ngành.
+            {t("adminDashboard.topIndustries.error")}
           </div>
         ) : industries.length === 0 ? (
           <div className="rounded-lg bg-slate-50 p-4 text-sm font-semibold text-[#596065]">
-            Chưa có thống kê ngành.
+            {t("adminDashboard.topIndustries.empty")}
           </div>
         ) : (
           <div className="space-y-6">
@@ -75,7 +80,9 @@ export default function TopIndustries({
                       {industry.industryName}
                     </span>
                     <span className="shrink-0 text-[#757c81]">
-                      {formatNumber(industry.jobCount)} việc
+                      {t("adminDashboard.topIndustries.jobsCount", {
+                        value: formatNumber(industry.jobCount, locale),
+                      })}
                     </span>
                   </div>
                   <div className="h-3 w-full overflow-hidden rounded-full bg-[#eaeef3]">
@@ -88,11 +95,15 @@ export default function TopIndustries({
                     />
                   </div>
                   <div className="flex items-center justify-between text-xs text-[#596065]">
-                    <span>{percent}% trong các ngành đang thống kê</span>
+                    <span>
+                      {t("adminDashboard.topIndustries.percentLabel", {
+                        percent,
+                      })}
+                    </span>
                     {index === 0 && (
                       <Badge className="rounded-lg bg-[#bce3c8] text-[#1a4d2e] hover:bg-[#bce3c8]">
                         <BriefcaseBusiness className="size-3" />
-                        Top
+                        {t("adminDashboard.topIndustries.topBadge")}
                       </Badge>
                     )}
                   </div>

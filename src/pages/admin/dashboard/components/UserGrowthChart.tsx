@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { AdminDashboardStats } from "@/types/admin-dashboard";
@@ -26,21 +27,28 @@ const axisStyle = {
   fill: "#757c81",
 };
 
-const formatNumber = (value?: number) =>
-  new Intl.NumberFormat("vi-VN").format(value ?? 0);
+const getLocale = (language: string) => (language === "vi" ? "vi-VN" : "en-US");
+
+const formatNumber = (value: number | undefined, locale: string) =>
+  new Intl.NumberFormat(locale).format(value ?? 0);
+
+type CustomTooltipProps = TooltipProps<number, string> & {
+  locale: string;
+};
 
 function CustomTooltip({
   active,
   payload,
   label,
-}: TooltipProps<number, string>) {
+  locale,
+}: CustomTooltipProps) {
   if (!active || !payload?.length) return null;
 
   return (
     <div className="rounded-lg border border-[#dde3e9] bg-white px-3 py-2 shadow-sm">
       <p className="text-xs font-semibold text-[#596065]">{label}</p>
       <p className="mt-1 text-sm font-bold text-[#2d3338]">
-        {formatNumber(Number(payload[0].value))}
+        {formatNumber(Number(payload[0].value), locale)}
       </p>
     </div>
   );
@@ -51,10 +59,22 @@ export default function UserGrowthChart({
   isLoading,
   isError,
 }: UserGrowthChartProps) {
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
+
   const chartData = [
-    { name: "Ứng viên", value: stats?.totalCandidates ?? 0 },
-    { name: "Nhà tuyển dụng", value: stats?.totalEmployers ?? 0 },
-    { name: "Công ty", value: stats?.totalCompanies ?? 0 },
+    {
+      name: t("adminDashboard.chart.series.candidates"),
+      value: stats?.totalCandidates ?? 0,
+    },
+    {
+      name: t("adminDashboard.chart.series.employers"),
+      value: stats?.totalEmployers ?? 0,
+    },
+    {
+      name: t("adminDashboard.chart.series.companies"),
+      value: stats?.totalCompanies ?? 0,
+    },
   ];
 
   return (
@@ -63,10 +83,10 @@ export default function UserGrowthChart({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <CardTitle className="text-xl font-extrabold text-[#2d3338]">
-              Phân bổ tài khoản
+              {t("adminDashboard.chart.title")}
             </CardTitle>
             <p className="mt-2 text-sm text-[#596065]">
-              Tương quan giữa ứng viên, nhà tuyển dụng và công ty.
+              {t("adminDashboard.chart.description")}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-4 text-xs text-[#596065]">
@@ -87,7 +107,7 @@ export default function UserGrowthChart({
           <div className="h-full w-full animate-pulse rounded-lg bg-slate-100" />
         ) : isError ? (
           <div className="flex h-full items-center justify-center rounded-lg bg-rose-50 text-sm font-semibold text-rose-700">
-            Không tải được dữ liệu biểu đồ.
+            {t("adminDashboard.chart.error")}
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
@@ -103,9 +123,9 @@ export default function UserGrowthChart({
                 axisLine={false}
                 tickLine={false}
                 tick={axisStyle}
-                tickFormatter={(value) => formatNumber(Number(value))}
+                tickFormatter={(value) => formatNumber(Number(value), locale)}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip locale={locale} />} />
               <Bar dataKey="value" radius={[8, 8, 0, 0]}>
                 {chartData.map((entry, index) => (
                   <Cell

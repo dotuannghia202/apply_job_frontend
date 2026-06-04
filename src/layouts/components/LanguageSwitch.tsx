@@ -18,7 +18,7 @@ const LanguageSwitch = () => {
     <button
       type="button"
       onClick={toggleLanguage}
-      className="relative flex items-center w-21 h-9 bg-white border border-slate-200 rounded-full shadow-inner overflow-hidden cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30"
+      className="relative flex items-center w-21 h-9 bg-white border border-slate-200 rounded-full shadow-inner overflow-hidden cursor-pointer transition-colors "
       aria-label={t("languageSwitch.toggle")}
     >
       {/* ======================================= */}

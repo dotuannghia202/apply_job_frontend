@@ -7,6 +7,7 @@ import {
   UserRoundCog,
   Users,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,8 +28,10 @@ type MetricCardConfig = {
   tone: string;
 };
 
-const formatNumber = (value?: number) =>
-  new Intl.NumberFormat("vi-VN").format(value ?? 0);
+const getLocale = (language: string) => (language === "vi" ? "vi-VN" : "en-US");
+
+const formatNumber = (value: number | undefined, locale: string) =>
+  new Intl.NumberFormat(locale).format(value ?? 0);
 
 const getShare = (value: number, total: number) =>
   total > 0 ? Math.round((value / total) * 100) : 0;
@@ -38,6 +41,8 @@ export default function StatsOverview({
   isLoading,
   isError,
 }: StatsOverviewProps) {
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
   const candidates = stats?.totalCandidates ?? 0;
   const employers = stats?.totalEmployers ?? 0;
   const roleTotal = candidates + employers;
@@ -46,44 +51,48 @@ export default function StatsOverview({
 
   const metricCards: MetricCardConfig[] = [
     {
-      label: "Việc đang mở",
+      label: t("adminDashboard.overview.metrics.activeJobs.label"),
       value: stats?.totalActiveJobs,
-      helper: "Tin tuyển dụng active",
+      helper: t("adminDashboard.overview.metrics.activeJobs.helper"),
       icon: BriefcaseBusiness,
       tone: "bg-sky-50 text-sky-700",
     },
     {
-      label: "Lượt ứng tuyển",
+      label: t("adminDashboard.overview.metrics.applications.label"),
       value: stats?.totalApplications,
-      helper: "Hồ sơ đã gửi",
+      helper: t("adminDashboard.overview.metrics.applications.helper"),
       icon: ClipboardList,
       tone: "bg-violet-50 text-violet-700",
     },
     {
-      label: "Ứng viên",
+      label: t("adminDashboard.overview.metrics.candidates.label"),
       value: stats?.totalCandidates,
-      helper: `${candidateShare}% trong nhóm tài khoản`,
+      helper: t("adminDashboard.overview.metrics.candidates.helper", {
+        percent: candidateShare,
+      }),
       icon: UserRoundCheck,
       tone: "bg-emerald-50 text-emerald-700",
     },
     {
-      label: "Nhà tuyển dụng",
+      label: t("adminDashboard.overview.metrics.employers.label"),
       value: stats?.totalEmployers,
-      helper: `${employerShare}% trong nhóm tài khoản`,
+      helper: t("adminDashboard.overview.metrics.employers.helper", {
+        percent: employerShare,
+      }),
       icon: UserRoundCog,
       tone: "bg-amber-50 text-amber-700",
     },
     {
-      label: "Công ty",
+      label: t("adminDashboard.overview.metrics.companies.label"),
       value: stats?.totalCompanies,
-      helper: "Hồ sơ doanh nghiệp",
+      helper: t("adminDashboard.overview.metrics.companies.helper"),
       icon: Building2,
       tone: "bg-cyan-50 text-cyan-700",
     },
     {
-      label: "Nhóm ngành",
-      value: stats?.industryStats.length,
-      helper: "Có dữ liệu việc làm",
+      label: t("adminDashboard.overview.metrics.industryGroups.label"),
+      value: stats?.industryStats?.length,
+      helper: t("adminDashboard.overview.metrics.industryGroups.helper"),
       icon: Layers3,
       tone: "bg-slate-100 text-slate-700",
     },
@@ -97,12 +106,13 @@ export default function StatsOverview({
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#757c81]">
-                Tổng người dùng hệ thống
+                {t("adminDashboard.overview.totalUsers")}
               </p>
               <MetricValue
                 className="mt-3 text-5xl"
                 isError={isError}
                 isLoading={isLoading}
+                locale={locale}
                 value={stats?.totalUsers}
               />
             </div>
@@ -116,18 +126,22 @@ export default function StatsOverview({
               <RoleStat
                 isError={isError}
                 isLoading={isLoading}
-                label="Ứng viên"
+                label={t("adminDashboard.overview.roles.candidates")}
+                locale={locale}
                 value={stats?.totalCandidates}
               />
               <div className="h-8 w-px bg-[#dde3e9]" />
               <RoleStat
                 isError={isError}
                 isLoading={isLoading}
-                label="Nhà tuyển dụng"
+                label={t("adminDashboard.overview.roles.employers")}
+                locale={locale}
                 value={stats?.totalEmployers}
               />
               <Badge className="ml-auto rounded-lg bg-[#bce3c8] text-[#1a4d2e] hover:bg-[#bce3c8]">
-                {roleTotal > 0 ? "Đã phân loại" : "Chưa có dữ liệu"}
+                {roleTotal > 0
+                  ? t("adminDashboard.overview.roleBadge.categorized")
+                  : t("adminDashboard.overview.roleBadge.noData")}
               </Badge>
             </div>
             <div className="flex h-2 overflow-hidden rounded-full bg-[#eaeef3]">
@@ -150,6 +164,7 @@ export default function StatsOverview({
           card={card}
           isError={isError}
           isLoading={isLoading}
+          locale={locale}
         />
       ))}
     </section>
@@ -161,11 +176,13 @@ function RoleStat({
   value,
   isLoading,
   isError,
+  locale,
 }: {
   label: string;
   value?: number;
   isLoading?: boolean;
   isError?: boolean;
+  locale: string;
 }) {
   return (
     <div>
@@ -174,6 +191,7 @@ function RoleStat({
         className="mt-1 text-lg"
         isError={isError}
         isLoading={isLoading}
+        locale={locale}
         value={value}
       />
     </div>
@@ -184,10 +202,12 @@ function MetricCard({
   card,
   isLoading,
   isError,
+  locale,
 }: {
   card: MetricCardConfig;
   isLoading?: boolean;
   isError?: boolean;
+  locale: string;
 }) {
   const Icon = card.icon;
 
@@ -203,6 +223,7 @@ function MetricCard({
               className="mt-3 text-3xl"
               isError={isError}
               isLoading={isLoading}
+              locale={locale}
               value={card.value}
             />
           </div>
@@ -226,19 +247,28 @@ function MetricValue({
   isLoading,
   isError,
   className,
+  locale,
 }: {
   value?: number;
   isLoading?: boolean;
   isError?: boolean;
   className?: string;
+  locale: string;
 }) {
   if (isLoading) {
-    return <div className={cn("h-10 w-28 animate-pulse rounded-md bg-slate-200", className)} />;
+    return (
+      <div
+        className={cn(
+          "h-10 w-28 animate-pulse rounded-md bg-slate-200",
+          className,
+        )}
+      />
+    );
   }
 
   return (
     <p className={cn("font-extrabold tracking-tight text-[#2d3338]", className)}>
-      {isError ? "--" : formatNumber(value)}
+      {isError ? "--" : formatNumber(value, locale)}
     </p>
   );
 }

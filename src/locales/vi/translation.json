@@ -482,6 +482,126 @@
       }
     }
   },
+  "adminDashboard": {
+    "header": {
+      "eyebrow": "Thống kê hệ thống",
+      "title": "Quản trị viên",
+      "description": "Tổng quan người dùng, công ty, việc làm và lượt ứng tuyển trong hệ thống tuyển dụng.",
+      "status": {
+        "syncing": "Đang đồng bộ",
+        "unavailable": "Không khả dụng",
+        "liveData": "Dữ liệu trực tiếp"
+      }
+    },
+    "overview": {
+      "totalUsers": "Tổng người dùng hệ thống",
+      "roles": {
+        "candidates": "Ứng viên",
+        "employers": "Nhà tuyển dụng"
+      },
+      "roleBadge": {
+        "categorized": "Đã phân loại",
+        "noData": "Chưa có dữ liệu"
+      },
+      "metrics": {
+        "activeJobs": {
+          "label": "Việc đang mở",
+          "helper": "Tin tuyển dụng active"
+        },
+        "applications": {
+          "label": "Lượt ứng tuyển",
+          "helper": "Hồ sơ đã gửi"
+        },
+        "candidates": {
+          "label": "Ứng viên",
+          "helper": "{{percent}}% trong nhóm tài khoản"
+        },
+        "employers": {
+          "label": "Nhà tuyển dụng",
+          "helper": "{{percent}}% trong nhóm tài khoản"
+        },
+        "companies": {
+          "label": "Công ty",
+          "helper": "Hồ sơ doanh nghiệp"
+        },
+        "industryGroups": {
+          "label": "Nhóm ngành",
+          "helper": "Có dữ liệu việc làm"
+        }
+      }
+    },
+    "chart": {
+      "title": "Phân bổ tài khoản",
+      "description": "Tương quan giữa ứng viên, nhà tuyển dụng và công ty.",
+      "error": "Không tải được dữ liệu biểu đồ.",
+      "series": {
+        "candidates": "Ứng viên",
+        "employers": "Nhà tuyển dụng",
+        "companies": "Công ty"
+      }
+    },
+    "topIndustries": {
+      "title": "Ngành nổi bật",
+      "description": "Số lượng việc làm theo từng ngành.",
+      "error": "Không tải được dữ liệu ngành.",
+      "empty": "Chưa có thống kê ngành.",
+      "jobsCount": "{{value}} việc",
+      "percentLabel": "{{percent}}% trong các ngành đang thống kê",
+      "topBadge": "Top"
+    },
+    "ledger": {
+      "title": "Bảng chỉ số hệ thống",
+      "description": "Tổng hợp dữ liệu theo phạm vi quản trị.",
+      "badge": {
+        "admin": "Quản trị",
+        "error": "Mất kết nối"
+      },
+      "columns": {
+        "metric": "Chỉ số",
+        "scope": "Phạm vi",
+        "status": "Trạng thái",
+        "total": "Tổng"
+      },
+      "status": {
+        "core": "Lõi",
+        "user": "Người dùng",
+        "org": "Tổ chức",
+        "hiring": "Tuyển dụng",
+        "flow": "Luồng",
+        "taxonomy": "Phân loại"
+      },
+      "rows": {
+        "totalUsers": {
+          "label": "Tổng người dùng",
+          "scope": "Toàn hệ thống"
+        },
+        "candidates": {
+          "label": "Ứng viên",
+          "scope": "Tài khoản candidate"
+        },
+        "employers": {
+          "label": "Nhà tuyển dụng",
+          "scope": "Tài khoản employer"
+        },
+        "companies": {
+          "label": "Công ty",
+          "scope": "Hồ sơ doanh nghiệp"
+        },
+        "activeJobs": {
+          "label": "Việc đang mở",
+          "scope": "Job active"
+        },
+        "applications": {
+          "label": "Lượt ứng tuyển",
+          "scope": "Application submitted"
+        },
+        "industries": {
+          "label": "Ngành có việc làm",
+          "scope": "Industry buckets"
+        }
+      }
+    }
+  },
   "languageSwitch": {
     "toggle": "Chuyển đổi ngôn ngữ"
   },
