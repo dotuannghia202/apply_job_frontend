@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Bell,
   CheckCheck,
@@ -24,13 +25,13 @@ import type { INotification } from "@/types/notification";
 import type { RoleName } from "@/types/auth";
 
 dayjs.extend(relativeTime);
-dayjs.locale("vi");
 
 interface NotificationProps {
   currentRole: RoleName; // Nhận từ AppHeader: "CANDIDATE" | "EMPLOYER" | "ADMIN"
 }
 
 const NotificationDropdown = ({ currentRole }: NotificationProps) => {
+  const { t, i18n } = useTranslation();
   // Quản lý trạng thái Mở/Đóng của Popup
   const [isOpen, setIsOpen] = useState(false);
   const [tab, setTab] = useState<"ALL" | "UNREAD">("ALL");
@@ -51,6 +52,7 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
   );
 
   const notifications: INotification[] = notifData?.data?.result || [];
+  const dayjsLocale = i18n.language === "vi" ? "vi" : "en";
 
   // Đếm số thông báo chưa đọc để hiện chấm đỏ trên chuông
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -76,7 +78,11 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
             newNotif.targetRole === currentRole ||
             newNotif.targetRole === `ROLE_${currentRole}`
           ) {
-            alert(`🔔 THÔNG BÁO MỚI: ${newNotif.title}`);
+            alert(
+              t("notificationDropdown.alerts.newNotification", {
+                title: newNotif.title,
+              }),
+            );
             refetch();
           }
         });
@@ -86,7 +92,11 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
           stompClient.subscribe(`/topic/admin`, (message) => {
             const newNotif = JSON.parse(message.body);
             if (currentRole === "ADMIN") {
-              alert(`🚨 ADMIN ALERT: ${newNotif.title}`);
+              alert(
+                t("notificationDropdown.alerts.adminAlert", {
+                  title: newNotif.title,
+                }),
+              );
               refetch();
             }
           });
@@ -99,7 +109,7 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
     return () => {
       stompClient.deactivate();
     };
-  }, [user, currentRole, refetch]);
+  }, [user, currentRole, refetch, t]);
 
   // HÀM CHUYỂN HƯỚNG KHI CLICK VÀO 1 THÔNG BÁO
   const handleNotifClick = (notif: INotification) => {
@@ -157,6 +167,7 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="relative rounded-full p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-primary"
+        aria-label={t("notificationDropdown.open")}
       >
         <Bell className="w-5 h-5" />
 
@@ -174,12 +185,15 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
         <div className="absolute right-0 mt-3 w-100 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col">
           {/* HEADER */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50/50">
-            <h3 className="font-bold text-lg text-slate-800">Thông báo</h3>
+            <h3 className="font-bold text-lg text-slate-800">
+              {t("notificationDropdown.title")}
+            </h3>
             <button
               onClick={() => markAllRead(currentRole)}
               className="text-sm font-medium text-primary hover:text-green-700 transition flex items-center gap-1"
             >
-              <CheckCheck className="w-4 h-4" /> Đánh dấu đã đọc
+              <CheckCheck className="w-4 h-4" />{" "}
+              {t("notificationDropdown.markAllRead")}
             </button>
           </div>
 
@@ -189,13 +203,13 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
               className={`flex-1 py-1.5 rounded-lg text-sm font-semibold transition ${tab === "ALL" ? "bg-slate-100 text-slate-900 shadow-sm" : "text-slate-500 hover:bg-slate-50"}`}
               onClick={() => setTab("ALL")}
             >
-              Tất cả
+              {t("notificationDropdown.tabs.all")}
             </button>
             <button
               className={`flex-1 py-1.5 rounded-lg text-sm font-semibold transition ${tab === "UNREAD" ? "bg-slate-100 text-slate-900 shadow-sm" : "text-slate-500 hover:bg-slate-50"}`}
               onClick={() => setTab("UNREAD")}
             >
-              Chưa đọc
+              {t("notificationDropdown.tabs.unread")}
             </button>
           </div>
 
@@ -204,7 +218,7 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
             {notifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-slate-400">
                 <Bell className="w-12 h-12 mb-3 opacity-20" />
-                <p>Bạn chưa có thông báo nào.</p>
+                <p>{t("notificationDropdown.empty")}</p>
               </div>
             ) : (
               notifications.map((notif) => (
@@ -233,7 +247,7 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
                       {notif.message}
                     </p>
                     <p className="text-xs font-medium text-slate-400 mt-2">
-                      {dayjs(notif.createdAt).fromNow()}
+                      {dayjs(notif.createdAt).locale(dayjsLocale).fromNow()}
                     </p>
                   </div>
 

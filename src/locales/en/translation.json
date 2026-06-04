@@ -303,5 +303,19 @@
         "appliedOneWeekAgo": "Applied 1 week ago"
       }
     }
+  },
+  "notificationDropdown": {
+    "open": "Open notifications",
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "tabs": {
+      "all": "All",
+      "unread": "Unread"
+    },
+    "empty": "You do not have any notifications yet.",
+    "alerts": {
+      "newNotification": "New notification: {{title}}",
+      "adminAlert": "Admin alert: {{title}}"
+    }
   }
 }

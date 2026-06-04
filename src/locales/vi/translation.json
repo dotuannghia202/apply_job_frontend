@@ -303,5 +303,19 @@
         "appliedOneWeekAgo": "Đã ứng tuyển 1 tuần trước"
       }
     }
+  },
+  "notificationDropdown": {
+    "open": "Mở thông báo",
+    "title": "Thông báo",
+    "markAllRead": "Đánh dấu đã đọc",
+    "tabs": {
+      "all": "Tất cả",
+      "unread": "Chưa đọc"
+    },
+    "empty": "Bạn chưa có thông báo nào.",
+    "alerts": {
+      "newNotification": "Thông báo mới: {{title}}",
+      "adminAlert": "Cảnh báo quản trị: {{title}}"
+    }
   }
 }
