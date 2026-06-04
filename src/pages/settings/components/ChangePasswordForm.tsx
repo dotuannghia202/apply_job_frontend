@@ -1,6 +1,7 @@
 import React from "react";
 import { isAxiosError } from "axios";
 import { Eye, EyeOff, KeyRound, LoaderCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useChangePassword } from "@/api/users/user.queries";
 import { NotificationPopup } from "@/components/NotificationPopup";
@@ -19,13 +20,17 @@ type ChangePasswordErrors = Partial<Record<PasswordField, string>> & {
 const inputClass =
   "h-11 rounded border-slate-200 bg-slate-50 pr-10 text-slate-900 shadow-none transition-all placeholder:text-slate-400 focus-visible:border-[#16a34a] focus-visible:ring-[#16a34a]/20";
 
-function getErrorMessage(error: unknown, fallback: string) {
+function getErrorMessage(
+  error: unknown,
+  fallback: string,
+  networkMessage: string,
+) {
   if (!isAxiosError(error)) return fallback;
 
   const message = error.response?.data?.message;
   if (Array.isArray(message)) return message.join(", ");
   if (typeof message === "string" && message.trim()) return message;
-  if (error.request) return "Network error. Please check your connection.";
+  if (error.request) return networkMessage;
 
   return error.message || fallback;
 }
@@ -35,14 +40,17 @@ function SecurePasswordInput({
   id,
   label,
   onChange,
+  placeholder,
   value,
 }: {
   error?: string;
   id: PasswordField;
   label: string;
   onChange: (field: PasswordField, value: string) => void;
+  placeholder: string;
   value: string;
 }) {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = React.useState(false);
 
   return (
@@ -59,13 +67,17 @@ function SecurePasswordInput({
           onChange={(event) => onChange(id, event.target.value)}
           aria-invalid={Boolean(error)}
           className={inputClass}
-          placeholder={`Enter ${label.toLowerCase()}`}
+          placeholder={placeholder}
         />
         <button
           type="button"
           onClick={() => setIsVisible((current) => !current)}
           className="absolute right-3 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#16a34a]/30"
-          aria-label={isVisible ? "Hide password" : "Show password"}
+          aria-label={
+            isVisible
+              ? t("accountSettings.password.hidePassword")
+              : t("accountSettings.password.showPassword")
+          }
         >
           {isVisible ? (
             <EyeOff className="size-4" />
@@ -80,6 +92,7 @@ function SecurePasswordInput({
 }
 
 export default function ChangePasswordForm() {
+  const { t } = useTranslation();
   const changePasswordMutation = useChangePassword();
   const [form, setForm] = React.useState<ChangePasswordValues>({
     currentPassword: "",
@@ -115,22 +128,25 @@ export default function ChangePasswordForm() {
     const nextErrors: ChangePasswordErrors = {};
 
     if (!form.currentPassword) {
-      nextErrors.currentPassword = "Current password is required.";
+      nextErrors.currentPassword = t(
+        "accountSettings.password.errors.currentRequired",
+      );
     }
 
     if (!form.newPassword) {
-      nextErrors.newPassword = "New password is required.";
+      nextErrors.newPassword = t("accountSettings.password.errors.newRequired");
     } else if (form.newPassword.length < 6) {
-      nextErrors.newPassword = "New password must be at least 6 characters.";
+      nextErrors.newPassword = t("accountSettings.password.errors.minLength");
     } else if (form.newPassword === form.currentPassword) {
-      nextErrors.newPassword =
-        "New password must be different from current password.";
+      nextErrors.newPassword = t("accountSettings.password.errors.samePassword");
     }
 
     if (!form.confirmPassword) {
-      nextErrors.confirmPassword = "Please confirm your new password.";
+      nextErrors.confirmPassword = t(
+        "accountSettings.password.errors.confirmRequired",
+      );
     } else if (form.confirmPassword !== form.newPassword) {
-      nextErrors.confirmPassword = "Passwords do not match.";
+      nextErrors.confirmPassword = t("accountSettings.password.errors.mismatch");
     }
 
     setErrors(nextErrors);
@@ -156,13 +172,17 @@ export default function ChangePasswordForm() {
       setPopup({
         open: true,
         variant: "success",
-        title: "Password updated",
-        message: "Your password has been changed successfully.",
+        title: t("accountSettings.password.notifications.updatedTitle"),
+        message: t("accountSettings.password.notifications.updatedMessage"),
       });
     } catch (error) {
       setErrors((current) => ({
         ...current,
-        server: getErrorMessage(error, "Failed to update password."),
+        server: getErrorMessage(
+          error,
+          t("accountSettings.password.errors.updateFailed"),
+          t("accountSettings.common.networkError"),
+        ),
       }));
     }
   };
@@ -179,10 +199,10 @@ export default function ChangePasswordForm() {
           </div>
           <div>
             <h2 className="text-xl font-semibold text-slate-950">
-              Change Password
+              {t("accountSettings.password.title")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              Use at least 6 characters for your new password.
+              {t("accountSettings.password.subtitle")}
             </p>
           </div>
         </div>
@@ -196,21 +216,28 @@ export default function ChangePasswordForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <SecurePasswordInput
             id="currentPassword"
-            label="Current Password"
+            label={t("accountSettings.password.fields.currentPassword")}
+            placeholder={t(
+              "accountSettings.password.placeholders.currentPassword",
+            )}
             value={form.currentPassword}
             error={errors.currentPassword}
             onChange={handleChange}
           />
           <SecurePasswordInput
             id="newPassword"
-            label="New Password"
+            label={t("accountSettings.password.fields.newPassword")}
+            placeholder={t("accountSettings.password.placeholders.newPassword")}
             value={form.newPassword}
             error={errors.newPassword}
             onChange={handleChange}
           />
           <SecurePasswordInput
             id="confirmPassword"
-            label="Confirm New Password"
+            label={t("accountSettings.password.fields.confirmPassword")}
+            placeholder={t(
+              "accountSettings.password.placeholders.confirmPassword",
+            )}
             value={form.confirmPassword}
             error={errors.confirmPassword}
             onChange={handleChange}
@@ -226,7 +253,7 @@ export default function ChangePasswordForm() {
               {changePasswordMutation.isPending ? (
                 <LoaderCircle className="size-4 animate-spin" />
               ) : (
-                "Save"
+                t("accountSettings.password.actions.save")
               )}
             </Button>
           </div>
@@ -238,7 +265,7 @@ export default function ChangePasswordForm() {
         variant={popup.variant}
         title={popup.title}
         message={popup.message}
-        dismissLabel="Got it"
+        dismissLabel={t("accountSettings.common.gotIt")}
         onDismiss={() => setPopup((current) => ({ ...current, open: false }))}
       />
     </>

@@ -1,6 +1,7 @@
 import React from "react";
 import { isAxiosError } from "axios";
 import { Camera, LoaderCircle, LockKeyhole, UploadCloud } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { uploadAvatarFile } from "@/api/files/file.api";
 import { useUpdateUser } from "@/api/users/user.queries";
@@ -37,13 +38,17 @@ const avatarPlaceholder =
 const inputClass =
   "h-11 rounded border-slate-200 bg-slate-50 text-slate-900 shadow-none transition-all placeholder:text-slate-400 focus-visible:border-[#16a34a] focus-visible:ring-[#16a34a]/20";
 
-function getErrorMessage(error: unknown, fallback: string) {
+function getErrorMessage(
+  error: unknown,
+  fallback: string,
+  networkMessage: string,
+) {
   if (!isAxiosError(error)) return fallback;
 
   const message = error.response?.data?.message;
   if (Array.isArray(message)) return message.join(", ");
   if (typeof message === "string" && message.trim()) return message;
-  if (error.request) return "Network error. Please check your connection.";
+  if (error.request) return networkMessage;
 
   return error.message || fallback;
 }
@@ -65,6 +70,7 @@ function mapToAuthUser(updatedUser: User, fallbackUser: AuthUser | null) {
 }
 
 export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
+  const { t } = useTranslation();
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
   const authUser = useAuthStore((state) => state.user);
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -128,22 +134,22 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
     const parsedAge = form.age ? Number(form.age) : undefined;
 
     if (!trimmedName) {
-      nextErrors.name = "Full name is required.";
+      nextErrors.name = t("accountSettings.profile.errors.nameRequired");
     } else if (trimmedName.length < 2) {
-      nextErrors.name = "Full name must be at least 2 characters.";
+      nextErrors.name = t("accountSettings.profile.errors.nameMinLength");
     }
 
     if (
       form.age &&
       (parsedAge == null || !Number.isInteger(parsedAge) || parsedAge < 1)
     ) {
-      nextErrors.age = "Age must be a positive number.";
+      nextErrors.age = t("accountSettings.profile.errors.agePositive");
     } else if (parsedAge != null && parsedAge > 120) {
-      nextErrors.age = "Age must be 120 or below.";
+      nextErrors.age = t("accountSettings.profile.errors.ageMax");
     }
 
     if (trimmedAddress.length > 255) {
-      nextErrors.address = "Address must be 255 characters or less.";
+      nextErrors.address = t("accountSettings.profile.errors.addressMax");
     }
 
     setErrors(nextErrors);
@@ -162,7 +168,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
     if (!isValidType) {
       setErrors((current) => ({
         ...current,
-        avatarUrl: "Avatar must be a JPG or PNG image.",
+        avatarUrl: t("accountSettings.profile.errors.avatarType"),
       }));
       event.target.value = "";
       return;
@@ -171,7 +177,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
     if (!isValidSize) {
       setErrors((current) => ({
         ...current,
-        avatarUrl: "Avatar must be 5MB or smaller.",
+        avatarUrl: t("accountSettings.profile.errors.avatarSize"),
       }));
       event.target.value = "";
       return;
@@ -195,7 +201,11 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
     } catch (error) {
       setErrors((current) => ({
         ...current,
-        avatarUrl: getErrorMessage(error, "Avatar upload failed."),
+        avatarUrl: getErrorMessage(
+          error,
+          t("accountSettings.profile.errors.avatarUploadFailed"),
+          t("accountSettings.common.networkError"),
+        ),
       }));
     } finally {
       setIsUploadingAvatar(false);
@@ -242,13 +252,17 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
       setPopup({
         open: true,
         variant: "success",
-        title: "Profile saved",
-        message: "Your personal information has been updated successfully.",
+        title: t("accountSettings.profile.notifications.savedTitle"),
+        message: t("accountSettings.profile.notifications.savedMessage"),
       });
     } catch (error) {
       setErrors((current) => ({
         ...current,
-        server: getErrorMessage(error, "Failed to save profile."),
+        server: getErrorMessage(
+          error,
+          t("accountSettings.profile.errors.saveFailed"),
+          t("accountSettings.common.networkError"),
+        ),
       }));
     }
   };
@@ -265,10 +279,10 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
       >
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-slate-950">
-            Personal Information
+            {t("accountSettings.profile.title")}
           </h2>
           <p className="mt-1 text-sm text-slate-500">
-            Keep your public profile and contact details up to date.
+            {t("accountSettings.profile.subtitle")}
           </p>
         </div>
 
@@ -283,7 +297,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
             <div className="relative size-24 shrink-0">
               <img
                 src={avatarSrc}
-                alt={form.name || "User avatar"}
+                alt={form.name || t("accountSettings.profile.userAvatar")}
                 className="size-24 rounded-full border border-slate-200 object-cover shadow-sm"
                 onError={(event) => {
                   event.currentTarget.src = avatarPlaceholder;
@@ -294,7 +308,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploadingAvatar}
                 className="absolute bottom-0 right-0 flex size-9 items-center justify-center rounded-full border-2 border-white bg-[#16a34a] text-white shadow-lg transition-colors hover:bg-[#15803d] disabled:pointer-events-none disabled:opacity-70"
-                aria-label="Upload avatar"
+                aria-label={t("accountSettings.profile.uploadAvatar")}
               >
                 {isUploadingAvatar ? (
                   <LoaderCircle className="size-4 animate-spin" />
@@ -314,11 +328,10 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <UploadCloud className="size-4 text-[#16a34a]" />
-                Upload a new avatar
+                {t("accountSettings.profile.uploadNewAvatar")}
               </div>
               <p className="max-w-sm text-sm leading-6 text-slate-500">
-                JPG or PNG image up to 5MB. The preview updates immediately
-                after upload.
+                {t("accountSettings.profile.avatarHelp")}
               </p>
               {errors.avatarUrl && (
                 <p className="text-sm font-medium text-red-600">
@@ -331,7 +344,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
           <div className="grid gap-5 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-slate-700">
-                Full Name
+                {t("accountSettings.profile.fields.fullName")}
               </Label>
               <Input
                 id="name"
@@ -340,7 +353,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
                 disabled={isDisabled}
                 aria-invalid={Boolean(errors.name)}
                 className={inputClass}
-                placeholder="Enter your full name"
+                placeholder={t("accountSettings.profile.placeholders.fullName")}
               />
               {errors.name && (
                 <p className="text-sm font-medium text-red-600">
@@ -351,7 +364,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="email" className="text-slate-700">
-                Email
+                {t("accountSettings.profile.fields.email")}
               </Label>
               <div className="relative">
                 <Input
@@ -367,7 +380,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="age" className="text-slate-700">
-                Age
+                {t("accountSettings.profile.fields.age")}
               </Label>
               <Input
                 id="age"
@@ -379,7 +392,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
                 disabled={isDisabled}
                 aria-invalid={Boolean(errors.age)}
                 className={inputClass}
-                placeholder="Enter your age"
+                placeholder={t("accountSettings.profile.placeholders.age")}
               />
               {errors.age && (
                 <p className="text-sm font-medium text-red-600">{errors.age}</p>
@@ -388,7 +401,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="gender" className="text-slate-700">
-                Gender
+                {t("accountSettings.profile.fields.gender")}
               </Label>
               <select
                 id="gender"
@@ -397,16 +410,24 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
                 disabled={isDisabled}
                 className={`${inputClass} px-3`}
               >
-                <option value="">Select gender</option>
-                <option value="MALE">Male</option>
-                <option value="FEMALE">Female</option>
-                <option value="OTHER">Other</option>
+                <option value="">
+                  {t("accountSettings.profile.placeholders.gender")}
+                </option>
+                <option value="MALE">
+                  {t("accountSettings.profile.gender.male")}
+                </option>
+                <option value="FEMALE">
+                  {t("accountSettings.profile.gender.female")}
+                </option>
+                <option value="OTHER">
+                  {t("accountSettings.profile.gender.other")}
+                </option>
               </select>
             </div>
 
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="address" className="text-slate-700">
-                Address
+                {t("accountSettings.profile.fields.address")}
               </Label>
               <Input
                 id="address"
@@ -415,7 +436,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
                 disabled={isDisabled}
                 aria-invalid={Boolean(errors.address)}
                 className={inputClass}
-                placeholder="Enter your address"
+                placeholder={t("accountSettings.profile.placeholders.address")}
               />
               {errors.address && (
                 <p className="text-sm font-medium text-red-600">
@@ -434,7 +455,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
               {isSubmitting ? (
                 <LoaderCircle className="size-4 animate-spin" />
               ) : (
-                "Save Profile"
+                t("accountSettings.profile.actions.save")
               )}
             </Button>
           </div>
@@ -446,7 +467,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
         variant={popup.variant}
         title={popup.title}
         message={popup.message}
-        dismissLabel="Got it"
+        dismissLabel={t("accountSettings.common.gotIt")}
         onDismiss={() => setPopup((current) => ({ ...current, open: false }))}
       />
     </>

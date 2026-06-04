@@ -1,5 +1,6 @@
 import React from "react";
 import { AlertCircle, Settings2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
 import { useGetUserById } from "@/api/users/user.queries";
@@ -18,6 +19,7 @@ function AccountSettingSkeleton() {
 }
 
 export default function AccountSettingPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const storeUser = useAuthStore((state) => state.user);
   const accountQuery = useGetUserById(storeUser?.id ?? 0);
@@ -40,13 +42,13 @@ export default function AccountSettingPage() {
           <div>
             <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#16a34a]/20 bg-[#16a34a]/10 px-3 py-1 text-sm font-semibold text-[#15803d]">
               <Settings2 className="size-4" />
-              Account
+              {t("accountSettings.page.eyebrow")}
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-              Account Settings
+              {t("accountSettings.page.title")}
             </h1>
             <p className="mt-3 max-w-2xl text-base text-slate-500">
-              Manage your personal information and security.
+              {t("accountSettings.page.subtitle")}
             </p>
           </div>
         </header>
@@ -54,10 +56,7 @@ export default function AccountSettingPage() {
         {accountQuery.isError && (
           <div className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
             <AlertCircle className="mt-0.5 size-4 shrink-0" />
-            <p>
-              We could not refresh your account details. Showing the latest
-              saved session data instead.
-            </p>
+            <p>{t("accountSettings.page.refreshFailed")}</p>
           </div>
         )}
 

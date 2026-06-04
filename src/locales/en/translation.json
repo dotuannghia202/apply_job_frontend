@@ -393,5 +393,93 @@
       "loggingOut": "Logging out...",
       "logOut": "Log out"
     }
+  },
+  "accountSettings": {
+    "common": {
+      "networkError": "Network error. Please check your connection.",
+      "gotIt": "Got it"
+    },
+    "page": {
+      "eyebrow": "Account",
+      "title": "Account Settings",
+      "subtitle": "Manage your personal information and security.",
+      "refreshFailed": "We could not refresh your account details. Showing the latest saved session data instead."
+    },
+    "profile": {
+      "title": "Personal Information",
+      "subtitle": "Keep your public profile and contact details up to date.",
+      "userAvatar": "User avatar",
+      "uploadAvatar": "Upload avatar",
+      "uploadNewAvatar": "Upload a new avatar",
+      "avatarHelp": "JPG or PNG image up to 5MB. The preview updates immediately after upload.",
+      "fields": {
+        "fullName": "Full Name",
+        "email": "Email",
+        "age": "Age",
+        "gender": "Gender",
+        "address": "Address"
+      },
+      "placeholders": {
+        "fullName": "Enter your full name",
+        "age": "Enter your age",
+        "gender": "Select gender",
+        "address": "Enter your address"
+      },
+      "gender": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "errors": {
+        "nameRequired": "Full name is required.",
+        "nameMinLength": "Full name must be at least 2 characters.",
+        "agePositive": "Age must be a positive number.",
+        "ageMax": "Age must be 120 or below.",
+        "addressMax": "Address must be 255 characters or less.",
+        "avatarType": "Avatar must be a JPG or PNG image.",
+        "avatarSize": "Avatar must be 5MB or smaller.",
+        "avatarUploadFailed": "Avatar upload failed.",
+        "saveFailed": "Failed to save profile."
+      },
+      "notifications": {
+        "savedTitle": "Profile saved",
+        "savedMessage": "Your personal information has been updated successfully."
+      },
+      "actions": {
+        "save": "Save Profile"
+      }
+    },
+    "password": {
+      "title": "Change Password",
+      "subtitle": "Use at least 6 characters for your new password.",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "fields": {
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm New Password"
+      },
+      "placeholders": {
+        "currentPassword": "Enter current password",
+        "newPassword": "Enter new password",
+        "confirmPassword": "Confirm new password"
+      },
+      "errors": {
+        "currentRequired": "Current password is required.",
+        "newRequired": "New password is required.",
+        "minLength": "New password must be at least 6 characters.",
+        "samePassword": "New password must be different from current password.",
+        "confirmRequired": "Please confirm your new password.",
+        "mismatch": "Passwords do not match.",
+        "updateFailed": "Failed to update password."
+      },
+      "notifications": {
+        "updatedTitle": "Password updated",
+        "updatedMessage": "Your password has been changed successfully."
+      },
+      "actions": {
+        "save": "Save"
+      }
+    }
   }
 }

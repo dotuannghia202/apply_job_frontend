@@ -393,5 +393,93 @@
       "loggingOut": "Đang đăng xuất...",
       "logOut": "Đăng xuất"
     }
+  },
+  "accountSettings": {
+    "common": {
+      "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối của bạn.",
+      "gotIt": "Đã hiểu"
+    },
+    "page": {
+      "eyebrow": "Tài khoản",
+      "title": "Cài đặt tài khoản",
+      "subtitle": "Quản lý thông tin cá nhân và bảo mật của bạn.",
+      "refreshFailed": "Không thể làm mới thông tin tài khoản. Đang hiển thị dữ liệu phiên đã lưu gần nhất."
+    },
+    "profile": {
+      "title": "Thông tin cá nhân",
+      "subtitle": "Cập nhật hồ sơ công khai và thông tin liên hệ của bạn.",
+      "userAvatar": "Ảnh đại diện người dùng",
+      "uploadAvatar": "Tải ảnh đại diện lên",
+      "uploadNewAvatar": "Tải ảnh đại diện mới",
+      "avatarHelp": "Ảnh JPG hoặc PNG tối đa 5MB. Bản xem trước sẽ cập nhật ngay sau khi tải lên.",
+      "fields": {
+        "fullName": "Họ và tên",
+        "email": "Email",
+        "age": "Tuổi",
+        "gender": "Giới tính",
+        "address": "Địa chỉ"
+      },
+      "placeholders": {
+        "fullName": "Nhập họ và tên",
+        "age": "Nhập tuổi",
+        "gender": "Chọn giới tính",
+        "address": "Nhập địa chỉ"
+      },
+      "gender": {
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác"
+      },
+      "errors": {
+        "nameRequired": "Vui lòng nhập họ và tên.",
+        "nameMinLength": "Họ và tên phải có ít nhất 2 ký tự.",
+        "agePositive": "Tuổi phải là số dương.",
+        "ageMax": "Tuổi phải từ 120 trở xuống.",
+        "addressMax": "Địa chỉ phải có tối đa 255 ký tự.",
+        "avatarType": "Ảnh đại diện phải là JPG hoặc PNG.",
+        "avatarSize": "Ảnh đại diện phải có dung lượng từ 5MB trở xuống.",
+        "avatarUploadFailed": "Tải ảnh đại diện thất bại.",
+        "saveFailed": "Không thể lưu hồ sơ."
+      },
+      "notifications": {
+        "savedTitle": "Đã lưu hồ sơ",
+        "savedMessage": "Thông tin cá nhân của bạn đã được cập nhật thành công."
+      },
+      "actions": {
+        "save": "Lưu hồ sơ"
+      }
+    },
+    "password": {
+      "title": "Đổi mật khẩu",
+      "subtitle": "Mật khẩu mới cần có ít nhất 6 ký tự.",
+      "showPassword": "Hiện mật khẩu",
+      "hidePassword": "Ẩn mật khẩu",
+      "fields": {
+        "currentPassword": "Mật khẩu hiện tại",
+        "newPassword": "Mật khẩu mới",
+        "confirmPassword": "Xác nhận mật khẩu mới"
+      },
+      "placeholders": {
+        "currentPassword": "Nhập mật khẩu hiện tại",
+        "newPassword": "Nhập mật khẩu mới",
+        "confirmPassword": "Xác nhận mật khẩu mới"
+      },
+      "errors": {
+        "currentRequired": "Vui lòng nhập mật khẩu hiện tại.",
+        "newRequired": "Vui lòng nhập mật khẩu mới.",
+        "minLength": "Mật khẩu mới phải có ít nhất 6 ký tự.",
+        "samePassword": "Mật khẩu mới phải khác mật khẩu hiện tại.",
+        "confirmRequired": "Vui lòng xác nhận mật khẩu mới.",
+        "mismatch": "Mật khẩu không khớp.",
+        "updateFailed": "Không thể cập nhật mật khẩu."
+      },
+      "notifications": {
+        "updatedTitle": "Đã cập nhật mật khẩu",
+        "updatedMessage": "Mật khẩu của bạn đã được thay đổi thành công."
+      },
+      "actions": {
+        "save": "Lưu"
+      }
+    }
   }
 }
