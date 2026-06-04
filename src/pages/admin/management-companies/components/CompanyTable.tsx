@@ -1,4 +1,5 @@
 import { Eye } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import type { CompanyStatus } from "@/types/company";
@@ -31,12 +32,8 @@ const statusStyles: Record<CompanyStatus, string> = {
   SUSPENDED: "bg-amber-100 text-amber-900",
 };
 
-const statusLabels: Record<CompanyStatus, string> = {
-  APPROVED: "Approved",
-  PENDING: "Pending",
-  REJECTED: "Rejected",
-  SUSPENDED: "Suspended",
-};
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
 
 export default function CompanyTable({
   rows,
@@ -45,6 +42,30 @@ export default function CompanyTable({
   onSuspend,
   onRestore,
 }: CompanyTableProps) {
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
+
+  const formatDate = (value: string) => {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return new Intl.DateTimeFormat(locale, {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(date);
+  };
+
+  const statusLabels: Record<CompanyStatus, string> = {
+    APPROVED: t("managementCompanies.status.approved"),
+    PENDING: t("managementCompanies.status.pending"),
+    REJECTED: t("managementCompanies.status.rejected"),
+    SUSPENDED: t("managementCompanies.status.suspended"),
+  };
+
   const renderActionButtons = (row: CompanyRow) => {
     if (row.status === "PENDING") {
       return (
@@ -55,7 +76,7 @@ export default function CompanyTable({
             className="rounded-lg bg-emerald-600 px-3 text-xs font-semibold text-white hover:bg-emerald-700"
             onClick={() => onApprove?.(row)}
           >
-            Approve
+            {t("managementCompanies.table.actions.approve")}
           </Button>
           <Button
             type="button"
@@ -63,7 +84,7 @@ export default function CompanyTable({
             className="rounded-lg bg-rose-600 px-3 text-xs font-semibold text-white hover:bg-rose-700"
             onClick={() => onReject?.(row)}
           >
-            Reject
+            {t("managementCompanies.table.actions.reject")}
           </Button>
         </div>
       );
@@ -77,7 +98,7 @@ export default function CompanyTable({
           className="rounded-lg bg-amber-600 px-3 text-xs font-semibold text-white hover:bg-amber-700"
           onClick={() => onSuspend?.(row)}
         >
-          Suspend
+          {t("managementCompanies.table.actions.suspend")}
         </Button>
       );
     }
@@ -90,7 +111,7 @@ export default function CompanyTable({
           className="rounded-lg bg-emerald-600 px-3 text-xs font-semibold text-white hover:bg-emerald-700"
           onClick={() => onRestore?.(row)}
         >
-          Restore
+          {t("managementCompanies.table.actions.restore")}
         </Button>
       );
     }
@@ -107,11 +128,21 @@ export default function CompanyTable({
         <table className="min-w-full text-left text-sm">
           <thead className="bg-[#f3f4ef] text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
             <tr>
-              <th className="px-6 py-4">Company</th>
-              <th className="px-6 py-4">Employer</th>
-              <th className="px-6 py-4">Created at</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4 text-right">Actions</th>
+              <th className="px-6 py-4">
+                {t("managementCompanies.table.columns.company")}
+              </th>
+              <th className="px-6 py-4">
+                {t("managementCompanies.table.columns.employer")}
+              </th>
+              <th className="px-6 py-4">
+                {t("managementCompanies.table.columns.createdAt")}
+              </th>
+              <th className="px-6 py-4">
+                {t("managementCompanies.table.columns.status")}
+              </th>
+              <th className="px-6 py-4 text-right">
+                {t("managementCompanies.table.columns.actions")}
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -141,7 +172,9 @@ export default function CompanyTable({
                     </p>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-slate-700">{row.createdAt}</td>
+                <td className="px-6 py-4 text-slate-700">
+                  {formatDate(row.createdAt)}
+                </td>
                 <td className="px-6 py-4">
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold ${
@@ -150,13 +183,15 @@ export default function CompanyTable({
                         : "bg-slate-100 text-slate-600"
                     }`}
                   >
-                    {row.status ? statusLabels[row.status] : "Unknown"}
+                    {row.status
+                      ? statusLabels[row.status]
+                      : t("managementCompanies.table.unknown")}
                   </span>
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex justify-end gap-2">
                     <Button
-                      title="View detail"
+                      title={t("managementCompanies.table.actions.viewDetail")}
                       variant="ghost"
                       size="icon-sm"
                       className="rounded-lg bg-slate-50 text-slate-600 hover:bg-slate-100"
@@ -164,7 +199,9 @@ export default function CompanyTable({
                     >
                       <Link
                         to={`/company/detail/${row.id}`}
-                        aria-label="View company detail"
+                        aria-label={t(
+                          "managementCompanies.table.actions.viewDetail",
+                        )}
                       >
                         <Eye className="size-4" />
                       </Link>

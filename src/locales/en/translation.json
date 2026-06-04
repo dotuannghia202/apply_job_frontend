@@ -602,6 +602,112 @@
       }
     }
   },
+  "managementCompanies": {
+    "common": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "page": {
+      "loadingList": "Loading company list...",
+      "errorLoadingList": "Could not load the company list. Please try again."
+    },
+    "header": {
+      "title": "Company Management",
+      "description": "Review and approve new company registrations. Maintain the integrity of the professional recruitment ecosystem.",
+      "exportCsv": "Export CSV"
+    },
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "suspended": "Suspended"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by company name...",
+      "allStatuses": "All statuses",
+      "filterButton": "Open filters"
+    },
+    "kpi": {
+      "totalCompanies": "Total companies",
+      "pendingApproval": "Pending approval",
+      "approved": "Approved",
+      "loading": "Loading company statistics...",
+      "error": "Could not load company statistics."
+    },
+    "table": {
+      "columns": {
+        "company": "Company",
+        "employer": "Employer",
+        "createdAt": "Created at",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "viewDetail": "View company detail",
+        "approve": "Approve",
+        "reject": "Reject",
+        "suspend": "Suspend",
+        "restore": "Restore"
+      },
+      "unknown": "Unknown"
+    },
+    "pagination": {
+      "summary": "Showing {{start}}-{{end}} of {{total}} companies",
+      "previous": "Previous page",
+      "next": "Next page"
+    },
+    "bulk": {
+      "selectedCompanies": "Selected {{count}} companies",
+      "approveSelected": "Approve selected",
+      "suspendSelected": "Suspend selected"
+    },
+    "quickInsights": {
+      "eyebrow": "Quick insights",
+      "title": "Featured companies",
+      "topPerformance": "Top performance",
+      "approvalRate": "Approval rate",
+      "monthlyChange": "+4.1% this month"
+    },
+    "confirm": {
+      "approve": {
+        "title": "Approve company?",
+        "message": "This will approve the company and allow it to operate.",
+        "confirm": "Approve"
+      },
+      "reject": {
+        "title": "Reject company?",
+        "message": "This will mark the company as rejected.",
+        "confirm": "Reject"
+      },
+      "suspend": {
+        "title": "Suspend company?",
+        "message": "This will suspend the company from operating.",
+        "confirm": "Suspend"
+      },
+      "restore": {
+        "title": "Restore company?",
+        "message": "This will restore the company to active status.",
+        "confirm": "Restore"
+      },
+      "fallback": {
+        "title": "Update status?",
+        "message": "This will update the company status."
+      }
+    },
+    "notifications": {
+      "successTitle": "Success",
+      "errorTitle": "Failed",
+      "approveSuccess": "Company approved successfully.",
+      "rejectSuccess": "Company rejected successfully.",
+      "suspendSuccess": "Company suspended successfully.",
+      "restoreSuccess": "Company restored successfully.",
+      "approveError": "Failed to approve company. Please try again.",
+      "rejectError": "Failed to reject company. Please try again.",
+      "suspendError": "Failed to suspend company. Please try again.",
+      "restoreError": "Failed to restore company. Please try again."
+    }
+  },
   "languageSwitch": {
     "toggle": "Toggle language"
   },

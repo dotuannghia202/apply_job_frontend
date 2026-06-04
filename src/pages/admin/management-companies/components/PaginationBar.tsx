@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +11,9 @@ interface PaginationBarProps {
   onNext: () => void;
 }
 
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
+
 export default function PaginationBar({
   page,
   pageSize,
@@ -17,6 +21,10 @@ export default function PaginationBar({
   onPrev,
   onNext,
 }: PaginationBarProps) {
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
+  const formatNumber = (value: number) =>
+    new Intl.NumberFormat(locale).format(value);
   const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const end = Math.min(total, page * pageSize);
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -30,7 +38,11 @@ export default function PaginationBar({
       data-section="PaginationBar"
     >
       <span>
-        Showing {start}-{end} of {total} companies
+        {t("managementCompanies.pagination.summary", {
+          start: formatNumber(start),
+          end: formatNumber(end),
+          total: formatNumber(total),
+        })}
       </span>
       <div className="flex items-center gap-2">
         <Button
@@ -39,6 +51,8 @@ export default function PaginationBar({
           className="h-8 w-8 rounded-lg border-slate-200 bg-slate-50"
           onClick={onPrev}
           disabled={page <= 1}
+          aria-label={t("managementCompanies.pagination.previous")}
+          title={t("managementCompanies.pagination.previous")}
         >
           <ChevronLeft className="size-4" />
         </Button>
@@ -63,6 +77,8 @@ export default function PaginationBar({
           className="h-8 w-8 rounded-lg border-slate-200 bg-slate-50"
           onClick={onNext}
           disabled={page >= totalPages}
+          aria-label={t("managementCompanies.pagination.next")}
+          title={t("managementCompanies.pagination.next")}
         >
           <ChevronRight className="size-4" />
         </Button>

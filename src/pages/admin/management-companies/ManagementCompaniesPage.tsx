@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   useApproveCompany,
@@ -26,6 +27,7 @@ interface ConfirmState {
 const PAGE_SIZE = 6;
 
 export default function ManagementCompaniesPage() {
+  const { t } = useTranslation();
   const [keyword, setKeyword] = useState("");
   const [status, setStatus] = useState<CompanyStatusFilter>("");
   const [page, setPage] = useState(1);
@@ -80,48 +82,56 @@ export default function ManagementCompaniesPage() {
     switch (action) {
       case "approve":
         return {
-          title: "Approve company?",
-          message: "This will approve the company and allow it to operate.",
-          confirmLabel: "Approve",
+          title: t("managementCompanies.confirm.approve.title"),
+          message: t("managementCompanies.confirm.approve.message"),
+          confirmLabel: t("managementCompanies.confirm.approve.confirm"),
           confirmVariant: "primary" as const,
         };
       case "reject":
         return {
-          title: "Reject company?",
-          message: "This will mark the company as rejected.",
-          confirmLabel: "Reject",
+          title: t("managementCompanies.confirm.reject.title"),
+          message: t("managementCompanies.confirm.reject.message"),
+          confirmLabel: t("managementCompanies.confirm.reject.confirm"),
           confirmVariant: "danger" as const,
         };
       case "suspend":
         return {
-          title: "Suspend company?",
-          message: "This will suspend the company from operating.",
-          confirmLabel: "Suspend",
+          title: t("managementCompanies.confirm.suspend.title"),
+          message: t("managementCompanies.confirm.suspend.message"),
+          confirmLabel: t("managementCompanies.confirm.suspend.confirm"),
           confirmVariant: "danger" as const,
         };
       case "restore":
         return {
-          title: "Restore company?",
-          message: "This will restore the company to active status.",
-          confirmLabel: "Restore",
+          title: t("managementCompanies.confirm.restore.title"),
+          message: t("managementCompanies.confirm.restore.message"),
+          confirmLabel: t("managementCompanies.confirm.restore.confirm"),
           confirmVariant: "primary" as const,
         };
       default:
         return {
-          title: "Update status?",
-          message: "This will update the company status.",
-          confirmLabel: "Confirm",
+          title: t("managementCompanies.confirm.fallback.title"),
+          message: t("managementCompanies.confirm.fallback.message"),
+          confirmLabel: t("managementCompanies.common.confirm"),
           confirmVariant: "primary" as const,
         };
     }
   };
 
   const setSuccessNotice = (message: string) => {
-    setNotice({ variant: "success", title: "Success", message });
+    setNotice({
+      variant: "success",
+      title: t("managementCompanies.notifications.successTitle"),
+      message,
+    });
   };
 
   const setErrorNotice = (message: string) => {
-    setNotice({ variant: "error", title: "Failed", message });
+    setNotice({
+      variant: "error",
+      title: t("managementCompanies.notifications.errorTitle"),
+      message,
+    });
   };
 
   const handleStatusAction = (action: StatusAction, company: CompanyRow) => {
@@ -141,14 +151,14 @@ export default function ManagementCompaniesPage() {
           onSuccess: () =>
             setSuccessNotice(
               action === "approve"
-                ? "Company approved successfully."
-                : "Company rejected successfully.",
+                ? t("managementCompanies.notifications.approveSuccess")
+                : t("managementCompanies.notifications.rejectSuccess"),
             ),
           onError: () =>
             setErrorNotice(
               action === "approve"
-                ? "Failed to approve company. Please try again."
-                : "Failed to reject company. Please try again.",
+                ? t("managementCompanies.notifications.approveError")
+                : t("managementCompanies.notifications.rejectError"),
             ),
         },
       );
@@ -161,14 +171,14 @@ export default function ManagementCompaniesPage() {
         onSuccess: () =>
           setSuccessNotice(
             action === "suspend"
-              ? "Company suspended successfully."
-              : "Company restored successfully.",
+              ? t("managementCompanies.notifications.suspendSuccess")
+              : t("managementCompanies.notifications.restoreSuccess"),
           ),
         onError: () =>
           setErrorNotice(
             action === "suspend"
-              ? "Failed to suspend company. Please try again."
-              : "Failed to restore company. Please try again.",
+              ? t("managementCompanies.notifications.suspendError")
+              : t("managementCompanies.notifications.restoreError"),
           ),
       },
     );
@@ -188,12 +198,12 @@ export default function ManagementCompaniesPage() {
           />
           {companiesQuery.isError ? (
             <div className="rounded-2xl bg-white p-6 text-sm text-rose-600 shadow-sm">
-              Khong the tai danh sach cong ty. Vui long thu lai.
+              {t("managementCompanies.page.errorLoadingList")}
             </div>
           ) : null}
           {companiesQuery.isLoading ? (
             <div className="rounded-2xl bg-white p-6 text-sm text-slate-500 shadow-sm">
-              Dang tai danh sach cong ty...
+              {t("managementCompanies.page.loadingList")}
             </div>
           ) : null}
           {!companiesQuery.isLoading && !companiesQuery.isError ? (
@@ -228,8 +238,9 @@ export default function ManagementCompaniesPage() {
         confirmLabel={
           confirmState
             ? getConfirmContent(confirmState.action).confirmLabel
-            : "Confirm"
+            : t("managementCompanies.common.confirm")
         }
+        cancelLabel={t("managementCompanies.common.cancel")}
         confirmVariant={
           confirmState
             ? getConfirmContent(confirmState.action).confirmVariant
@@ -245,7 +256,7 @@ export default function ManagementCompaniesPage() {
         title={notice?.title ?? ""}
         message={notice?.message ?? ""}
         onDismiss={() => setNotice(null)}
-        dismissLabel="Close"
+        dismissLabel={t("managementCompanies.common.close")}
       />
     </main>
   );

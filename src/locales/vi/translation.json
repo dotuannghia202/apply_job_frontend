@@ -602,6 +602,112 @@
       }
     }
   },
+  "managementCompanies": {
+    "common": {
+      "confirm": "Xác nhận",
+      "cancel": "Hủy",
+      "close": "Đóng"
+    },
+    "page": {
+      "loadingList": "Đang tải danh sách công ty...",
+      "errorLoadingList": "Không thể tải danh sách công ty. Vui lòng thử lại."
+    },
+    "header": {
+      "title": "Quản lý công ty",
+      "description": "Xem xét và phê duyệt các đăng ký công ty mới. Duy trì tính minh bạch của hệ sinh thái tuyển dụng chuyên nghiệp.",
+      "exportCsv": "Xuất CSV"
+    },
+    "status": {
+      "approved": "Đã duyệt",
+      "pending": "Chờ duyệt",
+      "rejected": "Đã từ chối",
+      "suspended": "Đã tạm khóa"
+    },
+    "filters": {
+      "searchPlaceholder": "Tìm theo tên công ty...",
+      "allStatuses": "Tất cả trạng thái",
+      "filterButton": "Mở bộ lọc"
+    },
+    "kpi": {
+      "totalCompanies": "Tổng công ty",
+      "pendingApproval": "Chờ phê duyệt",
+      "approved": "Đã duyệt",
+      "loading": "Đang tải thống kê công ty...",
+      "error": "Không thể tải thống kê công ty."
+    },
+    "table": {
+      "columns": {
+        "company": "Công ty",
+        "employer": "Nhà tuyển dụng",
+        "createdAt": "Ngày tạo",
+        "status": "Trạng thái",
+        "actions": "Thao tác"
+      },
+      "actions": {
+        "viewDetail": "Xem chi tiết công ty",
+        "approve": "Duyệt",
+        "reject": "Từ chối",
+        "suspend": "Tạm khóa",
+        "restore": "Khôi phục"
+      },
+      "unknown": "Không xác định"
+    },
+    "pagination": {
+      "summary": "Hiển thị {{start}}-{{end}} trong {{total}} công ty",
+      "previous": "Trang trước",
+      "next": "Trang sau"
+    },
+    "bulk": {
+      "selectedCompanies": "Đã chọn {{count}} công ty",
+      "approveSelected": "Duyệt hàng loạt",
+      "suspendSelected": "Tạm khóa hàng loạt"
+    },
+    "quickInsights": {
+      "eyebrow": "Thông tin nhanh",
+      "title": "Công ty nổi bật",
+      "topPerformance": "Hiệu suất nổi bật",
+      "approvalRate": "Tỷ lệ duyệt",
+      "monthlyChange": "+4.1% tháng này"
+    },
+    "confirm": {
+      "approve": {
+        "title": "Duyệt công ty?",
+        "message": "Thao tác này sẽ duyệt công ty và cho phép công ty hoạt động.",
+        "confirm": "Duyệt"
+      },
+      "reject": {
+        "title": "Từ chối công ty?",
+        "message": "Thao tác này sẽ đánh dấu công ty là đã bị từ chối.",
+        "confirm": "Từ chối"
+      },
+      "suspend": {
+        "title": "Tạm khóa công ty?",
+        "message": "Thao tác này sẽ tạm khóa công ty khỏi hoạt động.",
+        "confirm": "Tạm khóa"
+      },
+      "restore": {
+        "title": "Khôi phục công ty?",
+        "message": "Thao tác này sẽ khôi phục công ty về trạng thái hoạt động.",
+        "confirm": "Khôi phục"
+      },
+      "fallback": {
+        "title": "Cập nhật trạng thái?",
+        "message": "Thao tác này sẽ cập nhật trạng thái công ty."
+      }
+    },
+    "notifications": {
+      "successTitle": "Thành công",
+      "errorTitle": "Thất bại",
+      "approveSuccess": "Đã duyệt công ty thành công.",
+      "rejectSuccess": "Đã từ chối công ty thành công.",
+      "suspendSuccess": "Đã tạm khóa công ty thành công.",
+      "restoreSuccess": "Đã khôi phục công ty thành công.",
+      "approveError": "Không thể duyệt công ty. Vui lòng thử lại.",
+      "rejectError": "Không thể từ chối công ty. Vui lòng thử lại.",
+      "suspendError": "Không thể tạm khóa công ty. Vui lòng thử lại.",
+      "restoreError": "Không thể khôi phục công ty. Vui lòng thử lại."
+    }
+  },
   "languageSwitch": {
     "toggle": "Chuyển đổi ngôn ngữ"
   },
