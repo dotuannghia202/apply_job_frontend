@@ -6,6 +6,7 @@ import {
   GraduationCap,
   BadgeCheck,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const chipCls =
   "px-3 py-1.5 bg-white text-slate-600 rounded-lg text-sm font-medium border border-slate-200 hover:bg-primary-hover/10 hover:text-primary-hover transition-colors";
@@ -37,13 +38,15 @@ export function JobDetailSidebar({
   relatedCategories,
   regions,
 }: JobDetailSidebarProps) {
+  const { t } = useTranslation();
+
   return (
     <aside className="w-full lg:w-1/3 flex flex-col gap-6">
       <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-6 border border-slate-100">
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 bg-slate-100 rounded-lg flex items-center justify-center overflow-hidden border border-slate-200 flex-shrink-0">
             <img
-              alt="Company logo"
+              alt={t("jobDetail.sidebar.companyLogoAlt")}
               className="w-full h-full object-cover"
               src={companyLogo}
             />
@@ -55,7 +58,7 @@ export function JobDetailSidebar({
             <Users className="text-slate-500" size={18} />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-slate-400">
-                Company size
+                {t("jobDetail.sidebar.companySize")}
               </span>
               <span className="text-slate-900 font-medium">{companySize}</span>
             </div>
@@ -64,7 +67,7 @@ export function JobDetailSidebar({
             <Building2 className="text-slate-500" size={18} />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-slate-400">
-                Industry
+                {t("jobDetail.sidebar.industry")}
               </span>
               <span className="text-slate-900 font-medium">{companyField}</span>
             </div>
@@ -73,7 +76,7 @@ export function JobDetailSidebar({
             <MapPin className="text-slate-500" size={18} />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-slate-400">
-                Location
+                {t("jobDetail.sidebar.location")}
               </span>
               <span className="text-slate-900 font-medium">
                 {companyLocation}
@@ -82,13 +85,13 @@ export function JobDetailSidebar({
           </div>
         </div>
         <button className="text-primary font-semibold text-center mt-2 flex items-center justify-center gap-2 hover:text-primary-hover hover:underline">
-          View company page
+          {t("jobDetail.sidebar.viewCompanyPage")}
         </button>
       </div>
 
       <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-6 border border-slate-100">
         <h3 className="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">
-          General info
+          {t("jobDetail.sidebar.generalInfo")}
         </h3>
         <div className="flex flex-col gap-5">
           <div className="flex items-center gap-4">
@@ -96,7 +99,9 @@ export function JobDetailSidebar({
               <BadgeCheck size={18} />
             </div>
             <div>
-              <p className="text-xs text-slate-400 mb-0.5">Level</p>
+              <p className="text-xs text-slate-400 mb-0.5">
+                {t("jobDetail.sidebar.level")}
+              </p>
               <p className="font-semibold text-slate-900 text-sm">{level}</p>
             </div>
           </div>
@@ -105,7 +110,9 @@ export function JobDetailSidebar({
               <GraduationCap size={18} />
             </div>
             <div>
-              <p className="text-xs text-slate-400 mb-0.5">Education</p>
+              <p className="text-xs text-slate-400 mb-0.5">
+                {t("jobDetail.sidebar.education")}
+              </p>
               <p className="font-semibold text-slate-900 text-sm">
                 {education}
               </p>
@@ -116,7 +123,9 @@ export function JobDetailSidebar({
               <Users size={18} />
             </div>
             <div>
-              <p className="text-xs text-slate-400 mb-0.5">Openings</p>
+              <p className="text-xs text-slate-400 mb-0.5">
+                {t("jobDetail.sidebar.openings")}
+              </p>
               <p className="font-semibold text-slate-900 text-sm">{openings}</p>
             </div>
           </div>
@@ -125,7 +134,9 @@ export function JobDetailSidebar({
               <Briefcase size={18} />
             </div>
             <div>
-              <p className="text-xs text-slate-400 mb-0.5">Work type</p>
+              <p className="text-xs text-slate-400 mb-0.5">
+                {t("jobDetail.sidebar.workType")}
+              </p>
               <p className="font-semibold text-slate-900 text-sm">{workType}</p>
             </div>
           </div>
@@ -133,7 +144,9 @@ export function JobDetailSidebar({
       </div>
 
       <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-4 border border-slate-100">
-        <h3 className="text-lg font-bold text-slate-900">Related categories</h3>
+        <h3 className="text-lg font-bold text-slate-900">
+          {t("jobDetail.sidebar.relatedCategories")}
+        </h3>
         <div className="flex flex-wrap gap-2">
           {relatedCategories.map((item) => (
             <a key={item} href="#" className={chipCls}>
@@ -144,7 +157,9 @@ export function JobDetailSidebar({
       </div>
 
       <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-4 border border-slate-100">
-        <h3 className="text-lg font-bold text-slate-900">Search by region</h3>
+        <h3 className="text-lg font-bold text-slate-900">
+          {t("jobDetail.sidebar.searchByRegion")}
+        </h3>
         <div className="flex flex-wrap gap-2">
           {regions.map((item) => (
             <a

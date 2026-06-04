@@ -1,4 +1,6 @@
+import type { TFunction } from "i18next";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useGetJobById } from "@/api/jobs/job.queries";
 import { useToggleSaveJob } from "@/api/users/user.queries";
@@ -7,9 +9,35 @@ import { CandidateList } from "./components/CandidateList";
 import { JobDetailHeader } from "./components/JobDetailHeader";
 import { JobDetailInfo } from "./components/JobDetailInfo";
 import { JobDetailSidebar } from "./components/JobDetailSidebar";
-import { formatSalaryRange, getCityFromAddress } from "../helper";
+import { formatVND, getCityFromAddress } from "../helper";
+
+const formatJobDetailSalary = (
+  minSalary: number | null | undefined,
+  maxSalary: number | null | undefined,
+  t: TFunction,
+) => {
+  const min = minSalary ?? 0;
+  const max = maxSalary ?? 0;
+  const hasMin = min > 0;
+  const hasMax = max > 0;
+
+  if (!hasMin && !hasMax) {
+    return t("jobDetail.salary.agree");
+  }
+
+  if (hasMin && !hasMax) {
+    return t("jobDetail.salary.from", { salary: formatVND(min) });
+  }
+
+  if (!hasMin && hasMax) {
+    return t("jobDetail.salary.upTo", { salary: formatVND(max) });
+  }
+
+  return `${formatVND(min)} - ${formatVND(max)}`;
+};
 
 export default function JobDetailPage() {
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const jobId = Number(id);
   const jobQuery = useGetJobById(jobId);
@@ -18,13 +46,16 @@ export default function JobDetailPage() {
   const [isSaved, setIsSaved] = useState(false);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
 
-  const deadlineLabel = "Application deadline:";
+  const locale = i18n.language === "vi" ? "vi-VN" : "en-GB";
+  const deadlineLabel = t("jobDetail.header.applicationDeadline");
   const formatDateLabel = (value?: string | null) => {
-    if (!value) return "Not specified";
+    if (!value) return t("jobDetail.fallbacks.notSpecified");
     const parsed = new Date(value);
-    if (Number.isNaN(parsed.getTime())) return "Not specified";
+    if (Number.isNaN(parsed.getTime())) {
+      return t("jobDetail.fallbacks.notSpecified");
+    }
 
-    return new Intl.DateTimeFormat("en-GB").format(parsed);
+    return new Intl.DateTimeFormat(locale).format(parsed);
   };
 
   const getDaysLeftLabel = (value?: string | null) => {
@@ -34,9 +65,9 @@ export default function JobDetailPage() {
     const diffMs = end.getTime() - Date.now();
     const daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
     if (Number.isNaN(daysLeft)) return "";
-    if (daysLeft < 0) return "(Expired)";
-    if (daysLeft === 0) return "(Due today)";
-    return `(${daysLeft} days left)`;
+    if (daysLeft < 0) return t("jobDetail.deadline.expired");
+    if (daysLeft === 0) return t("jobDetail.deadline.dueToday");
+    return t("jobDetail.deadline.daysLeft", { count: daysLeft });
   };
 
   useEffect(() => {
@@ -50,7 +81,7 @@ export default function JobDetailPage() {
       <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
-            Job not found.
+            {t("jobDetail.status.notFound")}
           </div>
         </div>
       </main>
@@ -62,7 +93,7 @@ export default function JobDetailPage() {
       <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
-            Loading job details...
+            {t("jobDetail.status.loading")}
           </div>
         </div>
       </main>
@@ -74,7 +105,7 @@ export default function JobDetailPage() {
       <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
-            Job not found.
+            {t("jobDetail.status.notFound")}
           </div>
         </div>
       </main>
@@ -98,26 +129,35 @@ export default function JobDetailPage() {
     setIsApplyModalOpen(true);
   };
 
-  const salaryText = formatSalaryRange(job.minSalary, job.maxSalary);
-  const city = getCityFromAddress(job.location) || job.location || "Unknown";
+  const salaryText = formatJobDetailSalary(job.minSalary, job.maxSalary, t);
+  const city =
+    getCityFromAddress(job.location) ||
+    job.location ||
+    t("jobDetail.fallbacks.unknownLocation");
   const timeLeftLabel = `${formatDateLabel(job.endDate)} ${getDaysLeftLabel(
     job.endDate,
   )}`.trim();
   const requirements = job.requirements?.length
     ? job.requirements
-    : ["No requirements"];
+    : [t("jobDetail.fallbacks.noRequirements")];
   const specialties = job.skills?.length
     ? job.skills
     : job.specialization?.name
       ? [job.specialization.name]
-      : ["Not specified"];
-  const benefits = job.benefits?.length ? job.benefits : ["Not specified"];
-  const description = job.description || "Not specified";
-  const workplace = job.location || "Not specified";
-  const workType = "Full-time";
-  const education = "Not specified";
-  const level = job.levels?.length ? job.levels.join(", ") : "Not specified";
-  const openings = job.quantity ? `${job.quantity} openings` : "Not specified";
+      : [t("jobDetail.fallbacks.notSpecified")];
+  const benefits = job.benefits?.length
+    ? job.benefits
+    : [t("jobDetail.fallbacks.notSpecified")];
+  const description = job.description || t("jobDetail.fallbacks.notSpecified");
+  const workplace = job.location || t("jobDetail.fallbacks.notSpecified");
+  const workType = t("jobDetail.values.fullTime");
+  const education = t("jobDetail.fallbacks.notSpecified");
+  const level = job.levels?.length
+    ? job.levels.join(", ")
+    : t("jobDetail.fallbacks.notSpecified");
+  const openings = job.quantity
+    ? t("jobDetail.values.openings", { count: job.quantity })
+    : t("jobDetail.fallbacks.notSpecified");
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
@@ -126,7 +166,7 @@ export default function JobDetailPage() {
           title={job.name}
           salary={salaryText}
           location={city}
-          experience="Not specified"
+          experience={t("jobDetail.fallbacks.notSpecified")}
           deadlineLabel={deadlineLabel}
           timeLeftLabel={timeLeftLabel}
           isSaved={isSaved}
@@ -144,19 +184,25 @@ export default function JobDetailPage() {
               description={description}
               benefits={benefits}
               workplace={workplace}
-              applyInstruction="Submit your profile online by clicking Apply now below."
-              deadline={`Deadline: ${formatDateLabel(job.endDate)}`}
+              applyInstruction={t("jobDetail.info.applyInstruction")}
+              deadline={t("jobDetail.info.deadline", {
+                date: formatDateLabel(job.endDate),
+              })}
             />
 
             <CandidateList />
           </div>
 
           <JobDetailSidebar
-            companyName={job.company?.name ?? "Unknown company"}
+            companyName={
+              job.company?.name ?? t("jobDetail.fallbacks.unknownCompany")
+            }
             companyLogo={job.company?.logo ?? ""}
-            companySize="Not specified"
-            companyField={job.specialization?.name ?? "Not specified"}
-            companyLocation={job.location || "Not specified"}
+            companySize={t("jobDetail.fallbacks.notSpecified")}
+            companyField={
+              job.specialization?.name ?? t("jobDetail.fallbacks.notSpecified")
+            }
+            companyLocation={job.location || t("jobDetail.fallbacks.notSpecified")}
             level={level}
             education={education}
             openings={openings}

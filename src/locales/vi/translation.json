@@ -190,5 +190,118 @@
       "description": "Khám phá những cơ hội phù hợp và lưu lại để ứng tuyển sau.",
       "action": "Khám phá việc làm ngay"
     }
+  },
+  "jobDetail": {
+    "status": {
+      "notFound": "Không tìm thấy công việc.",
+      "loading": "Đang tải chi tiết công việc..."
+    },
+    "fallbacks": {
+      "notSpecified": "Chưa cập nhật",
+      "unknownLocation": "Chưa cập nhật địa điểm",
+      "unknownCompany": "Công ty ẩn danh",
+      "noRequirements": "Không có yêu cầu"
+    },
+    "salary": {
+      "agree": "Thỏa thuận lương",
+      "from": "Lương từ {{salary}}",
+      "upTo": "Lương lên đến {{salary}}"
+    },
+    "deadline": {
+      "expired": "(Đã hết hạn)",
+      "dueToday": "(Hạn cuối hôm nay)",
+      "daysLeft_one": "(Còn {{count}} ngày)",
+      "daysLeft_other": "(Còn {{count}} ngày)"
+    },
+    "values": {
+      "fullTime": "Toàn thời gian",
+      "openings_one": "{{count}} vị trí",
+      "openings_other": "{{count}} vị trí"
+    },
+    "header": {
+      "salary": "Mức lương",
+      "location": "Địa điểm",
+      "experience": "Kinh nghiệm",
+      "applicationDeadline": "Hạn ứng tuyển:",
+      "applied": "Đã ứng tuyển",
+      "applyNow": "Ứng tuyển",
+      "unsave": "Bỏ lưu",
+      "saveJob": "Lưu việc"
+    },
+    "info": {
+      "title": "Chi tiết việc làm",
+      "specialty": "Chuyên môn:",
+      "description": "Mô tả công việc",
+      "requirements": "Yêu cầu ứng viên",
+      "benefits": "Quyền lợi",
+      "workplace": "Nơi làm việc",
+      "howToApply": "Cách ứng tuyển",
+      "applyInstruction": "Nộp hồ sơ trực tuyến bằng cách nhấn nút Ứng tuyển bên dưới.",
+      "deadline": "Hạn nộp hồ sơ: {{date}}"
+    },
+    "sidebar": {
+      "companyLogoAlt": "Logo công ty",
+      "companySize": "Quy mô công ty",
+      "industry": "Ngành nghề",
+      "location": "Địa điểm",
+      "viewCompanyPage": "Xem trang công ty",
+      "generalInfo": "Thông tin chung",
+      "level": "Cấp bậc",
+      "education": "Học vấn",
+      "openings": "Số lượng tuyển",
+      "workType": "Hình thức làm việc",
+      "relatedCategories": "Danh mục liên quan",
+      "searchByRegion": "Tìm kiếm theo khu vực"
+    },
+    "applyModal": {
+      "title": "Ứng tuyển việc làm này",
+      "close": "Đóng cửa sổ ứng tuyển",
+      "selectCv": "Chọn CV của bạn",
+      "uploadNewCv": "Tải CV mới lên",
+      "loadingCvs": "Đang tải danh sách CV...",
+      "loadCvsFailed": "Không thể tải danh sách CV. Vui lòng thử lại.",
+      "noCvs": "Chưa có CV nào. Tải lên CV PDF để tiếp tục.",
+      "defaultCv": "CV mặc định",
+      "updated": "Cập nhật: {{date}}",
+      "noUpdateDate": "Chưa có ngày cập nhật",
+      "coverLetter": "Thư ứng tuyển",
+      "coverLetterPlaceholder": "Viết lời nhắn ngắn gửi nhà tuyển dụng...",
+      "cancel": "Hủy",
+      "submitting": "Đang gửi...",
+      "submit": "Gửi hồ sơ",
+      "notifications": {
+        "uploadFailed": "Tải lên thất bại",
+        "pdfOnly": "Vui lòng tải lên CV định dạng PDF.",
+        "cvUploaded": "CV đã được tải lên",
+        "cvUploadedMessage": "CV của bạn đã được tải lên và chọn.",
+        "uploadFailedMessage": "Không thể tải CV của bạn lên. Vui lòng thử lại.",
+        "submissionFailed": "Gửi hồ sơ thất bại",
+        "selectCvRequired": "Vui lòng chọn CV trước khi gửi hồ sơ.",
+        "applicationSubmitted": "Đã gửi hồ sơ",
+        "applicationSubmittedMessage": "Hồ sơ của bạn đã được gửi đến nhà tuyển dụng.",
+        "applicationFailed": "Ứng tuyển thất bại",
+        "applicationFailedMessage": "Không thể gửi hồ sơ của bạn. Vui lòng thử lại."
+      }
+    },
+    "candidates": {
+      "title": "Ứng viên",
+      "subtitle": "Theo dõi ứng viên cho việc làm này theo thời gian thực.",
+      "exportList": "Xuất danh sách",
+      "score": "Điểm {{score}}",
+      "contact": "Liên hệ",
+      "stages": {
+        "interview": "Phỏng vấn",
+        "screening": "Sàng lọc",
+        "offer": "Đề nghị"
+      },
+      "items": {
+        "seniorElectricalTechnician": "Kỹ thuật viên điện cao cấp",
+        "maintenanceEngineer": "Kỹ sư bảo trì",
+        "electricalTechnician": "Kỹ thuật viên điện",
+        "appliedTwoDaysAgo": "Đã ứng tuyển 2 ngày trước",
+        "appliedFourDaysAgo": "Đã ứng tuyển 4 ngày trước",
+        "appliedOneWeekAgo": "Đã ứng tuyển 1 tuần trước"
+      }
+    }
   }
 }

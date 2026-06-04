@@ -190,5 +190,118 @@
       "description": "Explore opportunities that fit you and save them to apply later.",
       "action": "Explore jobs now"
     }
+  },
+  "jobDetail": {
+    "status": {
+      "notFound": "Job not found.",
+      "loading": "Loading job details..."
+    },
+    "fallbacks": {
+      "notSpecified": "Not specified",
+      "unknownLocation": "Unknown",
+      "unknownCompany": "Unknown company",
+      "noRequirements": "No requirements"
+    },
+    "salary": {
+      "agree": "Agree on salary",
+      "from": "Salary from {{salary}}",
+      "upTo": "Salary up to {{salary}}"
+    },
+    "deadline": {
+      "expired": "(Expired)",
+      "dueToday": "(Due today)",
+      "daysLeft_one": "({{count}} day left)",
+      "daysLeft_other": "({{count}} days left)"
+    },
+    "values": {
+      "fullTime": "Full-time",
+      "openings_one": "{{count}} opening",
+      "openings_other": "{{count}} openings"
+    },
+    "header": {
+      "salary": "Salary",
+      "location": "Location",
+      "experience": "Experience",
+      "applicationDeadline": "Application deadline:",
+      "applied": "Applied",
+      "applyNow": "Apply now",
+      "unsave": "Unsave",
+      "saveJob": "Save job"
+    },
+    "info": {
+      "title": "Job details",
+      "specialty": "Specialty:",
+      "description": "Job description",
+      "requirements": "Candidate requirements",
+      "benefits": "Benefits",
+      "workplace": "Workplace",
+      "howToApply": "How to apply",
+      "applyInstruction": "Submit your profile online by clicking Apply now below.",
+      "deadline": "Deadline: {{date}}"
+    },
+    "sidebar": {
+      "companyLogoAlt": "Company logo",
+      "companySize": "Company size",
+      "industry": "Industry",
+      "location": "Location",
+      "viewCompanyPage": "View company page",
+      "generalInfo": "General info",
+      "level": "Level",
+      "education": "Education",
+      "openings": "Openings",
+      "workType": "Work type",
+      "relatedCategories": "Related categories",
+      "searchByRegion": "Search by region"
+    },
+    "applyModal": {
+      "title": "Apply for this job",
+      "close": "Close apply modal",
+      "selectCv": "Select your CV",
+      "uploadNewCv": "Upload new CV",
+      "loadingCvs": "Loading your CVs...",
+      "loadCvsFailed": "Unable to load your CVs. Please try again.",
+      "noCvs": "No CVs found. Upload a PDF CV to continue.",
+      "defaultCv": "Default CV",
+      "updated": "Updated: {{date}}",
+      "noUpdateDate": "No update date",
+      "coverLetter": "Cover Letter",
+      "coverLetterPlaceholder": "Write a short message to the employer...",
+      "cancel": "Cancel",
+      "submitting": "Submitting...",
+      "submit": "Submit application",
+      "notifications": {
+        "uploadFailed": "Upload failed",
+        "pdfOnly": "Please upload a PDF CV.",
+        "cvUploaded": "CV uploaded",
+        "cvUploadedMessage": "Your CV has been uploaded and selected.",
+        "uploadFailedMessage": "Failed to upload your CV. Please try again.",
+        "submissionFailed": "Submission failed",
+        "selectCvRequired": "Please select a CV before submitting.",
+        "applicationSubmitted": "Application submitted",
+        "applicationSubmittedMessage": "Your application has been sent to the employer.",
+        "applicationFailed": "Application failed",
+        "applicationFailedMessage": "Failed to submit your application. Please try again."
+      }
+    },
+    "candidates": {
+      "title": "Candidates",
+      "subtitle": "Track applicants for this job in real time.",
+      "exportList": "Export list",
+      "score": "Score {{score}}",
+      "contact": "Contact",
+      "stages": {
+        "interview": "Interview",
+        "screening": "Screening",
+        "offer": "Offer"
+      },
+      "items": {
+        "seniorElectricalTechnician": "Senior Electrical Technician",
+        "maintenanceEngineer": "Maintenance Engineer",
+        "electricalTechnician": "Electrical Technician",
+        "appliedTwoDaysAgo": "Applied 2 days ago",
+        "appliedFourDaysAgo": "Applied 4 days ago",
+        "appliedOneWeekAgo": "Applied 1 week ago"
+      }
+    }
   }
 }

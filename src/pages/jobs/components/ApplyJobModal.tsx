@@ -7,6 +7,7 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useCreateApplication } from "@/api/applications/application.queries";
 import { uploadResumeFile } from "@/api/files/file.api";
@@ -44,18 +45,23 @@ const getApiErrorMessage = (
   return fallbackMessage;
 };
 
-const formatResumeDate = (value?: string | null) => {
-  if (!value) return "No update date";
+const formatResumeDate = (
+  value: string | null | undefined,
+  locale: string,
+  fallback: string,
+) => {
+  if (!value) return fallback;
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
     return value;
   }
 
-  return new Intl.DateTimeFormat("en-GB").format(date);
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
+  const { t, i18n } = useTranslation();
   const titleId = useId();
   const fileInputId = useId();
   const coverLetterId = useId();
@@ -83,6 +89,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
     myResumesQuery.isLoading || myResumesQuery.isFetching;
   const isBusy =
     isSubmitting || isUploadingResume || createResumeMutation.isPending;
+  const locale = i18n.language === "vi" ? "vi-VN" : "en-GB";
 
   useEffect(() => {
     if (!open) return;
@@ -134,8 +141,8 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
       setPopup({
         open: true,
         variant: "error",
-        title: "Upload failed",
-        message: "Please upload a PDF CV.",
+        title: t("jobDetail.applyModal.notifications.uploadFailed"),
+        message: t("jobDetail.applyModal.notifications.pdfOnly"),
       });
       return;
     }
@@ -164,18 +171,18 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
       setPopup({
         open: true,
         variant: "success",
-        title: "CV uploaded",
-        message: "Your CV has been uploaded and selected.",
+        title: t("jobDetail.applyModal.notifications.cvUploaded"),
+        message: t("jobDetail.applyModal.notifications.cvUploadedMessage"),
       });
     } catch (error) {
       console.error("Failed to upload CV", error);
       setPopup({
         open: true,
         variant: "error",
-        title: "Upload failed",
+        title: t("jobDetail.applyModal.notifications.uploadFailed"),
         message: getApiErrorMessage(
           error,
-          "Failed to upload your CV. Please try again.",
+          t("jobDetail.applyModal.notifications.uploadFailedMessage"),
         ),
       });
     } finally {
@@ -191,8 +198,8 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
       setPopup({
         open: true,
         variant: "error",
-        title: "Submission failed",
-        message: "Please select a CV before submitting.",
+        title: t("jobDetail.applyModal.notifications.submissionFailed"),
+        message: t("jobDetail.applyModal.notifications.selectCvRequired"),
       });
       return;
     }
@@ -209,8 +216,10 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
       setPopup({
         open: true,
         variant: "success",
-        title: "Application submitted",
-        message: "Your application has been sent to the employer.",
+        title: t("jobDetail.applyModal.notifications.applicationSubmitted"),
+        message: t(
+          "jobDetail.applyModal.notifications.applicationSubmittedMessage",
+        ),
       });
     } catch (error) {
       console.error("Failed to apply for job", error);
@@ -218,10 +227,10 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
       setPopup({
         open: true,
         variant: "error",
-        title: "Application failed",
+        title: t("jobDetail.applyModal.notifications.applicationFailed"),
         message: getApiErrorMessage(
           error,
-          "Failed to submit your application. Please try again.",
+          t("jobDetail.applyModal.notifications.applicationFailedMessage"),
         ),
       });
     }
@@ -251,7 +260,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
             <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
               <div className="min-w-0">
                 <h2 id={titleId} className="text-xl font-bold text-slate-900">
-                  Apply for this job
+                  {t("jobDetail.applyModal.title")}
                 </h2>
                 <p className="mt-1 truncate text-sm text-slate-500">
                   {job.name}
@@ -261,7 +270,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                 type="button"
                 variant="ghost"
                 size="icon"
-                aria-label="Close apply modal"
+                aria-label={t("jobDetail.applyModal.close")}
                 className="size-9 shrink-0 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700"
                 disabled={isBusy}
                 onClick={onClose}
@@ -274,7 +283,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
               <section className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-sm font-semibold text-slate-900">
-                    Select your CV
+                    {t("jobDetail.applyModal.selectCv")}
                   </h3>
                   <div>
                     <Input
@@ -297,7 +306,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                       ) : (
                         <UploadCloud className="size-4" />
                       )}
-                      Upload new CV
+                      {t("jobDetail.applyModal.uploadNewCv")}
                     </Label>
                   </div>
                 </div>
@@ -305,15 +314,15 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                 {isLoadingResumes ? (
                   <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
                     <LoaderCircle className="size-4 animate-spin" />
-                    Loading your CVs...
+                    {t("jobDetail.applyModal.loadingCvs")}
                   </div>
                 ) : myResumesQuery.isError ? (
                   <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-600">
-                    Unable to load your CVs. Please try again.
+                    {t("jobDetail.applyModal.loadCvsFailed")}
                   </div>
                 ) : resumes.length === 0 ? (
                   <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-600">
-                    No CVs found. Upload a PDF CV to continue.
+                    {t("jobDetail.applyModal.noCvs")}
                   </div>
                 ) : (
                   <fieldset className="space-y-3">
@@ -347,15 +356,18 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                               {resume.active ? (
                                 <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
                                   <Star className="size-3 fill-current" />
-                                  Default CV
+                                  {t("jobDetail.applyModal.defaultCv")}
                                 </span>
                               ) : null}
                             </span>
                             <span className="mt-1 block text-xs text-slate-500">
-                              Updated:{" "}
-                              {formatResumeDate(
-                                resume.updatedAt ?? resume.createdAt,
-                              )}
+                              {t("jobDetail.applyModal.updated", {
+                                date: formatResumeDate(
+                                  resume.updatedAt ?? resume.createdAt,
+                                  locale,
+                                  t("jobDetail.applyModal.noUpdateDate"),
+                                ),
+                              })}
                             </span>
                           </span>
                         </label>
@@ -370,14 +382,14 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                   htmlFor={coverLetterId}
                   className="text-sm text-slate-900"
                 >
-                  Cover Letter
+                  {t("jobDetail.applyModal.coverLetter")}
                 </Label>
                 <Textarea
                   id={coverLetterId}
                   value={coverLetter}
                   rows={5}
                   className="resize-none border-slate-200 text-sm focus-visible:ring-green-500/30"
-                  placeholder="Write a short message to the employer..."
+                  placeholder={t("jobDetail.applyModal.coverLetterPlaceholder")}
                   disabled={isBusy}
                   onChange={(event) => setCoverLetter(event.target.value)}
                 />
@@ -392,7 +404,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                 disabled={isBusy}
                 onClick={onClose}
               >
-                Cancel
+                {t("jobDetail.applyModal.cancel")}
               </Button>
               <Button
                 type="submit"
@@ -402,10 +414,10 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                 {isSubmitting ? (
                   <>
                     <LoaderCircle className="size-4 animate-spin" />
-                    Submitting...
+                    {t("jobDetail.applyModal.submitting")}
                   </>
                 ) : (
-                  "Submit application"
+                  t("jobDetail.applyModal.submit")
                 )}
               </Button>
             </div>

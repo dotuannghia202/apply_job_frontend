@@ -1,4 +1,5 @@
 import { BadgeCheck, Clock3, MapPin, Send, Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
 type JobDetailHeaderProps = {
@@ -28,6 +29,8 @@ export function JobDetailHeader({
   onToggleSave,
   isSaving = false,
 }: JobDetailHeaderProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="bg-slate-50 rounded-xl p-6 md:p-8 flex flex-col gap-6 relative shadow-sm border border-slate-100">
       <div className="absolute top-0 right-0 w-24 h-24 linear-to-bl from-primary/20 to-transparent rounded-tr-xl" />
@@ -44,7 +47,9 @@ export function JobDetailHeader({
             <span className="text-lg font-semibold">$</span>
           </div>
           <div>
-            <p className="text-sm text-slate-500 mb-1">Salary</p>
+            <p className="text-sm text-slate-500 mb-1">
+              {t("jobDetail.header.salary")}
+            </p>
             <p className="font-semibold text-slate-900 text-lg">{salary}</p>
           </div>
         </div>
@@ -53,7 +58,9 @@ export function JobDetailHeader({
             <MapPin size={20} />
           </div>
           <div>
-            <p className="text-sm text-slate-500 mb-1">Location</p>
+            <p className="text-sm text-slate-500 mb-1">
+              {t("jobDetail.header.location")}
+            </p>
             <p className="font-semibold text-slate-900 text-lg">{location}</p>
           </div>
         </div>
@@ -62,7 +69,9 @@ export function JobDetailHeader({
             <Clock3 size={20} />
           </div>
           <div>
-            <p className="text-sm text-slate-500 mb-1">Experience</p>
+            <p className="text-sm text-slate-500 mb-1">
+              {t("jobDetail.header.experience")}
+            </p>
             <p className="font-semibold text-slate-900 text-lg">{experience}</p>
           </div>
         </div>
@@ -80,7 +89,9 @@ export function JobDetailHeader({
             onClick={onApply}
           >
             <Send size={18} />
-            {isApplied ? "Applied" : "Apply now"}
+            {isApplied
+              ? t("jobDetail.header.applied")
+              : t("jobDetail.header.applyNow")}
           </Button>
           <Button
             variant="outline"
@@ -89,7 +100,9 @@ export function JobDetailHeader({
             disabled={isSaving}
           >
             <Heart size={18} className={isSaved ? "fill-current" : undefined} />
-            {isSaved ? "Unsave" : "Save job"}
+            {isSaved
+              ? t("jobDetail.header.unsave")
+              : t("jobDetail.header.saveJob")}
           </Button>
         </div>
       </div>
