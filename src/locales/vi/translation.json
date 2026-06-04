@@ -36,5 +36,28 @@
     "foundJobs": "Tìm thấy {{count}} công việc phù hợp",
     "errorLoad": "Lỗi khi tải danh sách công việc. Vui lòng thử lại.",
     "pages": "trang"
+  },
+  "myApplications": {
+    "title": "Việc làm đã nộp",
+    "subtitle": "Theo dõi và quản lý các đơn ứng tuyển của bạn",
+    "errorLoad": "Lỗi khi tải danh sách ứng tuyển. Vui lòng thử lại.",
+    "loading": "Đang tải danh sách...",
+    "empty": "Không tìm thấy đơn ứng tuyển nào cho trạng thái này.",
+    "fallbacks": {
+      "untitledRole": "Vị trí chưa xác định",
+      "unknownCompany": "Công ty ẩn danh",
+      "unknownLocation": "Chưa cập nhật địa điểm",
+      "resume": "Hồ sơ đính kèm",
+      "unknownCandidate": "Chưa cập nhật tên",
+      "na": "Đang cập nhật"
+    },
+    "tabs": {
+      "All": "Tất cả",
+      "Pending": "Chờ xử lý",
+      "Reviewing": "Đang xem xét",
+      "Interview": "Phỏng vấn",
+      "Accepted": "Đã trúng tuyển",
+      "Rejected": "Bị từ chối"
+    }
   }
 }

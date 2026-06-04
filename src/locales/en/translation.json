@@ -36,5 +36,28 @@
     "foundJobs": "Found {{count}} matching career opportunities",
     "errorLoad": "Failed to load jobs. Please try again.",
     "pages": "pages"
+  },
+  "myApplications": {
+    "title": "My Applications",
+    "subtitle": "Track and manage your job applications",
+    "errorLoad": "Failed to load applications. Please try again.",
+    "loading": "Loading applications...",
+    "empty": "No applications found for this status.",
+    "fallbacks": {
+      "untitledRole": "Untitled role",
+      "unknownCompany": "Unknown company",
+      "unknownLocation": "Unknown location",
+      "resume": "Resume",
+      "unknownCandidate": "Unknown",
+      "na": "N/A"
+    },
+    "tabs": {
+      "All": "All",
+      "Pending": "Pending",
+      "Reviewing": "Reviewing",
+      "Interview": "Interview",
+      "Accepted": "Accepted",
+      "Rejected": "Rejected"
+    }
   }
 }
