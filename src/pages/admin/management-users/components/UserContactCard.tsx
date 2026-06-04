@@ -1,4 +1,5 @@
 import { MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type UserContact = {
   address: string;
@@ -10,6 +11,8 @@ type UserContactCardProps = {
 };
 
 export default function UserContactCard({ contact }: UserContactCardProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm">
       <div className="flex items-center gap-3">
@@ -17,14 +20,14 @@ export default function UserContactCard({ contact }: UserContactCardProps) {
           <MapPin className="size-4" />
         </div>
         <h3 className="text-base font-semibold text-slate-900">
-          Contact & Geographic Data
+          {t("managementUsers.detail.contact.title")}
         </h3>
       </div>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400">
-            Registered Office / Address
+            {t("managementUsers.detail.contact.address")}
           </p>
           <div className="mt-2 rounded-2xl bg-slate-50 p-4 text-sm text-slate-700">
             {contact.address}
@@ -33,7 +36,7 @@ export default function UserContactCard({ contact }: UserContactCardProps) {
         <div className="space-y-5 text-sm text-slate-700">
           <div>
             <p className="text-xs uppercase tracking-wide text-slate-400">
-              Personal Phone
+              {t("managementUsers.detail.contact.phone")}
             </p>
             <p className="mt-2 font-semibold text-slate-900">{contact.phone}</p>
           </div>

@@ -1,11 +1,12 @@
 import { Settings } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import avatarPlaceholder from "@/assets/images/avatar-placeholder.webp";
 
 type UserProfile = {
   name: string;
   title: string;
-  tag: string;
+  isActive: boolean;
   userId: string;
   email: string;
   gender: string;
@@ -18,6 +19,7 @@ type UserProfileCardProps = {
 };
 
 export default function UserProfileCard({ profile }: UserProfileCardProps) {
+  const { t } = useTranslation();
   const avatarSrc = profile.avatarUrl || avatarPlaceholder;
 
   return (
@@ -35,7 +37,8 @@ export default function UserProfileCard({ profile }: UserProfileCardProps) {
           <button
             type="button"
             className="absolute -bottom-3 -right-3 flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-100 bg-emerald-50 text-emerald-700"
-            aria-label="Settings"
+            aria-label={t("managementUsers.detail.profile.settings")}
+            title={t("managementUsers.detail.profile.settings")}
           >
             <Settings className="size-4" />
           </button>
@@ -51,27 +54,35 @@ export default function UserProfileCard({ profile }: UserProfileCardProps) {
                 {profile.title}
               </p>
             </div>
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-              {profile.tag}
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                profile.isActive
+                  ? "bg-emerald-100 text-emerald-700"
+                  : "bg-rose-100 text-rose-700"
+              }`}
+            >
+              {profile.isActive
+                ? t("managementUsers.status.active")
+                : t("managementUsers.status.inactive")}
             </span>
           </div>
 
           <div className="grid gap-4 text-sm text-slate-600 sm:grid-cols-2">
             <div>
               <p className="text-xs uppercase tracking-wide text-slate-400">
-                Gender
+                {t("managementUsers.detail.profile.labels.gender")}
               </p>
               <p className="font-semibold text-slate-800">{profile.gender}</p>
             </div>
             <div>
               <p className="text-xs uppercase tracking-wide text-slate-400">
-                Email Address
+                {t("managementUsers.detail.profile.labels.email")}
               </p>
               <p className="font-semibold text-slate-800">{profile.email}</p>
             </div>
             <div>
               <p className="text-xs uppercase tracking-wide text-slate-400">
-                Age
+                {t("managementUsers.detail.profile.labels.age")}
               </p>
               <p className="font-semibold text-slate-800">{profile.age}</p>
             </div>

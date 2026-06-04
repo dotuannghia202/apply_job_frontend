@@ -1,4 +1,5 @@
 import { Filter, Search, SlidersHorizontal } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import type { RoleName } from "@/types/auth";
@@ -24,6 +25,8 @@ export default function ManageUserFilters({
   onStatusChange,
   onReset,
 }: ManageUserFiltersProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -31,7 +34,7 @@ export default function ManageUserFilters({
           <Search className="size-4 text-slate-500" />
           <input
             className="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none"
-            placeholder="Tim theo ten hoac email"
+            placeholder={t("managementUsers.filters.searchPlaceholder")}
             type="text"
             value={keyword}
             onChange={(event) => onKeywordChange(event.target.value)}
@@ -48,10 +51,14 @@ export default function ManageUserFilters({
                 onRoleChange(event.target.value as "" | RoleName)
               }
             >
-              <option value="">Vai tro</option>
-              <option value="CANDIDATE">Ung vien</option>
-              <option value="EMPLOYER">Nha tuyen dung</option>
-              <option value="ADMIN">Quan tri vien</option>
+              <option value="">{t("managementUsers.filters.role")}</option>
+              <option value="CANDIDATE">
+                {t("managementUsers.roles.candidate")}
+              </option>
+              <option value="EMPLOYER">
+                {t("managementUsers.roles.employer")}
+              </option>
+              <option value="ADMIN">{t("managementUsers.roles.admin")}</option>
             </select>
           </div>
           <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
@@ -63,9 +70,13 @@ export default function ManageUserFilters({
                 onStatusChange(event.target.value as UserStatusFilter)
               }
             >
-              <option value="">Trang thai</option>
-              <option value="active">Hoat dong</option>
-              <option value="inactive">Tam khoa</option>
+              <option value="">{t("managementUsers.filters.status")}</option>
+              <option value="active">
+                {t("managementUsers.status.active")}
+              </option>
+              <option value="inactive">
+                {t("managementUsers.status.inactive")}
+              </option>
             </select>
           </div>
           <Button
@@ -74,7 +85,7 @@ export default function ManageUserFilters({
             className="gap-2 border-slate-200"
             onClick={onReset}
           >
-            Lam moi bo loc
+            {t("managementUsers.filters.reset")}
           </Button>
         </div>
       </div>

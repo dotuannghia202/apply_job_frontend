@@ -708,6 +708,134 @@
       "restoreError": "Không thể khôi phục công ty. Vui lòng thử lại."
     }
   },
+  "managementUsers": {
+    "common": {
+      "cancel": "Hủy"
+    },
+    "breadcrumb": {
+      "admin": "Quản trị",
+      "users": "Quản lý người dùng"
+    },
+    "header": {
+      "title": "Quản lý người dùng",
+      "description": "Theo dõi tài khoản, trạng thái xác minh và hoạt động gần đây của ứng viên, nhà tuyển dụng và quản trị viên."
+    },
+    "roles": {
+      "admin": "Quản trị viên",
+      "employer": "Nhà tuyển dụng",
+      "candidate": "Ứng viên"
+    },
+    "status": {
+      "active": "Hoạt động",
+      "inactive": "Tạm khóa"
+    },
+    "filters": {
+      "searchPlaceholder": "Tìm theo tên hoặc email",
+      "role": "Vai trò",
+      "status": "Trạng thái",
+      "reset": "Làm mới bộ lọc"
+    },
+    "table": {
+      "title": "Danh sách người dùng",
+      "description": "Cập nhật theo thời gian thực, ưu tiên tài khoản có hoạt động.",
+      "totalUsers": "{{value}} người dùng",
+      "activeUsers": "{{value}} đang hoạt động",
+      "unknownUser": "Không rõ",
+      "columns": {
+        "user": "Người dùng",
+        "role": "Vai trò",
+        "status": "Trạng thái",
+        "actions": "Hành động"
+      },
+      "actions": {
+        "viewDetail": "Xem chi tiết",
+        "lock": "Khóa tài khoản",
+        "unlock": "Mở khóa tài khoản"
+      },
+      "loading": "Đang tải danh sách người dùng...",
+      "error": "Không thể tải danh sách người dùng. Vui lòng thử lại.",
+      "empty": "Không có người dùng phù hợp bộ lọc hiện tại.",
+      "pagination": {
+        "summary": "Hiển thị {{start}}-{{end}} trên {{total}} người dùng",
+        "previous": "Trước",
+        "next": "Sau"
+      }
+    },
+    "detail": {
+      "breadcrumb": "Chi tiết người dùng",
+      "invalidId": "ID người dùng không hợp lệ.",
+      "loading": "Đang tải chi tiết người dùng...",
+      "error": "Không thể tải chi tiết người dùng. Vui lòng thử lại.",
+      "fallbacks": {
+        "unknownUser": "Không rõ",
+        "notAvailable": "Chưa có thông tin",
+        "systemAdmin": "Quản trị hệ thống",
+        "userSelf": "Người dùng",
+        "noPrimaryAssociation": "Chưa có liên kết chính",
+        "parentEnterprise": "Doanh nghiệp chủ quản"
+      },
+      "profile": {
+        "settings": "Cài đặt",
+        "ageYears": "{{value}} tuổi",
+        "gender": {
+          "female": "Nữ",
+          "male": "Nam",
+          "other": "Khác",
+          "notAvailable": "Chưa có thông tin"
+        },
+        "labels": {
+          "gender": "Giới tính",
+          "email": "Địa chỉ email",
+          "age": "Tuổi"
+        }
+      },
+      "accountStatus": {
+        "title": "Trạng thái tài khoản",
+        "active": "HOẠT ĐỘNG",
+        "locked": "TẠM KHÓA",
+        "accessTitle": "Quyền truy cập tài khoản",
+        "accessDescription": "Người dùng có thể đăng nhập, ứng tuyển hoặc đăng tin tuyển dụng",
+        "toggleAccess": "Chuyển trạng thái truy cập tài khoản"
+      },
+      "contact": {
+        "title": "Thông tin liên hệ và địa lý",
+        "address": "Văn phòng đăng ký / Địa chỉ",
+        "phone": "Số điện thoại cá nhân"
+      },
+      "audit": {
+        "title": "Nhật ký và siêu dữ liệu",
+        "createdAt": "Ngày tạo",
+        "createdBy": "Người tạo",
+        "updatedAt": "Ngày cập nhật",
+        "updatedBy": "Người cập nhật"
+      },
+      "association": {
+        "title": "Liên kết chính"
+      },
+      "governance": {
+        "title": "Quản trị nhanh",
+        "resetPassword": "Đặt lại mật khẩu",
+        "sendNotification": "Gửi thông báo",
+        "terminateUser": "Chấm dứt người dùng"
+      },
+      "rolesCard": {
+        "title": "Vai trò được gán",
+        "managePermissions": "Quản lý quyền"
+      }
+    },
+    "confirm": {
+      "lock": {
+        "title": "Xác nhận khóa tài khoản",
+        "message": "Bạn có chắc chắn muốn khóa tài khoản người dùng này không?",
+        "confirm": "Khóa tài khoản"
+      },
+      "unlock": {
+        "title": "Xác nhận mở khóa tài khoản",
+        "message": "Bạn có chắc chắn muốn mở khóa tài khoản người dùng này không?",
+        "confirm": "Mở khóa tài khoản"
+      }
+    }
+  },
   "languageSwitch": {
     "toggle": "Chuyển đổi ngôn ngữ"
   },

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { Switch } from "@/components/ui/switch";
 
 type UserAccountStatusCardProps = {
@@ -7,11 +9,13 @@ type UserAccountStatusCardProps = {
 export default function UserAccountStatusCard({
   isActive,
 }: UserAccountStatusCardProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm">
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold text-slate-900">
-          Account Status
+          {t("managementUsers.detail.accountStatus.title")}
         </h3>
         <span
           className={`rounded-full px-3 py-1 text-xs font-semibold ${
@@ -20,7 +24,9 @@ export default function UserAccountStatusCard({
               : "bg-rose-100 text-rose-700"
           }`}
         >
-          {isActive ? "ACTIVE" : "LOCKED"}
+          {isActive
+            ? t("managementUsers.detail.accountStatus.active")
+            : t("managementUsers.detail.accountStatus.locked")}
         </span>
       </div>
 
@@ -28,15 +34,15 @@ export default function UserAccountStatusCard({
         <div className="flex items-start gap-4">
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-slate-800">
-              Account Access
+              {t("managementUsers.detail.accountStatus.accessTitle")}
             </p>
             <p className="mt-1 text-xs leading-5 text-slate-500 break-words">
-              User can log in and apply, post a job
+              {t("managementUsers.detail.accountStatus.accessDescription")}
             </p>
           </div>
           <Switch
             checked={isActive}
-            aria-label="Toggle account access"
+            aria-label={t("managementUsers.detail.accountStatus.toggleAccess")}
             className="mt-1 shrink-0"
           />
         </div>

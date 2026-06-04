@@ -708,6 +708,134 @@
       "restoreError": "Failed to restore company. Please try again."
     }
   },
+  "managementUsers": {
+    "common": {
+      "cancel": "Cancel"
+    },
+    "breadcrumb": {
+      "admin": "Admin",
+      "users": "User Management"
+    },
+    "header": {
+      "title": "User Management",
+      "description": "Track accounts, verification status, and recent activity for candidates, employers, and administrators."
+    },
+    "roles": {
+      "admin": "Administrator",
+      "employer": "Employer",
+      "candidate": "Candidate"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Locked"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by name or email",
+      "role": "Role",
+      "status": "Status",
+      "reset": "Reset filters"
+    },
+    "table": {
+      "title": "User list",
+      "description": "Updated in real time, prioritizing accounts with activity.",
+      "totalUsers": "{{value}} users",
+      "activeUsers": "{{value}} active",
+      "unknownUser": "Unknown user",
+      "columns": {
+        "user": "User",
+        "role": "Role",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "viewDetail": "View details",
+        "lock": "Lock account",
+        "unlock": "Unlock account"
+      },
+      "loading": "Loading user list...",
+      "error": "Could not load the user list. Please try again.",
+      "empty": "No users match the current filters.",
+      "pagination": {
+        "summary": "Showing {{start}}-{{end}} of {{total}} users",
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
+    "detail": {
+      "breadcrumb": "User Details",
+      "invalidId": "Invalid user id.",
+      "loading": "Loading user details...",
+      "error": "Failed to load user details. Please try again.",
+      "fallbacks": {
+        "unknownUser": "Unknown user",
+        "notAvailable": "Not available",
+        "systemAdmin": "System Admin",
+        "userSelf": "User (Self)",
+        "noPrimaryAssociation": "No primary association",
+        "parentEnterprise": "Parent Enterprise"
+      },
+      "profile": {
+        "settings": "Settings",
+        "ageYears": "{{value}} years",
+        "gender": {
+          "female": "Female",
+          "male": "Male",
+          "other": "Other",
+          "notAvailable": "Not available"
+        },
+        "labels": {
+          "gender": "Gender",
+          "email": "Email Address",
+          "age": "Age"
+        }
+      },
+      "accountStatus": {
+        "title": "Account Status",
+        "active": "ACTIVE",
+        "locked": "LOCKED",
+        "accessTitle": "Account Access",
+        "accessDescription": "User can log in and apply, post a job",
+        "toggleAccess": "Toggle account access"
+      },
+      "contact": {
+        "title": "Contact & Geographic Data",
+        "address": "Registered Office / Address",
+        "phone": "Personal Phone"
+      },
+      "audit": {
+        "title": "Audit Trails & Metadata",
+        "createdAt": "Created At",
+        "createdBy": "Created By",
+        "updatedAt": "Updated At",
+        "updatedBy": "Updated By"
+      },
+      "association": {
+        "title": "Primary Association"
+      },
+      "governance": {
+        "title": "Quick Governance",
+        "resetPassword": "Reset Password",
+        "sendNotification": "Send Notification",
+        "terminateUser": "Terminate User"
+      },
+      "rolesCard": {
+        "title": "Assigned Roles",
+        "managePermissions": "Manage Permissions"
+      }
+    },
+    "confirm": {
+      "lock": {
+        "title": "Confirm account lock",
+        "message": "Are you sure you want to lock this user account?",
+        "confirm": "Lock account"
+      },
+      "unlock": {
+        "title": "Confirm account unlock",
+        "message": "Are you sure you want to unlock this user account?",
+        "confirm": "Unlock account"
+      }
+    }
+  },
   "languageSwitch": {
     "toggle": "Toggle language"
   },

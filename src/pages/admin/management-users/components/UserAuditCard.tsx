@@ -1,4 +1,5 @@
 import { Database } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import avatarPlaceholder from "@/assets/images/avatar-placeholder.webp";
 
@@ -15,6 +16,8 @@ type UserAuditCardProps = {
 };
 
 export default function UserAuditCard({ audit }: UserAuditCardProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="rounded-3xl border border-slate-200/70 bg-slate-50 p-6 shadow-sm">
       <div className="flex items-center gap-3">
@@ -22,14 +25,14 @@ export default function UserAuditCard({ audit }: UserAuditCardProps) {
           <Database className="size-4" />
         </div>
         <h3 className="text-base font-semibold text-slate-900">
-          Audit Trails & Metadata
+          {t("managementUsers.detail.audit.title")}
         </h3>
       </div>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400">
-            Created At
+            {t("managementUsers.detail.audit.createdAt")}
           </p>
           <p className="mt-2 text-sm font-semibold text-slate-900">
             {audit.createdAt}
@@ -37,7 +40,7 @@ export default function UserAuditCard({ audit }: UserAuditCardProps) {
         </div>
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400">
-            Created By
+            {t("managementUsers.detail.audit.createdBy")}
           </p>
           <p className="mt-2 text-sm font-semibold text-slate-900">
             {audit.createdBy}
@@ -45,7 +48,7 @@ export default function UserAuditCard({ audit }: UserAuditCardProps) {
         </div>
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400">
-            Updated At
+            {t("managementUsers.detail.audit.updatedAt")}
           </p>
           <p className="mt-2 text-sm font-semibold text-slate-900">
             {audit.updatedAt}
@@ -62,7 +65,7 @@ export default function UserAuditCard({ audit }: UserAuditCardProps) {
           />
           <div>
             <p className="text-xs uppercase tracking-wide text-slate-400">
-              Updated By
+              {t("managementUsers.detail.audit.updatedBy")}
             </p>
             <p className="mt-1 text-sm font-semibold text-slate-900">
               {audit.updatedBy}

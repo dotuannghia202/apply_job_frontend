@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { NotificationPopup } from "@/components/NotificationPopup";
@@ -15,10 +16,10 @@ import ManageUserTable, {
 
 const PAGE_SIZE = 10;
 
-const getRoleLabel = (roles: RoleName[] = []) => {
-  if (roles.includes("ADMIN")) return "Quan tri vien";
-  if (roles.includes("EMPLOYER")) return "Nha tuyen dung";
-  return "Ung vien";
+const getPrimaryRole = (roles: RoleName[] = []): RoleName => {
+  if (roles.includes("ADMIN")) return "ADMIN";
+  if (roles.includes("EMPLOYER")) return "EMPLOYER";
+  return "CANDIDATE";
 };
 
 const mapUserToRow = (user: User): ManageUserRow => {
@@ -26,16 +27,17 @@ const mapUserToRow = (user: User): ManageUserRow => {
 
   return {
     id: user.id,
-    name: user.name ?? "Khong ro",
+    name: user.name ?? "",
     email: user.email ?? "",
     avatarUrl: user.avatarUrl?.trim() || user.avatar?.trim() || undefined,
-    role: getRoleLabel(user.roles ?? []),
-    status: isActive ? "Hoat dong" : "Tam khoa",
+    role: getPrimaryRole(user.roles ?? []),
+    status: isActive ? "active" : "inactive",
     isActive,
   };
 };
 
 export default function ManageUserPage() {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
   const [role, setRole] = useState<"" | RoleName>("");
@@ -102,8 +104,11 @@ export default function ManageUserPage() {
       <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <AppBreadcrumb
           items={[
-            { label: "Quan tri", to: "/admin/dashboard" },
-            { label: "Quan ly nguoi dung" },
+            {
+              label: t("managementUsers.breadcrumb.admin"),
+              to: "/admin/dashboard",
+            },
+            { label: t("managementUsers.breadcrumb.users") },
           ]}
         />
         <ManageUserHeader />
@@ -138,21 +143,23 @@ export default function ManageUserPage() {
         variant="confirm"
         title={
           confirmUser?.isActive
-            ? "Xac nhan khoa tai khoan"
-            : "Xac nhan mo khoa tai khoan"
+            ? t("managementUsers.confirm.lock.title")
+            : t("managementUsers.confirm.unlock.title")
         }
         message={
           confirmUser
-            ? `Ban co chac chan muon ${
-                confirmUser.isActive ? "khoa" : "mo khoa"
-              } nguoi dung nay khong?`
+            ? confirmUser.isActive
+              ? t("managementUsers.confirm.lock.message")
+              : t("managementUsers.confirm.unlock.message")
             : undefined
         }
         confirmLabel={
-          confirmUser?.isActive ? "Khoa tai khoan" : "Mo khoa tai khoan"
+          confirmUser?.isActive
+            ? t("managementUsers.confirm.lock.confirm")
+            : t("managementUsers.confirm.unlock.confirm")
         }
         confirmVariant={confirmUser?.isActive ? "danger" : "primary"}
-        cancelLabel="Huy"
+        cancelLabel={t("managementUsers.common.cancel")}
         onConfirm={handleConfirmStatus}
         onCancel={handleCloseConfirm}
         onDismiss={handleCloseConfirm}
