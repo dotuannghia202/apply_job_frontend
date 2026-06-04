@@ -144,5 +144,51 @@
       "loading": "Loading CVs...",
       "empty": "No CVs uploaded yet."
     }
+  },
+  "savedJobs": {
+    "breadcrumb": {
+      "jobs": "Jobs",
+      "savedJobs": "Saved Jobs"
+    },
+    "fallbacks": {
+      "unknownCompany": "Unknown company",
+      "unknownLocation": "Unknown location"
+    },
+    "salary": {
+      "agree": "Agree on salary",
+      "from": "Salary from {{salary}}",
+      "upTo": "Salary up to {{salary}}"
+    },
+    "status": {
+      "loadFailed": "Failed to load saved jobs. Please try again.",
+      "loading": "Loading saved jobs..."
+    },
+    "pagination": {
+      "previous": "Previous page",
+      "next": "Next page",
+      "pages": "pages"
+    },
+    "header": {
+      "title": "Saved Jobs",
+      "savedCountStart": "You are saving",
+      "savedCountEnd_one": "job",
+      "savedCountEnd_other": "jobs"
+    },
+    "card": {
+      "logoAlt": "{{company}} logo",
+      "jobClosed": "Job closed",
+      "daysLeft_one": "{{count}} day left to apply",
+      "daysLeft_other": "{{count}} days left to apply",
+      "openForApplications": "Open for applications",
+      "viewDetails": "View details",
+      "applied": "Applied",
+      "applyNow": "Apply now",
+      "unsave": "Unsave job"
+    },
+    "empty": {
+      "title": "No saved jobs yet",
+      "description": "Explore opportunities that fit you and save them to apply later.",
+      "action": "Explore jobs now"
+    }
   }
 }

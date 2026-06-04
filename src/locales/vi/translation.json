@@ -144,5 +144,51 @@
       "loading": "Đang tải danh sách CV...",
       "empty": "Chưa có CV nào được tải lên."
     }
+  },
+  "savedJobs": {
+    "breadcrumb": {
+      "jobs": "Việc làm",
+      "savedJobs": "Việc làm đã lưu"
+    },
+    "fallbacks": {
+      "unknownCompany": "Công ty ẩn danh",
+      "unknownLocation": "Chưa cập nhật địa điểm"
+    },
+    "salary": {
+      "agree": "Thỏa thuận lương",
+      "from": "Lương từ {{salary}}",
+      "upTo": "Lương lên đến {{salary}}"
+    },
+    "status": {
+      "loadFailed": "Không thể tải danh sách việc làm đã lưu. Vui lòng thử lại.",
+      "loading": "Đang tải danh sách việc làm đã lưu..."
+    },
+    "pagination": {
+      "previous": "Trang trước",
+      "next": "Trang sau",
+      "pages": "trang"
+    },
+    "header": {
+      "title": "Việc làm đã lưu",
+      "savedCountStart": "Bạn đã lưu",
+      "savedCountEnd_one": "việc làm",
+      "savedCountEnd_other": "việc làm"
+    },
+    "card": {
+      "logoAlt": "Logo {{company}}",
+      "jobClosed": "Công việc đã đóng",
+      "daysLeft_one": "Còn {{count}} ngày để ứng tuyển",
+      "daysLeft_other": "Còn {{count}} ngày để ứng tuyển",
+      "openForApplications": "Đang nhận hồ sơ",
+      "viewDetails": "Xem chi tiết",
+      "applied": "Đã ứng tuyển",
+      "applyNow": "Ứng tuyển",
+      "unsave": "Bỏ lưu việc làm"
+    },
+    "empty": {
+      "title": "Chưa có việc làm đã lưu",
+      "description": "Khám phá những cơ hội phù hợp và lưu lại để ứng tuyển sau.",
+      "action": "Khám phá việc làm ngay"
+    }
   }
 }

@@ -1,5 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { TFunction } from "i18next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Button } from "@/components/ui/button";
@@ -13,7 +15,7 @@ import SavedJobCard from "@/pages/candidate/saved-jobs/components/SavedJobCard";
 import SavedJobEmptyState from "@/pages/candidate/saved-jobs/components/SavedJobEmptyState";
 import SavedJobHeader from "@/pages/candidate/saved-jobs/components/SavedJobHeader";
 import type { SavedJob } from "@/pages/candidate/saved-jobs/components/types";
-import { formatSalaryRange, getCityFromAddress } from "@/pages/jobs/helper";
+import { formatVND, getCityFromAddress } from "@/pages/jobs/helper";
 import type { Job } from "@/types/job";
 
 const PAGE_SIZE = 10;
@@ -37,33 +39,65 @@ const isJobClosed = (job: Job) => {
   return endDate.getTime() < Date.now();
 };
 
-const mapJobToSavedJob = (job: Job): SavedJob => {
-  const companyName = job.company?.name ?? "Unknown company";
-  const city = getCityFromAddress(job.location) || job.location || "Unknown";
+const formatSavedSalaryRange = (
+  minSalary: number | null | undefined,
+  maxSalary: number | null | undefined,
+  t: TFunction,
+) => {
+  const min = minSalary ?? 0;
+  const max = maxSalary ?? 0;
+  const hasMin = min > 0;
+  const hasMax = max > 0;
+
+  if (!hasMin && !hasMax) {
+    return t("savedJobs.salary.agree");
+  }
+
+  if (hasMin && !hasMax) {
+    return t("savedJobs.salary.from", { salary: formatVND(min) });
+  }
+
+  if (!hasMin && hasMax) {
+    return t("savedJobs.salary.upTo", { salary: formatVND(max) });
+  }
+
+  return `${formatVND(min)} - ${formatVND(max)}`;
+};
+
+const mapJobToSavedJob = (job: Job, t: TFunction): SavedJob => {
+  const companyName = job.company?.name ?? t("savedJobs.fallbacks.unknownCompany");
+  const city =
+    getCityFromAddress(job.location) ||
+    job.location ||
+    t("savedJobs.fallbacks.unknownLocation");
 
   return {
     id: String(job.id),
     company: companyName,
     title: job.name,
-    salary: formatSalaryRange(job.minSalary, job.maxSalary),
+    salary: formatSavedSalaryRange(job.minSalary, job.maxSalary, t),
     location: city,
     daysLeft: getDaysLeft(job.endDate),
     isClosed: isJobClosed(job),
     isApplied: job.isApplied,
     logoUrl: job.company?.logo || undefined,
-    logoAlt: `${companyName} logo`,
+    logoAlt: t("savedJobs.card.logoAlt", { company: companyName }),
     logoFallback: "building",
   };
 };
 
 const SavedJobPage = () => {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const savedJobsQuery = useGetSavedJobs({ page, size: PAGE_SIZE });
   const toggleSaveMutation = useToggleSaveJob();
 
   const apiJobs = savedJobsQuery.data?.data?.result ?? [];
   const meta = savedJobsQuery.data?.data?.meta;
-  const savedJobs = useMemo(() => apiJobs.map(mapJobToSavedJob), [apiJobs]);
+  const savedJobs = useMemo(
+    () => apiJobs.map((job) => mapJobToSavedJob(job, t)),
+    [apiJobs, t],
+  );
   const total = meta?.total ?? savedJobs.length;
   const hasSavedJobs = savedJobs.length > 0;
   const hasNextPage = meta ? meta.page < meta.pages : false;
@@ -83,20 +117,23 @@ const SavedJobPage = () => {
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12">
       <AppBreadcrumb
-        items={[{ label: "Jobs", to: "/jobs" }, { label: "Saved Jobs" }]}
+        items={[
+          { label: t("savedJobs.breadcrumb.jobs"), to: "/jobs" },
+          { label: t("savedJobs.breadcrumb.savedJobs") },
+        ]}
       />
 
       <SavedJobHeader savedCount={total} />
 
       {savedJobsQuery.isError ? (
         <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground shadow-sm">
-          Failed to load saved jobs. Please try again.
+          {t("savedJobs.status.loadFailed")}
         </div>
       ) : null}
 
       {savedJobsQuery.isLoading ? (
         <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground shadow-sm">
-          Loading saved jobs...
+          {t("savedJobs.status.loading")}
         </div>
       ) : null}
 
@@ -129,6 +166,7 @@ const SavedJobPage = () => {
                   disabled={savedJobsQuery.isFetching || page <= 1}
                   onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                   className="rounded-full border-primary/30 text-primary hover:bg-primary/5"
+                  aria-label={t("savedJobs.pagination.previous")}
                 >
                   <ChevronLeft className="size-5" />
                 </Button>
@@ -137,7 +175,7 @@ const SavedJobPage = () => {
               <PaginationItem>
                 <div className="text-lg font-semibold text-slate-500">
                   <span className="text-primary">{meta.page}</span> /{" "}
-                  {meta.pages} pages
+                  {meta.pages} {t("savedJobs.pagination.pages")}
                 </div>
               </PaginationItem>
 
@@ -149,6 +187,7 @@ const SavedJobPage = () => {
                   disabled={savedJobsQuery.isFetching || !hasNextPage}
                   onClick={() => setPage((prev) => prev + 1)}
                   className="rounded-full border-primary/30 text-primary hover:bg-primary/5"
+                  aria-label={t("savedJobs.pagination.next")}
                 >
                   <ChevronRight className="size-5" />
                 </Button>
