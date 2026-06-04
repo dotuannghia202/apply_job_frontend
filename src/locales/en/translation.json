@@ -59,5 +59,37 @@
       "Accepted": "Accepted",
       "Rejected": "Rejected"
     }
+  },
+  "applicationCard": {
+    "appliedOn": "Applied on:",
+    "coverLetterAttached": "Cover letter attached",
+    "noCoverLetter": "No cover letter",
+    "candidate": "Candidate:",
+    "unknown": "Unknown",
+    "aiFitScore": "AI Fit Score",
+    "viewDetail": "View Detail",
+    "status": {
+      "Pending": "Pending",
+      "Reviewing": "Reviewing",
+      "Interview": "Interview",
+      "Accepted": "Accepted",
+      "Rejected": "Rejected"
+    }
+  },
+  "myCVManagement": {
+    "title": "My CV Management",
+    "subtitle": "Our AI will analyze your CV to suggest the best matching jobs.",
+    "uploadedCVs": "Uploaded CVs",
+    "errors": {
+      "notPdf": "Please upload a PDF file.",
+      "fileTooLarge": "PDF file must be 5MB or smaller.",
+      "uploadFailed": "Unable to upload this CV. Please try again.",
+      "saveFailed": "Unable to save this CV. Please check the form and retry.",
+      "loadFailed": "Unable to load CVs right now. Please try again."
+    },
+    "status": {
+      "loading": "Loading CVs...",
+      "empty": "No CVs uploaded yet."
+    }
   }
 }

@@ -59,5 +59,37 @@
       "Accepted": "Đã trúng tuyển",
       "Rejected": "Bị từ chối"
     }
+  },
+  "applicationCard": {
+    "appliedOn": "Đã nộp:",
+    "coverLetterAttached": "Có thư ứng tuyển",
+    "noCoverLetter": "Không có thư ứng tuyển",
+    "candidate": "Ứng viên:",
+    "unknown": "Ẩn danh",
+    "aiFitScore": "Độ phù hợp AI",
+    "viewDetail": "Xem Chi Tiết",
+    "status": {
+      "Pending": "Chờ xử lý",
+      "Reviewing": "Đang xem xét",
+      "Interview": "Phỏng vấn",
+      "Accepted": "Đã trúng tuyển",
+      "Rejected": "Bị từ chối"
+    }
+  },
+  "myCVManagement": {
+    "title": "Quản lý CV của tôi",
+    "subtitle": "AI của chúng tôi sẽ phân tích CV của bạn để gợi ý những công việc phù hợp nhất.",
+    "uploadedCVs": "CV đã tải lên",
+    "errors": {
+      "notPdf": "Vui lòng tải lên file định dạng PDF.",
+      "fileTooLarge": "File PDF phải có dung lượng từ 5MB trở xuống.",
+      "uploadFailed": "Không thể tải lên CV này. Vui lòng thử lại.",
+      "saveFailed": "Không thể lưu CV này. Vui lòng kiểm tra lại biểu mẫu và thử lại.",
+      "loadFailed": "Không thể tải danh sách CV lúc này. Vui lòng thử lại."
+    },
+    "status": {
+      "loading": "Đang tải danh sách CV...",
+      "empty": "Chưa có CV nào được tải lên."
+    }
   }
 }

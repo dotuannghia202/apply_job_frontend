@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { uploadResumeFile } from "@/api/files/file.api";
 import { useCreateResume, useGetMyResumes } from "@/api/resumes/resume.queries";
@@ -11,7 +12,7 @@ import CvCard from "@/pages/candidate/cvs/components/CvCard";
 import UploadDropzone from "@/pages/candidate/cvs/components/UploadDropzone";
 import type { CvItem } from "@/pages/candidate/cvs/components/types";
 
-const formatDate = (value?: string | null) => {
+const formatDate = (value?: string | null, locale: string = "en-GB") => {
   if (!value) {
     return "-";
   }
@@ -21,24 +22,28 @@ const formatDate = (value?: string | null) => {
     return value;
   }
 
-  return date.toLocaleDateString("en-GB");
+  return date.toLocaleDateString(locale);
 };
 
 const MyCV = () => {
+  const { t, i18n } = useTranslation();
   const { data, isLoading, isError } = useGetMyResumes();
   const createResumeMutation = useCreateResume();
+
   const [uploadedDraft, setUploadedDraft] =
     useState<UploadedResumeDraft | null>(null);
   const [uploadError, setUploadError] = useState("");
   const [createError, setCreateError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+
   const resumes = data?.data ?? [];
+  const currentLocale = i18n.language === "vi" ? "vi-VN" : "en-GB";
 
   const cvItems: CvItem[] = resumes.map((resume) => ({
     id: String(resume.id),
     fileName: resume.fileName,
     fileUrl: resume.fileUrl,
-    updatedAt: formatDate(resume.updatedAt ?? resume.createdAt),
+    updatedAt: formatDate(resume.updatedAt ?? resume.createdAt, currentLocale),
     skills: resume.skills ?? [],
     isDefault: resume.active,
   }));
@@ -49,12 +54,12 @@ const MyCV = () => {
       file.name.toLowerCase().endsWith(".pdf");
 
     if (!isPdf) {
-      setUploadError("Please upload a PDF file.");
+      setUploadError(t("myCVManagement.errors.notPdf"));
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setUploadError("PDF file must be 5MB or smaller.");
+      setUploadError(t("myCVManagement.errors.fileTooLarge"));
       return;
     }
 
@@ -77,7 +82,7 @@ const MyCV = () => {
       });
     } catch (error) {
       console.error("Failed to upload CV", error);
-      setUploadError("Unable to upload this CV. Please try again.");
+      setUploadError(t("myCVManagement.errors.uploadFailed"));
     } finally {
       setIsUploading(false);
     }
@@ -103,9 +108,7 @@ const MyCV = () => {
       setUploadedDraft(null);
     } catch (error) {
       console.error("Failed to create CV", error);
-      setCreateError(
-        "Unable to save this CV. Please check the form and retry.",
-      );
+      setCreateError(t("myCVManagement.errors.saveFailed"));
     }
   };
 
@@ -113,10 +116,10 @@ const MyCV = () => {
     <main className="mx-auto max-w-7xl px-6 py-12">
       <header className="mb-12">
         <h1 className="mb-2 text-[2rem] font-bold leading-tight tracking-[-0.02em] text-foreground">
-          My CV Management
+          {t("myCVManagement.title")}
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          Our AI will analyze your CV to suggest the best matching jobs.
+          {t("myCVManagement.subtitle")}
         </p>
       </header>
 
@@ -154,16 +157,20 @@ const MyCV = () => {
 
       <section>
         <h2 className="mb-6 text-xl font-medium text-foreground">
-          Uploaded CVs
+          {t("myCVManagement.uploadedCVs")}
         </h2>
         {isError ? (
           <p className="text-sm text-destructive">
-            Unable to load CVs right now. Please try again.
+            {t("myCVManagement.errors.loadFailed")}
           </p>
         ) : isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading CVs...</p>
+          <p className="text-sm text-muted-foreground">
+            {t("myCVManagement.status.loading")}
+          </p>
         ) : cvItems.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No CVs uploaded yet.</p>
+          <p className="text-sm text-muted-foreground">
+            {t("myCVManagement.status.empty")}
+          </p>
         ) : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {cvItems.map((item) => (
