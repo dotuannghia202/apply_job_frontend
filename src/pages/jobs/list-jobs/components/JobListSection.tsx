@@ -1,6 +1,8 @@
 import { ChevronLeft, ChevronRight, Grid2x2, List } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import JobCard from "@/pages/jobs/list-jobs/components/JobCard";
 import { useGetJobs } from "@/api/jobs/job.queries";
 import type { JobListFilters } from "@/types/job";
@@ -28,6 +30,8 @@ interface JobListSectionProps {
 const PAGE_SIZE = 12;
 
 const JobListSection = ({ filters = {} }: JobListSectionProps) => {
+  const { t } = useTranslation();
+
   const [page, setPage] = useState(1);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
@@ -76,12 +80,12 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
       <div className="mb-8 flex items-end justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold text-slate-900">
-            Recommended for you
+            {t("jobListSection.title")}
           </h2>
           <p className="mt-1 text-sm text-slate-600">
             {isLoading
-              ? "Loading opportunities..."
-              : `Found ${total} matching career opportunities`}
+              ? t("jobListSection.loading")
+              : t("jobListSection.foundJobs", { count: total })}
           </p>
         </div>
         <div className="hidden items-center gap-2 sm:flex">
@@ -114,7 +118,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
 
       {isError ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-700 shadow-sm">
-          Failed to load jobs. Please try again.
+          {t("jobListSection.errorLoad")}
         </div>
       ) : null}
 
@@ -150,7 +154,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
               <PaginationItem>
                 <div className="text-lg font-semibold text-slate-500">
                   <span className="text-primary">{meta.page}</span> /{" "}
-                  {meta.pages} pages
+                  {meta.pages} {t("jobListSection.pages")}
                 </div>
               </PaginationItem>
 

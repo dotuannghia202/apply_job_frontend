@@ -13,5 +13,28 @@
     "adminDashboard": "Dashboard",
     "userManagement": "User Management",
     "companyManagement": "Company Management"
+  },
+  "jobSearch": {
+    "companyPlaceholder": "Company name...",
+    "jobTitlePlaceholder": "Job title...",
+    "locationPlaceholder": "Location...",
+    "minSalaryPlaceholder": "Min salary",
+    "maxSalaryPlaceholder": "Max salary",
+    "to": "to",
+    "findJobsBtn": "Find Jobs"
+  },
+  "categoryBrowser": {
+    "loadingIndustries": "Loading industries...",
+    "failedIndustries": "Failed to load industries",
+    "noIndustries": "No industries found",
+    "loadingSpecializations": "Loading specializations...",
+    "noSpecializations": "No specializations available"
+  },
+  "jobListSection": {
+    "title": "Recommended for you",
+    "loading": "Loading opportunities...",
+    "foundJobs": "Found {{count}} matching career opportunities",
+    "errorLoad": "Failed to load jobs. Please try again.",
+    "pages": "pages"
   }
 }

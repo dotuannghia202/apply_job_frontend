@@ -8,6 +8,7 @@ import {
   Search,
   Banknote,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useGetIndustries } from "@/api/industries/industry.queries";
 import { useGetSpecializationsByIndustryId } from "@/api/specializations/specialization.queries";
 import type { Industry, Specialization } from "@/types/industry";
@@ -166,10 +167,13 @@ const SubcategoryPanel = ({
   selectedSpecializationId,
   onSelect,
 }: SubcategoryPanelProps) => {
+  const { t } = useTranslation();
   if (isLoading) {
     return (
       <div className="h-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm flex items-center justify-center">
-        <div className="text-slate-500 text-sm">Loading specializations...</div>
+        <div className="text-slate-500 text-sm">
+          {t("categoryBrowser.loadingSpecializations")}
+        </div>
       </div>
     );
   }
@@ -178,7 +182,7 @@ const SubcategoryPanel = ({
     return (
       <div className="h-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm flex items-center justify-center">
         <div className="text-slate-500 text-sm">
-          No specializations available
+          {t("categoryBrowser.noSpecializations")}
         </div>
       </div>
     );
@@ -226,6 +230,7 @@ interface JobCategoryHeroProps {
 }
 
 const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
+  const { t } = useTranslation();
   const [categoryPage, setCategoryPage] = useState(1);
   const [hoveredIndustry, setHoveredIndustry] = useState<Industry | null>(null);
   const [jobTitle, setJobTitle] = useState(filters.name ?? "");
@@ -364,7 +369,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
               type="text"
               value={companyName}
               onChange={(event) => setCompanyName(event.target.value)}
-              placeholder="Company name"
+              placeholder={t("jobSearch.companyPlaceholder")}
               className={inputClassName}
             />
           </div>
@@ -375,7 +380,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
               type="text"
               value={jobTitle}
               onChange={(event) => setJobTitle(event.target.value)}
-              placeholder="Job title"
+              placeholder={t("jobSearch.jobTitlePlaceholder")}
               className={inputClassName}
             />
           </div>
@@ -386,7 +391,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
               type="text"
               value={location}
               onChange={(event) => setLocation(event.target.value)}
-              placeholder="Location"
+              placeholder={t("jobSearch.locationPlaceholder")}
               className={inputClassName}
             />
           </div>
@@ -400,7 +405,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
               onChange={(event) =>
                 setMinSalary(event.target.value.replace(/\D/g, ""))
               }
-              placeholder="Min salary"
+              placeholder={t("jobSearch.minSalaryPlaceholder")}
               className={inputClassName}
             />
             <span className="text-xs font-semibold text-slate-300">to</span>
@@ -411,7 +416,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
               onChange={(event) =>
                 setMaxSalary(event.target.value.replace(/\D/g, ""))
               }
-              placeholder="Max salary"
+              placeholder={t("jobSearch.maxSalaryPlaceholder")}
               className={inputClassName}
             />
           </div>
@@ -420,7 +425,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
             className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-primary/90"
           >
             <Search className="size-4" />
-            Find Jobs
+            {t("jobSearch.findJobsBtn")}
           </button>
         </form>
 
@@ -435,19 +440,19 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
               {industriesLoading ? (
                 <li className="flex items-center justify-center h-full">
                   <span className="text-slate-500 text-sm">
-                    Loading industries...
+                    {t("categoryBrowser.loadingIndustries")}
                   </span>
                 </li>
               ) : industriesError ? (
                 <li className="flex items-center justify-center h-full">
                   <span className="text-red-500 text-sm">
-                    Failed to load industries
+                    {t("categoryBrowser.failedIndustries")}
                   </span>
                 </li>
               ) : allIndustries.length === 0 ? (
                 <li className="flex items-center justify-center h-full">
                   <span className="text-slate-500 text-sm">
-                    No industries found
+                    {t("categoryBrowser.noIndustries")}
                   </span>
                 </li>
               ) : (

@@ -13,5 +13,28 @@
     "adminDashboard": "Bảng điều khiển",
     "userManagement": "Quản lý Người dùng",
     "companyManagement": "Quản lý Công ty"
+  },
+  "jobSearch": {
+    "companyPlaceholder": "Tên công ty...",
+    "jobTitlePlaceholder": "Vị trí công việc...",
+    "locationPlaceholder": "Địa điểm...",
+    "minSalaryPlaceholder": "Lương tối thiểu",
+    "maxSalaryPlaceholder": "Lương tối đa",
+    "to": "đến",
+    "findJobsBtn": "Tìm Việc Làm"
+  },
+  "categoryBrowser": {
+    "loadingIndustries": "Đang tải danh sách ngành nghề...",
+    "failedIndustries": "Lỗi khi tải danh sách ngành nghề",
+    "noIndustries": "Không tìm thấy ngành nghề nào",
+    "loadingSpecializations": "Đang tải lĩnh vực chuyên môn...",
+    "noSpecializations": "Không có lĩnh vực chuyên môn nào"
+  },
+  "jobListSection": {
+    "title": "Gợi ý dành cho bạn",
+    "loading": "Đang tải danh sách công việc...",
+    "foundJobs": "Tìm thấy {{count}} công việc phù hợp",
+    "errorLoad": "Lỗi khi tải danh sách công việc. Vui lòng thử lại.",
+    "pages": "trang"
   }
 }
