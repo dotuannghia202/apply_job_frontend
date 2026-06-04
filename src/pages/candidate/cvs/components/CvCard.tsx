@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Star, Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,7 @@ const downloadFile = (url: string, fileName: string) => {
 };
 
 const CvCard = ({ item }: { item: CvItem }) => {
+  const { t } = useTranslation();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteError, setDeleteError] = useState("");
   const updateResumeMutation = useUpdateResume();
@@ -54,7 +56,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
     deleteResumeMutation.mutate(resumeId, {
       onSuccess: () => setIsDeleteOpen(false),
       onError: () => {
-        setDeleteError("Unable to delete this CV. Please try again.");
+        setDeleteError(t("myCVManagement.card.deleteError"));
       },
     });
   };
@@ -71,7 +73,9 @@ const CvCard = ({ item }: { item: CvItem }) => {
               <iframe
                 src={`${item.fileUrl}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
                 className="absolute left-0 top-0 w-[400%] h-[565%] origin-top-left scale-[0.25] pointer-events-none border-none"
-                title={`Preview ${item.fileName}`}
+                title={t("myCVManagement.card.previewTitle", {
+                  fileName: item.fileName,
+                })}
               />
             </div>
             <div className="min-w-0 flex-1">
@@ -82,14 +86,16 @@ const CvCard = ({ item }: { item: CvItem }) => {
                 {item.fileName}
               </h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                Updated: {item.updatedAt}
+                {t("myCVManagement.card.updated", {
+                  date: item.updatedAt,
+                })}
               </p>
             </div>
           </div>
 
           <div className="flex-1">
             <p className="mb-3 text-[14px] text-muted-foreground">
-              Skills listed in this CV
+              {t("myCVManagement.card.skillsTitle")}
             </p>
             <div className="flex flex-wrap gap-2">
               {item.skills.map((skill) => (
@@ -106,7 +112,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
           {item.isDefault ? (
             <Badge className="w-fit gap-1.5 bg-chart-4/10 px-3 py-1 text-chart-4">
               <Star className="h-3.5 w-3.5" aria-hidden="true" />
-              Default CV
+              {t("myCVManagement.card.defaultCv")}
             </Badge>
           ) : (
             <div className="h-6" />
@@ -123,7 +129,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
             variant="ghost"
             size="icon"
             className="text-destructive hover:bg-destructive/15 hover:text-destructive"
-            title="Delete"
+            title={t("myCVManagement.card.actions.delete")}
             type="button"
             disabled={deleteResumeMutation.isPending}
             onClick={() => setIsDeleteOpen(true)}
@@ -150,11 +156,12 @@ const CvCard = ({ item }: { item: CvItem }) => {
                   id={`delete-cv-title-${item.id}`}
                   className="text-lg font-semibold text-foreground"
                 >
-                  Are you sure you want to delete this CV?
+                  {t("myCVManagement.card.deleteTitle")}
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  This action cannot be undone. The CV "{item.fileName}" will be
-                  permanently removed.
+                  {t("myCVManagement.card.deleteDescription", {
+                    fileName: item.fileName,
+                  })}
                 </p>
               </div>
             </div>
@@ -172,7 +179,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
                 disabled={deleteResumeMutation.isPending}
                 onClick={() => setIsDeleteOpen(false)}
               >
-                Cancel
+                {t("myCVManagement.card.actions.cancel")}
               </Button>
               <Button
                 variant="destructive"
@@ -180,7 +187,9 @@ const CvCard = ({ item }: { item: CvItem }) => {
                 disabled={deleteResumeMutation.isPending}
                 onClick={handleDelete}
               >
-                {deleteResumeMutation.isPending ? "Deleting..." : "Delete CV"}
+                {deleteResumeMutation.isPending
+                  ? t("myCVManagement.card.actions.deleting")
+                  : t("myCVManagement.card.actions.deleteCv")}
               </Button>
             </div>
           </div>

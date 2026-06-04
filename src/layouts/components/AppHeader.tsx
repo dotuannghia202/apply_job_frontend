@@ -1,4 +1,4 @@
-import { Bell, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 // 🚨 IMPORT THÊM HOOK CỦA i18n

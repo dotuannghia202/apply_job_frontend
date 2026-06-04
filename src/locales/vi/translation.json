@@ -80,6 +80,31 @@
     "title": "Quản lý CV của tôi",
     "subtitle": "AI của chúng tôi sẽ phân tích CV của bạn để gợi ý những công việc phù hợp nhất.",
     "uploadedCVs": "CV đã tải lên",
+    "dropzone": {
+      "uploading": "Đang tải CV lên...",
+      "prompt": "Kéo thả file PDF vào đây hoặc nhấn để chọn",
+      "hint": "Chỉ hỗ trợ PDF, tối đa 5MB"
+    },
+    "card": {
+      "previewTitle": "Xem trước {{fileName}}",
+      "updated": "Cập nhật: {{date}}",
+      "skillsTitle": "Kỹ năng trong CV này",
+      "defaultCv": "CV mặc định",
+      "deleteTitle": "Bạn có chắc muốn xóa CV này?",
+      "deleteDescription": "Thao tác này không thể hoàn tác. CV \"{{fileName}}\" sẽ bị xóa vĩnh viễn.",
+      "deleteError": "Không thể xóa CV này. Vui lòng thử lại.",
+      "actions": {
+        "viewCv": "Xem CV",
+        "download": "Tải xuống",
+        "setDefault": "Đặt làm mặc định",
+        "saving": "Đang lưu",
+        "default": "Mặc định",
+        "delete": "Xóa",
+        "cancel": "Hủy",
+        "deleting": "Đang xóa...",
+        "deleteCv": "Xóa CV"
+      }
+    },
     "errors": {
       "notPdf": "Vui lòng tải lên file định dạng PDF.",
       "fileTooLarge": "File PDF phải có dung lượng từ 5MB trở xuống.",

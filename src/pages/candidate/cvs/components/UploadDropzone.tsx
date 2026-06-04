@@ -1,4 +1,5 @@
 import type { ChangeEvent, DragEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { LoaderCircle, UploadCloud } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -14,6 +15,8 @@ const UploadDropzone = ({
   isUploading = false,
   onFileSelect,
 }: UploadDropzoneProps) => {
+  const { t } = useTranslation();
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = "";
@@ -51,11 +54,11 @@ const UploadDropzone = ({
         </div>
         <span className="text-lg font-medium text-foreground">
           {isUploading
-            ? "Uploading CV..."
-            : "Drag and drop a PDF here or click to select"}
+            ? t("myCVManagement.dropzone.uploading")
+            : t("myCVManagement.dropzone.prompt")}
         </span>
         <span className="text-xs font-medium uppercase tracking-[0.05em] text-muted-foreground">
-          PDF only, up to 5MB
+          {t("myCVManagement.dropzone.hint")}
         </span>
       </Label>
       <Input
