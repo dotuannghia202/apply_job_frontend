@@ -317,5 +317,23 @@
       "newNotification": "New notification: {{title}}",
       "adminAlert": "Admin alert: {{title}}"
     }
+  },
+  "appFooter": {
+    "brand": "Job Portal",
+    "tagline": "\u00a9 2026 Job Portal. Human-Centric Recruitment.",
+    "language": "Language",
+    "selected": "Selected",
+    "contactSupport": "Contact support",
+    "links": {
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookieSettings": "Cookie Settings",
+      "accessibility": "Accessibility",
+      "support": "Support"
+    },
+    "languages": {
+      "english": "English",
+      "vietnamese": "Vietnamese"
+    }
   }
 }

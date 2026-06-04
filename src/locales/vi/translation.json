@@ -317,5 +317,23 @@
       "newNotification": "Thông báo mới: {{title}}",
       "adminAlert": "Cảnh báo quản trị: {{title}}"
     }
+  },
+  "appFooter": {
+    "brand": "Job Portal",
+    "tagline": "\u00a9 2026 Job Portal. Tuyển dụng lấy con người làm trung tâm.",
+    "language": "Ngôn ngữ",
+    "selected": "Đã chọn",
+    "contactSupport": "Liên hệ hỗ trợ",
+    "links": {
+      "privacyPolicy": "Chính sách bảo mật",
+      "termsOfService": "Điều khoản dịch vụ",
+      "cookieSettings": "Cài đặt cookie",
+      "accessibility": "Khả năng truy cập",
+      "support": "Hỗ trợ"
+    },
+    "languages": {
+      "english": "Tiếng Anh",
+      "vietnamese": "Tiếng Việt"
+    }
   }
 }
