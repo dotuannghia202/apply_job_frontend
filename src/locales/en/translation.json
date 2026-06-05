@@ -1103,6 +1103,50 @@
       "continue": "Continue"
     }
   },
+  "errorPages": {
+    "brand": "Job Portal",
+    "actions": {
+      "goBack": "Go Back",
+      "goToLogin": "Go to Login",
+      "backToHome": "Back to Home"
+    },
+    "authRequired": {
+      "badge": "Authentication required",
+      "title": "Please sign in to continue.",
+      "description": "You need an active account session to access this page. Please log in and try again.",
+      "tip": "Your session may have expired or you may not be signed in yet.",
+      "sideEyebrow": "Secure access",
+      "sideTitle": "Sign in to access your workspace.",
+      "sideDescription": "Login is required before you can continue to protected pages in the system.",
+      "cardTitle": "Login required",
+      "cardDescription": "Please authenticate to continue.",
+      "status": "Status: 401 Unauthorized"
+    },
+    "notFound": {
+      "badge": "Page not found",
+      "title": "The page you are looking for does not exist.",
+      "description": "The link may be broken, the page may have been moved, or the URL may be incorrect. Let's get you back to a valid page.",
+      "tip": "Tip: Check the URL again or return to the homepage to continue browsing jobs.",
+      "sideEyebrow": "Oops, lost your way?",
+      "sideTitle": "Let's help you get back on track.",
+      "sideDescription": "Browse jobs, manage candidates, and continue your work from a valid route inside the system.",
+      "cardTitle": "Route unavailable",
+      "cardDescription": "The page may have been removed or the address is not valid.",
+      "status": "Status: 404 Not Found"
+    },
+    "unauthorized": {
+      "badge": "Access denied",
+      "title": "You do not have permission to access this page.",
+      "description": "Your account is signed in, but your current role does not have access to this resource. Please contact an administrator if you believe this is a mistake.",
+      "tip": "Tip: Different roles may have access to different sections of the system.",
+      "sideEyebrow": "Restricted area",
+      "sideTitle": "This section is not available for your role.",
+      "sideDescription": "Some pages are only visible to authorized roles such as admin, recruiter, or candidate depending on system permissions.",
+      "cardTitle": "Permission required",
+      "cardDescription": "Your current role cannot open this page.",
+      "status": "Status: 403 Forbidden"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Confirm",

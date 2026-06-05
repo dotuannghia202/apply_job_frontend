@@ -1,7 +1,9 @@
 import { ArrowLeft, Compass, SearchX, Star } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const NotFoundPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -15,11 +17,13 @@ const NotFoundPage = () => {
           {/* LEFT */}
           <div className="relative p-8 lg:p-16 flex flex-col justify-between">
             <div>
-              <p className="text-white font-bold text-xl mb-10">Job Portal</p>
+              <p className="text-white font-bold text-xl mb-10">
+                {t("errorPages.brand")}
+              </p>
 
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 mb-6">
                 <SearchX size={16} />
-                Page not found
+                {t("errorPages.notFound.badge")}
               </div>
 
               <div className="space-y-4">
@@ -28,12 +32,11 @@ const NotFoundPage = () => {
                 </h1>
 
                 <h2 className="text-3xl lg:text-5xl font-semibold text-white leading-tight max-w-xl">
-                  The page you are looking for does not exist.
+                  {t("errorPages.notFound.title")}
                 </h2>
 
                 <p className="text-gray-400 text-base lg:text-lg leading-relaxed max-w-xl">
-                  The link may be broken, the page may have been moved, or the
-                  URL may be incorrect. Let’s get you back to a valid page.
+                  {t("errorPages.notFound.description")}
                 </p>
               </div>
 
@@ -43,7 +46,7 @@ const NotFoundPage = () => {
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-[#0a0c0b] px-6 py-3 font-semibold hover:opacity-90 transition cursor-pointer"
                 >
                   <ArrowLeft size={18} />
-                  Go Back
+                  {t("errorPages.actions.goBack")}
                 </button>
 
                 <button
@@ -51,15 +54,14 @@ const NotFoundPage = () => {
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 text-white px-6 py-3 font-semibold hover:bg-white/10 transition cursor-pointer"
                 >
                   <Compass size={18} />
-                  Go to Login
+                  {t("errorPages.actions.goToLogin")}
                 </button>
               </div>
             </div>
 
             <div className="mt-10 border-t border-white/5 pt-6">
               <p className="text-sm text-gray-500">
-                Tip: Check the URL again or return to the homepage to continue
-                browsing jobs.
+                {t("errorPages.notFound.tip")}
               </p>
             </div>
           </div>
@@ -74,32 +76,31 @@ const NotFoundPage = () => {
 
               <div className="relative z-10">
                 <p className="text-[#0a0c0b]/70 text-sm font-semibold uppercase tracking-[0.2em] mb-4">
-                  Oops, lost your way?
+                  {t("errorPages.notFound.sideEyebrow")}
                 </p>
 
                 <h2 className="text-5xl font-bold text-[#0a0c0b] leading-tight max-w-[420px]">
-                  Let’s help you get back on track.
+                  {t("errorPages.notFound.sideTitle")}
                 </h2>
 
                 <p className="mt-8 text-[#0a0c0b]/80 text-lg leading-relaxed max-w-[420px]">
-                  Browse jobs, manage candidates, and continue your work from a
-                  valid route inside the system.
+                  {t("errorPages.notFound.sideDescription")}
                 </p>
               </div>
 
               <div className="relative z-10 flex justify-end">
                 <div className="bg-white rounded-3xl p-5 shadow-xl max-w-[260px]">
                   <p className="text-xs font-bold text-gray-800 leading-tight">
-                    Route unavailable
+                    {t("errorPages.notFound.cardTitle")}
                   </p>
                   <p className="text-[12px] text-gray-500 mt-2 leading-relaxed">
-                    The page may have been removed or the address is not valid.
+                    {t("errorPages.notFound.cardDescription")}
                   </p>
 
                   <div className="mt-4 flex items-center gap-2">
                     <span className="inline-block h-2.5 w-2.5 rounded-full bg-red-500" />
                     <span className="text-[11px] font-medium text-gray-700">
-                      Status: 404 Not Found
+                      {t("errorPages.notFound.status")}
                     </span>
                   </div>
                 </div>

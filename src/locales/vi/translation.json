@@ -1103,6 +1103,50 @@
       "continue": "Tiếp tục"
     }
   },
+  "errorPages": {
+    "brand": "Job Portal",
+    "actions": {
+      "goBack": "Quay lại",
+      "goToLogin": "Đến trang đăng nhập",
+      "backToHome": "Về trang chủ"
+    },
+    "authRequired": {
+      "badge": "Yêu cầu đăng nhập",
+      "title": "Vui lòng đăng nhập để tiếp tục.",
+      "description": "Bạn cần có phiên đăng nhập hợp lệ để truy cập trang này. Vui lòng đăng nhập và thử lại.",
+      "tip": "Phiên của bạn có thể đã hết hạn hoặc bạn chưa đăng nhập.",
+      "sideEyebrow": "Truy cập bảo mật",
+      "sideTitle": "Đăng nhập để truy cập không gian làm việc.",
+      "sideDescription": "Bạn cần đăng nhập trước khi tiếp tục vào các trang được bảo vệ trong hệ thống.",
+      "cardTitle": "Cần đăng nhập",
+      "cardDescription": "Vui lòng xác thực để tiếp tục.",
+      "status": "Trạng thái: 401 Chưa xác thực"
+    },
+    "notFound": {
+      "badge": "Không tìm thấy trang",
+      "title": "Trang bạn đang tìm không tồn tại.",
+      "description": "Liên kết có thể bị hỏng, trang có thể đã được di chuyển hoặc URL không chính xác. Hãy quay lại một trang hợp lệ.",
+      "tip": "Gợi ý: Kiểm tra lại URL hoặc quay về trang chủ để tiếp tục tìm việc.",
+      "sideEyebrow": "Bạn bị lạc đường?",
+      "sideTitle": "Hãy để chúng tôi đưa bạn trở lại đúng hướng.",
+      "sideDescription": "Tiếp tục duyệt việc làm, quản lý ứng viên và làm việc từ một đường dẫn hợp lệ trong hệ thống.",
+      "cardTitle": "Đường dẫn không khả dụng",
+      "cardDescription": "Trang có thể đã bị xóa hoặc địa chỉ không hợp lệ.",
+      "status": "Trạng thái: 404 Không tìm thấy"
+    },
+    "unauthorized": {
+      "badge": "Từ chối truy cập",
+      "title": "Bạn không có quyền truy cập trang này.",
+      "description": "Tài khoản của bạn đã đăng nhập, nhưng vai trò hiện tại không có quyền truy cập tài nguyên này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là nhầm lẫn.",
+      "tip": "Gợi ý: Mỗi vai trò có thể có quyền truy cập vào các phần khác nhau của hệ thống.",
+      "sideEyebrow": "Khu vực bị giới hạn",
+      "sideTitle": "Phần này không khả dụng với vai trò của bạn.",
+      "sideDescription": "Một số trang chỉ hiển thị với các vai trò được cấp quyền như quản trị viên, nhà tuyển dụng hoặc ứng viên tùy theo phân quyền hệ thống.",
+      "cardTitle": "Cần quyền truy cập",
+      "cardDescription": "Vai trò hiện tại của bạn không thể mở trang này.",
+      "status": "Trạng thái: 403 Bị cấm"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Xác nhận",
