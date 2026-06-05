@@ -28,10 +28,10 @@ export default function ManageUserFilters({
   const { t } = useTranslation();
 
   return (
-    <section className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm">
+    <section className="rounded-lg border  bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <Search className="size-4 text-slate-500" />
+        <div className="flex flex-1 items-center gap-3 rounded-lg border  px-4 py-2">
+          <Search className="size-5 text-slate-500" />
           <input
             className="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none"
             placeholder={t("managementUsers.filters.searchPlaceholder")}
@@ -42,7 +42,7 @@ export default function ManageUserFilters({
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+          <div className="flex items-center gap-2 rounded-lg border   px-3 py-2 text-sm text-slate-600">
             <Filter className="size-4" />
             <select
               className="bg-transparent text-sm font-medium text-slate-700 focus:outline-none"
@@ -61,7 +61,7 @@ export default function ManageUserFilters({
               <option value="ADMIN">{t("managementUsers.roles.admin")}</option>
             </select>
           </div>
-          <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+          <div className="flex items-center gap-2 rounded-lg border   px-3 py-2 text-sm text-slate-600">
             <SlidersHorizontal className="size-4" />
             <select
               className="bg-transparent text-sm font-medium text-slate-700 focus:outline-none"

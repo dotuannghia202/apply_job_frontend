@@ -136,16 +136,18 @@ export default function RecentActivities({
         <Table>
           <TableHeader>
             <TableRow className="bg-[#e3e9ee] hover:bg-[#e3e9ee]">
-              <TableHead className="px-6 py-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
-                {t("adminDashboard.ledger.columns.metric")}
+              <TableHead className="px-6 py-4 text-[14px] font-bold uppercase  text-[#596065]">
+                <p className="ml-8">
+                  {t("adminDashboard.ledger.columns.metric")}
+                </p>
               </TableHead>
-              <TableHead className="px-6 py-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
+              <TableHead className="px-6 py-4 text-[14px] font-bold uppercase  text-[#596065]">
                 {t("adminDashboard.ledger.columns.scope")}
               </TableHead>
-              <TableHead className="px-6 py-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
+              <TableHead className="px-6 py-4 text-[14px] font-bold uppercase  text-[#596065]">
                 {t("adminDashboard.ledger.columns.status")}
               </TableHead>
-              <TableHead className="px-6 py-4 text-right text-[11px] font-bold uppercase tracking-[0.18em] text-[#596065]">
+              <TableHead className="px-6 py-4 text-right text-[14px] font-bold uppercase  text-[#596065]">
                 {t("adminDashboard.ledger.columns.total")}
               </TableHead>
             </TableRow>

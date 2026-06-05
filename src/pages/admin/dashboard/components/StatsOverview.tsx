@@ -105,7 +105,7 @@ export default function StatsOverview({
         <CardContent className="relative flex min-h-56 flex-col justify-between gap-8 p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#757c81]">
+              <p className="text-xs font-bold uppercase text-[#757c81]">
                 {t("adminDashboard.overview.totalUsers")}
               </p>
               <MetricValue
@@ -216,7 +216,7 @@ function MetricCard({
       <CardContent className="flex min-h-40 flex-col justify-between gap-6 p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#757c81]">
+            <p className="text-xs font-bold uppercase  text-[#757c81]">
               {card.label}
             </p>
             <MetricValue
@@ -267,7 +267,9 @@ function MetricValue({
   }
 
   return (
-    <p className={cn("font-extrabold tracking-tight text-[#2d3338]", className)}>
+    <p
+      className={cn("font-extrabold tracking-tight text-[#2d3338]", className)}
+    >
       {isError ? "--" : formatNumber(value, locale)}
     </p>
   );

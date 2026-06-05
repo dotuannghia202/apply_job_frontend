@@ -1304,6 +1304,10 @@
       "cancel": "Cancel",
       "close": "Close"
     },
+    "breadcrumb": {
+      "admin": "Admin",
+      "companies": "Company Management"
+    },
     "page": {
       "loadingList": "Loading company list...",
       "errorLoadingList": "Could not load the company list. Please try again."

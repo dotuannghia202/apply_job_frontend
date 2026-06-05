@@ -6,6 +6,8 @@ import {
   useGetCompanies,
   useToggleSuspendCompany,
 } from "@/api/companies/company.queries";
+import AppBreadcrumb from "@/components/AppBreadcrumb";
+import { NotificationPopup } from "@/components/NotificationPopup";
 import { useDebounce } from "@/hooks/useDebounce";
 
 import CompanyFilters, {
@@ -15,7 +17,6 @@ import CompanyTable, { type CompanyRow } from "./components/CompanyTable";
 import KPIStats from "./components/KPIStats";
 import PageHeader from "./components/PageHeader";
 import PaginationBar from "./components/PaginationBar";
-import { NotificationPopup } from "@/components/NotificationPopup";
 
 type StatusAction = "approve" | "reject" | "suspend" | "restore";
 
@@ -186,8 +187,17 @@ export default function ManagementCompaniesPage() {
 
   return (
     <main className="min-h-screen bg-[#f7f9fc]">
-      <div className="mx-auto w-full max-w-6xl px-6 py-8">
+      <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <div className="space-y-6">
+          <AppBreadcrumb
+            items={[
+              {
+                label: t("managementCompanies.breadcrumb.admin"),
+                to: "/admin/dashboard",
+              },
+              { label: t("managementCompanies.breadcrumb.companies") },
+            ]}
+          />
           <PageHeader />
           <KPIStats />
           <CompanyFilters

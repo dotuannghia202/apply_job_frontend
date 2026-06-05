@@ -52,7 +52,7 @@ export default function KPIStats() {
       ) : null}
       {!statsQuery.isLoading && !statsQuery.isError
         ? items.map(({ label, value, note, icon: Icon, tone }) => (
-            <article key={label} className="rounded-2xl bg-white p-5 shadow-sm">
+            <article key={label} className="rounded-lg bg-white p-5 shadow-sm">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div
@@ -60,7 +60,7 @@ export default function KPIStats() {
                   >
                     <Icon className="size-4" />
                   </div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">
+                  <p className="text-[14px] font-semibold uppercase  text-slate-500">
                     {label}
                   </p>
                 </div>
@@ -70,7 +70,7 @@ export default function KPIStats() {
                   </span>
                 ) : null}
               </div>
-              <div className="mt-4 flex items-center justify-between">
+              <div className="mt-4 flex items-center justify-end">
                 <p className="text-3xl font-semibold text-slate-900">{value}</p>
               </div>
             </article>

@@ -1304,6 +1304,10 @@
       "cancel": "Hủy",
       "close": "Đóng"
     },
+    "breadcrumb": {
+      "admin": "Quản trị",
+      "companies": "Quản lý công ty"
+    },
     "page": {
       "loadingList": "Đang tải danh sách công ty...",
       "errorLoadingList": "Không thể tải danh sách công ty. Vui lòng thử lại."

@@ -82,7 +82,7 @@ export default function ManageUserTable({
   const endIndex = Math.min(resolvedTotal, resolvedPage * resolvedPageSize);
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-sm">
+    <section className="overflow-hidden rounded-lg border  bg-white shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 px-6 py-4">
         <div>
           <h2 className="text-lg font-semibold text-slate-900">
@@ -164,8 +164,7 @@ export default function ManageUserTable({
                           <img
                             src={row.avatarUrl || avatarPlaceholder}
                             alt={
-                              row.name ||
-                              t("managementUsers.table.unknownUser")
+                              row.name || t("managementUsers.table.unknownUser")
                             }
                             className="size-full object-cover"
                             onError={(event) => {
@@ -175,8 +174,7 @@ export default function ManageUserTable({
                         </div>
                         <div>
                           <p className="font-semibold text-slate-900">
-                            {row.name ||
-                              t("managementUsers.table.unknownUser")}
+                            {row.name || t("managementUsers.table.unknownUser")}
                           </p>
                           <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Mail className="size-3" />
@@ -205,7 +203,7 @@ export default function ManageUserTable({
                           type="button"
                           variant="ghost"
                           size="icon-sm"
-                          className="border border-slate-200 text-slate-600 hover:bg-slate-100"
+                          className=" text-green-600 hover:bg-green-100 hover:text-green-600"
                           aria-label={t(
                             "managementUsers.table.actions.viewDetail",
                           )}
@@ -220,7 +218,7 @@ export default function ManageUserTable({
                           type="button"
                           variant="ghost"
                           size="icon-sm"
-                          className="border border-slate-200 text-slate-600 hover:bg-slate-100"
+                          className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                           onClick={() => onToggleStatus(row)}
                           disabled={isUpdatingId === row.id}
                           aria-label={

@@ -120,100 +120,93 @@ export default function CompanyTable({
   };
 
   return (
-    <section
-      className="rounded-2xl bg-white shadow-sm"
-      data-section="CompanyTable"
-    >
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-left text-sm">
-          <thead className="bg-[#f3f4ef] text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-            <tr>
-              <th className="px-6 py-4">
-                {t("managementCompanies.table.columns.company")}
-              </th>
-              <th className="px-6 py-4">
-                {t("managementCompanies.table.columns.employer")}
-              </th>
-              <th className="px-6 py-4">
-                {t("managementCompanies.table.columns.createdAt")}
-              </th>
-              <th className="px-6 py-4">
-                {t("managementCompanies.table.columns.status")}
-              </th>
-              <th className="px-6 py-4 text-right">
-                {t("managementCompanies.table.columns.actions")}
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {rows.map((row, index) => (
-              <tr
-                key={row.id}
-                className={index % 2 === 0 ? "bg-white" : "bg-[#fbfbf7]"}
-              >
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-sm font-semibold text-emerald-800">
-                      {row.name.slice(0, 1)}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-slate-900">{row.name}</p>
-                      <p className="text-xs text-slate-500">{row.industry}</p>
-                    </div>
+    <div className="overflow-x-auto border border-primary rounded">
+      <table className="min-w-full text-left text-sm">
+        <thead className="bg-primary text-[12px] text-white font-semibold uppercase">
+          <tr>
+            <th className="px-6 py-4">
+              {t("managementCompanies.table.columns.company")}
+            </th>
+            <th className="px-6 py-4">
+              {t("managementCompanies.table.columns.employer")}
+            </th>
+            <th className="px-6 py-4">
+              {t("managementCompanies.table.columns.createdAt")}
+            </th>
+            <th className="px-6 py-4">
+              {t("managementCompanies.table.columns.status")}
+            </th>
+            <th className="px-6 py-4 text-right">
+              {t("managementCompanies.table.columns.actions")}
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100">
+          {rows.map((row, index) => (
+            <tr
+              key={row.id}
+              className={index % 2 === 0 ? "bg-white" : "bg-primary/10"}
+            >
+              <td className="px-6 py-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-sm font-semibold text-emerald-800">
+                    {row.name.slice(0, 1)}
                   </div>
-                </td>
-                <td className="px-6 py-4">
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">
-                      {row.employerName}
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      {row.employerEmail}
-                    </p>
+                    <p className="font-semibold text-slate-900">{row.name}</p>
+                    <p className="text-xs text-slate-500">{row.industry}</p>
                   </div>
-                </td>
-                <td className="px-6 py-4 text-slate-700">
-                  {formatDate(row.createdAt)}
-                </td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      row.status
-                        ? statusStyles[row.status]
-                        : "bg-slate-100 text-slate-600"
-                    }`}
+                </div>
+              </td>
+              <td className="px-6 py-4">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">
+                    {row.employerName}
+                  </p>
+                  <p className="text-xs text-slate-500">{row.employerEmail}</p>
+                </div>
+              </td>
+              <td className="px-6 py-4 text-slate-700">
+                {formatDate(row.createdAt)}
+              </td>
+              <td className="px-6 py-4">
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                    row.status
+                      ? statusStyles[row.status]
+                      : "bg-slate-100 text-slate-600"
+                  }`}
+                >
+                  {row.status
+                    ? statusLabels[row.status]
+                    : t("managementCompanies.table.unknown")}
+                </span>
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex justify-end gap-2">
+                  <Button
+                    title={t("managementCompanies.table.actions.viewDetail")}
+                    variant="ghost"
+                    size="icon-sm"
+                    className="rounded-lg bg-slate-50 text-slate-600 hover:bg-slate-100"
+                    asChild
                   >
-                    {row.status
-                      ? statusLabels[row.status]
-                      : t("managementCompanies.table.unknown")}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      title={t("managementCompanies.table.actions.viewDetail")}
-                      variant="ghost"
-                      size="icon-sm"
-                      className="rounded-lg bg-slate-50 text-slate-600 hover:bg-slate-100"
-                      asChild
+                    <Link
+                      to={`/company/detail/${row.id}`}
+                      aria-label={t(
+                        "managementCompanies.table.actions.viewDetail",
+                      )}
                     >
-                      <Link
-                        to={`/company/detail/${row.id}`}
-                        aria-label={t(
-                          "managementCompanies.table.actions.viewDetail",
-                        )}
-                      >
-                        <Eye className="size-4" />
-                      </Link>
-                    </Button>
-                    {renderActionButtons(row)}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
+                      <Eye className="size-4" />
+                    </Link>
+                  </Button>
+                  {renderActionButtons(row)}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

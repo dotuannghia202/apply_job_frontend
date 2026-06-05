@@ -1,7 +1,4 @@
-import { Download } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-import { Button } from "@/components/ui/button";
 
 export default function PageHeader() {
   const { t } = useTranslation();
@@ -17,13 +14,6 @@ export default function PageHeader() {
             {t("managementCompanies.header.description")}
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="gap-2 rounded-xl border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-700"
-        >
-          <Download className="size-4" />
-          {t("managementCompanies.header.exportCsv")}
-        </Button>
       </div>
     </section>
   );

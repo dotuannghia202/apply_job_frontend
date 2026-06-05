@@ -20,7 +20,11 @@ export default function DashboardHeader({
     : isError
       ? t("adminDashboard.header.status.unavailable")
       : t("adminDashboard.header.status.liveData");
-  const StatusIcon = isError ? TriangleAlert : isLoading ? Activity : ShieldCheck;
+  const StatusIcon = isError
+    ? TriangleAlert
+    : isLoading
+      ? Activity
+      : ShieldCheck;
 
   return (
     <header className="flex flex-col gap-5 border-b border-[#dde3e9] pb-7 md:flex-row md:items-end md:justify-between">

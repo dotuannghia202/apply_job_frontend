@@ -1,9 +1,8 @@
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import type { CompanyStatus } from "@/types/company";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export type CompanyStatusFilter = "" | CompanyStatus;
@@ -25,11 +24,11 @@ export default function CompanyFilters({
 
   return (
     <section
-      className="rounded-2xl bg-white p-4 shadow-sm"
+      className="rounded bg-white p-4 shadow-sm"
       data-section="CompanyFilters"
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-        <div className="flex flex-1 items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3">
+        <div className="flex flex-1 items-center gap-3 rounded border  bg-white px-4">
           <Search className="size-4 text-slate-400" />
           <Input
             className="border-0 bg-transparent text-sm text-slate-700 shadow-none focus-visible:ring-0"
@@ -40,13 +39,15 @@ export default function CompanyFilters({
         </div>
         <div className="flex items-center gap-3">
           <select
-            className="h-10 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none"
+            className="h-10 rounded border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none"
             value={status}
             onChange={(event) =>
               onStatusChange(event.target.value as CompanyStatusFilter)
             }
           >
-            <option value="">{t("managementCompanies.filters.allStatuses")}</option>
+            <option value="">
+              {t("managementCompanies.filters.allStatuses")}
+            </option>
             <option value="APPROVED">
               {t("managementCompanies.status.approved")}
             </option>
@@ -60,14 +61,6 @@ export default function CompanyFilters({
               {t("managementCompanies.status.suspended")}
             </option>
           </select>
-          <Button
-            type="button"
-            className="h-10 w-10 rounded-xl bg-emerald-600 p-0 text-white hover:bg-emerald-700"
-            title={t("managementCompanies.filters.filterButton")}
-            aria-label={t("managementCompanies.filters.filterButton")}
-          >
-            <SlidersHorizontal className="size-4" />
-          </Button>
         </div>
       </div>
     </section>
