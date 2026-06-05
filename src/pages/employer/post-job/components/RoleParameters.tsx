@@ -2,6 +2,7 @@
 
 // RoleParametersForm.tsx
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Check,
   ChevronsUpDown,
@@ -64,6 +65,7 @@ const LEVEL_OPTIONS = [
 ];
 
 export function RoleParametersForm({ onGenerate }: Props) {
+  const { t } = useTranslation();
   const [jobTitle, setJobTitle] = useState("");
   const [skills, setSkills] = useState<Skill[]>(DEFAULT_SKILLS);
   const [skillSearch, setSkillSearch] = useState("");
@@ -103,19 +105,21 @@ export function RoleParametersForm({ onGenerate }: Props) {
         {/* Heading */}
         <div className="flex items-center gap-3">
           <PenLine size={20} className="text-[#72b183]" />
-          <h2 className="text-xl font-bold text-[#2d3338]">Role Parameters</h2>
+          <h2 className="text-xl font-bold text-[#2d3338]">
+            {t("employerPostJob.aiForm.title")}
+          </h2>
         </div>
 
         <div className="space-y-4">
           {/* Job Title */}
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Job Title
+              {t("employerPostJob.aiForm.jobTitle")}
             </Label>
             <Input
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              placeholder="e.g. Senior Full Stack Engineer"
+              placeholder={t("employerPostJob.aiForm.jobTitlePlaceholder")}
               className={inputCls}
             />
           </div>
@@ -123,7 +127,7 @@ export function RoleParametersForm({ onGenerate }: Props) {
           {/* Key Skills */}
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Key Skills
+              {t("employerPostJob.aiForm.keySkills")}
             </Label>
 
             {skills.length > 0 && (
@@ -155,7 +159,7 @@ export function RoleParametersForm({ onGenerate }: Props) {
                       setSkillSearch(e.target.value);
                       setSkillOpen(true);
                     }}
-                    placeholder="Search skills..."
+                    placeholder={t("employerPostJob.aiForm.searchSkills")}
                     className={`${inputCls} pr-10`}
                   />
                   <ChevronsUpDown className="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#596065]/70" />
@@ -167,11 +171,13 @@ export function RoleParametersForm({ onGenerate }: Props) {
               >
                 <Command>
                   <CommandInput
-                    placeholder="Search skills..."
+                    placeholder={t("employerPostJob.aiForm.searchSkills")}
                     value={skillSearch}
                     onValueChange={setSkillSearch}
                   />
-                  <CommandEmpty>No skills found.</CommandEmpty>
+                  <CommandEmpty>
+                    {t("employerPostJob.aiForm.noSkills")}
+                  </CommandEmpty>
                   <CommandList className="max-h-44">
                     <CommandGroup>
                       {skillOptions.map((skill) => {
@@ -207,7 +213,7 @@ export function RoleParametersForm({ onGenerate }: Props) {
           {/* Levels */}
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Levels
+              {t("employerPostJob.aiForm.levels")}
             </Label>
             <div className="grid grid-cols-2 gap-2">
               {LEVEL_OPTIONS.map((level) => (
@@ -225,7 +231,7 @@ export function RoleParametersForm({ onGenerate }: Props) {
                     onChange={() => toggleLevel(level)}
                     className="accent-[#72b183]"
                   />
-                  {level}
+                  {t(`employerPostJob.levels.${level}`)}
                 </label>
               ))}
             </div>
@@ -241,7 +247,7 @@ export function RoleParametersForm({ onGenerate }: Props) {
           }}
         >
           <Sparkles size={18} className="mr-2" fill="currentColor" />
-          Generate Intelligence
+          {t("employerPostJob.aiForm.generate")}
         </Button>
       </div>
 
@@ -249,10 +255,11 @@ export function RoleParametersForm({ onGenerate }: Props) {
       <div className="bg-[#6f26f6]/10 rounded-xl p-6 flex gap-4 items-start">
         <Lightbulb size={20} className="text-[#6f26f6] shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-bold text-[#4200a2] mb-1">AI Pro Tip</p>
+          <p className="text-sm font-bold text-[#4200a2] mb-1">
+            {t("employerPostJob.aiForm.proTipTitle")}
+          </p>
           <p className="text-xs text-[#4200a2]/80 leading-relaxed">
-            Including mentions of mentorship or professional development budget
-            increases application rates by 34% for senior roles.
+            {t("employerPostJob.aiForm.proTipDescription")}
           </p>
         </div>
       </div>

@@ -5,20 +5,16 @@ import {
   PlaneTakeoff,
   BrainCircuit,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import type { RequirementItem, BenefitItem } from "../../types";
 
 // ── Static preview data ────────────────────────────────────────────
-const REQUIREMENTS: RequirementItem[] = [
-  { id: "1", text: "5+ years in full-stack development." },
-  { id: "2", text: "Deep expertise in React & TypeScript." },
-  { id: "3", text: "Passion for AI and LLM integration." },
-];
+const DEFAULT_REQUIREMENT_KEYS = ["experience", "react", "ai"] as const;
 
-const BENEFITS: BenefitItem[] = [
-  { id: "1", icon: "health", text: "Premium health & dental." },
-  { id: "2", icon: "flight", text: "Unlimited PTO policy." },
-  { id: "3", icon: "mind", text: "Learning & mental health budget." },
+const BENEFITS = [
+  { id: "1", icon: "health", textKey: "health" },
+  { id: "2", icon: "flight", textKey: "flight" },
+  { id: "3", icon: "mind", textKey: "mind" },
 ];
 
 function BenefitIcon({ icon }: { icon: string }) {
@@ -50,6 +46,8 @@ function PreviewHeader({
   isGenerating,
   isPublishDisabled,
 }: PreviewHeaderProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex justify-between items-center mb-8 pb-6 border-b border-[#eaeef3]">
       <div className="flex items-center gap-3">
@@ -73,11 +71,11 @@ function PreviewHeader({
         </div>
         <div>
           <h3 className="font-bold text-lg text-[#2d3338] leading-none">
-            Draft Preview
+            {t("employerPostJob.jdPreview.headerTitle")}
           </h3>
           <span className="text-[10px] font-bold text-[#72b183] uppercase tracking-widest flex items-center gap-1 mt-0.5">
             <span className="w-1.5 h-1.5 bg-[#72b183] rounded-full animate-pulse" />
-            AI Optimized
+            {t("employerPostJob.jdPreview.aiOptimized")}
           </span>
         </div>
       </div>
@@ -91,7 +89,9 @@ function PreviewHeader({
           disabled={isGenerating}
         >
           <RefreshCw size={14} />
-          {isGenerating ? "Generating..." : "Regenerate"}
+          {isGenerating
+            ? t("employerPostJob.jdPreview.generating")
+            : t("employerPostJob.jdPreview.regenerate")}
         </Button>
         <Button
           size="sm"
@@ -102,7 +102,7 @@ function PreviewHeader({
           onClick={onPublish}
           disabled={isPublishDisabled}
         >
-          Publish Job
+          {t("employerPostJob.jdPreview.publishJob")}
         </Button>
       </div>
     </div>
@@ -110,17 +110,19 @@ function PreviewHeader({
 }
 
 function RoleSection({ title, description }: JDPreviewData) {
+  const { t } = useTranslation();
+
   return (
     <div>
       <p className="text-[10px] font-bold text-[#72b183] uppercase tracking-[0.2em] mb-3">
-        The Role
+        {t("employerPostJob.jdPreview.role")}
       </p>
       <h2 className="text-3xl font-extrabold text-[#2d3338] mb-3">
-        {title || "Role title will appear here"}
+        {title || t("employerPostJob.jdPreview.roleTitlePlaceholder")}
       </h2>
       <p className="text-[#596065] leading-relaxed text-sm">
         {description ||
-          "Generate a JD to preview the role summary and requirements."}
+          t("employerPostJob.jdPreview.descriptionPlaceholder")}
       </p>
     </div>
   );
@@ -133,12 +135,14 @@ function RequirementsAndBenefits({
   requirements: string[];
   benefits: string[];
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* Requirements */}
       <div>
         <p className="text-[10px] font-bold text-[#72b183] uppercase tracking-[0.2em] mb-4">
-          Requirements
+          {t("employerPostJob.jdPreview.requirements")}
         </p>
         <ul className="space-y-3">
           {requirements.map((req, index) => (
@@ -161,7 +165,7 @@ function RequirementsAndBenefits({
       {/* Benefits */}
       <div>
         <p className="text-[10px] font-bold text-[#72b183] uppercase tracking-[0.2em] mb-4">
-          Benefits
+          {t("employerPostJob.jdPreview.benefits")}
         </p>
         <ul className="space-y-3">
           {benefits.map((b, index) => (
@@ -182,13 +186,15 @@ function RequirementsAndBenefits({
 }
 
 function MatchBadge() {
+  const { t } = useTranslation();
+
   return (
     <div className="absolute -bottom-4 -right-4 bg-white px-3 py-2 rounded-lg shadow-lg shadow-[#72b183]/10 border border-[#72b183]/10 flex items-center gap-2">
       <div className="w-6 h-6 rounded-full bg-[#d4e8d9] flex items-center justify-center">
         <span className="text-[8px] font-bold text-[#72b183]">AI</span>
       </div>
       <span className="text-[11px] font-bold text-[#596065]">
-        Match Score: 98%
+        {t("employerPostJob.jdPreview.matchScore", { score: 98 })}
       </span>
     </div>
   );
@@ -206,14 +212,19 @@ export function JDPreview({
   onRegenerate?: () => void;
   isGenerating?: boolean;
 }) {
+  const { t } = useTranslation();
   const requirements =
     data?.requirements && data.requirements.length
       ? data.requirements
-      : REQUIREMENTS.map((item) => item.text);
+      : DEFAULT_REQUIREMENT_KEYS.map((key) =>
+          t(`employerPostJob.jdPreview.defaultRequirements.${key}`),
+        );
   const benefits =
     data?.benefits && data.benefits.length
       ? data.benefits
-      : BENEFITS.map((item) => item.text);
+      : BENEFITS.map((item) =>
+          t(`employerPostJob.jdPreview.defaultBenefits.${item.textKey}`),
+        );
   const isPublishDisabled = !data?.description;
 
   return (

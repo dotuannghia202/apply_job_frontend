@@ -1,5 +1,6 @@
 import { PencilLine, Save, X } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useGetSkills } from "@/api/skills/skill.queries";
 import { useGetSpecializations } from "@/api/specializations/specialization.queries";
@@ -39,6 +40,7 @@ export function UpdateJobPanel({
   onSubmit,
   isSubmitting,
 }: UpdateJobPanelProps) {
+  const { t } = useTranslation();
   const [skillSearch, setSkillSearch] = useState("");
   const debouncedSkillSearch = useDebounce(skillSearch);
   const specializationsQuery = useGetSpecializations({ page: 1, size: 100 });
@@ -73,18 +75,18 @@ export function UpdateJobPanel({
         <div>
           <div className="flex items-center gap-2 text-sm font-semibold text-primary">
             <PencilLine className="size-4" aria-hidden="true" />
-            Update job
+            {t("employerJobs.update.eyebrow")}
           </div>
           <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">
             {job.name}
           </h2>
           <p className="mt-1 text-sm text-slate-500">
-            Changes are sent to the backend as `ReqUpdateJobDTO`.
+            {t("employerJobs.update.description")}
           </p>
         </div>
         <Button type="button" variant="ghost" onClick={onCancel}>
           <X className="size-4" aria-hidden="true" />
-          Close
+          {t("employerJobs.update.close")}
         </Button>
       </div>
 
@@ -92,47 +94,47 @@ export function UpdateJobPanel({
         <div className="space-y-6">
           <div className="grid gap-4 md:grid-cols-2">
             <FilterTextField
-              label="Job title"
+              label={t("employerJobs.update.fields.jobTitle")}
               value={form.name}
               onChange={(name) => update({ name })}
             />
             <FilterTextField
-              label="Location"
+              label={t("employerJobs.update.fields.location")}
               value={form.location}
               onChange={(location) => update({ location })}
             />
             <FilterTextField
-              label="Min salary"
+              label={t("employerJobs.update.fields.minSalary")}
               type="number"
               value={form.minSalary}
               onChange={(minSalary) => update({ minSalary })}
             />
             <FilterTextField
-              label="Max salary"
+              label={t("employerJobs.update.fields.maxSalary")}
               type="number"
               value={form.maxSalary}
               onChange={(maxSalary) => update({ maxSalary })}
             />
             <FilterTextField
-              label="Quantity"
+              label={t("employerJobs.update.fields.quantity")}
               type="number"
               value={form.quantity}
               onChange={(quantity) => update({ quantity })}
             />
             <FilterTextField
-              label="Working hours"
+              label={t("employerJobs.update.fields.workingHours")}
               value={form.workingHours}
               onChange={(workingHours) => update({ workingHours })}
-              placeholder="Mon-Fri, 9:00-18:00"
+              placeholder={t("employerJobs.update.placeholders.workingHours")}
             />
             <FilterTextField
-              label="Start date"
+              label={t("employerJobs.update.fields.startDate")}
               type="date"
               value={form.startDate}
               onChange={(startDate) => update({ startDate })}
             />
             <FilterTextField
-              label="End date"
+              label={t("employerJobs.update.fields.endDate")}
               type="date"
               value={form.endDate}
               onChange={(endDate) => update({ endDate })}
@@ -141,7 +143,7 @@ export function UpdateJobPanel({
 
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-slate-700">
-              Description
+              {t("employerJobs.update.fields.description")}
             </Label>
             <Textarea
               value={form.description}
@@ -153,14 +155,14 @@ export function UpdateJobPanel({
 
           <div className="grid gap-6 md:grid-cols-2">
             <ListEditor
-              label="Requirements"
-              placeholder="Add requirement"
+              label={t("employerJobs.update.fields.requirements")}
+              placeholder={t("employerJobs.update.placeholders.requirement")}
               items={form.requirements}
               onChange={(requirements) => update({ requirements })}
             />
             <ListEditor
-              label="Benefits"
-              placeholder="Add benefit"
+              label={t("employerJobs.update.fields.benefits")}
+              placeholder={t("employerJobs.update.placeholders.benefit")}
               items={form.benefits}
               onChange={(benefits) => update({ benefits })}
             />
@@ -168,7 +170,7 @@ export function UpdateJobPanel({
 
           <div className="space-y-2">
             <Label className="text-sm font-semibold text-slate-700">
-              Levels
+              {t("employerJobs.update.fields.levels")}
             </Label>
             <LevelToggleGroup
               value={form.levels}
@@ -180,7 +182,7 @@ export function UpdateJobPanel({
         <aside className="space-y-5">
           <div className="flex flex-col gap-1.5">
             <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-              Specialization
+              {t("employerJobs.update.fields.specialization")}
             </Label>
             <select
               value={form.specializationId}
@@ -189,7 +191,9 @@ export function UpdateJobPanel({
               }
               className={cn(fieldClass, "px-3")}
             >
-              <option value="">Keep current / none</option>
+              <option value="">
+                {t("employerJobs.update.placeholders.keepCurrent")}
+              </option>
               {(specializationsQuery.data?.data?.result ?? []).map(
                 (specialization) => (
                   <option key={specialization.id} value={specialization.id}>
@@ -203,11 +207,10 @@ export function UpdateJobPanel({
           <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4">
             <div>
               <Label className="text-sm font-semibold text-slate-700">
-                Skill IDs
+                {t("employerJobs.update.fields.skillIds")}
               </Label>
               <p className="mt-1 text-xs leading-5 text-slate-500">
-                Select skills here only when you want to replace the current
-                skill list.
+                {t("employerJobs.update.skillHelp")}
               </p>
             </div>
 
@@ -231,7 +234,9 @@ export function UpdateJobPanel({
                     {skill.name}
                     <button
                       type="button"
-                      aria-label={`Remove ${skill.name}`}
+                      aria-label={t("employerJobs.listEditor.removeItem", {
+                        item: skill.name,
+                      })}
                       onClick={() => removeSkill(skill.id)}
                     >
                       <X className="size-3" aria-hidden="true" />
@@ -244,7 +249,7 @@ export function UpdateJobPanel({
             <Input
               value={skillSearch}
               onChange={(event) => setSkillSearch(event.target.value)}
-              placeholder="Search skills to add"
+              placeholder={t("employerJobs.update.placeholders.searchSkills")}
               className={fieldClass}
             />
 
@@ -281,7 +286,9 @@ export function UpdateJobPanel({
               onClick={onSubmit}
             >
               <Save className="size-4" aria-hidden="true" />
-              {isSubmitting ? "Saving..." : "Save changes"}
+              {isSubmitting
+                ? t("employerJobs.update.saving")
+                : t("employerJobs.update.saveChanges")}
             </Button>
             <Button
               type="button"
@@ -290,7 +297,7 @@ export function UpdateJobPanel({
               disabled={isSubmitting}
               onClick={onCancel}
             >
-              Cancel
+              {t("employerJobs.common.cancel")}
             </Button>
           </div>
         </aside>

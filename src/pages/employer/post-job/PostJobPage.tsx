@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
 import {
@@ -13,6 +14,7 @@ import { toUtcMidnightIso } from "@/helper";
 import { NotificationPopup } from "@/components/NotificationPopup";
 
 export default function PostJobPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const prefill =
     (location.state as { generatedJob?: Partial<PostJobFormData> } | null)
@@ -85,38 +87,46 @@ export default function PostJobPage() {
       .slice(0, 10);
 
     if (formData.startDate && formData.startDate < todayIso) {
-      nextErrors.startDate = "Start date cannot be in the past.";
+      nextErrors.startDate = t("employerPostJob.validation.startDatePast");
     }
 
     if (!formData.description.trim()) {
-      nextErrors.description = "Please enter a job description.";
+      nextErrors.description = t(
+        "employerPostJob.validation.descriptionRequired",
+      );
     }
     if (!formData.requirements.length) {
-      nextErrors.requirements = "Please add at least one requirement.";
+      nextErrors.requirements = t(
+        "employerPostJob.validation.requirementsRequired",
+      );
     }
     if (!formData.benefits.length) {
-      nextErrors.benefits = "Please add at least one benefit.";
+      nextErrors.benefits = t("employerPostJob.validation.benefitsRequired");
     }
     if (!formData.levels.length) {
-      nextErrors.levels = "Please select at least one level.";
+      nextErrors.levels = t("employerPostJob.validation.levelsRequired");
     }
 
     if (!formData.endDate.trim()) {
-      nextErrors.endDate = "Please select an end date.";
+      nextErrors.endDate = t("employerPostJob.validation.endDateRequired");
     } else if (formData.endDate < todayIso) {
-      nextErrors.endDate = "End date cannot be in the past.";
+      nextErrors.endDate = t("employerPostJob.validation.endDatePast");
     }
     if (!formData.workingHours.trim()) {
-      nextErrors.workingHours = "Please enter working hours.";
+      nextErrors.workingHours = t(
+        "employerPostJob.validation.workingHoursRequired",
+      );
     }
     if (!formData.industryId) {
-      nextErrors.industryId = "Please select an industry.";
+      nextErrors.industryId = t("employerPostJob.validation.industryRequired");
     }
     if (!formData.specializationId) {
-      nextErrors.specializationId = "Please select a specialization.";
+      nextErrors.specializationId = t(
+        "employerPostJob.validation.specializationRequired",
+      );
     }
     if (!formData.skillIds.length) {
-      nextErrors.skillIds = "Please select at least one skill.";
+      nextErrors.skillIds = t("employerPostJob.validation.skillsRequired");
     }
 
     return nextErrors;
@@ -218,16 +228,16 @@ export default function PostJobPage() {
       setPopup({
         open: true,
         variant: "success",
-        title: "Job created successfully",
-        message: "Your job has been created.",
+        title: t("employerPostJob.notifications.createSuccessTitle"),
+        message: t("employerPostJob.notifications.createSuccessMessage"),
       });
     } catch (error) {
       console.error("Failed to create job", error);
       setPopup({
         open: true,
         variant: "error",
-        title: "Job creation failed",
-        message: "Please try again.",
+        title: t("employerPostJob.notifications.createErrorTitle"),
+        message: t("employerPostJob.notifications.createErrorMessage"),
       });
     }
   };

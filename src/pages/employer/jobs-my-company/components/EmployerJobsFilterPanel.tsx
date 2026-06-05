@@ -1,5 +1,6 @@
 import { Filter, RefreshCcw, Search } from "lucide-react";
 import type { FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,6 +26,8 @@ export function EmployerJobsFilterPanel({
   onSubmit,
   onReset,
 }: EmployerJobsFilterPanelProps) {
+  const { t } = useTranslation();
+
   return (
     <Card className="border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.04)]">
       <form className="space-y-5" onSubmit={onSubmit}>
@@ -32,43 +35,39 @@ export function EmployerJobsFilterPanel({
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
               <Filter className="size-4" aria-hidden="true" />
-              Filters
+              {t("employerJobs.filters.title")}
             </div>
-            <p className="mt-1 text-sm text-slate-500">
-              Calls `GET /jobs/hr` with the same query parameters as the backend
-              endpoint.
-            </p>
           </div>
           <div className="flex gap-2">
             <Button type="submit" disabled={isFetching}>
               <Search className="size-4" aria-hidden="true" />
-              Search
+              {t("employerJobs.filters.search")}
             </Button>
             <Button type="button" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-4" aria-hidden="true" />
-              Reset
+              {t("employerJobs.filters.reset")}
             </Button>
           </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <FilterTextField
-            label="Keyword"
+            label={t("employerJobs.filters.keyword")}
             value={filters.keyword}
             onChange={(keyword) => onFilterChange({ keyword })}
-            placeholder="Search all fields"
+            placeholder={t("employerJobs.filters.keywordPlaceholder")}
           />
           <FilterTextField
-            label="Job name"
+            label={t("employerJobs.filters.jobName")}
             value={filters.name}
             onChange={(name) => onFilterChange({ name })}
-            placeholder="Frontend Developer"
+            placeholder={t("employerJobs.filters.jobNamePlaceholder")}
           />
           <FilterTextField
-            label="Location"
+            label={t("employerJobs.filters.location")}
             value={filters.location}
             onChange={(location) => onFilterChange({ location })}
-            placeholder="Ho Chi Minh"
+            placeholder={t("employerJobs.filters.locationPlaceholder")}
           />
           <SkillFilterPopover
             value={filters.skill}
@@ -76,14 +75,14 @@ export function EmployerJobsFilterPanel({
           />
 
           <FilterTextField
-            label="Min salary"
+            label={t("employerJobs.filters.minSalary")}
             type="number"
             min={0}
             value={filters.minSalary}
             onChange={(minSalary) => onFilterChange({ minSalary })}
           />
           <FilterTextField
-            label="Max salary"
+            label={t("employerJobs.filters.maxSalary")}
             type="number"
             min={0}
             value={filters.maxSalary}
@@ -104,7 +103,7 @@ export function EmployerJobsFilterPanel({
 
         <div className="space-y-2">
           <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-            Levels
+            {t("employerJobs.filters.levels")}
           </Label>
           <LevelToggleGroup
             value={filters.levels}

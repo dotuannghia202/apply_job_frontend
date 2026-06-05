@@ -1,4 +1,5 @@
 import { useMemo, useState, type KeyboardEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { Check, ChevronsUpDown, Plus, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -112,13 +113,15 @@ function SectionHeader({ title, note }: { title: string; note?: string }) {
 }
 
 function Tag({ label, onRemove }: { label: string; onRemove: () => void }) {
+  const { t } = useTranslation();
+
   return (
     <span className="bg-[#8df5e4] text-[#005c53] px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 select-none">
       {label}
       <button
         onClick={onRemove}
         className="ml-0.5 hover:opacity-70 transition-opacity"
-        aria-label={`Remove ${label}`}
+        aria-label={t("employerPostJob.common.removeItem", { item: label })}
         type="button"
       >
         <X size={12} strokeWidth={2.5} />
@@ -233,6 +236,7 @@ function SearchableSelect({
   onOpenChange?: (open: boolean) => void;
   errorMessage?: string;
 }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const selected = options.find((item) => item.value === value);
   const commandInputProps = onSearchChange
@@ -274,7 +278,9 @@ function SearchableSelect({
               placeholder={searchPlaceholder}
               {...commandInputProps}
             />
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>
+              {t("employerPostJob.form.select.noResults")}
+            </CommandEmpty>
             <CommandList className="max-h-44">
               <CommandGroup>
                 {options.map((item) => (
@@ -308,6 +314,7 @@ function SearchableSelect({
 }
 
 export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
+  const { t } = useTranslation();
   const update = (patch: Partial<PostJobFormData>) =>
     onChange({ ...value, ...patch });
   const todayIso = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -457,29 +464,34 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
   return (
     <section className="lg:col-span-7 space-y-8">
       <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
-        <SectionHeader title="Job Basics" note="Required" />
+        <SectionHeader
+          title={t("employerPostJob.form.sections.jobBasics")}
+          note={t("employerPostJob.form.required")}
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Job Title
+              {t("employerPostJob.form.fields.jobTitle")}
             </Label>
             <Input
               value={value.name}
               onChange={(event) => update({ name: event.target.value })}
-              placeholder="e.g. Senior Full Stack Engineer"
+              placeholder={t("employerPostJob.form.placeholders.jobTitle")}
               className={inputCls}
             />
           </div>
         </div>
         <div className="flex flex-col gap-4">
           <Label className="text-sm font-semibold text-[#596065]">
-            Location
+            {t("employerPostJob.form.fields.location")}
           </Label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <SearchableSelect
-              label="Province / City"
-              placeholder="Select province/city"
-              searchPlaceholder="Search province..."
+              label={t("employerPostJob.form.fields.province")}
+              placeholder={t("employerPostJob.form.placeholders.province")}
+              searchPlaceholder={t(
+                "employerPostJob.form.placeholders.searchProvince",
+              )}
               value={provinceCode}
               options={provinces.map((province) => ({
                 value: province.code.toString(),
@@ -488,9 +500,11 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
               onChange={handleProvinceChange}
             />
             <SearchableSelect
-              label="Ward / Commune"
-              placeholder="Select ward/commune"
-              searchPlaceholder="Search ward..."
+              label={t("employerPostJob.form.fields.ward")}
+              placeholder={t("employerPostJob.form.placeholders.ward")}
+              searchPlaceholder={t(
+                "employerPostJob.form.placeholders.searchWard",
+              )}
               value={wardCode}
               options={(selectedProvince?.wards ?? []).map((ward) => ({
                 value: ward.code.toString(),
@@ -502,24 +516,24 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
 
           <div className="flex flex-col gap-2">
             <Label className="text-xs font-semibold text-[#7b848a]">
-              Street / House No.
+              {t("employerPostJob.form.fields.street")}
             </Label>
             <Input
               value={street}
               onChange={(event) => handleStreetChange(event.target.value)}
-              placeholder="Enter house number, street, hamlet..."
+              placeholder={t("employerPostJob.form.placeholders.street")}
               className={inputCls}
             />
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <Label className="text-sm font-semibold text-[#596065]">
-            Job Description
+            {t("employerPostJob.form.fields.description")}
           </Label>
           <Textarea
             value={value.description}
             onChange={(event) => update({ description: event.target.value })}
-            placeholder="Describe the mission, scope, and expectations..."
+            placeholder={t("employerPostJob.form.placeholders.description")}
             rows={5}
             className={cn(
               `${inputCls} resize-none`,
@@ -533,11 +547,14 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
       </div>
 
       <div className="bg-white rounded-xl p-8 border border-[#eaeef3]/60 space-y-6">
-        <SectionHeader title="Compensation" note="Required" />
+        <SectionHeader
+          title={t("employerPostJob.form.sections.compensation")}
+          note={t("employerPostJob.form.required")}
+        />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Min Salary
+              {t("employerPostJob.form.fields.minSalary")}
             </Label>
             <Input
               type="number"
@@ -550,7 +567,7 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Max Salary
+              {t("employerPostJob.form.fields.maxSalary")}
             </Label>
             <Input
               type="number"
@@ -563,7 +580,7 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Quantity
+              {t("employerPostJob.form.fields.quantity")}
             </Label>
             <Input
               type="number"
@@ -578,11 +595,11 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
       </div>
 
       <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
-        <SectionHeader title="Schedule" />
+        <SectionHeader title={t("employerPostJob.form.sections.schedule")} />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Start Date
+              {t("employerPostJob.form.fields.startDate")}
             </Label>
             <Input
               type="date"
@@ -600,7 +617,7 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              End Date
+              {t("employerPostJob.form.fields.endDate")}
             </Label>
             <Input
               type="date"
@@ -618,12 +635,12 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Working Hours
+              {t("employerPostJob.form.fields.workingHours")}
             </Label>
             <Input
               value={value.workingHours}
               onChange={(event) => update({ workingHours: event.target.value })}
-              placeholder="Mon-Fri, 9:00-18:00"
+              placeholder={t("employerPostJob.form.placeholders.workingHours")}
               className={cn(
                 inputCls,
                 errors?.workingHours && "ring-2 ring-red-300 bg-red-50",
@@ -637,10 +654,12 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
       </div>
 
       <div className="bg-white rounded-xl p-8 border border-[#eaeef3]/60 space-y-6">
-        <SectionHeader title="Requirements & Benefits" />
+        <SectionHeader
+          title={t("employerPostJob.form.sections.requirementsBenefits")}
+        />
         <ListInput
-          label="Requirements"
-          placeholder="Add requirement"
+          label={t("employerPostJob.form.fields.requirements")}
+          placeholder={t("employerPostJob.form.placeholders.requirement")}
           items={value.requirements}
           onAdd={(item) =>
             update({ requirements: [...value.requirements, item] })
@@ -650,12 +669,12 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
               requirements: value.requirements.filter((_, i) => i !== index),
             })
           }
-          hint="Minimum list for BE: at least 1 requirement"
+          hint={t("employerPostJob.form.hints.requirements")}
           errorMessage={errors?.requirements}
         />
         <ListInput
-          label="Benefits"
-          placeholder="Add benefit"
+          label={t("employerPostJob.form.fields.benefits")}
+          placeholder={t("employerPostJob.form.placeholders.benefit")}
           items={value.benefits}
           onAdd={(item) => update({ benefits: [...value.benefits, item] })}
           onRemove={(index) =>
@@ -666,7 +685,10 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
       </div>
 
       <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
-        <SectionHeader title="Levels" note="Required" />
+        <SectionHeader
+          title={t("employerPostJob.form.sections.levels")}
+          note={t("employerPostJob.form.required")}
+        />
         {errors?.levels ? (
           <p className="text-xs text-red-500">{errors.levels}</p>
         ) : null}
@@ -686,19 +708,24 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
                 onChange={() => toggleLevel(level)}
                 className="accent-[#72b183]"
               />
-              {level}
+              {t(`employerPostJob.levels.${level}`)}
             </label>
           ))}
         </div>
       </div>
 
       <div className="bg-white rounded-xl p-8 border border-[#eaeef3]/60 space-y-6">
-        <SectionHeader title="Industry & Specialization" note="Required" />
+        <SectionHeader
+          title={t("employerPostJob.form.sections.industrySpecialization")}
+          note={t("employerPostJob.form.required")}
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <SearchableSelect
-            label="Industry"
-            placeholder="Select industry"
-            searchPlaceholder="Search industry..."
+            label={t("employerPostJob.form.fields.industry")}
+            placeholder={t("employerPostJob.form.placeholders.industry")}
+            searchPlaceholder={t(
+              "employerPostJob.form.placeholders.searchIndustry",
+            )}
             value={value.industryId}
             options={industryOptions}
             onChange={handleIndustryChange}
@@ -710,9 +737,11 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
             errorMessage={errors?.industryId}
           />
           <SearchableSelect
-            label="Specialization"
-            placeholder="Select specialization"
-            searchPlaceholder="Search specialization..."
+            label={t("employerPostJob.form.fields.specialization")}
+            placeholder={t("employerPostJob.form.placeholders.specialization")}
+            searchPlaceholder={t(
+              "employerPostJob.form.placeholders.searchSpecialization",
+            )}
             value={value.specializationId}
             options={specializationOptions}
             onChange={(next) => {
@@ -731,9 +760,14 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
       </div>
 
       <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
-        <SectionHeader title="Skills" note="Required" />
+        <SectionHeader
+          title={t("employerPostJob.form.sections.skills")}
+          note={t("employerPostJob.form.required")}
+        />
         <div className="flex flex-col gap-3">
-          <Label className="text-sm font-semibold text-[#596065]">Skills</Label>
+          <Label className="text-sm font-semibold text-[#596065]">
+            {t("employerPostJob.form.fields.skills")}
+          </Label>
           {value.skillIds.length > 0 ? (
             <div className="flex flex-wrap gap-2">
               {value.skillIds.map((id, index) => (
@@ -743,7 +777,7 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
                     value.skillNames[index] ??
                     selectedSkillLabels[id] ??
                     skillOptionLabels[id] ??
-                    `Skill #${id}`
+                    t("employerPostJob.form.fallbacks.skillWithId", { id })
                   }
                   onRemove={() => removeSkill(id)}
                 />
@@ -765,19 +799,23 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
                 )}
               >
                 {value.skillIds.length
-                  ? `Selected ${value.skillIds.length} skill(s)`
-                  : "Select skills"}
+                  ? t("employerPostJob.form.selectedSkills", {
+                      count: value.skillIds.length,
+                    })
+                  : t("employerPostJob.form.placeholders.skills")}
                 <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-60" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
               <Command>
                 <CommandInput
-                  placeholder="Search skills..."
+                  placeholder={t("employerPostJob.form.placeholders.searchSkills")}
                   value={skillSearch}
                   onValueChange={setSkillSearch}
                 />
-                <CommandEmpty>No skills found.</CommandEmpty>
+                <CommandEmpty>
+                  {t("employerPostJob.form.select.noSkills")}
+                </CommandEmpty>
                 <CommandList className="max-h-44">
                   <CommandGroup>
                     {skillOptions.map((skill) => {
@@ -807,20 +845,20 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
             <p className="text-xs text-red-500">{errors.skillIds}</p>
           ) : null}
           <p className="text-xs text-[#7b848a]">
-            Type to search skills, then click to add.
+            {t("employerPostJob.form.hints.skills")}
           </p>
         </div>
       </div>
 
       <div className="bg-white rounded-xl p-8 border border-[#eaeef3]/60 space-y-6">
-        <SectionHeader title="Publishing" />
+        <SectionHeader title={t("employerPostJob.form.sections.publishing")} />
         <div className="flex items-center justify-between">
           <div>
             <Label className="text-sm font-semibold text-[#596065]">
-              Active
+              {t("employerPostJob.form.fields.active")}
             </Label>
             <p className="text-xs text-[#7b848a]">
-              If off, BE will store but not publish.
+              {t("employerPostJob.form.hints.active")}
             </p>
           </div>
           <Switch
@@ -837,7 +875,7 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
           className="bg-primary hover:bg-primary-hover rounded-md px-6! font-bold text-white shadow-md hover:shadow-lg transition-shadow"
         >
           <Save size={16} className="mr-1" />
-          Publish
+          {t("employerPostJob.form.publish")}
         </Button>
       </div>
     </section>

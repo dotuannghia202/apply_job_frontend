@@ -1,5 +1,6 @@
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ export function ListEditor({
   items,
   onChange,
 }: ListEditorProps) {
+  const { t } = useTranslation();
   const [draft, setDraft] = useState("");
 
   const addItem = () => {
@@ -42,7 +44,7 @@ export function ListEditor({
               {item}
               <button
                 type="button"
-                aria-label={`Remove ${item}`}
+                aria-label={t("employerJobs.listEditor.removeItem", { item })}
                 className="text-slate-400 transition hover:text-destructive"
                 onClick={() => onChange(items.filter((_, i) => i !== index))}
               >

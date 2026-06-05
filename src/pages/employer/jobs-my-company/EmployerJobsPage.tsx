@@ -1,5 +1,6 @@
 import { BriefcaseBusiness, Plus } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import {
@@ -29,7 +30,11 @@ import {
 import type { Job } from "@/types/job";
 import { NotificationPopup } from "@/components/NotificationPopup";
 
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
+
 export default function EmployerJobsPage() {
+  const { t, i18n } = useTranslation();
   const [filters, setFilters] =
     useState<EmployerJobFilters>(createInitialFilters);
   const [appliedFilters, setAppliedFilters] =
@@ -50,6 +55,7 @@ export default function EmployerJobsPage() {
     title: "",
     message: "",
   });
+  const locale = getLocale(i18n.language);
   const queryFilters = useMemo(
     () => toQueryFilters(appliedFilters, page, DEFAULT_PAGE_SIZE),
     [appliedFilters, page],
@@ -83,7 +89,11 @@ export default function EmployerJobsPage() {
 
   const openUpdatePanel = (job: Job) => {
     setEditingJob(job);
-    setUpdateForm(mapJobToUpdateForm(job));
+    setUpdateForm(
+      mapJobToUpdateForm(job, (id) =>
+        t("employerJobs.fallbacks.skillWithId", { id }),
+      ),
+    );
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -118,16 +128,16 @@ export default function EmployerJobsPage() {
         setPopup({
           open: true,
           variant: "success",
-          title: "Job deleted successfully",
-          message: "The job has been removed from the list.",
+          title: t("employerJobs.notifications.deleteSuccessTitle"),
+          message: t("employerJobs.notifications.deleteSuccessMessage"),
         });
       },
       onError: () => {
         setPopup({
           open: true,
           variant: "error",
-          title: "Job deletion failed",
-          message: "Please try again.",
+          title: t("employerJobs.notifications.deleteErrorTitle"),
+          message: t("employerJobs.notifications.deleteErrorMessage"),
         });
       },
       onSettled: () => {
@@ -146,8 +156,8 @@ export default function EmployerJobsPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
         <AppBreadcrumb
           items={[
-            { label: "Dashboard", to: "/employer/dashboard" },
-            { label: "My Jobs" },
+            { label: t("employerJobs.breadcrumb.dashboard"), to: "/employer/dashboard" },
+            { label: t("employerJobs.breadcrumb.myJobs") },
           ]}
         />
 
@@ -155,25 +165,27 @@ export default function EmployerJobsPage() {
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold text-primary">
               <BriefcaseBusiness className="size-4" aria-hidden="true" />
-              Employer workspace
+              {t("employerJobs.header.eyebrow")}
             </div>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950">
-              My Jobs
+              {t("employerJobs.header.title")}
             </h1>
             <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">
-              Manage job posts from your current company, filter openings, and
-              update active listings.
+              {t("employerJobs.header.description")}
             </p>
           </div>
           <div className="flex flex-col items-start gap-2 md:items-end">
             <Button asChild>
               <Link to="/jobs/jd-generator">
                 <Plus className="size-4" aria-hidden="true" />
-                Post new job
+                {t("employerJobs.header.postNewJob")}
               </Link>
             </Button>
             <div className="text-sm font-semibold text-slate-600">
-              Total jobs: <span className="text-primary">{total}</span>
+              {t("employerJobs.header.totalJobs")}{" "}
+              <span className="text-primary">
+                {new Intl.NumberFormat(locale).format(total)}
+              </span>
             </div>
           </div>
         </header>
@@ -204,6 +216,7 @@ export default function EmployerJobsPage() {
           onUpdate={openUpdatePanel}
           onDelete={handleRequestDelete}
           deletingJobId={deletingJobId}
+          locale={locale}
         />
 
         {meta && meta.pages > 1 ? (
@@ -218,13 +231,16 @@ export default function EmployerJobsPage() {
                     disabled={hrJobsQuery.isFetching || page <= 1}
                     onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                   >
-                    Previous
+                    {t("employerJobs.pagination.previous")}
                   </Button>
                 </PaginationItem>
                 <PaginationItem>
                   <span className="text-sm font-semibold text-slate-600">
-                    Page <span className="text-primary">{meta.page}</span> /{" "}
-                    {meta.pages}
+                    {t("employerJobs.pagination.page")}{" "}
+                    <span className="text-primary">
+                      {new Intl.NumberFormat(locale).format(meta.page)}
+                    </span>{" "}
+                    / {new Intl.NumberFormat(locale).format(meta.pages)}
                   </span>
                 </PaginationItem>
                 <PaginationItem>
@@ -235,7 +251,7 @@ export default function EmployerJobsPage() {
                     disabled={hrJobsQuery.isFetching || !hasNextPage}
                     onClick={() => setPage((prev) => prev + 1)}
                   >
-                    Next
+                    {t("employerJobs.pagination.next")}
                   </Button>
                 </PaginationItem>
               </PaginationContent>
@@ -253,11 +269,11 @@ export default function EmployerJobsPage() {
       <NotificationPopup
         open={!!pendingDeleteJob}
         variant="confirm"
-        title="Delete job?"
-        message="This will remove the job from the active list."
-        confirmLabel="Delete"
+        title={t("employerJobs.confirm.deleteTitle")}
+        message={t("employerJobs.confirm.deleteMessage")}
+        confirmLabel={t("employerJobs.confirm.deleteConfirm")}
         confirmVariant="danger"
-        cancelLabel="Cancel"
+        cancelLabel={t("employerJobs.common.cancel")}
         onConfirm={() => {
           if (pendingDeleteJob) {
             handleDeleteJob(pendingDeleteJob);

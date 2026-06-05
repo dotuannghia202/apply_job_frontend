@@ -741,6 +741,305 @@
       "next": "Next"
     }
   },
+  "employerJobs": {
+    "common": {
+      "cancel": "Cancel"
+    },
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "myJobs": "My Jobs"
+    },
+    "header": {
+      "eyebrow": "Employer workspace",
+      "title": "My Jobs",
+      "description": "Manage job posts from your current company, filter openings, and update active listings.",
+      "postNewJob": "Post new job",
+      "totalJobs": "Total jobs:"
+    },
+    "stats": {
+      "totalFound": "Total found",
+      "activeOnPage": "Active on this page",
+      "inactiveOnPage": "Inactive on this page"
+    },
+    "filters": {
+      "title": "Filters",
+
+      "search": "Search",
+      "reset": "Reset",
+      "keyword": "Keyword",
+      "keywordPlaceholder": "Search all fields",
+      "jobName": "Job name",
+      "jobNamePlaceholder": "Frontend Developer",
+      "location": "Location",
+      "locationPlaceholder": "Ho Chi Minh",
+      "skill": "Skill",
+      "allSkills": "All skills",
+      "searchSkills": "Search skills...",
+      "loadingSkills": "Loading skills...",
+      "noSkill": "No skill found.",
+      "clearSkill": "Clear skill filter",
+      "minSalary": "Min salary",
+      "maxSalary": "Max salary",
+      "specialization": "Specialization",
+      "allSpecializations": "All specializations",
+      "searchSpecializations": "Search specializations...",
+      "loadingSpecializations": "Loading specializations...",
+      "noSpecialization": "No specialization found.",
+      "clearSpecialization": "Clear specialization filter",
+      "levels": "Levels"
+    },
+    "table": {
+      "error": "Failed to load your jobs. Please try again.",
+      "loading": "Loading jobs...",
+      "empty": "No jobs match the current filters.",
+      "columns": {
+        "job": "Job",
+        "salary": "Salary",
+        "location": "Location",
+        "dates": "Dates",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View",
+        "update": "Update",
+        "delete": "Delete",
+        "deleting": "Deleting..."
+      }
+    },
+    "salary": {
+      "agree": "Agree on salary",
+      "from": "Salary from {{salary}}",
+      "upTo": "Salary up to {{salary}}"
+    },
+    "fallbacks": {
+      "notSpecified": "Not specified",
+      "notSet": "Not set",
+      "skillWithId": "Skill #{{id}}"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "levels": {
+      "INTERN": "Intern",
+      "JUNIOR": "Junior",
+      "MIDDLE": "Middle",
+      "SENIOR": "Senior",
+      "LEAD": "Lead",
+      "MANAGER": "Manager"
+    },
+    "listEditor": {
+      "removeItem": "Remove {{item}}"
+    },
+    "update": {
+      "eyebrow": "Update job",
+      "description": "Changes are sent to the backend as `ReqUpdateJobDTO`.",
+      "close": "Close",
+      "skillHelp": "Select skills here only when you want to replace the current skill list.",
+      "saving": "Saving...",
+      "saveChanges": "Save changes",
+      "fields": {
+        "jobTitle": "Job title",
+        "location": "Location",
+        "minSalary": "Min salary",
+        "maxSalary": "Max salary",
+        "quantity": "Quantity",
+        "workingHours": "Working hours",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "description": "Description",
+        "requirements": "Requirements",
+        "benefits": "Benefits",
+        "levels": "Levels",
+        "specialization": "Specialization",
+        "skillIds": "Skill IDs"
+      },
+      "placeholders": {
+        "workingHours": "Mon-Fri, 9:00-18:00",
+        "requirement": "Add requirement",
+        "benefit": "Add benefit",
+        "keepCurrent": "Keep current / none",
+        "searchSkills": "Search skills to add"
+      }
+    },
+    "notifications": {
+      "deleteSuccessTitle": "Job deleted successfully",
+      "deleteSuccessMessage": "The job has been removed from the list.",
+      "deleteErrorTitle": "Job deletion failed",
+      "deleteErrorMessage": "Please try again."
+    },
+    "confirm": {
+      "deleteTitle": "Delete job?",
+      "deleteMessage": "This will remove the job from the active list.",
+      "deleteConfirm": "Delete"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "page": "Page",
+      "next": "Next"
+    }
+  },
+  "employerPostJob": {
+    "common": {
+      "removeItem": "Remove {{item}}"
+    },
+    "validation": {
+      "startDatePast": "Start date cannot be in the past.",
+      "descriptionRequired": "Please enter a job description.",
+      "requirementsRequired": "Please add at least one requirement.",
+      "benefitsRequired": "Please add at least one benefit.",
+      "levelsRequired": "Please select at least one level.",
+      "endDateRequired": "Please select an end date.",
+      "endDatePast": "End date cannot be in the past.",
+      "workingHoursRequired": "Please enter working hours.",
+      "industryRequired": "Please select an industry.",
+      "specializationRequired": "Please select a specialization.",
+      "skillsRequired": "Please select at least one skill."
+    },
+    "notifications": {
+      "createSuccessTitle": "Job created successfully",
+      "createSuccessMessage": "Your job has been created.",
+      "createErrorTitle": "Job creation failed",
+      "createErrorMessage": "Please try again."
+    },
+    "levels": {
+      "INTERN": "Intern",
+      "JUNIOR": "Junior",
+      "MIDDLE": "Middle",
+      "SENIOR": "Senior",
+      "LEAD": "Lead",
+      "MANAGER": "Manager"
+    },
+    "aiHero": {
+      "titlePrefix": "Craft the Future of your",
+      "titleHighlight": "Engineering Team",
+      "description": "Our AI analyzes your unique culture and technical needs to generate a high-performing Job Description that attracts elite talent.",
+      "postManually": "Post job manually"
+    },
+    "aiForm": {
+      "title": "Role Parameters",
+      "jobTitle": "Job Title",
+      "jobTitlePlaceholder": "e.g. Senior Full Stack Engineer",
+      "keySkills": "Key Skills",
+      "searchSkills": "Search skills...",
+      "noSkills": "No skills found.",
+      "levels": "Levels",
+      "generate": "Generate Intelligence",
+      "proTipTitle": "AI Pro Tip",
+      "proTipDescription": "Including mentions of mentorship or professional development budget increases application rates by 34% for senior roles."
+    },
+    "jdPreview": {
+      "headerTitle": "Draft Preview",
+      "aiOptimized": "AI Optimized",
+      "generating": "Generating...",
+      "regenerate": "Regenerate",
+      "publishJob": "Publish Job",
+      "role": "The Role",
+      "roleTitlePlaceholder": "Role title will appear here",
+      "descriptionPlaceholder": "Generate a JD to preview the role summary and requirements.",
+      "requirements": "Requirements",
+      "benefits": "Benefits",
+      "matchScore": "Match Score: {{score}}%",
+      "defaultRequirements": {
+        "experience": "5+ years in full-stack development.",
+        "react": "Deep expertise in React & TypeScript.",
+        "ai": "Passion for AI and LLM integration."
+      },
+      "defaultBenefits": {
+        "health": "Premium health & dental.",
+        "flight": "Unlimited PTO policy.",
+        "mind": "Learning & mental health budget."
+      }
+    },
+    "form": {
+      "required": "Required",
+      "publish": "Publish",
+      "selectedSkills_one": "Selected {{count}} skill",
+      "selectedSkills_other": "Selected {{count}} skills",
+      "sections": {
+        "jobBasics": "Job Basics",
+        "compensation": "Compensation",
+        "schedule": "Schedule",
+        "requirementsBenefits": "Requirements & Benefits",
+        "levels": "Levels",
+        "industrySpecialization": "Industry & Specialization",
+        "skills": "Skills",
+        "publishing": "Publishing"
+      },
+      "fields": {
+        "jobTitle": "Job Title",
+        "location": "Location",
+        "province": "Province / City",
+        "ward": "Ward / Commune",
+        "street": "Street / House No.",
+        "description": "Job Description",
+        "minSalary": "Min Salary",
+        "maxSalary": "Max Salary",
+        "quantity": "Quantity",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "workingHours": "Working Hours",
+        "requirements": "Requirements",
+        "benefits": "Benefits",
+        "industry": "Industry",
+        "specialization": "Specialization",
+        "skills": "Skills",
+        "active": "Active"
+      },
+      "placeholders": {
+        "jobTitle": "e.g. Senior Full Stack Engineer",
+        "province": "Select province/city",
+        "searchProvince": "Search province...",
+        "ward": "Select ward/commune",
+        "searchWard": "Search ward...",
+        "street": "Enter house number, street, hamlet...",
+        "description": "Describe the mission, scope, and expectations...",
+        "workingHours": "Mon-Fri, 9:00-18:00",
+        "requirement": "Add requirement",
+        "benefit": "Add benefit",
+        "industry": "Select industry",
+        "searchIndustry": "Search industry...",
+        "specialization": "Select specialization",
+        "searchSpecialization": "Search specialization...",
+        "skills": "Select skills",
+        "searchSkills": "Search skills..."
+      },
+      "hints": {
+        "requirements": "Minimum list for BE: at least 1 requirement",
+        "skills": "Type to search skills, then click to add.",
+        "active": "If off, BE will store but not publish."
+      },
+      "select": {
+        "noResults": "No results found.",
+        "noSkills": "No skills found."
+      },
+      "fallbacks": {
+        "skillWithId": "Skill #{{id}}"
+      }
+    },
+    "preview": {
+      "eyebrow": "Payload Preview",
+      "untitledRole": "Untitled Role",
+      "active": "Active",
+      "inactive": "Inactive",
+      "notSet": "Not set",
+      "locationNotSet": "Location not set",
+      "timelineNotSet": "Timeline not set",
+      "rows": {
+        "quantity": "Quantity",
+        "levels": "Levels",
+        "industry": "Industry",
+        "specialization": "Specialization",
+        "skills": "Skills"
+      },
+      "description": "Description",
+      "noDescription": "No description",
+      "requirements": "Requirements",
+      "noRequirements": "No requirements",
+      "benefits": "Benefits",
+      "noBenefits": "No benefits"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Confirm",

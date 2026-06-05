@@ -1,4 +1,5 @@
 import { CheckCircle2, MapPin, Timer, Wallet } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { PostJobFormData } from "./PostJobForm";
 
 function PreviewRow({ label, value }: { label: string; value: string }) {
@@ -11,12 +12,16 @@ function PreviewRow({ label, value }: { label: string; value: string }) {
 }
 
 export function PostJobPreview({ value }: { value: PostJobFormData }) {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language.startsWith("vi") ? "vi-VN" : "en-US";
   const minSalary = value.minSalary ? Number(value.minSalary) : null;
   const maxSalary = value.maxSalary ? Number(value.maxSalary) : null;
+  const formatNumber = (numberValue: number) =>
+    new Intl.NumberFormat(locale).format(numberValue);
   const salaryLabel =
     minSalary !== null || maxSalary !== null
-      ? `${minSalary ?? 0} - ${maxSalary ?? 0}`
-      : "Not set";
+      ? `${formatNumber(minSalary ?? 0)} - ${formatNumber(maxSalary ?? 0)}`
+      : t("employerPostJob.preview.notSet");
 
   return (
     <aside className="lg:col-span-5">
@@ -26,21 +31,23 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-2">
-                Payload Preview
+                {t("employerPostJob.preview.eyebrow")}
               </p>
               <h3 className="text-2xl font-extrabold text-[#2d3338]">
-                {value.name || "Untitled Role"}
+                {value.name || t("employerPostJob.preview.untitledRole")}
               </h3>
             </div>
             <span className="text-xs font-bold text-primary bg-[#e8f4ec] px-3 py-1 rounded-full">
-              {value.active ? "Active" : "Inactive"}
+              {value.active
+                ? t("employerPostJob.preview.active")
+                : t("employerPostJob.preview.inactive")}
             </span>
           </div>
 
           <div className="grid grid-cols-1 gap-4">
             <div className="flex items-center gap-2 text-sm text-[#596065]">
               <MapPin size={16} className="text-primary" />
-              {value.location || "Location not set"}
+              {value.location || t("employerPostJob.preview.locationNotSet")}
             </div>
             <div className="flex items-center gap-2 text-sm text-[#596065]">
               <Wallet size={16} className="text-primary" />
@@ -50,23 +57,35 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
               <Timer size={16} className="text-primary" />
               {value.startDate && value.endDate
                 ? `${value.startDate} - ${value.endDate}`
-                : "Timeline not set"}
+                : t("employerPostJob.preview.timelineNotSet")}
             </div>
           </div>
 
           <div className="space-y-3 border-t border-[#eaeef3] pt-4">
-            <PreviewRow label="Quantity" value={value.quantity || "-"} />
             <PreviewRow
-              label="Levels"
-              value={value.levels.length ? value.levels.join(", ") : "-"}
+              label={t("employerPostJob.preview.rows.quantity")}
+              value={value.quantity || "-"}
             />
-            <PreviewRow label="Industry" value={value.industryName || "-"} />
             <PreviewRow
-              label="Specialization"
+              label={t("employerPostJob.preview.rows.levels")}
+              value={
+                value.levels.length
+                  ? value.levels
+                      .map((level) => t(`employerPostJob.levels.${level}`))
+                      .join(", ")
+                  : "-"
+              }
+            />
+            <PreviewRow
+              label={t("employerPostJob.preview.rows.industry")}
+              value={value.industryName || "-"}
+            />
+            <PreviewRow
+              label={t("employerPostJob.preview.rows.specialization")}
               value={value.specializationName || "-"}
             />
             <PreviewRow
-              label="Skills"
+              label={t("employerPostJob.preview.rows.skills")}
               value={
                 value.skillNames.length ? value.skillNames.join(", ") : "-"
               }
@@ -75,17 +94,17 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
 
           <div className="border-t border-[#eaeef3] pt-4">
             <p className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-2">
-              Description
+              {t("employerPostJob.preview.description")}
             </p>
             <p className="text-sm text-[#596065] leading-relaxed">
-              {value.description || "No description"}
+              {value.description || t("employerPostJob.preview.noDescription")}
             </p>
           </div>
 
           <div className="space-y-3 border-t border-[#eaeef3] pt-4">
             <div>
               <p className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-2">
-                Requirements
+                {t("employerPostJob.preview.requirements")}
               </p>
               {value.requirements.length ? (
                 <ul className="space-y-2">
@@ -102,13 +121,15 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-[#7b848a]">No requirements</p>
+                <p className="text-sm text-[#7b848a]">
+                  {t("employerPostJob.preview.noRequirements")}
+                </p>
               )}
             </div>
 
             <div>
               <p className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-2">
-                Benefits
+                {t("employerPostJob.preview.benefits")}
               </p>
               {value.benefits.length ? (
                 <ul className="space-y-2">
@@ -122,7 +143,9 @@ export function PostJobPreview({ value }: { value: PostJobFormData }) {
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-[#7b848a]">No benefits</p>
+                <p className="text-sm text-[#7b848a]">
+                  {t("employerPostJob.preview.noBenefits")}
+                </p>
               )}
             </div>
           </div>

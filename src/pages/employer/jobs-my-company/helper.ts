@@ -77,23 +77,30 @@ export const toDateInputValue = (value?: string | null) => {
   return date.toISOString().slice(0, 10);
 };
 
-export const formatDateLabel = (value?: string | null) => {
-  if (!value) return "Not set";
+export const formatDateLabel = (
+  value: string | null | undefined,
+  locale: string,
+  fallback: string,
+) => {
+  if (!value) return fallback;
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Not set";
+  if (Number.isNaN(date.getTime())) return fallback;
 
-  return new Intl.DateTimeFormat("en-GB").format(date);
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 export const getJobSkillNames = (job: Job) => job.skills ?? [];
 
-export const mapJobToUpdateForm = (job: Job): UpdateJobFormState => {
+export const mapJobToUpdateForm = (
+  job: Job,
+  formatSkillFallback: (id: number) => string = (id) => `Skill #${id}`,
+): UpdateJobFormState => {
   const skillNames = getJobSkillNames(job);
   const selectedSkills =
     job.skillIds?.map((id, index) => ({
       id,
-      name: skillNames[index] ?? `Skill #${id}`,
+      name: skillNames[index] ?? formatSkillFallback(id),
     })) ?? [];
 
   return {

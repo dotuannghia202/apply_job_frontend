@@ -1,5 +1,6 @@
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useGetSpecializations } from "@/api/specializations/specialization.queries";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ export function SpecializationFilterPopover({
   label,
   onChange,
 }: SpecializationFilterPopoverProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
@@ -53,7 +55,7 @@ export function SpecializationFilterPopover({
   return (
     <div className="flex flex-col gap-1.5">
       <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-        Specialization
+        {t("employerJobs.filters.specialization")}
       </Label>
       <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
@@ -66,7 +68,7 @@ export function SpecializationFilterPopover({
             onFocus={() => setOpen(true)}
           >
             <span className={cn("truncate", !label && "text-slate-400")}>
-              {label || "All specializations"}
+              {label || t("employerJobs.filters.allSpecializations")}
             </span>
             <ChevronsUpDown
               className="ml-2 size-4 shrink-0 opacity-60"
@@ -79,13 +81,13 @@ export function SpecializationFilterPopover({
             <CommandInput
               value={search}
               onValueChange={setSearch}
-              placeholder="Search specializations..."
+              placeholder={t("employerJobs.filters.searchSpecializations")}
             />
             <CommandList className="max-h-56">
               <CommandEmpty>
                 {specializationsQuery.isFetching
-                  ? "Loading specializations..."
-                  : "No specialization found."}
+                  ? t("employerJobs.filters.loadingSpecializations")
+                  : t("employerJobs.filters.noSpecialization")}
               </CommandEmpty>
               <CommandGroup>
                 {value ? (
@@ -97,7 +99,7 @@ export function SpecializationFilterPopover({
                     }}
                   >
                     <X className="mr-2 size-4 opacity-70" aria-hidden="true" />
-                    Clear specialization filter
+                    {t("employerJobs.filters.clearSpecialization")}
                   </CommandItem>
                 ) : null}
                 {specializations.map((specialization) => {

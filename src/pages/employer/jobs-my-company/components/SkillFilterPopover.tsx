@@ -1,5 +1,6 @@
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useGetSkills } from "@/api/skills/skill.queries";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ export function SkillFilterPopover({
   value,
   onChange,
 }: SkillFilterPopoverProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
@@ -51,7 +53,7 @@ export function SkillFilterPopover({
   return (
     <div className="flex flex-col gap-1.5">
       <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-        Skill
+        {t("employerJobs.filters.skill")}
       </Label>
       <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
@@ -64,7 +66,7 @@ export function SkillFilterPopover({
             onFocus={() => setOpen(true)}
           >
             <span className={cn("truncate", !value && "text-slate-400")}>
-              {value || "All skills"}
+              {value || t("employerJobs.filters.allSkills")}
             </span>
             <ChevronsUpDown
               className="ml-2 size-4 shrink-0 opacity-60"
@@ -77,11 +79,13 @@ export function SkillFilterPopover({
             <CommandInput
               value={search}
               onValueChange={setSearch}
-              placeholder="Search skills..."
+              placeholder={t("employerJobs.filters.searchSkills")}
             />
             <CommandList className="max-h-56">
               <CommandEmpty>
-                {skillsQuery.isFetching ? "Loading skills..." : "No skill found."}
+                {skillsQuery.isFetching
+                  ? t("employerJobs.filters.loadingSkills")
+                  : t("employerJobs.filters.noSkill")}
               </CommandEmpty>
               <CommandGroup>
                 {value ? (
@@ -93,7 +97,7 @@ export function SkillFilterPopover({
                     }}
                   >
                     <X className="mr-2 size-4 opacity-70" aria-hidden="true" />
-                    Clear skill filter
+                    {t("employerJobs.filters.clearSkill")}
                   </CommandItem>
                 ) : null}
                 {skills.map((skill) => {

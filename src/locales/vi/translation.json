@@ -741,6 +741,305 @@
       "next": "Sau"
     }
   },
+  "employerJobs": {
+    "common": {
+      "cancel": "Hủy"
+    },
+    "breadcrumb": {
+      "dashboard": "Bảng điều khiển",
+      "myJobs": "Việc làm của tôi"
+    },
+    "header": {
+      "eyebrow": "Không gian nhà tuyển dụng",
+      "title": "Việc làm của tôi",
+      "description": "Quản lý tin tuyển dụng của công ty hiện tại, lọc vị trí đang mở và cập nhật các tin đang hoạt động.",
+      "postNewJob": "Đăng tin mới",
+      "totalJobs": "Tổng việc làm:"
+    },
+    "stats": {
+      "totalFound": "Tổng tìm thấy",
+      "activeOnPage": "Đang hoạt động trên trang này",
+      "inactiveOnPage": "Không hoạt động trên trang này"
+    },
+    "filters": {
+      "title": "Bộ lọc",
+
+      "search": "Tìm kiếm",
+      "reset": "Đặt lại",
+      "keyword": "Từ khóa",
+      "keywordPlaceholder": "Tìm trên tất cả trường",
+      "jobName": "Tên công việc",
+      "jobNamePlaceholder": "Lập trình viên Frontend",
+      "location": "Địa điểm",
+      "locationPlaceholder": "Hồ Chí Minh",
+      "skill": "Kỹ năng",
+      "allSkills": "Tất cả kỹ năng",
+      "searchSkills": "Tìm kỹ năng...",
+      "loadingSkills": "Đang tải kỹ năng...",
+      "noSkill": "Không tìm thấy kỹ năng.",
+      "clearSkill": "Xóa bộ lọc kỹ năng",
+      "minSalary": "Lương tối thiểu",
+      "maxSalary": "Lương tối đa",
+      "specialization": "Chuyên môn",
+      "allSpecializations": "Tất cả chuyên môn",
+      "searchSpecializations": "Tìm chuyên môn...",
+      "loadingSpecializations": "Đang tải chuyên môn...",
+      "noSpecialization": "Không tìm thấy chuyên môn.",
+      "clearSpecialization": "Xóa bộ lọc chuyên môn",
+      "levels": "Cấp bậc"
+    },
+    "table": {
+      "error": "Không thể tải danh sách việc làm của bạn. Vui lòng thử lại.",
+      "loading": "Đang tải danh sách việc làm...",
+      "empty": "Không có việc làm nào khớp với bộ lọc hiện tại.",
+      "columns": {
+        "job": "Công việc",
+        "salary": "Mức lương",
+        "location": "Địa điểm",
+        "dates": "Thời gian",
+        "actions": "Thao tác"
+      },
+      "actions": {
+        "view": "Xem",
+        "update": "Cập nhật",
+        "delete": "Xóa",
+        "deleting": "Đang xóa..."
+      }
+    },
+    "salary": {
+      "agree": "Thỏa thuận lương",
+      "from": "Lương từ {{salary}}",
+      "upTo": "Lương lên đến {{salary}}"
+    },
+    "fallbacks": {
+      "notSpecified": "Chưa cập nhật",
+      "notSet": "Chưa đặt",
+      "skillWithId": "Kỹ năng #{{id}}"
+    },
+    "status": {
+      "active": "Đang hoạt động",
+      "inactive": "Không hoạt động"
+    },
+    "levels": {
+      "INTERN": "Thực tập",
+      "JUNIOR": "Junior",
+      "MIDDLE": "Middle",
+      "SENIOR": "Senior",
+      "LEAD": "Lead",
+      "MANAGER": "Quản lý"
+    },
+    "listEditor": {
+      "removeItem": "Xóa {{item}}"
+    },
+    "update": {
+      "eyebrow": "Cập nhật việc làm",
+      "description": "Các thay đổi sẽ được gửi đến backend theo `ReqUpdateJobDTO`.",
+      "close": "Đóng",
+      "skillHelp": "Chỉ chọn kỹ năng tại đây khi bạn muốn thay thế danh sách kỹ năng hiện tại.",
+      "saving": "Đang lưu...",
+      "saveChanges": "Lưu thay đổi",
+      "fields": {
+        "jobTitle": "Tiêu đề công việc",
+        "location": "Địa điểm",
+        "minSalary": "Lương tối thiểu",
+        "maxSalary": "Lương tối đa",
+        "quantity": "Số lượng",
+        "workingHours": "Thời gian làm việc",
+        "startDate": "Ngày bắt đầu",
+        "endDate": "Ngày kết thúc",
+        "description": "Mô tả",
+        "requirements": "Yêu cầu",
+        "benefits": "Quyền lợi",
+        "levels": "Cấp bậc",
+        "specialization": "Chuyên môn",
+        "skillIds": "ID kỹ năng"
+      },
+      "placeholders": {
+        "workingHours": "Thứ 2-Thứ 6, 9:00-18:00",
+        "requirement": "Thêm yêu cầu",
+        "benefit": "Thêm quyền lợi",
+        "keepCurrent": "Giữ hiện tại / không chọn",
+        "searchSkills": "Tìm kỹ năng để thêm"
+      }
+    },
+    "notifications": {
+      "deleteSuccessTitle": "Đã xóa việc làm",
+      "deleteSuccessMessage": "Việc làm đã được xóa khỏi danh sách.",
+      "deleteErrorTitle": "Xóa việc làm thất bại",
+      "deleteErrorMessage": "Vui lòng thử lại."
+    },
+    "confirm": {
+      "deleteTitle": "Xóa việc làm?",
+      "deleteMessage": "Thao tác này sẽ xóa việc làm khỏi danh sách đang hoạt động.",
+      "deleteConfirm": "Xóa"
+    },
+    "pagination": {
+      "previous": "Trước",
+      "page": "Trang",
+      "next": "Sau"
+    }
+  },
+  "employerPostJob": {
+    "common": {
+      "removeItem": "Xóa {{item}}"
+    },
+    "validation": {
+      "startDatePast": "Ngày bắt đầu không được nằm trong quá khứ.",
+      "descriptionRequired": "Vui lòng nhập mô tả công việc.",
+      "requirementsRequired": "Vui lòng thêm ít nhất một yêu cầu.",
+      "benefitsRequired": "Vui lòng thêm ít nhất một quyền lợi.",
+      "levelsRequired": "Vui lòng chọn ít nhất một cấp bậc.",
+      "endDateRequired": "Vui lòng chọn ngày kết thúc.",
+      "endDatePast": "Ngày kết thúc không được nằm trong quá khứ.",
+      "workingHoursRequired": "Vui lòng nhập thời gian làm việc.",
+      "industryRequired": "Vui lòng chọn ngành nghề.",
+      "specializationRequired": "Vui lòng chọn chuyên môn.",
+      "skillsRequired": "Vui lòng chọn ít nhất một kỹ năng."
+    },
+    "notifications": {
+      "createSuccessTitle": "Đã tạo việc làm thành công",
+      "createSuccessMessage": "Việc làm của bạn đã được tạo.",
+      "createErrorTitle": "Tạo việc làm thất bại",
+      "createErrorMessage": "Vui lòng thử lại."
+    },
+    "levels": {
+      "INTERN": "Thực tập",
+      "JUNIOR": "Junior",
+      "MIDDLE": "Middle",
+      "SENIOR": "Senior",
+      "LEAD": "Lead",
+      "MANAGER": "Quản lý"
+    },
+    "aiHero": {
+      "titlePrefix": "Xây dựng tương lai cho",
+      "titleHighlight": "đội ngũ kỹ thuật",
+      "description": "AI phân tích văn hóa và nhu cầu kỹ thuật riêng của bạn để tạo bản mô tả công việc hiệu quả, thu hút nhân tài chất lượng.",
+      "postManually": "Đăng việc thủ công"
+    },
+    "aiForm": {
+      "title": "Thông số vai trò",
+      "jobTitle": "Tiêu đề công việc",
+      "jobTitlePlaceholder": "Ví dụ: Kỹ sư Full Stack Senior",
+      "keySkills": "Kỹ năng chính",
+      "searchSkills": "Tìm kỹ năng...",
+      "noSkills": "Không tìm thấy kỹ năng.",
+      "levels": "Cấp bậc",
+      "generate": "Tạo nội dung bằng AI",
+      "proTipTitle": "Gợi ý từ AI",
+      "proTipDescription": "Đề cập đến mentoring hoặc ngân sách phát triển chuyên môn có thể tăng tỷ lệ ứng tuyển thêm 34% cho các vị trí senior."
+    },
+    "jdPreview": {
+      "headerTitle": "Bản nháp xem trước",
+      "aiOptimized": "AI tối ưu",
+      "generating": "Đang tạo...",
+      "regenerate": "Tạo lại",
+      "publishJob": "Đăng việc",
+      "role": "Vai trò",
+      "roleTitlePlaceholder": "Tiêu đề vai trò sẽ hiển thị tại đây",
+      "descriptionPlaceholder": "Tạo JD để xem trước phần tóm tắt vai trò và yêu cầu.",
+      "requirements": "Yêu cầu",
+      "benefits": "Quyền lợi",
+      "matchScore": "Điểm phù hợp: {{score}}%",
+      "defaultRequirements": {
+        "experience": "5+ năm kinh nghiệm phát triển full-stack.",
+        "react": "Thành thạo React & TypeScript.",
+        "ai": "Đam mê AI và tích hợp LLM."
+      },
+      "defaultBenefits": {
+        "health": "Bảo hiểm sức khỏe và nha khoa cao cấp.",
+        "flight": "Chính sách nghỉ phép không giới hạn.",
+        "mind": "Ngân sách học tập và sức khỏe tinh thần."
+      }
+    },
+    "form": {
+      "required": "Bắt buộc",
+      "publish": "Đăng việc",
+      "selectedSkills_one": "Đã chọn {{count}} kỹ năng",
+      "selectedSkills_other": "Đã chọn {{count}} kỹ năng",
+      "sections": {
+        "jobBasics": "Thông tin cơ bản",
+        "compensation": "Đãi ngộ",
+        "schedule": "Lịch làm việc",
+        "requirementsBenefits": "Yêu cầu & Quyền lợi",
+        "levels": "Cấp bậc",
+        "industrySpecialization": "Ngành nghề & Chuyên môn",
+        "skills": "Kỹ năng",
+        "publishing": "Xuất bản"
+      },
+      "fields": {
+        "jobTitle": "Tiêu đề công việc",
+        "location": "Địa điểm",
+        "province": "Tỉnh / Thành phố",
+        "ward": "Phường / Xã",
+        "street": "Số nhà / Tên đường",
+        "description": "Mô tả công việc",
+        "minSalary": "Lương tối thiểu",
+        "maxSalary": "Lương tối đa",
+        "quantity": "Số lượng",
+        "startDate": "Ngày bắt đầu",
+        "endDate": "Ngày kết thúc",
+        "workingHours": "Thời gian làm việc",
+        "requirements": "Yêu cầu",
+        "benefits": "Quyền lợi",
+        "industry": "Ngành nghề",
+        "specialization": "Chuyên môn",
+        "skills": "Kỹ năng",
+        "active": "Đang hoạt động"
+      },
+      "placeholders": {
+        "jobTitle": "Ví dụ: Kỹ sư Full Stack Senior",
+        "province": "Chọn tỉnh/thành phố",
+        "searchProvince": "Tìm tỉnh/thành...",
+        "ward": "Chọn phường/xã",
+        "searchWard": "Tìm phường/xã...",
+        "street": "Nhập số nhà, tên đường, khu phố...",
+        "description": "Mô tả sứ mệnh, phạm vi và kỳ vọng...",
+        "workingHours": "Thứ 2-Thứ 6, 9:00-18:00",
+        "requirement": "Thêm yêu cầu",
+        "benefit": "Thêm quyền lợi",
+        "industry": "Chọn ngành nghề",
+        "searchIndustry": "Tìm ngành nghề...",
+        "specialization": "Chọn chuyên môn",
+        "searchSpecialization": "Tìm chuyên môn...",
+        "skills": "Chọn kỹ năng",
+        "searchSkills": "Tìm kỹ năng..."
+      },
+      "hints": {
+        "requirements": "Danh sách tối thiểu cho BE: ít nhất 1 yêu cầu",
+        "skills": "Nhập để tìm kỹ năng, sau đó nhấn để thêm.",
+        "active": "Nếu tắt, BE sẽ lưu nhưng chưa xuất bản."
+      },
+      "select": {
+        "noResults": "Không tìm thấy kết quả.",
+        "noSkills": "Không tìm thấy kỹ năng."
+      },
+      "fallbacks": {
+        "skillWithId": "Kỹ năng #{{id}}"
+      }
+    },
+    "preview": {
+      "eyebrow": "Xem trước payload",
+      "untitledRole": "Vai trò chưa đặt tên",
+      "active": "Đang hoạt động",
+      "inactive": "Không hoạt động",
+      "notSet": "Chưa thiết lập",
+      "locationNotSet": "Chưa thiết lập địa điểm",
+      "timelineNotSet": "Chưa thiết lập thời gian",
+      "rows": {
+        "quantity": "Số lượng",
+        "levels": "Cấp bậc",
+        "industry": "Ngành nghề",
+        "specialization": "Chuyên môn",
+        "skills": "Kỹ năng"
+      },
+      "description": "Mô tả",
+      "noDescription": "Chưa có mô tả",
+      "requirements": "Yêu cầu",
+      "noRequirements": "Chưa có yêu cầu",
+      "benefits": "Quyền lợi",
+      "noBenefits": "Chưa có quyền lợi"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Xác nhận",
