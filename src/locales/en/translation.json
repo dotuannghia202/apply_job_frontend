@@ -1040,6 +1040,69 @@
       "noBenefits": "No benefits"
     }
   },
+  "employerCreateCompany": {
+    "page": {
+      "titlePrefix": "Set up your",
+      "titleHighlight": "company",
+      "description": "Create a new company profile or join an existing one to start hiring right away."
+    },
+    "validation": {
+      "logoRequired": "Please upload a company logo.",
+      "nameRequired": "Please enter a company name.",
+      "addressRequired": "Please enter a company address.",
+      "createFailed": "Something went wrong while creating the company."
+    },
+    "profile": {
+      "title": "Create a new company",
+      "description": "Set up your company profile to start hiring talent faster.",
+      "logo": "Company logo",
+      "logoPreviewAlt": "Company logo preview",
+      "noLogo": "No logo",
+      "logoUploadPrompt": "Drop a logo here or click to upload",
+      "logoHint": "PNG or JPG up to 10MB.",
+      "companyName": "Company name",
+      "companyNamePlaceholder": "Enter company name",
+      "address": "Headquarters address",
+      "addressPlaceholder": "Enter headquarters address",
+      "companyDescription": "Company description",
+      "descriptionPlaceholder": "Describe your company mission and culture...",
+      "creating": "Creating...",
+      "createCompany": "Create company"
+    },
+    "contact": {
+      "title": "Company Contact",
+      "address": "Headquarters Address",
+      "addressPlaceholder": "Street, building, district",
+      "city": "City",
+      "cityPlaceholder": "e.g. Ho Chi Minh",
+      "country": "Country",
+      "countryPlaceholder": "e.g. Vietnam",
+      "phone": "Phone",
+      "phonePlaceholder": "e.g. +84 912 345 678",
+      "email": "Email",
+      "socialLinks": "Social Links",
+      "linksPlaceholder": "LinkedIn, Facebook, Github...",
+      "tipTitle": "Recruiter Tip",
+      "tipDescription": "Provide a direct contact email to speed up candidate response times and improve trust."
+    },
+    "select": {
+      "title": "Choose from existing companies",
+      "description": "Find a company already listed in the system and join it.",
+      "searchPlaceholder": "Search company name",
+      "logoFallback": "Logo",
+      "selected": "Selected",
+      "select": "Select",
+      "empty": "No companies found."
+    },
+    "confirm": {
+      "title": "Confirm company selection",
+      "messagePrefix": "Assign",
+      "messageSuffix": "to your employer account?",
+      "cancel": "Cancel",
+      "assigning": "Assigning...",
+      "continue": "Continue"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Confirm",

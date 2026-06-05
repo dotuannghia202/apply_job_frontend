@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +23,7 @@ const inputCls =
   "text-sm font-normal";
 
 export function CompanySelectPanel() {
+  const { t } = useTranslation();
   const [companySearch, setCompanySearch] = useState("");
   const [isAssigningCompany, setIsAssigningCompany] = useState(false);
   const [confirmCompany, setConfirmCompany] = useState<Company | null>(null);
@@ -67,18 +69,18 @@ export function CompanySelectPanel() {
         <div className="flex items-center gap-3">
           <Building2 size={20} className="text-[#72b183]" />
           <h2 className="text-xl font-bold text-[#2d3338]">
-            Choose from existing companies
+            {t("employerCreateCompany.select.title")}
           </h2>
         </div>
 
         <p className="text-sm text-[#596065]">
-          Find a company already listed in the system and join it.
+          {t("employerCreateCompany.select.description")}
         </p>
 
         <Input
           value={companySearch}
           onChange={(event) => setCompanySearch(event.target.value)}
-          placeholder="Search company name"
+          placeholder={t("employerCreateCompany.select.searchPlaceholder")}
           className={inputCls}
         />
 
@@ -107,7 +109,7 @@ export function CompanySelectPanel() {
                     />
                   ) : (
                     <span className="text-xs font-semibold text-[#7a848b]">
-                      Logo
+                      {t("employerCreateCompany.select.logoFallback")}
                     </span>
                   )}
                 </div>
@@ -134,14 +136,18 @@ export function CompanySelectPanel() {
                   handleConfirmOpen(company);
                 }}
               >
-                {currentCompanyId === company.id ? "Selected" : "Select"}
+                {currentCompanyId === company.id
+                  ? t("employerCreateCompany.select.selected")
+                  : t("employerCreateCompany.select.select")}
               </Button>
             </div>
           ))}
         </div>
 
         {!companiesQuery.isLoading && companies.length === 0 && (
-          <p className="text-xs text-[#7a848b]">No companies found.</p>
+          <p className="text-xs text-[#7a848b]">
+            {t("employerCreateCompany.select.empty")}
+          </p>
         )}
       </div>
 
@@ -149,12 +155,12 @@ export function CompanySelectPanel() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <h3 className="text-lg font-bold text-[#2d3338]">
-              Confirm company selection
+              {t("employerCreateCompany.confirm.title")}
             </h3>
             <p className="mt-2 text-sm text-[#596065]">
-              Assign{" "}
-              <span className="font-semibold">{confirmCompany.name}</span> to
-              your employer account?
+              {t("employerCreateCompany.confirm.messagePrefix")}{" "}
+              <span className="font-semibold">{confirmCompany.name}</span>{" "}
+              {t("employerCreateCompany.confirm.messageSuffix")}
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
               <Button
@@ -164,7 +170,7 @@ export function CompanySelectPanel() {
                 onClick={() => setConfirmCompany(null)}
                 disabled={isAssigningCompany || assignCompanyMutation.isPending}
               >
-                Cancel
+                {t("employerCreateCompany.confirm.cancel")}
               </Button>
               <Button
                 type="button"
@@ -172,8 +178,8 @@ export function CompanySelectPanel() {
                 disabled={isAssigningCompany || assignCompanyMutation.isPending}
               >
                 {isAssigningCompany || assignCompanyMutation.isPending
-                  ? "Assigning..."
-                  : "Continue"}
+                  ? t("employerCreateCompany.confirm.assigning")
+                  : t("employerCreateCompany.confirm.continue")}
               </Button>
             </div>
           </div>

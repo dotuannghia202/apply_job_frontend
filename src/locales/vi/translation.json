@@ -1040,6 +1040,69 @@
       "noBenefits": "Chưa có quyền lợi"
     }
   },
+  "employerCreateCompany": {
+    "page": {
+      "titlePrefix": "Thiết lập",
+      "titleHighlight": "công ty",
+      "description": "Tạo hồ sơ công ty mới hoặc tham gia công ty đã có để bắt đầu tuyển dụng ngay."
+    },
+    "validation": {
+      "logoRequired": "Vui lòng tải logo công ty lên.",
+      "nameRequired": "Vui lòng nhập tên công ty.",
+      "addressRequired": "Vui lòng nhập địa chỉ công ty.",
+      "createFailed": "Đã xảy ra lỗi khi tạo công ty."
+    },
+    "profile": {
+      "title": "Tạo công ty mới",
+      "description": "Thiết lập hồ sơ công ty để bắt đầu tuyển dụng nhanh hơn.",
+      "logo": "Logo công ty",
+      "logoPreviewAlt": "Xem trước logo công ty",
+      "noLogo": "Chưa có logo",
+      "logoUploadPrompt": "Thả logo vào đây hoặc nhấn để tải lên",
+      "logoHint": "PNG hoặc JPG tối đa 10MB.",
+      "companyName": "Tên công ty",
+      "companyNamePlaceholder": "Nhập tên công ty",
+      "address": "Địa chỉ trụ sở",
+      "addressPlaceholder": "Nhập địa chỉ trụ sở",
+      "companyDescription": "Mô tả công ty",
+      "descriptionPlaceholder": "Mô tả sứ mệnh và văn hóa công ty...",
+      "creating": "Đang tạo...",
+      "createCompany": "Tạo công ty"
+    },
+    "contact": {
+      "title": "Liên hệ công ty",
+      "address": "Địa chỉ trụ sở",
+      "addressPlaceholder": "Đường, tòa nhà, quận/huyện",
+      "city": "Thành phố",
+      "cityPlaceholder": "Ví dụ: Hồ Chí Minh",
+      "country": "Quốc gia",
+      "countryPlaceholder": "Ví dụ: Việt Nam",
+      "phone": "Điện thoại",
+      "phonePlaceholder": "Ví dụ: +84 912 345 678",
+      "email": "Email",
+      "socialLinks": "Liên kết mạng xã hội",
+      "linksPlaceholder": "LinkedIn, Facebook, Github...",
+      "tipTitle": "Gợi ý tuyển dụng",
+      "tipDescription": "Cung cấp email liên hệ trực tiếp để tăng tốc độ phản hồi ứng viên và cải thiện độ tin cậy."
+    },
+    "select": {
+      "title": "Chọn từ công ty hiện có",
+      "description": "Tìm công ty đã có trong hệ thống và tham gia công ty đó.",
+      "searchPlaceholder": "Tìm tên công ty",
+      "logoFallback": "Logo",
+      "selected": "Đã chọn",
+      "select": "Chọn",
+      "empty": "Không tìm thấy công ty."
+    },
+    "confirm": {
+      "title": "Xác nhận chọn công ty",
+      "messagePrefix": "Gán",
+      "messageSuffix": "vào tài khoản nhà tuyển dụng của bạn?",
+      "cancel": "Hủy",
+      "assigning": "Đang gán...",
+      "continue": "Tiếp tục"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Xác nhận",

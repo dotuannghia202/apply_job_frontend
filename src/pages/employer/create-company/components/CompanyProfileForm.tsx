@@ -1,4 +1,5 @@
 import type { ChangeEvent, DragEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { Building2, UploadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,6 +49,8 @@ export function CompanyProfileForm({
   onDescriptionChange,
   onLogoChange,
 }: CompanyProfileFormProps) {
+  const { t } = useTranslation();
+
   const handleLogoInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -70,18 +73,18 @@ export function CompanyProfileForm({
         <div className="flex items-center gap-3">
           <Building2 size={20} className="text-[#72b183]" />
           <h2 className="text-xl font-bold text-[#2d3338]">
-            Create a new company
+            {t("employerCreateCompany.profile.title")}
           </h2>
         </div>
 
         <p className="text-sm text-[#596065]">
-          Set up your company profile to start hiring talent faster.
+          {t("employerCreateCompany.profile.description")}
         </p>
 
         <div className="space-y-4">
           <div className="flex flex-col gap-3">
             <Label className="text-sm font-semibold text-[#596065]">
-              Company logo
+              {t("employerCreateCompany.profile.logo")}
             </Label>
             <div
               className="flex items-center gap-4 rounded-lg border border-dashed border-[#c9d4dd] bg-[#f7f9fc] p-4"
@@ -92,18 +95,18 @@ export function CompanyProfileForm({
                 {logoPreviewUrl ? (
                   <img
                     src={logoPreviewUrl}
-                    alt="Company logo preview"
+                    alt={t("employerCreateCompany.profile.logoPreviewAlt")}
                     className="h-full w-full object-cover"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-xs text-[#7a848b]">
-                    No logo
+                    {t("employerCreateCompany.profile.noLogo")}
                   </div>
                 )}
               </div>
               <div className="flex flex-1 flex-col gap-2">
                 <span className="text-sm font-semibold text-[#2d3338]">
-                  Drop a logo here or click to upload
+                  {t("employerCreateCompany.profile.logoUploadPrompt")}
                 </span>
                 <Input
                   type="file"
@@ -111,43 +114,49 @@ export function CompanyProfileForm({
                   onChange={handleLogoInputChange}
                   className={`${inputCls} leading-[3rem] file:h-12 file:leading-[3rem] file:py-0`}
                 />
-                <p className="text-xs text-[#7a848b]">PNG or JPG up to 10MB.</p>
+                <p className="text-xs text-[#7a848b]">
+                  {t("employerCreateCompany.profile.logoHint")}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Company name
+              {t("employerCreateCompany.profile.companyName")}
             </Label>
             <Input
               value={companyName}
               onChange={(e) => onCompanyNameChange(e.target.value)}
-              placeholder="Enter company name"
+              placeholder={t(
+                "employerCreateCompany.profile.companyNamePlaceholder",
+              )}
               className={inputCls}
             />
           </div>
 
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Headquarters address
+              {t("employerCreateCompany.profile.address")}
             </Label>
             <Input
               value={address}
               onChange={(e) => onAddressChange(e.target.value)}
-              placeholder="Enter headquarters address"
+              placeholder={t("employerCreateCompany.profile.addressPlaceholder")}
               className={inputCls}
             />
           </div>
 
           <div className="flex flex-col gap-2">
             <Label className="text-sm font-semibold text-[#596065]">
-              Company description
+              {t("employerCreateCompany.profile.companyDescription")}
             </Label>
             <Textarea
               value={description}
               onChange={(e) => onDescriptionChange(e.target.value)}
-              placeholder="Describe your company mission and culture..."
+              placeholder={t(
+                "employerCreateCompany.profile.descriptionPlaceholder",
+              )}
               rows={5}
               className={`${textareaCls} resize-none`}
             />
@@ -163,7 +172,9 @@ export function CompanyProfileForm({
           }}
         >
           <UploadCloud size={18} className="mr-2" />
-          {isSubmitting ? "Creating..." : "Create company"}
+          {isSubmitting
+            ? t("employerCreateCompany.profile.creating")
+            : t("employerCreateCompany.profile.createCompany")}
         </Button>
       </div>
     </section>

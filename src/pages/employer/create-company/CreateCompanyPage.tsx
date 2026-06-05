@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { CompanyProfileForm } from "./components/CompanyProfileForm";
 import { CompanySelectPanel } from "./components/CompanySelectPanel";
@@ -7,6 +8,7 @@ import { useCreateCompany } from "@/api/companies/company.queries";
 import { useAuthStore } from "@/store/auth.store";
 
 export default function CreateCompanyPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const setCompany = useAuthStore((state) => state.setCompany);
   const createCompanyMutation = useCreateCompany();
@@ -34,17 +36,17 @@ export default function CreateCompanyPage() {
     event.preventDefault();
 
     if (!logoFile) {
-      window.alert("Please upload a company logo.");
+      window.alert(t("employerCreateCompany.validation.logoRequired"));
       return;
     }
 
     if (!companyName.trim()) {
-      window.alert("Please enter a company name.");
+      window.alert(t("employerCreateCompany.validation.nameRequired"));
       return;
     }
 
     if (!address.trim()) {
-      window.alert("Please enter a company address.");
+      window.alert(t("employerCreateCompany.validation.addressRequired"));
       return;
     }
 
@@ -73,7 +75,7 @@ export default function CreateCompanyPage() {
       navigate("/employer/dashboard", { replace: true });
     } catch (error) {
       console.error("Failed to create company", error);
-      window.alert("Something went wrong while creating the company.");
+      window.alert(t("employerCreateCompany.validation.createFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -84,11 +86,13 @@ export default function CreateCompanyPage() {
       <div className="max-w-6xl mx-auto">
         <header className="mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#2d3338] mb-4 leading-tight">
-            Set up your <span className="text-primary">company</span>
+            {t("employerCreateCompany.page.titlePrefix")}{" "}
+            <span className="text-primary">
+              {t("employerCreateCompany.page.titleHighlight")}
+            </span>
           </h1>
           <p className="text-lg text-[#596065] max-w-2xl leading-relaxed">
-            Create a new company profile or join an existing one to start hiring
-            right away.
+            {t("employerCreateCompany.page.description")}
           </p>
         </header>
 
