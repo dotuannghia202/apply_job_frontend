@@ -11,7 +11,7 @@ import type { CvItem } from "@/pages/candidate/cvs/components/types";
 
 const downloadFile = (url: string, fileName: string) => {
   const link = document.createElement("a");
-  link.href = url;
+  link.href = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
   link.download = fileName;
   link.target = "_blank";
   link.rel = "noreferrer";

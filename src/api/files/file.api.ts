@@ -19,7 +19,7 @@ const uploadFile = async (file: File, folder: string) => {
 };
 
 export const uploadCompanyLogo = async (file: File) => {
-  return uploadFile(file, "logos");
+  return uploadFile(file, "logo");
 };
 
 export const uploadResumeFile = async (file: File) => {
@@ -27,5 +27,5 @@ export const uploadResumeFile = async (file: File) => {
 };
 
 export const uploadAvatarFile = async (file: File) => {
-  return uploadFile(file, "avatars");
+  return uploadFile(file, "avatar");
 };

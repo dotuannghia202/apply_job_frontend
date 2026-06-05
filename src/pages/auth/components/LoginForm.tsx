@@ -14,7 +14,6 @@ import { preventSpaceKey } from "@/helper";
 import { useAuthStore } from "@/store/auth.store";
 
 export const LoginForm = () => {
-  console.count("Render LoginForm");
   const { t } = useTranslation();
 
   const [formLogin, setFormLogin] = React.useState<LoginRequest>({
