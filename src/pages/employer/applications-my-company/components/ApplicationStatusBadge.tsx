@@ -1,6 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { statusLabels } from "@/pages/employer/applications-my-company/helper";
 import type { ApplicationStatus } from "@/types/application";
 
 const statusStyles: Record<ApplicationStatus, string> = {
@@ -12,6 +13,8 @@ const statusStyles: Record<ApplicationStatus, string> = {
 };
 
 export function ApplicationStatusBadge({ status }: { status: ApplicationStatus }) {
+  const { t } = useTranslation();
+
   return (
     <Badge
       variant="outline"
@@ -20,7 +23,7 @@ export function ApplicationStatusBadge({ status }: { status: ApplicationStatus }
         statusStyles[status],
       )}
     >
-      {statusLabels[status] ?? status}
+      {t(`employerApplications.status.${status}`)}
     </Badge>
   );
 }

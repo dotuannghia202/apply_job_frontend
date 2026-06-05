@@ -7,6 +7,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useUpdateApplicationStatus } from "@/api/applications/application.queries";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ type ApplicationActionsPopoverProps = {
 export function ApplicationActionsPopover({
   application,
 }: ApplicationActionsPopoverProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const updateStatusMutation = useUpdateApplicationStatus();
   const resumeUrl = application.resume?.fileUrl ?? "";
@@ -49,7 +51,7 @@ export function ApplicationActionsPopover({
           variant="ghost"
           size="icon"
           className="size-9 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-900"
-          aria-label="Open application actions"
+          aria-label={t("employerApplications.actions.open")}
         >
           <MoreHorizontal className="size-4" aria-hidden="true" />
         </Button>
@@ -66,12 +68,12 @@ export function ApplicationActionsPopover({
             {resumeUrl ? (
               <a href={resumeUrl} target="_blank" rel="noreferrer">
                 <Download className="size-4" aria-hidden="true" />
-                Download CV
+                {t("employerApplications.actions.downloadCv")}
               </a>
             ) : (
               <>
                 <Download className="size-4" aria-hidden="true" />
-                Download CV
+                {t("employerApplications.actions.downloadCv")}
               </>
             )}
           </Button>
@@ -87,7 +89,7 @@ export function ApplicationActionsPopover({
             ) : (
               <CalendarPlus className="size-4" aria-hidden="true" />
             )}
-            Schedule Interview
+            {t("employerApplications.actions.scheduleInterview")}
           </Button>
           <Button
             type="button"
@@ -97,7 +99,7 @@ export function ApplicationActionsPopover({
             onClick={() => updateStatus("ACCEPTED")}
           >
             <CheckCircle2 className="size-4" aria-hidden="true" />
-            Accept Candidate
+            {t("employerApplications.actions.acceptCandidate")}
           </Button>
           <Button
             type="button"
@@ -107,7 +109,7 @@ export function ApplicationActionsPopover({
             onClick={() => updateStatus("REJECTED")}
           >
             <XCircle className="size-4" aria-hidden="true" />
-            Reject Candidate
+            {t("employerApplications.actions.rejectCandidate")}
           </Button>
         </div>
       </PopoverContent>

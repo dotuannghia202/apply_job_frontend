@@ -7,14 +7,19 @@ import PercentageCircle from "@/components/PercentageCircle";
 import type { Application } from "@/types/application";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   application: Application;
   highlighted?: boolean;
 }
 
-const getInitials = (name?: string | null, email?: string | null) => {
-  const source = name?.trim() || email?.trim() || "Candidate";
+const getInitials = (
+  name: string | null | undefined,
+  email: string | null | undefined,
+  fallback: string,
+) => {
+  const source = name?.trim() || email?.trim() || fallback;
   return source
     .split(/\s+/)
     .slice(0, 2)
@@ -36,9 +41,16 @@ const normalizeScore = (score?: number | null) => {
 };
 
 export function ApplicantCard({ application, highlighted }: Props) {
-  const candidateName = application.candidate?.name || "Unknown candidate";
-  const candidateEmail = application.candidate?.email || "No email";
-  const jobName = application.job?.name || "Unknown job";
+  const { t } = useTranslation();
+  const candidateName =
+    application.candidate?.name ||
+    t("employerDashboard.applicant.fallbacks.unknownCandidate");
+  const candidateEmail =
+    application.candidate?.email ||
+    t("employerDashboard.applicant.fallbacks.noEmail");
+  const jobName =
+    application.job?.name ||
+    t("employerDashboard.applicant.fallbacks.unknownJob");
   const score = normalizeScore(application.matchScore);
   const resumeUrl = application.resume?.fileUrl;
 
@@ -54,7 +66,11 @@ export function ApplicantCard({ application, highlighted }: Props) {
       <div className="flex items-center gap-4 mb-4">
         <Avatar className="w-12 h-12">
           <AvatarFallback className="bg-emerald-50 font-bold text-emerald-700">
-            {getInitials(candidateName, candidateEmail)}
+            {getInitials(
+              application.candidate?.name,
+              application.candidate?.email,
+              t("employerDashboard.applicant.fallbacks.initials"),
+            )}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
@@ -77,7 +93,7 @@ export function ApplicantCard({ application, highlighted }: Props) {
           statusClassName[application.status],
         )}
       >
-        {application.status}
+        {t(`employerDashboard.applicant.status.${application.status}`)}
       </Badge>
 
       <div className="flex gap-2">
@@ -90,10 +106,10 @@ export function ApplicantCard({ application, highlighted }: Props) {
         >
           {resumeUrl ? (
             <a href={resumeUrl} target="_blank" rel="noreferrer">
-              View CV
+              {t("employerDashboard.applicant.actions.viewCv")}
             </a>
           ) : (
-            "No CV"
+            t("employerDashboard.applicant.actions.noCv")
           )}
         </Button>
         <Button
@@ -101,7 +117,9 @@ export function ApplicantCard({ application, highlighted }: Props) {
           className="flex-1 text-xs font-bold bg-primary hover:bg-primary-hover text-white rounded-xs"
           asChild
         >
-          <Link to="/employer/applicants">Review</Link>
+          <Link to="/employer/applicants">
+            {t("employerDashboard.applicant.actions.review")}
+          </Link>
         </Button>
       </div>
     </div>

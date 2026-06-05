@@ -5,6 +5,7 @@ import { Briefcase, Sparkles, Users } from "lucide-react";
 import type { StatCard } from "../../types";
 import { cn } from "@/lib/utils";
 import type { HrDashboardStats } from "@/types/user";
+import { useTranslation } from "react-i18next";
 
 interface StatsGridProps {
   stats?: HrDashboardStats | null;
@@ -12,38 +13,52 @@ interface StatsGridProps {
   isError?: boolean;
 }
 
-const formatNumber = (value?: number) =>
-  new Intl.NumberFormat("en-US").format(value ?? 0);
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
 
-const formatPercent = (value?: number) =>
-  `${new Intl.NumberFormat("en-US", {
+const formatNumber = (value: number | undefined, locale: string) =>
+  new Intl.NumberFormat(locale).format(value ?? 0);
+
+const formatPercent = (value: number | undefined, locale: string) =>
+  `${new Intl.NumberFormat(locale, {
     maximumFractionDigits: 1,
     minimumFractionDigits: 0,
   }).format(value ?? 0)}%`;
 
-function createStats(stats?: HrDashboardStats | null): StatCard[] {
+function createStats(
+  stats: HrDashboardStats | null | undefined,
+  locale: string,
+  labels: {
+    activeJobs: string;
+    applicants: string;
+    matchRate: string;
+    liveData: string;
+    allJobs: string;
+    aiOptimized: string;
+  },
+): StatCard[] {
   return [
     {
       id: "jobs",
-      label: "Total Active Jobs",
-      value: formatNumber(stats?.totalActiveJobs),
-      badge: "Live data",
+      label: labels.activeJobs,
+      value: formatNumber(stats?.totalActiveJobs, locale),
+      badge: labels.liveData,
       icon: "briefcase",
       variant: "default",
     },
     {
       id: "applicants",
-      label: "Total Applicants",
-      value: formatNumber(stats?.totalApplicants),
-      badge: "All jobs",
+      label: labels.applicants,
+      value: formatNumber(stats?.totalApplicants, locale),
+      badge: labels.allJobs,
       icon: "users",
       variant: "secondary",
     },
     {
       id: "match",
-      label: "Avg. AI Match Rate",
-      value: formatPercent(stats?.avgAiMatchRate),
-      badge: "AI optimized",
+      label: labels.matchRate,
+      value: formatPercent(stats?.avgAiMatchRate, locale),
+      badge: labels.aiOptimized,
       icon: "sparkles",
       variant: "ai",
     },
@@ -51,7 +66,16 @@ function createStats(stats?: HrDashboardStats | null): StatCard[] {
 }
 
 export function StatsGrid({ stats, isLoading, isError }: StatsGridProps) {
-  const statItems = createStats(stats);
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
+  const statItems = createStats(stats, locale, {
+    activeJobs: t("employerDashboard.stats.activeJobs.label"),
+    applicants: t("employerDashboard.stats.applicants.label"),
+    matchRate: t("employerDashboard.stats.matchRate.label"),
+    liveData: t("employerDashboard.stats.activeJobs.badge"),
+    allJobs: t("employerDashboard.stats.applicants.badge"),
+    aiOptimized: t("employerDashboard.stats.matchRate.badge"),
+  });
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -76,6 +100,7 @@ function StatCardItem({
   isLoading?: boolean;
   isError?: boolean;
 }) {
+  const { t } = useTranslation();
   const isAI = stat.variant === "ai";
   const isSecondary = stat.variant === "secondary";
 
@@ -113,7 +138,7 @@ function StatCardItem({
                   : "text-primary",
             )}
           >
-            {isError ? "Unavailable" : stat.badge}
+            {isError ? t("employerDashboard.stats.unavailable") : stat.badge}
           </Badge>
         </div>
         <div>

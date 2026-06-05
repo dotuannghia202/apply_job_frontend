@@ -602,6 +602,145 @@
       }
     }
   },
+  "employerDashboard": {
+    "common": {
+      "notAvailable": "N/A"
+    },
+    "header": {
+      "title": "Employer Dashboard",
+      "subtitle": "Welcome back, Talent Acquisition Team",
+      "postJob": "Post a New Job"
+    },
+    "stats": {
+      "activeJobs": {
+        "label": "Total Active Jobs",
+        "badge": "Live data"
+      },
+      "applicants": {
+        "label": "Total Applicants",
+        "badge": "All jobs"
+      },
+      "matchRate": {
+        "label": "Avg. AI Match Rate",
+        "badge": "AI optimized"
+      },
+      "unavailable": "Unavailable"
+    },
+    "jobs": {
+      "title": "Active Job Listings",
+      "viewAll": "View All",
+      "columns": {
+        "jobName": "Job Name",
+        "status": "Status",
+        "applicants": "Applicants",
+        "postedDate": "Posted Date"
+      },
+      "status": {
+        "open": "Open",
+        "closed": "Closed"
+      },
+      "error": "Unable to load active jobs.",
+      "empty": "No active jobs found."
+    },
+    "recentTalent": {
+      "title": "Recent Talent",
+      "aiRanked": "AI Ranked",
+      "error": "Unable to load recent talent.",
+      "empty": "No applications yet."
+    },
+    "applicant": {
+      "fallbacks": {
+        "unknownCandidate": "Unknown candidate",
+        "noEmail": "No email",
+        "unknownJob": "Unknown job",
+        "initials": "Candidate"
+      },
+      "status": {
+        "PENDING": "Pending",
+        "REVIEWING": "Reviewing",
+        "INTERVIEW": "Interview",
+        "ACCEPTED": "Accepted",
+        "REJECTED": "Rejected"
+      },
+      "actions": {
+        "viewCv": "View CV",
+        "noCv": "No CV",
+        "review": "Review"
+      }
+    }
+  },
+  "employerApplications": {
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "applicants": "Applicants"
+    },
+    "header": {
+      "eyebrow": "Applicant Tracking System",
+      "title": "Manage Applications",
+      "description": "Review and track candidates across your job postings."
+    },
+    "stats": {
+      "totalApplicants": "Total Applicants",
+      "pending": "Unreviewed (Pending)",
+      "interviewing": "Interviewing",
+      "hired": "Hired"
+    },
+    "filters": {
+      "search": "Search",
+      "searchPlaceholder": "Search candidate name or email...",
+      "job": "Filter by Job",
+      "allJobs": "All Jobs",
+      "searchJobs": "Search jobs...",
+      "status": "Status",
+      "sortBy": "Sort by",
+      "select": "Select",
+      "noOption": "No option found."
+    },
+    "status": {
+      "all": "All",
+      "PENDING": "Pending",
+      "REVIEWING": "Reviewing",
+      "INTERVIEW": "Interview",
+      "ACCEPTED": "Accepted",
+      "REJECTED": "Rejected"
+    },
+    "sort": {
+      "matchHighToLow": "AI Match Score: High to Low",
+      "matchLowToHigh": "AI Match Score: Low to High",
+      "dateNewest": "Application Date: Newest",
+      "dateOldest": "Application Date: Oldest"
+    },
+    "list": {
+      "error": "Failed to load applications. Please try again.",
+      "loading": "Loading applications...",
+      "emptyTitle": "No applications found",
+      "emptyDescription": "Adjust the filters or search text to find candidates."
+    },
+    "fallbacks": {
+      "unknownCandidate": "Unknown candidate",
+      "noEmail": "No email available",
+      "untitledRole": "Untitled role",
+      "notAvailable": "Not available",
+      "initials": "Candidate",
+      "noCvAttached": "No CV attached"
+    },
+    "aiFit": {
+      "label": "AI Fit"
+    },
+    "actions": {
+      "open": "Open application actions",
+      "downloadCv": "Download CV",
+      "scheduleInterview": "Schedule Interview",
+      "acceptCandidate": "Accept Candidate",
+      "rejectCandidate": "Reject Candidate",
+      "reviewProfile": "Review Profile"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "page": "Page",
+      "next": "Next"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Confirm",

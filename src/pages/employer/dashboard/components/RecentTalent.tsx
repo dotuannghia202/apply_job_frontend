@@ -2,6 +2,7 @@
 import { Zap } from "lucide-react";
 import { ApplicantCard } from "./ApplicantCard";
 import type { Application } from "@/types/application";
+import { useTranslation } from "react-i18next";
 
 interface RecentTalentProps {
   applications: Application[];
@@ -14,21 +15,25 @@ export function RecentTalent({
   isLoading,
   isError,
 }: RecentTalentProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h4 className="text-xl font-bold text-[#2d3338]">Recent Talent</h4>
+        <h4 className="text-xl font-bold text-[#2d3338]">
+          {t("employerDashboard.recentTalent.title")}
+        </h4>
         <span className="bg-emerald-600/10 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
-          <Zap size={10} /> AI RANKED
+          <Zap size={10} /> {t("employerDashboard.recentTalent.aiRanked")}
         </span>
       </div>
       <div className="space-y-4">
         {isLoading ? <RecentTalentSkeleton /> : null}
         {!isLoading && isError ? (
-          <StateMessage message="Unable to load recent talent." />
+          <StateMessage message={t("employerDashboard.recentTalent.error")} />
         ) : null}
         {!isLoading && !isError && applications.length === 0 ? (
-          <StateMessage message="No applications yet." />
+          <StateMessage message={t("employerDashboard.recentTalent.empty")} />
         ) : null}
         {!isLoading && !isError
           ? applications.map((application, index) => (

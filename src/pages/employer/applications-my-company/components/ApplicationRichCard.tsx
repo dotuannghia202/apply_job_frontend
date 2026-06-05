@@ -1,4 +1,5 @@
 import { CalendarDays, FileText, Mail } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -16,11 +17,25 @@ type ApplicationRichCardProps = {
   application: Application;
 };
 
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
+
 export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
-  const candidateName = application.candidate?.name || "Unknown candidate";
-  const candidateEmail = application.candidate?.email || "No email available";
-  const jobTitle = application.job?.name || "Untitled role";
-  const appliedDate = formatApplicationDate(application.appliedAt);
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
+  const candidateName =
+    application.candidate?.name ||
+    t("employerApplications.fallbacks.unknownCandidate");
+  const candidateEmail =
+    application.candidate?.email ||
+    t("employerApplications.fallbacks.noEmail");
+  const jobTitle =
+    application.job?.name || t("employerApplications.fallbacks.untitledRole");
+  const appliedDate = formatApplicationDate(
+    application.appliedAt,
+    locale,
+    t("employerApplications.fallbacks.notAvailable"),
+  );
   const score = getMatchScore(application);
   const resumeUrl = application.resume?.fileUrl ?? "";
 
@@ -29,7 +44,11 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
       <div className="grid gap-5 p-5 lg:grid-cols-[minmax(260px,1.25fr)_minmax(220px,1fr)_minmax(180px,0.8fr)_minmax(150px,0.7fr)_minmax(220px,0.9fr)] lg:items-center">
         <div className="flex min-w-0 items-center gap-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-sm font-black text-emerald-700 ring-4 ring-emerald-50">
-            {getCandidateInitials(candidateName, candidateEmail)}
+            {getCandidateInitials(
+              application.candidate?.name,
+              application.candidate?.email,
+              t("employerApplications.fallbacks.initials"),
+            )}
           </div>
           <div className="min-w-0">
             <h3 className="truncate text-base font-bold text-slate-950">
@@ -53,7 +72,8 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
           <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-400">
             <FileText className="size-3.5 shrink-0" aria-hidden="true" />
             <span className="truncate">
-              {application.resume?.fileName || "No CV attached"}
+              {application.resume?.fileName ||
+                t("employerApplications.fallbacks.noCvAttached")}
             </span>
           </div>
         </div>
@@ -74,10 +94,10 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
           >
             {resumeUrl ? (
               <a href={resumeUrl} target="_blank" rel="noreferrer">
-                Review Profile
+                {t("employerApplications.actions.reviewProfile")}
               </a>
             ) : (
-              "Review Profile"
+              t("employerApplications.actions.reviewProfile")
             )}
           </Button>
           <ApplicationActionsPopover application={application} />

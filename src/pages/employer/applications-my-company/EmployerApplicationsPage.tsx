@@ -1,5 +1,6 @@
 import { ClipboardList } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useGetHrApplications } from "@/api/applications/application.queries";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
@@ -23,12 +24,17 @@ import {
 import { useDebounce } from "@/hooks/useDebounce";
 import type { ApplicationListFilters } from "@/types/application";
 
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
+
 export default function EmployerApplicationsPage() {
+  const { t, i18n } = useTranslation();
   const [filters, setFilters] = useState<ApplicationFilters>(
     createInitialApplicationFilters,
   );
   const [page, setPage] = useState(1);
   const debouncedSearch = useDebounce(filters.search);
+  const locale = getLocale(i18n.language);
 
   const queryFilters = useMemo<ApplicationListFilters>(
     () => ({
@@ -44,7 +50,14 @@ export default function EmployerApplicationsPage() {
   const applications = applicationsQuery.data?.data?.result ?? [];
   const meta = applicationsQuery.data?.data?.meta;
   const total = meta?.total ?? applications.length;
-  const jobOptions = useMemo(() => getJobOptions(applications), [applications]);
+  const jobOptions = useMemo(
+    () =>
+      getJobOptions(applications, {
+        allJobs: t("employerApplications.filters.allJobs"),
+        untitledRole: t("employerApplications.fallbacks.untitledRole"),
+      }),
+    [applications, t],
+  );
   const visibleApplications = useMemo(
     () => applyLocalApplicationFilters(applications, filters),
     [applications, filters],
@@ -65,8 +78,11 @@ export default function EmployerApplicationsPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
         <AppBreadcrumb
           items={[
-            { label: "Dashboard", to: "/employer/dashboard" },
-            { label: "Applicants" },
+            {
+              label: t("employerApplications.breadcrumb.dashboard"),
+              to: "/employer/dashboard",
+            },
+            { label: t("employerApplications.breadcrumb.applicants") },
           ]}
         />
 
@@ -74,13 +90,13 @@ export default function EmployerApplicationsPage() {
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600">
               <ClipboardList className="size-4" aria-hidden="true" />
-              Applicant Tracking System
+              {t("employerApplications.header.eyebrow")}
             </div>
             <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Manage Applications
+              {t("employerApplications.header.title")}
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-              Review and track candidates across your job postings.
+              {t("employerApplications.header.description")}
             </p>
           </div>
         </header>
@@ -90,6 +106,7 @@ export default function EmployerApplicationsPage() {
           pending={stats.pending}
           interviewing={stats.interviewing}
           hired={stats.hired}
+          locale={locale}
         />
 
         <ApplicationsFilterBar
@@ -116,13 +133,16 @@ export default function EmployerApplicationsPage() {
                     disabled={applicationsQuery.isFetching || page <= 1}
                     onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                   >
-                    Previous
+                    {t("employerApplications.pagination.previous")}
                   </Button>
                 </PaginationItem>
                 <PaginationItem>
                   <span className="text-sm font-semibold text-slate-600">
-                    Page <span className="text-emerald-600">{meta.page}</span>{" "}
-                    / {meta.pages}
+                    {t("employerApplications.pagination.page")}{" "}
+                    <span className="text-emerald-600">
+                      {new Intl.NumberFormat(locale).format(meta.page)}
+                    </span>{" "}
+                    / {new Intl.NumberFormat(locale).format(meta.pages)}
                   </span>
                 </PaginationItem>
                 <PaginationItem>
@@ -133,7 +153,7 @@ export default function EmployerApplicationsPage() {
                     disabled={applicationsQuery.isFetching || !hasNextPage}
                     onClick={() => setPage((prev) => prev + 1)}
                   >
-                    Next
+                    {t("employerApplications.pagination.next")}
                   </Button>
                 </PaginationItem>
               </PaginationContent>

@@ -1,5 +1,6 @@
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -38,6 +39,7 @@ export function FilterSelect<TValue extends string>({
   searchPlaceholder,
   onChange,
 }: FilterSelectProps<TValue>) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.value === value);
 
@@ -55,7 +57,9 @@ export function FilterSelect<TValue extends string>({
             aria-expanded={open}
             className="h-10 justify-between rounded-md border-slate-200 bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white"
           >
-            <span className="truncate">{selected?.label ?? "Select"}</span>
+            <span className="truncate">
+              {selected?.label ?? t("employerApplications.filters.select")}
+            </span>
             <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-60" />
           </Button>
         </PopoverTrigger>
@@ -65,7 +69,9 @@ export function FilterSelect<TValue extends string>({
               <CommandInput placeholder={searchPlaceholder} />
             ) : null}
             <CommandList>
-              <CommandEmpty>No option found.</CommandEmpty>
+              <CommandEmpty>
+                {t("employerApplications.filters.noOption")}
+              </CommandEmpty>
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem

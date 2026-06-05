@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import type { Job } from "@/types/job";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface ActiveJobListingsProps {
   jobs: Job[];
@@ -18,13 +19,16 @@ interface ActiveJobListingsProps {
   isError?: boolean;
 }
 
-const formatDate = (value?: string | null) => {
-  if (!value) return "N/A";
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
+
+const formatDate = (value: string | null | undefined, locale: string, fallback: string) => {
+  if (!value) return fallback;
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "N/A";
+  if (Number.isNaN(date.getTime())) return fallback;
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(locale, {
     month: "short",
     day: "2-digit",
     year: "numeric",
@@ -36,18 +40,23 @@ export function ActiveJobListings({
   isLoading,
   isError,
 }: ActiveJobListingsProps) {
+  const { t, i18n } = useTranslation();
+  const locale = getLocale(i18n.language);
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h4 className="text-xl font-bold text-[#2d3338]">
-          Active Job Listings
+          {t("employerDashboard.jobs.title")}
         </h4>
         <Button
           variant="link"
           className="text-primary hover:text-primary-hover p-0 h-auto font-semibold"
           asChild
         >
-          <Link to="/employer/jobs">View All</Link>
+          <Link to="/employer/jobs">
+            {t("employerDashboard.jobs.viewAll")}
+          </Link>
         </Button>
       </div>
 
@@ -56,29 +65,31 @@ export function ActiveJobListings({
           <TableHeader>
             <TableRow className="h-13.5 bg-[#e3e9ee] hover:bg-[#e3e9ee] ">
               <TableHead className="py-3 text-[11px] font-bold text-[#596065] uppercase tracking-wider pl-4">
-                Job Name
+                {t("employerDashboard.jobs.columns.jobName")}
               </TableHead>
               <TableHead className="py-3 text-[11px] font-bold text-[#596065] uppercase tracking-wider">
-                Status
+                {t("employerDashboard.jobs.columns.status")}
               </TableHead>
               <TableHead className="py-3 text-[11px] font-bold text-[#596065] uppercase tracking-wider text-center">
-                Applicants
+                {t("employerDashboard.jobs.columns.applicants")}
               </TableHead>
               <TableHead className="py-3 text-[11px] font-bold text-[#596065] uppercase tracking-wider">
-                Posted Date
+                {t("employerDashboard.jobs.columns.postedDate")}
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? <LoadingRows /> : null}
             {!isLoading && isError ? (
-              <MessageRow message="Unable to load active jobs." />
+              <MessageRow message={t("employerDashboard.jobs.error")} />
             ) : null}
             {!isLoading && !isError && jobs.length === 0 ? (
-              <MessageRow message="No active jobs found." />
+              <MessageRow message={t("employerDashboard.jobs.empty")} />
             ) : null}
             {!isLoading && !isError
-              ? jobs.map((job) => <JobRow key={job.id} job={job} />)
+              ? jobs.map((job) => (
+                  <JobRow key={job.id} job={job} locale={locale} />
+                ))
               : null}
           </TableBody>
         </Table>
@@ -87,7 +98,8 @@ export function ActiveJobListings({
   );
 }
 
-function JobRow({ job }: { job: Job }) {
+function JobRow({ job, locale }: { job: Job; locale: string }) {
+  const { t } = useTranslation();
   const isOpen = job.active;
 
   return (
@@ -105,7 +117,9 @@ function JobRow({ job }: { job: Job }) {
               : "rounded-full bg-destructive/10 text-destructive/80 font-bold border-0"
           }
         >
-          {isOpen ? "Open" : "Closed"}
+          {isOpen
+            ? t("employerDashboard.jobs.status.open")
+            : t("employerDashboard.jobs.status.closed")}
         </Badge>
       </TableCell>
 
@@ -114,7 +128,11 @@ function JobRow({ job }: { job: Job }) {
       </TableCell>
 
       <TableCell className="text-[#596065] text-sm">
-        {formatDate(job.createdAt ?? job.startDate)}
+        {formatDate(
+          job.createdAt ?? job.startDate,
+          locale,
+          t("employerDashboard.common.notAvailable"),
+        )}
       </TableCell>
     </TableRow>
   );

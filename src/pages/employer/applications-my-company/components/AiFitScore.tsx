@@ -1,4 +1,5 @@
 import { Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ const getScoreStyles = (score: number) => {
 };
 
 export function AiFitScore({ score }: { score: number }) {
+  const { t } = useTranslation();
   const styles = getScoreStyles(score);
 
   return (
@@ -38,7 +40,7 @@ export function AiFitScore({ score }: { score: number }) {
         <div className="flex items-center gap-2">
           <Sparkles className={cn("size-4", styles.text)} aria-hidden="true" />
           <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-            AI Fit
+            {t("employerApplications.aiFit.label")}
           </span>
         </div>
         <span className={cn("text-lg font-black", styles.text)}>{score}%</span>

@@ -19,48 +19,29 @@ export const createInitialApplicationFilters = (): ApplicationFilters => ({
   sort: "MATCH_DESC",
 });
 
-export const statusLabels: Record<ApplicationStatus, string> = {
-  PENDING: "Pending",
-  REVIEWING: "Reviewing",
-  INTERVIEW: "Interview",
-  ACCEPTED: "Accepted",
-  REJECTED: "Rejected",
-};
-
-export const statusOptions: Array<{
-  label: string;
-  value: ApplicationStatusFilter;
-}> = [
-  { label: "All", value: "ALL" },
-  { label: "Pending", value: "PENDING" },
-  { label: "Reviewing", value: "REVIEWING" },
-  { label: "Interview", value: "INTERVIEW" },
-  { label: "Accepted", value: "ACCEPTED" },
-  { label: "Rejected", value: "REJECTED" },
-];
-
-export const sortOptions: Array<{ label: string; value: ApplicationSort }> = [
-  { label: "AI Match Score: High to Low", value: "MATCH_DESC" },
-  { label: "AI Match Score: Low to High", value: "MATCH_ASC" },
-  { label: "Application Date: Newest", value: "DATE_DESC" },
-  { label: "Application Date: Oldest", value: "DATE_ASC" },
-];
-
-export const formatApplicationDate = (value?: string | null) => {
-  if (!value) return "Not available";
+export const formatApplicationDate = (
+  value: string | null | undefined,
+  locale: string,
+  fallback: string,
+) => {
+  if (!value) return fallback;
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Not available";
+  if (Number.isNaN(date.getTime())) return fallback;
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",
   }).format(date);
 };
 
-export const getCandidateInitials = (name?: string | null, email?: string | null) => {
-  const source = name?.trim() || email?.trim() || "?";
+export const getCandidateInitials = (
+  name: string | null | undefined,
+  email: string | null | undefined,
+  fallback: string,
+) => {
+  const source = name?.trim() || email?.trim() || fallback;
   const parts = source.split(/\s+/).filter(Boolean);
 
   if (parts.length >= 2) {
@@ -82,16 +63,19 @@ export const getAppliedTimestamp = (application: Application) => {
   return date && !Number.isNaN(date.getTime()) ? date.getTime() : 0;
 };
 
-export const getJobOptions = (applications: Application[]) => {
+export const getJobOptions = (
+  applications: Application[],
+  labels: { allJobs: string; untitledRole: string },
+) => {
   const map = new Map<number, string>();
 
   applications.forEach((application) => {
     if (!application.job?.id) return;
-    map.set(application.job.id, application.job.name || "Untitled role");
+    map.set(application.job.id, application.job.name || labels.untitledRole);
   });
 
   return [
-    { label: "All Jobs", value: "ALL" },
+    { label: labels.allJobs, value: "ALL" },
     ...Array.from(map.entries()).map(([id, label]) => ({
       label,
       value: String(id),

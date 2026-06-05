@@ -602,6 +602,145 @@
       }
     }
   },
+  "employerDashboard": {
+    "common": {
+      "notAvailable": "N/A"
+    },
+    "header": {
+      "title": "Bảng điều khiển nhà tuyển dụng",
+      "subtitle": "Chào mừng đội ngũ tuyển dụng quay lại",
+      "postJob": "Đăng tin tuyển dụng mới"
+    },
+    "stats": {
+      "activeJobs": {
+        "label": "Tổng việc đang mở",
+        "badge": "Dữ liệu trực tiếp"
+      },
+      "applicants": {
+        "label": "Tổng ứng viên",
+        "badge": "Tất cả việc làm"
+      },
+      "matchRate": {
+        "label": "Tỷ lệ phù hợp AI trung bình",
+        "badge": "AI tối ưu"
+      },
+      "unavailable": "Không khả dụng"
+    },
+    "jobs": {
+      "title": "Tin tuyển dụng đang hoạt động",
+      "viewAll": "Xem tất cả",
+      "columns": {
+        "jobName": "Tên công việc",
+        "status": "Trạng thái",
+        "applicants": "Ứng viên",
+        "postedDate": "Ngày đăng"
+      },
+      "status": {
+        "open": "Đang mở",
+        "closed": "Đã đóng"
+      },
+      "error": "Không thể tải danh sách việc đang mở.",
+      "empty": "Chưa có việc đang mở."
+    },
+    "recentTalent": {
+      "title": "Ứng viên gần đây",
+      "aiRanked": "AI xếp hạng",
+      "error": "Không thể tải ứng viên gần đây.",
+      "empty": "Chưa có hồ sơ ứng tuyển."
+    },
+    "applicant": {
+      "fallbacks": {
+        "unknownCandidate": "Ứng viên chưa xác định",
+        "noEmail": "Chưa có email",
+        "unknownJob": "Công việc chưa xác định",
+        "initials": "Ứng viên"
+      },
+      "status": {
+        "PENDING": "Chờ xử lý",
+        "REVIEWING": "Đang xem xét",
+        "INTERVIEW": "Phỏng vấn",
+        "ACCEPTED": "Đã trúng tuyển",
+        "REJECTED": "Bị từ chối"
+      },
+      "actions": {
+        "viewCv": "Xem CV",
+        "noCv": "Chưa có CV",
+        "review": "Xem xét"
+      }
+    }
+  },
+  "employerApplications": {
+    "breadcrumb": {
+      "dashboard": "Bảng điều khiển",
+      "applicants": "Ứng viên"
+    },
+    "header": {
+      "eyebrow": "Hệ thống theo dõi ứng viên",
+      "title": "Quản lý hồ sơ ứng tuyển",
+      "description": "Xem xét và theo dõi ứng viên trên các tin tuyển dụng của bạn."
+    },
+    "stats": {
+      "totalApplicants": "Tổng ứng viên",
+      "pending": "Chưa xem xét (chờ xử lý)",
+      "interviewing": "Đang phỏng vấn",
+      "hired": "Đã tuyển"
+    },
+    "filters": {
+      "search": "Tìm kiếm",
+      "searchPlaceholder": "Tìm theo tên hoặc email ứng viên...",
+      "job": "Lọc theo công việc",
+      "allJobs": "Tất cả việc làm",
+      "searchJobs": "Tìm công việc...",
+      "status": "Trạng thái",
+      "sortBy": "Sắp xếp theo",
+      "select": "Chọn",
+      "noOption": "Không tìm thấy tùy chọn."
+    },
+    "status": {
+      "all": "Tất cả",
+      "PENDING": "Chờ xử lý",
+      "REVIEWING": "Đang xem xét",
+      "INTERVIEW": "Phỏng vấn",
+      "ACCEPTED": "Đã trúng tuyển",
+      "REJECTED": "Bị từ chối"
+    },
+    "sort": {
+      "matchHighToLow": "Điểm phù hợp AI: cao đến thấp",
+      "matchLowToHigh": "Điểm phù hợp AI: thấp đến cao",
+      "dateNewest": "Ngày ứng tuyển: mới nhất",
+      "dateOldest": "Ngày ứng tuyển: cũ nhất"
+    },
+    "list": {
+      "error": "Không thể tải danh sách ứng tuyển. Vui lòng thử lại.",
+      "loading": "Đang tải danh sách ứng tuyển...",
+      "emptyTitle": "Không tìm thấy hồ sơ ứng tuyển",
+      "emptyDescription": "Điều chỉnh bộ lọc hoặc nội dung tìm kiếm để tìm ứng viên."
+    },
+    "fallbacks": {
+      "unknownCandidate": "Ứng viên chưa xác định",
+      "noEmail": "Chưa có email",
+      "untitledRole": "Vị trí chưa đặt tên",
+      "notAvailable": "Chưa có thông tin",
+      "initials": "Ứng viên",
+      "noCvAttached": "Chưa đính kèm CV"
+    },
+    "aiFit": {
+      "label": "Độ phù hợp AI"
+    },
+    "actions": {
+      "open": "Mở thao tác hồ sơ ứng tuyển",
+      "downloadCv": "Tải CV",
+      "scheduleInterview": "Lên lịch phỏng vấn",
+      "acceptCandidate": "Chấp nhận ứng viên",
+      "rejectCandidate": "Từ chối ứng viên",
+      "reviewProfile": "Xem hồ sơ"
+    },
+    "pagination": {
+      "previous": "Trước",
+      "page": "Trang",
+      "next": "Sau"
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Xác nhận",

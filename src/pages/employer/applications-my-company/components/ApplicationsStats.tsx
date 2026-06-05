@@ -1,5 +1,6 @@
 import { BriefcaseBusiness, CheckCircle2, Clock3, UsersRound } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Card } from "@/components/ui/card";
 
@@ -15,33 +16,37 @@ export function ApplicationsStats({
   pending,
   interviewing,
   hired,
+  locale,
 }: {
   total: number;
   pending: number;
   interviewing: number;
   hired: number;
+  locale: string;
 }) {
+  const { t } = useTranslation();
+  const formatNumber = (value: number) => new Intl.NumberFormat(locale).format(value);
   const stats: StatItem[] = [
     {
-      label: "Total Applicants",
+      label: t("employerApplications.stats.totalApplicants"),
       value: total,
       icon: UsersRound,
       tone: "bg-emerald-50 text-emerald-700",
     },
     {
-      label: "Unreviewed (Pending)",
+      label: t("employerApplications.stats.pending"),
       value: pending,
       icon: Clock3,
       tone: "bg-amber-50 text-amber-700",
     },
     {
-      label: "Interviewing",
+      label: t("employerApplications.stats.interviewing"),
       value: interviewing,
       icon: BriefcaseBusiness,
       tone: "bg-purple-50 text-purple-700",
     },
     {
-      label: "Hired",
+      label: t("employerApplications.stats.hired"),
       value: hired,
       icon: CheckCircle2,
       tone: "bg-green-50 text-green-700",
@@ -64,7 +69,7 @@ export function ApplicationsStats({
                   {stat.label}
                 </p>
                 <p className="mt-2 text-3xl font-black tracking-tight text-slate-950">
-                  {stat.value}
+                  {formatNumber(stat.value)}
                 </p>
               </div>
               <div className={`flex size-11 items-center justify-center rounded-xl ${stat.tone}`}>
