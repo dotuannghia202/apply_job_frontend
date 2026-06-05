@@ -58,10 +58,85 @@
       "Interview": "Phỏng vấn",
       "Accepted": "Đã trúng tuyển",
       "Rejected": "Bị từ chối"
+    },
+    "detail": {
+      "status": {
+        "notFound": "Không tìm thấy đơn ứng tuyển.",
+        "loading": "Đang tải chi tiết đơn ứng tuyển...",
+        "loadFailed": "Không thể tải chi tiết đơn ứng tuyển. Vui lòng thử lại sau."
+      },
+      "breadcrumb": {
+        "jobs": "Việc làm",
+        "myApplications": "Việc làm đã nộp"
+      },
+      "fallbacks": {
+        "notAvailable": "Chưa có thông tin",
+        "untitledRole": "Vị trí chưa xác định",
+        "unknownCompany": "Công ty ẩn danh",
+        "resume": "Hồ sơ đính kèm",
+        "notSpecified": "Chưa cập nhật",
+        "noFileUrl": "Chưa có đường dẫn tệp"
+      },
+      "logoAlt": "Logo {{company}}",
+      "matchScoreAria": "{{score}}% độ phù hợp",
+      "matchLabel": "Phù hợp",
+      "statusLabel": {
+        "PENDING": "Chờ xử lý",
+        "REVIEWING": "Đang xem xét",
+        "INTERVIEW": "Phỏng vấn",
+        "ACCEPTED": "Đã trúng tuyển",
+        "REJECTED": "Bị từ chối"
+      },
+      "salary": {
+        "agree": "Thỏa thuận lương",
+        "from": "Lương từ {{salary}}",
+        "upTo": "Lương lên đến {{salary}}"
+      },
+      "ai": {
+        "badge": "Phân tích độ phù hợp AI",
+        "strongFit": "Rất phù hợp với vị trí này",
+        "potentialFit": "Có tiềm năng phù hợp với vị trí này",
+        "description": "Hồ sơ của bạn được so sánh với yêu cầu công việc. Kỹ năng phù hợp và còn thiếu giúp bạn biết cần cải thiện gì trước khi nhà tuyển dụng xem hồ sơ.",
+        "matchedSkills": "Kỹ năng phù hợp",
+        "missingSkills": "Kỹ năng còn thiếu"
+      },
+      "documents": {
+        "title": "Tài liệu đã nộp",
+        "description": "Các tệp và ghi chú được gửi kèm đơn ứng tuyển này.",
+        "pdfResume": "CV PDF",
+        "viewFile": "Xem tệp",
+        "coverLetter": "Thư ứng tuyển",
+        "noCoverLetter": "Bạn chưa gửi thư ứng tuyển.",
+        "updateHint": "Bạn có thể cập nhật đơn ứng tuyển vì nhà tuyển dụng chưa xem hồ sơ.",
+        "updateAction": "Cập nhật CV / Thư ứng tuyển"
+      },
+      "snapshot": {
+        "title": "Tóm tắt công việc",
+        "description": "Những thông tin chính từ tin tuyển dụng ban đầu.",
+        "salary": "Mức lương",
+        "location": "Địa điểm",
+        "appliedDate": "Ngày ứng tuyển",
+        "viewOriginal": "Xem tin tuyển dụng gốc"
+      },
+      "timeline": {
+        "title": "Tiến trình ứng tuyển",
+        "description": "Theo dõi trạng thái đơn ứng tuyển của bạn.",
+        "submittedTitle": "Đã gửi đơn ứng tuyển",
+        "submittedDescription": "Hồ sơ, CV và thư ứng tuyển của bạn đã được gửi thành công.",
+        "reviewTitle": "Chờ HR xem xét",
+        "reviewDescription": "Nhà tuyển dụng chưa xem đơn ứng tuyển này.",
+        "interviewTitle": "Phỏng vấn",
+        "interviewDescription": "Lịch phỏng vấn sẽ hiển thị tại đây khi bạn được chọn vào vòng tiếp theo.",
+        "finalTitle": "Kết quả cuối cùng",
+        "finalAccepted": "Chúc mừng, đơn ứng tuyển của bạn đã được chấp nhận.",
+        "finalRejected": "Nhà tuyển dụng đã chọn tiếp tục với ứng viên khác.",
+        "finalPending": "Quyết định tuyển dụng cuối cùng sẽ được cập nhật tại đây."
+      }
     }
   },
   "applicationCard": {
     "appliedOn": "Đã nộp:",
+    "logoAlt": "Logo {{company}}",
     "coverLetterAttached": "Có thư ứng tuyển",
     "noCoverLetter": "Không có thư ứng tuyển",
     "candidate": "Ứng viên:",
@@ -143,6 +218,82 @@
     "status": {
       "loading": "Đang tải danh sách CV...",
       "empty": "Chưa có CV nào được tải lên."
+    },
+    "detail": {
+      "status": {
+        "notFound": "Không tìm thấy CV.",
+        "loading": "Đang tải chi tiết CV...",
+        "loadFailed": "Không thể tải chi tiết CV. Vui lòng thử lại."
+      },
+      "breadcrumb": {
+        "jobs": "Việc làm",
+        "myCv": "Hồ sơ của tôi"
+      },
+      "fallbacks": {
+        "empty": "-",
+        "unknownCandidate": "Ứng viên chưa xác định",
+        "candidateCv": "CV ứng viên",
+        "notSpecified": "Chưa cập nhật",
+        "unknown": "Chưa xác định",
+        "na": "Không có",
+        "pdfFile": "Tệp PDF"
+      },
+      "header": {
+        "description": "Xem dữ liệu CV đã phân tích, tệp đính kèm và gợi ý AI tại một nơi.",
+        "updated": "Cập nhật {{date}}"
+      },
+      "badges": {
+        "defaultCv": "CV mặc định",
+        "uploadedCv": "CV đã tải lên"
+      },
+      "profile": {
+        "yearsExperience": "{{count}}+ năm kinh nghiệm",
+        "previewTitle": "Xem trước CV"
+      },
+      "skills": {
+        "title": "Ma trận kỹ năng",
+        "subtitle": "Năng lực chính",
+        "topSkills": "Kỹ năng nổi bật",
+        "empty": "Không có kỹ năng nào được phân tích từ CV này.",
+        "levels": {
+          "Advanced": "Nâng cao",
+          "Intermediate": "Trung cấp",
+          "Beginner": "Cơ bản"
+        }
+      },
+      "attachments": {
+        "title": "Tệp đính kèm",
+        "subtitle": "Tệp hỗ trợ",
+        "download": "Tải xuống"
+      },
+      "insights": {
+        "title": "Gợi ý hồ sơ từ AI",
+        "subtitle": "Đánh giá dựa trên mô hình",
+        "summary": "Gợi ý AI được tạo từ metadata CV đã phân tích hiện tại.",
+        "metrics": {
+          "skills": {
+            "label": "Kỹ năng",
+            "caption": "Kỹ năng được phân tích từ CV này"
+          },
+          "specialization": {
+            "label": "Chuyên môn",
+            "caption": "Nhóm chuyên môn chính của CV"
+          },
+          "status": {
+            "label": "Trạng thái",
+            "caption": "Trạng thái sử dụng CV hiện tại",
+            "default": "Mặc định",
+            "uploaded": "Đã tải lên"
+          }
+        }
+      },
+      "metadata": {
+        "title": "Thông tin CV",
+        "description": "Bản ghi CV thuộc về ứng viên",
+        "candidate": "Ứng viên",
+        "email": "Email",
+        "specialization": "Chuyên môn"
+      }
     }
   },
   "savedJobs": {

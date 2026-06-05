@@ -32,7 +32,7 @@ export function JobDetailHeader({
   const { t } = useTranslation();
 
   return (
-    <section className="bg-slate-50 rounded-xl p-6 md:p-8 flex flex-col gap-6 relative shadow-sm border border-slate-100">
+    <section className="bg-slate-50 rounded-xl p-6 md:p-8 flex flex-col gap-6 relative shadow-sm border">
       <div className="absolute top-0 right-0 w-24 h-24 linear-to-bl from-primary/20 to-transparent rounded-tr-xl" />
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 z-10">
         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight tracking-tight max-w-3xl">

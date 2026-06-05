@@ -118,7 +118,7 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
         onMouseEnter={scheduleOpenPopup}
         onMouseLeave={scheduleClosePopup}
         className={cn(
-          "flex rounded-2xl border border-slate-100 bg-white shadow-sm transition-shadow hover:shadow-md",
+          "flex rounded-2xl border bg-white shadow-sm transition-shadow hover:shadow-md",
           viewMode === "list"
             ? "items-start gap-6 p-5"
             : "items-center gap-4 p-4",

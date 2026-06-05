@@ -11,14 +11,15 @@ import {
   WalletCards,
   type LucideIcon,
 } from "lucide-react";
+import type { TFunction } from "i18next";
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 
 import { useGetApplicationById } from "@/api/applications/application.queries";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { formatSalaryRange } from "@/pages/jobs/helper";
 import type { Application, ApplicationStatus } from "@/types/application";
 
 type TimelineState = "completed" | "active" | "muted";
@@ -47,17 +48,70 @@ const statusBadgeStyles: Record<ApplicationStatus, string> = {
   REJECTED: "border-rose-200 bg-rose-50 text-rose-700",
 };
 
-const formatAppliedDate = (value?: string | null) => {
-  if (!value) return "Not available";
+const getLocale = (language: string) =>
+  language.startsWith("vi") ? "vi-VN" : "en-US";
+
+const formatAppliedDate = (
+  value: string | null | undefined,
+  locale: string,
+  fallback: string,
+) => {
+  if (!value) return fallback;
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Not available";
+  if (Number.isNaN(date.getTime())) return fallback;
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",
   }).format(date);
+};
+
+const formatVND = (value: number, locale: string) =>
+  new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "VND",
+    maximumFractionDigits: 0,
+  }).format(value);
+
+const formatApplicationSalary = (
+  minSalary: number | null | undefined,
+  maxSalary: number | null | undefined,
+  locale: string,
+  t: TFunction,
+  rawSalaryRange?: string | null,
+) => {
+  const min = minSalary ?? 0;
+  const max = maxSalary ?? 0;
+  const hasMin = min > 0;
+  const hasMax = max > 0;
+
+  if (hasMin && !hasMax) {
+    return t("myApplications.detail.salary.from", {
+      salary: formatVND(min, locale),
+    });
+  }
+
+  if (!hasMin && hasMax) {
+    return t("myApplications.detail.salary.upTo", {
+      salary: formatVND(max, locale),
+    });
+  }
+
+  if (hasMin && hasMax) {
+    return `${formatVND(min, locale)} - ${formatVND(max, locale)}`;
+  }
+
+  const normalizedSalaryRange = rawSalaryRange?.trim();
+  if (
+    normalizedSalaryRange &&
+    normalizedSalaryRange.toLowerCase() !== "agree on salary"
+  ) {
+    return normalizedSalaryRange;
+  }
+
+  return t("myApplications.detail.salary.agree");
 };
 
 const getCompanyInitial = (companyName: string) =>
@@ -73,40 +127,47 @@ const getTimelineStates = (status: ApplicationStatus): TimelineState[] => {
   return ["completed", "active", "muted", "muted"];
 };
 
-const getTimelineSteps = (status: ApplicationStatus) => {
+const getTimelineSteps = (status: ApplicationStatus, t: TFunction) => {
   const states = getTimelineStates(status);
 
   return [
     {
-      title: "Application Submitted",
-      description: "Your profile, CV, and cover letter were sent successfully.",
+      title: t("myApplications.detail.timeline.submittedTitle"),
+      description: t("myApplications.detail.timeline.submittedDescription"),
       state: states[0],
     },
     {
-      title: "Awaiting HR Review",
-      description: "The hiring team has not reviewed this application yet.",
+      title: t("myApplications.detail.timeline.reviewTitle"),
+      description: t("myApplications.detail.timeline.reviewDescription"),
       state: states[1],
     },
     {
-      title: "Interview",
-      description:
-        "Interview scheduling appears here when you are shortlisted.",
+      title: t("myApplications.detail.timeline.interviewTitle"),
+      description: t("myApplications.detail.timeline.interviewDescription"),
       state: states[2],
     },
     {
-      title: "Final Result",
+      title: t("myApplications.detail.timeline.finalTitle"),
       description:
         status === "ACCEPTED"
-          ? "Congratulations, your application has been accepted."
+          ? t("myApplications.detail.timeline.finalAccepted")
           : status === "REJECTED"
-            ? "The employer has moved forward with another candidate."
-            : "The final hiring decision will be tracked here.",
+            ? t("myApplications.detail.timeline.finalRejected")
+            : t("myApplications.detail.timeline.finalPending"),
       state: states[3],
     },
   ] as const;
 };
 
-const CircularMatchScore = ({ score }: { score: number }) => {
+const CircularMatchScore = ({
+  score,
+  label,
+  ariaLabel,
+}: {
+  score: number;
+  label: string;
+  ariaLabel: string;
+}) => {
   const radius = 52;
   const stroke = 10;
   const normalizedRadius = radius - stroke / 2;
@@ -119,7 +180,7 @@ const CircularMatchScore = ({ score }: { score: number }) => {
         className="size-full -rotate-90"
         viewBox={`0 0 ${radius * 2} ${radius * 2}`}
         role="img"
-        aria-label={`${score}% match score`}
+        aria-label={ariaLabel}
       >
         <circle
           cx={radius}
@@ -146,7 +207,7 @@ const CircularMatchScore = ({ score }: { score: number }) => {
           {score}%
         </span>
         <span className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-          Match
+          {label}
         </span>
       </div>
     </div>
@@ -183,14 +244,12 @@ const DetailRow = ({
   label: string;
   value: string;
 }) => (
-  <div className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3">
-    <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-slate-50 text-slate-500">
-      <Icon className="size-4" aria-hidden="true" />
+  <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3">
+    <div className="flex size-9 shrink-0 items-center justify-center rounded-md  text-green-600">
+      <Icon className="size-5" aria-hidden="true" />
     </div>
     <div className="min-w-0">
-      <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
-        {label}
-      </p>
+      <p className="text-xs font-medium uppercase text-slate-500">{label}</p>
       <p className="mt-1 text-sm font-semibold text-slate-950">{value}</p>
     </div>
   </div>
@@ -205,25 +264,31 @@ const PageMessage = ({ children }: { children: ReactNode }) => (
 );
 
 const MyApplicationDetail = () => {
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const applicationId = Number(id);
   const isValidApplicationId = Boolean(id) && Number.isFinite(applicationId);
+  const locale = getLocale(i18n.language);
   const applicationQuery = useGetApplicationById(
     isValidApplicationId ? applicationId : 0,
   );
 
   if (!isValidApplicationId) {
-    return <PageMessage>Application not found.</PageMessage>;
+    return (
+      <PageMessage>{t("myApplications.detail.status.notFound")}</PageMessage>
+    );
   }
 
   if (applicationQuery.isLoading) {
-    return <PageMessage>Loading application details...</PageMessage>;
+    return (
+      <PageMessage>{t("myApplications.detail.status.loading")}</PageMessage>
+    );
   }
 
   if (applicationQuery.isError) {
     return (
       <PageMessage>
-        Failed to load application details. Please try again later.
+        {t("myApplications.detail.status.loadFailed")}
       </PageMessage>
     );
   }
@@ -234,13 +299,18 @@ const MyApplicationDetail = () => {
     | undefined;
 
   if (!application) {
-    return <PageMessage>Application not found.</PageMessage>;
+    return (
+      <PageMessage>{t("myApplications.detail.status.notFound")}</PageMessage>
+    );
   }
 
   const job = application.job;
-  const jobTitle = job?.name ?? "Untitled role";
+  const jobTitle =
+    job?.name ?? t("myApplications.detail.fallbacks.untitledRole");
   const companyName =
-    job?.companyName ?? job?.company?.name ?? "Unknown company";
+    job?.companyName ??
+    job?.company?.name ??
+    t("myApplications.detail.fallbacks.unknownCompany");
   const companyLogo = job?.companyLogo ?? job?.company?.logo ?? null;
   const status = application.status;
   const matchScore = Math.max(
@@ -256,14 +326,25 @@ const MyApplicationDetail = () => {
   const missingSkills = application.missingSkills?.length
     ? application.missingSkills
     : defaultMissingSkills;
-  const cvFileName = application.resume?.fileName ?? "Resume";
+  const cvFileName =
+    application.resume?.fileName ?? t("myApplications.detail.fallbacks.resume");
   const cvFileUrl = application.resume?.fileUrl ?? null;
   const coverLetter = application.coverLetter?.trim();
-  const salaryRange =
-    job?.salaryRange ?? formatSalaryRange(job?.minSalary, job?.maxSalary);
-  const location = job?.location ?? "Not specified";
-  const appliedDate = formatAppliedDate(application.appliedAt);
-  const timelineSteps = getTimelineSteps(status);
+  const salaryRange = formatApplicationSalary(
+    job?.minSalary,
+    job?.maxSalary,
+    locale,
+    t,
+    job?.salaryRange,
+  );
+  const location =
+    job?.location ?? t("myApplications.detail.fallbacks.notSpecified");
+  const appliedDate = formatAppliedDate(
+    application.appliedAt,
+    locale,
+    t("myApplications.detail.fallbacks.notAvailable"),
+  );
+  const timelineSteps = getTimelineSteps(status, t);
   const canUpdateApplication = status === "PENDING";
 
   return (
@@ -272,8 +353,14 @@ const MyApplicationDetail = () => {
         <header className="flex flex-col gap-6">
           <AppBreadcrumb
             items={[
-              { label: "Jobs", to: "/jobs" },
-              { label: "My Applications", to: "/applications" },
+              {
+                label: t("myApplications.detail.breadcrumb.jobs"),
+                to: "/jobs",
+              },
+              {
+                label: t("myApplications.detail.breadcrumb.myApplications"),
+                to: "/applications",
+              },
               { label: jobTitle },
             ]}
           />
@@ -284,7 +371,9 @@ const MyApplicationDetail = () => {
                 {companyLogo ? (
                   <img
                     src={companyLogo}
-                    alt={`${companyName} logo`}
+                    alt={t("myApplications.detail.logoAlt", {
+                      company: companyName,
+                    })}
                     className="size-full object-contain"
                   />
                 ) : (
@@ -308,7 +397,7 @@ const MyApplicationDetail = () => {
               }`}
             >
               <span className="size-2 rounded-full bg-current" />
-              {status}
+              {t(`myApplications.detail.statusLabel.${status}`, status)}
             </span>
           </div>
         </header>
@@ -321,28 +410,32 @@ const MyApplicationDetail = () => {
                   <div className="max-w-xl">
                     <div className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-white/80 px-3 py-1 text-sm font-semibold text-green-700 shadow-sm">
                       <Sparkles className="size-4" aria-hidden="true" />
-                      AI Match Analysis
+                      {t("myApplications.detail.ai.badge")}
                     </div>
                     <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950">
                       {matchScore >= 80
-                        ? "Strong fit for this role"
-                        : "Potential fit for this role"}
+                        ? t("myApplications.detail.ai.strongFit")
+                        : t("myApplications.detail.ai.potentialFit")}
                     </h2>
                     <p className="mt-2 text-sm leading-6 text-slate-600">
-                      Your profile is compared against the job requirements.
-                      Matched and missing skills help you decide what to improve
-                      before the employer reviews your application.
+                      {t("myApplications.detail.ai.description")}
                     </p>
                   </div>
 
-                  <CircularMatchScore score={matchScore} />
+                  <CircularMatchScore
+                    score={matchScore}
+                    label={t("myApplications.detail.matchLabel")}
+                    ariaLabel={t("myApplications.detail.matchScoreAria", {
+                      score: matchScore,
+                    })}
+                  />
                 </div>
               </div>
 
               <div className="grid gap-6 p-6 md:grid-cols-2">
                 <div>
                   <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-slate-500">
-                    Matched Skills
+                    {t("myApplications.detail.ai.matchedSkills")}
                   </h3>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {matchedSkills.map((skill) => (
@@ -353,7 +446,7 @@ const MyApplicationDetail = () => {
 
                 <div>
                   <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-slate-500">
-                    Missing Skills
+                    {t("myApplications.detail.ai.missingSkills")}
                   </h3>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {missingSkills.map((skill) => (
@@ -368,10 +461,10 @@ const MyApplicationDetail = () => {
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h2 className="text-xl font-bold tracking-tight text-slate-950">
-                    Documents
+                    {t("myApplications.detail.documents.title")}
                   </h2>
                   <p className="mt-1 text-sm text-slate-500">
-                    The files and note submitted with this application.
+                    {t("myApplications.detail.documents.description")}
                   </p>
                 </div>
               </div>
@@ -386,7 +479,9 @@ const MyApplicationDetail = () => {
                       <p className="truncate text-sm font-semibold text-slate-950">
                         {cvFileName}
                       </p>
-                      <p className="text-xs text-slate-500">PDF resume</p>
+                      <p className="text-xs text-slate-500">
+                        {t("myApplications.detail.documents.pdfResume")}
+                      </p>
                     </div>
                   </div>
 
@@ -399,12 +494,12 @@ const MyApplicationDetail = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      View File
+                      {t("myApplications.detail.documents.viewFile")}
                       <ArrowUpRight className="size-4" aria-hidden="true" />
                     </a>
                   ) : (
                     <span className="text-sm font-medium text-slate-400">
-                      No file URL
+                      {t("myApplications.detail.fallbacks.noFileUrl")}
                     </span>
                   )}
                 </div>
@@ -412,10 +507,11 @@ const MyApplicationDetail = () => {
 
               <div className="rounded-xl border border-slate-200 bg-white p-5">
                 <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-slate-500">
-                  Cover Letter
+                  {t("myApplications.detail.documents.coverLetter")}
                 </h3>
                 <p className="mt-3 text-sm leading-7 text-slate-700">
-                  {coverLetter || "No cover letter was submitted."}
+                  {coverLetter ||
+                    t("myApplications.detail.documents.noCoverLetter")}
                 </p>
               </div>
 
@@ -423,15 +519,14 @@ const MyApplicationDetail = () => {
                 <div className="rounded-xl border border-green-200 bg-green-50/70 p-4">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm leading-6 text-green-800">
-                      You can update your application because the employer
-                      hasn't reviewed it yet.
+                      {t("myApplications.detail.documents.updateHint")}
                     </p>
                     <Button
                       variant="outline"
                       className="w-full rounded-md border-green-600 bg-white text-green-700 hover:bg-green-50 hover:text-green-800 sm:w-auto"
                     >
                       <PencilLine className="size-4" aria-hidden="true" />
-                      Update CV / Cover Letter
+                      {t("myApplications.detail.documents.updateAction")}
                     </Button>
                   </div>
                 </div>
@@ -443,23 +538,27 @@ const MyApplicationDetail = () => {
             <Card className="border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)]">
               <div>
                 <h2 className="text-lg font-bold tracking-tight text-slate-950">
-                  Job Snapshot
+                  {t("myApplications.detail.snapshot.title")}
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  Key details from the original posting.
+                  {t("myApplications.detail.snapshot.description")}
                 </p>
               </div>
 
               <div className="flex flex-col gap-3">
                 <DetailRow
                   icon={WalletCards}
-                  label="Salary"
+                  label={t("myApplications.detail.snapshot.salary")}
                   value={salaryRange}
                 />
-                <DetailRow icon={MapPin} label="Location" value={location} />
+                <DetailRow
+                  icon={MapPin}
+                  label={t("myApplications.detail.snapshot.location")}
+                  value={location}
+                />
                 <DetailRow
                   icon={CalendarDays}
-                  label="Applied Date"
+                  label={t("myApplications.detail.snapshot.appliedDate")}
                   value={appliedDate}
                 />
               </div>
@@ -469,7 +568,7 @@ const MyApplicationDetail = () => {
                   to={`/jobs/detail/${job.id}`}
                   className="inline-flex items-center gap-2 text-sm font-semibold text-green-600 transition hover:text-green-700"
                 >
-                  View Original Job Posting
+                  {t("myApplications.detail.snapshot.viewOriginal")}
                   <ArrowUpRight className="size-4" aria-hidden="true" />
                 </Link>
               ) : null}
@@ -478,10 +577,10 @@ const MyApplicationDetail = () => {
             <Card className="border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)]">
               <div>
                 <h2 className="text-lg font-bold tracking-tight text-slate-950">
-                  Application Timeline
+                  {t("myApplications.detail.timeline.title")}
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  Track where your application stands.
+                  {t("myApplications.detail.timeline.description")}
                 </p>
               </div>
 

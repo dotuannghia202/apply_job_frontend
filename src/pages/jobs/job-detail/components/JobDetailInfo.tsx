@@ -22,8 +22,8 @@ export function JobDetailInfo({
   const { t } = useTranslation();
 
   return (
-    <section className="bg-white rounded-xl p-6 md:p-8 flex flex-col gap-8 shadow-sm border border-slate-100 relative">
-      <div className="absolute left-0 top-8 bottom-8 w-1.5 bg-primary/20 rounded-r-full" />
+    <section className="bg-white rounded-xl p-6 md:p-8 flex flex-col gap-8 shadow-sm border  relative">
+      <div className="absolute left-0 top-8 bottom-8 w-1.5 bg-green-500 rounded-r-full" />
       <div className="flex justify-between items-center">
         <h2 className="text-[20px] font-bold text-slate-900">
           {t("jobDetail.info.title")}
@@ -32,10 +32,10 @@ export function JobDetailInfo({
 
       <div className="flex flex-col gap-4 text-sm">
         <div className="flex items-start gap-4 flex-wrap">
-          <span className="text-[16px] font-bold text-slate-900 min-w-[110px] mt-1">
+          <span className="text-[16px] font-bold text-slate-900 min-w-27.5 mt-1">
             {t("jobDetail.info.specialty")}
           </span>
-          <div className="flex flex-wrap gap-2 flex-grow">
+          <div className="flex flex-wrap gap-2 grow">
             {specialties.map((item) => (
               <span
                 key={item}

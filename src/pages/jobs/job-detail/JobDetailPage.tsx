@@ -80,7 +80,7 @@ export default function JobDetailPage() {
     return (
       <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
-          <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
+          <div className="rounded-xl border  bg-white p-6 text-slate-600">
             {t("jobDetail.status.notFound")}
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function JobDetailPage() {
     return (
       <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
-          <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
+          <div className="rounded-xl border bg-white p-6 text-slate-600">
             {t("jobDetail.status.loading")}
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function JobDetailPage() {
     return (
       <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
-          <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
+          <div className="rounded-xl border bg-white p-6 text-slate-600">
             {t("jobDetail.status.notFound")}
           </div>
         </div>
@@ -202,7 +202,9 @@ export default function JobDetailPage() {
             companyField={
               job.specialization?.name ?? t("jobDetail.fallbacks.notSpecified")
             }
-            companyLocation={job.location || t("jobDetail.fallbacks.notSpecified")}
+            companyLocation={
+              job.location || t("jobDetail.fallbacks.notSpecified")
+            }
             level={level}
             education={education}
             openings={openings}

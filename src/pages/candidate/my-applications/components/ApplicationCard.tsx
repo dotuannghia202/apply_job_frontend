@@ -27,7 +27,7 @@ const ApplicationCard = ({ item }: { item: ApplicationItem }) => {
         {item.logoUrl ? (
           <img
             src={item.logoUrl}
-            alt={`${item.company} logo`}
+            alt={t("applicationCard.logoAlt", { company: item.company })}
             className="h-14 w-14 rounded-lg border border-border/50 object-cover"
           />
         ) : (

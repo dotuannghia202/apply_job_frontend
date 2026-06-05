@@ -58,10 +58,85 @@
       "Interview": "Interview",
       "Accepted": "Accepted",
       "Rejected": "Rejected"
+    },
+    "detail": {
+      "status": {
+        "notFound": "Application not found.",
+        "loading": "Loading application details...",
+        "loadFailed": "Failed to load application details. Please try again later."
+      },
+      "breadcrumb": {
+        "jobs": "Jobs",
+        "myApplications": "My Applications"
+      },
+      "fallbacks": {
+        "notAvailable": "Not available",
+        "untitledRole": "Untitled role",
+        "unknownCompany": "Unknown company",
+        "resume": "Resume",
+        "notSpecified": "Not specified",
+        "noFileUrl": "No file URL"
+      },
+      "logoAlt": "{{company}} logo",
+      "matchScoreAria": "{{score}}% match score",
+      "matchLabel": "Match",
+      "statusLabel": {
+        "PENDING": "Pending",
+        "REVIEWING": "Reviewing",
+        "INTERVIEW": "Interview",
+        "ACCEPTED": "Accepted",
+        "REJECTED": "Rejected"
+      },
+      "salary": {
+        "agree": "Agree on salary",
+        "from": "Salary from {{salary}}",
+        "upTo": "Salary up to {{salary}}"
+      },
+      "ai": {
+        "badge": "AI Match Analysis",
+        "strongFit": "Strong fit for this role",
+        "potentialFit": "Potential fit for this role",
+        "description": "Your profile is compared against the job requirements. Matched and missing skills help you decide what to improve before the employer reviews your application.",
+        "matchedSkills": "Matched Skills",
+        "missingSkills": "Missing Skills"
+      },
+      "documents": {
+        "title": "Documents",
+        "description": "The files and note submitted with this application.",
+        "pdfResume": "PDF resume",
+        "viewFile": "View File",
+        "coverLetter": "Cover Letter",
+        "noCoverLetter": "No cover letter was submitted.",
+        "updateHint": "You can update your application because the employer hasn't reviewed it yet.",
+        "updateAction": "Update CV / Cover Letter"
+      },
+      "snapshot": {
+        "title": "Job Snapshot",
+        "description": "Key details from the original posting.",
+        "salary": "Salary",
+        "location": "Location",
+        "appliedDate": "Applied Date",
+        "viewOriginal": "View Original Job Posting"
+      },
+      "timeline": {
+        "title": "Application Timeline",
+        "description": "Track where your application stands.",
+        "submittedTitle": "Application Submitted",
+        "submittedDescription": "Your profile, CV, and cover letter were sent successfully.",
+        "reviewTitle": "Awaiting HR Review",
+        "reviewDescription": "The hiring team has not reviewed this application yet.",
+        "interviewTitle": "Interview",
+        "interviewDescription": "Interview scheduling appears here when you are shortlisted.",
+        "finalTitle": "Final Result",
+        "finalAccepted": "Congratulations, your application has been accepted.",
+        "finalRejected": "The employer has moved forward with another candidate.",
+        "finalPending": "The final hiring decision will be tracked here."
+      }
     }
   },
   "applicationCard": {
     "appliedOn": "Applied on:",
+    "logoAlt": "{{company}} logo",
     "coverLetterAttached": "Cover letter attached",
     "noCoverLetter": "No cover letter",
     "candidate": "Candidate:",
@@ -143,6 +218,82 @@
     "status": {
       "loading": "Loading CVs...",
       "empty": "No CVs uploaded yet."
+    },
+    "detail": {
+      "status": {
+        "notFound": "CV not found.",
+        "loading": "Loading CV details...",
+        "loadFailed": "Unable to load CV details. Please try again."
+      },
+      "breadcrumb": {
+        "jobs": "Jobs",
+        "myCv": "My CV"
+      },
+      "fallbacks": {
+        "empty": "-",
+        "unknownCandidate": "Unknown candidate",
+        "candidateCv": "Candidate CV",
+        "notSpecified": "Not specified",
+        "unknown": "Unknown",
+        "na": "N/A",
+        "pdfFile": "PDF file"
+      },
+      "header": {
+        "description": "Review parsed CV data, attachments, and AI insights in one place.",
+        "updated": "Updated {{date}}"
+      },
+      "badges": {
+        "defaultCv": "Default CV",
+        "uploadedCv": "Uploaded CV"
+      },
+      "profile": {
+        "yearsExperience": "{{count}}+ years experience",
+        "previewTitle": "CV preview"
+      },
+      "skills": {
+        "title": "Skills matrix",
+        "subtitle": "Primary competencies",
+        "topSkills": "Top skills",
+        "empty": "No skills were parsed from this CV.",
+        "levels": {
+          "Advanced": "Advanced",
+          "Intermediate": "Intermediate",
+          "Beginner": "Beginner"
+        }
+      },
+      "attachments": {
+        "title": "Attachments",
+        "subtitle": "Supporting files",
+        "download": "Download"
+      },
+      "insights": {
+        "title": "AI profile insights",
+        "subtitle": "Model-based evaluation",
+        "summary": "AI insights are generated from the current parsed CV metadata.",
+        "metrics": {
+          "skills": {
+            "label": "Skills",
+            "caption": "Parsed skills from this CV"
+          },
+          "specialization": {
+            "label": "Specialization",
+            "caption": "Primary CV category"
+          },
+          "status": {
+            "label": "Status",
+            "caption": "Current CV usage state",
+            "default": "Default",
+            "uploaded": "Uploaded"
+          }
+        }
+      },
+      "metadata": {
+        "title": "Resume metadata",
+        "description": "Candidate-owned CV record",
+        "candidate": "Candidate",
+        "email": "Email",
+        "specialization": "Specialization"
+      }
     }
   },
   "savedJobs": {
