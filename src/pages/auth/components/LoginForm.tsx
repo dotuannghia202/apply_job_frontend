@@ -86,14 +86,16 @@ export const LoginForm = () => {
               server: t("auth.login.errors.invalidCredentials"),
             }));
           } else if (error.request) {
+            console.error("No response received:", error);
             setErrors((prev) => ({
               ...prev,
-              server: t("auth.errors.network"),
+              server: error.response?.data.message || t("auth.errors.network"),
             }));
           } else {
             setErrors((prev) => ({
               ...prev,
-              server: error.message,
+              server:
+                error.response?.data.message || t("auth.errors.unexpected"),
             }));
           }
         } else {
