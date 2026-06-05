@@ -1447,5 +1447,108 @@
         "failed": "Quên mật khẩu thất bại! Vui lòng thử lại."
       }
     }
+  },
+  "placeholderPages": {
+    "common": {
+      "backToHome": "Quay về trang chủ",
+      "updated": "Cập nhật tháng 6 năm 2026",
+      "section": "Mục {{number}}",
+      "demoNotice": "Trang này được cung cấp nhằm mục đích minh họa trong hệ thống Job Portal. Để được hỗ trợ chính thức, vui lòng liên hệ <supportLink>support@jobportal.com</supportLink>."
+    },
+    "privacy": {
+      "title": "Chính sách bảo mật",
+      "subtitle": "Tìm hiểu cách Job Portal thu thập, sử dụng và bảo vệ dữ liệu cá nhân của bạn.",
+      "label": "Bảo vệ dữ liệu",
+      "sections": [
+        {
+          "heading": "Thông tin cá nhân",
+          "description": "Chúng tôi có thể thu thập họ tên, địa chỉ email, số điện thoại, CV, lịch sử ứng tuyển và thông tin hồ sơ để cung cấp dịch vụ tuyển dụng."
+        },
+        {
+          "heading": "Cách chúng tôi sử dụng dữ liệu",
+          "description": "Thông tin của bạn được sử dụng để quản lý hồ sơ ứng tuyển, đề xuất công việc phù hợp, cải thiện trải nghiệm nền tảng và hỗ trợ liên lạc giữa ứng viên với nhà tuyển dụng."
+        },
+        {
+          "heading": "Bảo mật dữ liệu",
+          "description": "Chúng tôi áp dụng các biện pháp kỹ thuật và tổ chức nhằm bảo vệ tài khoản, tệp CV và lịch sử ứng tuyển của bạn khỏi truy cập trái phép."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Điều khoản dịch vụ",
+      "subtitle": "Xem các quy tắc và điều kiện khi sử dụng nền tảng Job Portal.",
+      "label": "Quy tắc nền tảng",
+      "sections": [
+        {
+          "heading": "Trách nhiệm của người dùng",
+          "description": "Người dùng cần cung cấp thông tin chính xác, bảo vệ tài khoản và sử dụng nền tảng một cách hợp pháp, tôn trọng."
+        },
+        {
+          "heading": "Quy định dành cho ứng viên",
+          "description": "Ứng viên chỉ nên tải lên CV hợp lệ và ứng tuyển các công việc phù hợp với hồ sơ, kinh nghiệm và định hướng nghề nghiệp của mình."
+        },
+        {
+          "heading": "Quy định dành cho nhà tuyển dụng",
+          "description": "Nhà tuyển dụng phải đăng thông tin tuyển dụng trung thực, tôn trọng quyền riêng tư của ứng viên và không đăng nội dung gây hiểu nhầm."
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Cài đặt cookie",
+      "subtitle": "Quản lý cách cookie được sử dụng để cải thiện trải nghiệm của bạn trên Job Portal.",
+      "label": "Tùy chọn",
+      "sections": [
+        {
+          "heading": "Cookie thiết yếu",
+          "description": "Các cookie này cần thiết cho đăng nhập, xác thực, bảo mật và những chức năng cơ bản của nền tảng."
+        },
+        {
+          "heading": "Cookie phân tích",
+          "description": "Cookie phân tích giúp chúng tôi hiểu cách người dùng tương tác với nền tảng và cải thiện khả năng sử dụng tổng thể."
+        },
+        {
+          "heading": "Cookie tùy chọn",
+          "description": "Cookie tùy chọn ghi nhớ các thiết lập bạn đã chọn, chẳng hạn như ngôn ngữ, giao diện hoặc tùy chọn hiển thị."
+        }
+      ]
+    },
+    "accessibility": {
+      "title": "Khả năng truy cập",
+      "subtitle": "Mục tiêu của chúng tôi là giúp Job Portal dễ sử dụng và dễ tiếp cận với mọi người dùng.",
+      "label": "Trải nghiệm hòa nhập",
+      "sections": [
+        {
+          "heading": "Điều hướng bằng bàn phím",
+          "description": "Chúng tôi hướng đến việc hỗ trợ điều hướng thuận tiện bằng bàn phím trên biểu mẫu, nút bấm, menu và các thao tác quan trọng."
+        },
+        {
+          "heading": "Giao diện dễ đọc",
+          "description": "Giao diện được thiết kế với kiểu chữ rõ ràng, khoảng cách hợp lý, độ tương phản tốt và bố cục đáp ứng trên nhiều kích thước màn hình."
+        },
+        {
+          "heading": "Cải tiến liên tục",
+          "description": "Chúng tôi liên tục cải thiện khả năng truy cập dựa trên phản hồi của người dùng, kiểm thử khả dụng và các tiêu chuẩn web hiện đại."
+        }
+      ]
+    },
+    "support": {
+      "title": "Hỗ trợ",
+      "subtitle": "Bạn cần trợ giúp? Hãy liên hệ đội ngũ hỗ trợ về tài khoản, CV hoặc tin tuyển dụng.",
+      "label": "Trung tâm trợ giúp",
+      "sections": [
+        {
+          "heading": "Hỗ trợ tài khoản",
+          "description": "Nhận hỗ trợ về sự cố đăng nhập, quyền truy cập tài khoản, chuyển đổi vai trò, cập nhật hồ sơ và các vấn đề bảo mật."
+        },
+        {
+          "heading": "Hỗ trợ ứng viên",
+          "description": "Ứng viên có thể liên hệ khi gặp vấn đề về tải CV, ứng tuyển việc làm, việc làm đã lưu hoặc theo dõi trạng thái ứng tuyển."
+        },
+        {
+          "heading": "Hỗ trợ nhà tuyển dụng",
+          "description": "Nhà tuyển dụng có thể yêu cầu hỗ trợ về thiết lập công ty, đăng tin tuyển dụng, quản lý ứng viên và sử dụng bảng điều khiển."
+        }
+      ]
+    }
   }
 }
