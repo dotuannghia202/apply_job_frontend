@@ -56,7 +56,8 @@ export default function ManagementCompaniesPage() {
     return companies.map((company) => ({
       id: company.id,
       name: company.name,
-      industry: company.description || "--",
+      logo: company.logo || "",
+
       employerName: company.createdBy || company.employerName || "--",
       employerEmail: company.employerEmail || "--",
       status: company.status,

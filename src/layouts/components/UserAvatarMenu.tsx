@@ -151,9 +151,9 @@ const menuSectionsByMode: Record<RoleName, AccountMenuSection[]> = {
           to: "/admin/users",
         },
         {
-          labelKey: "userAvatarMenu.items.companyApproval",
+          labelKey: "userAvatarMenu.items.companyManagement",
           icon: Building2,
-          to: "/admin/company-approval",
+          to: "/admin/companies",
         },
       ],
     },

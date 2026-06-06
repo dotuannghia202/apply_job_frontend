@@ -18,15 +18,15 @@ export default function UserPrimaryAssociationCard({
   const { t } = useTranslation();
 
   return (
-    <section className="rounded-3xl border border-emerald-200 bg-emerald-100/70 p-6 shadow-sm">
+    <section className="rounded-lg border border-emerald-200 bg-emerald-100/70 p-6 shadow-sm">
       <h3 className="text-base font-semibold text-emerald-900">
         {t("managementUsers.detail.association.title")}
       </h3>
-      <div className="mt-4 flex items-center gap-4 rounded-2xl bg-white/80 p-4">
+      <div className="mt-4 flex items-center gap-4 rounded-lg bg-white/80 p-4">
         <img
           src={association.logoUrl || avatarPlaceholder}
           alt={association.name}
-          className="h-12 w-12 rounded-xl object-cover"
+          className="h-12 w-12 rounded-lg object-cover"
           onError={(event) => {
             event.currentTarget.src = avatarPlaceholder;
           }}

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export type CompanyRow = {
   id: number;
   name: string;
-  industry: string;
+  logo: string;
   employerName: string;
   employerEmail: string;
   status?: CompanyStatus;
@@ -149,12 +149,19 @@ export default function CompanyTable({
             >
               <td className="px-6 py-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-sm font-semibold text-emerald-800">
-                    {row.name.slice(0, 1)}
-                  </div>
+                  {row.logo ? (
+                    <img
+                      src={row.logo}
+                      alt={row.name}
+                      className="flex size-10 items-center justify-center rounded border border-primary/20 text-sm font-semibold text-emerald-800"
+                    />
+                  ) : (
+                    <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-sm font-semibold text-emerald-800">
+                      {row.name.slice(0, 1)}
+                    </div>
+                  )}
                   <div>
                     <p className="font-semibold text-slate-900">{row.name}</p>
-                    <p className="text-xs text-slate-500">{row.industry}</p>
                   </div>
                 </div>
               </td>

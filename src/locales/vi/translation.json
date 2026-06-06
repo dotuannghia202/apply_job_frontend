@@ -536,7 +536,7 @@
       "postJob": "Đăng việc làm",
       "companyProfile": "Hồ sơ công ty",
       "managementUser": "Quản lý người dùng",
-      "companyApproval": "Duyệt công ty",
+      "companyManagement": "Quản lý công ty",
       "jobListings": "Danh sách việc làm"
     },
     "actions": {
@@ -1492,7 +1492,8 @@
   },
   "managementUsers": {
     "common": {
-      "cancel": "Hủy"
+      "cancel": "Hủy",
+      "close": "Đóng"
     },
     "breadcrumb": {
       "admin": "Quản trị",
@@ -1616,6 +1617,14 @@
         "message": "Bạn có chắc chắn muốn mở khóa tài khoản người dùng này không?",
         "confirm": "Mở khóa tài khoản"
       }
+    },
+    "notifications": {
+      "successTitle": "Đã cập nhật tài khoản",
+      "errorTitle": "Cập nhật thất bại",
+      "lockSuccess": "Tài khoản người dùng đã được khóa.",
+      "unlockSuccess": "Tài khoản người dùng đã được mở khóa.",
+      "lockError": "Không thể khóa tài khoản người dùng này. Vui lòng thử lại.",
+      "unlockError": "Không thể mở khóa tài khoản người dùng này. Vui lòng thử lại."
     }
   },
   "languageSwitch": {

@@ -23,20 +23,20 @@ export default function UserProfileCard({ profile }: UserProfileCardProps) {
   const avatarSrc = profile.avatarUrl || avatarPlaceholder;
 
   return (
-    <section className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm">
+    <section className="rounded-lg border  bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-6 md:flex-row md:items-center">
         <div className="relative">
           <img
             src={avatarSrc}
             alt={profile.name}
-            className="h-28 w-28 rounded-2xl object-cover"
+            className="h-28 w-28 rounded-lg object-cover"
             onError={(event) => {
               event.currentTarget.src = avatarPlaceholder;
             }}
           />
           <button
             type="button"
-            className="absolute -bottom-3 -right-3 flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-100 bg-emerald-50 text-emerald-700"
+            className="absolute -bottom-3 -right-3 flex h-10 w-10 items-center justify-center rounded-lg border  bg-emerald-50 text-emerald-700"
             aria-label={t("managementUsers.detail.profile.settings")}
             title={t("managementUsers.detail.profile.settings")}
           >

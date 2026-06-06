@@ -19,7 +19,7 @@ export default function UserAuditCard({ audit }: UserAuditCardProps) {
   const { t } = useTranslation();
 
   return (
-    <section className="rounded-3xl border border-slate-200/70 bg-slate-50 p-6 shadow-sm">
+    <section className="rounded-lg border  bg-slate-50 p-6 shadow-sm">
       <div className="flex items-center gap-3">
         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200 text-slate-700">
           <Database className="size-4" />

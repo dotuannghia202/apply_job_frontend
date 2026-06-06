@@ -16,7 +16,8 @@ import {
 } from "./user.api";
 import { userKeys } from "./user.keys";
 import { jobKeys } from "@/api/jobs/job.keys";
-import type { SavedJobsFilters, UserListFilters } from "@/types/user";
+import type { BackendResponse } from "@/types/common";
+import type { SavedJobsFilters, User, UserListFilters } from "@/types/user";
 
 export const useGetUsers = (filters: UserListFilters = {}) => {
   const normalizedFilters: Required<Pick<UserListFilters, "page" | "size">> &
@@ -115,8 +116,23 @@ export const useUpdateUserStatus = () => {
 
   return useMutation({
     mutationFn: updateUserStatus,
-    onSuccess: () => {
+    onSuccess: (_data, { id, data }) => {
+      queryClient.setQueryData<BackendResponse<User>>(
+        userKeys.detail(id),
+        (oldData) => {
+          if (!oldData?.data) return oldData;
+
+          return {
+            ...oldData,
+            data: {
+              ...oldData.data,
+              isActive: data.isActive,
+            },
+          };
+        },
+      );
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });
     },
   });
 };

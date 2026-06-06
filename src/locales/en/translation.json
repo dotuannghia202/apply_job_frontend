@@ -536,7 +536,7 @@
       "postJob": "Post a Job",
       "companyProfile": "Company Profile",
       "managementUser": "Management User",
-      "companyApproval": "Company Approval",
+      "companyManagement": "Company Management",
       "jobListings": "Job Listings"
     },
     "actions": {
@@ -1492,7 +1492,8 @@
   },
   "managementUsers": {
     "common": {
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "close": "Close"
     },
     "breadcrumb": {
       "admin": "Admin",
@@ -1616,6 +1617,14 @@
         "message": "Are you sure you want to unlock this user account?",
         "confirm": "Unlock account"
       }
+    },
+    "notifications": {
+      "successTitle": "Account updated",
+      "errorTitle": "Update failed",
+      "lockSuccess": "The user account has been locked.",
+      "unlockSuccess": "The user account has been unlocked.",
+      "lockError": "Could not lock this user account. Please try again.",
+      "unlockError": "Could not unlock this user account. Please try again."
     }
   },
   "languageSwitch": {
