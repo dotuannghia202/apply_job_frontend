@@ -26,9 +26,9 @@ export default function CompanyLogoCard({
     role === "EMPLOYER" && companyId != null && companyId === authCompanyId;
 
   return (
-    <section className="rounded-2xl bg-white p-6 shadow-sm">
+    <section className="rounded-lg bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-center gap-4">
-        <div className="flex size-16 items-center justify-center overflow-hidden rounded-xl bg-emerald-100 text-emerald-700">
+        <div className="flex size-16 items-center justify-center overflow-hidden border rounded-lg  text-primary">
           {logoUrl ? (
             <img
               src={logoUrl}
@@ -67,7 +67,7 @@ export default function CompanyLogoCard({
               />
               <Button
                 variant="outline"
-                className="gap-2 border-emerald-200 text-emerald-700"
+                className="gap-2"
                 disabled={isUploading}
                 asChild
               >

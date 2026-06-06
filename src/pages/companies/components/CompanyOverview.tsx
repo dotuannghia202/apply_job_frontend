@@ -17,15 +17,15 @@ export default function CompanyOverview({
   const canEdit = role === "EMPLOYER";
 
   return (
-    <section className="rounded-2xl bg-white p-6 shadow-sm">
+    <section className="rounded-lg bg-white p-6 shadow-sm">
       <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-        <span className="flex size-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-          <AlignLeft className="size-4" />
+        <span className="flex size-8 items-center justify-center rounded-lg text-primary">
+          <AlignLeft className="size-6" />
         </span>
         Company Overview
       </div>
 
-      <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50">
+      <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50">
         <div className="flex items-center gap-4 border-b border-slate-200 px-4 py-2 text-xs text-slate-400">
           <span className="font-semibold">B</span>
           <span className="italic">I</span>

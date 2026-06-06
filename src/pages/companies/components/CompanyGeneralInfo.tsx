@@ -21,10 +21,10 @@ export default function CompanyGeneralInfo({
   const canEdit = role === "EMPLOYER";
 
   return (
-    <section className="rounded-2xl bg-white p-6 shadow-sm">
+    <section className="rounded-lg bg-white p-6 shadow-sm">
       <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-        <span className="flex size-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-          <MapPin className="size-4" />
+        <span className="flex size-8 items-center justify-center rounded-lg text-primary">
+          <MapPin className="size-6" />
         </span>
         General Information
       </div>
@@ -36,7 +36,7 @@ export default function CompanyGeneralInfo({
           </label>
           {canEdit ? (
             <Input
-              className="h-11 rounded-lg border-slate-200 bg-slate-50 text-slate-900 shadow-none"
+              className="h-11 rounded-lg border-slate-200 bg-slate-50 text-slate-900 shadow-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary focus-visible:ring-offset-0"
               value={name}
               onChange={(event) => onNameChange?.(event.target.value)}
             />
@@ -52,7 +52,7 @@ export default function CompanyGeneralInfo({
           </label>
           {canEdit ? (
             <Input
-              className="h-11 rounded-lg border-slate-200 bg-slate-50 text-slate-900 shadow-none"
+              className="h-11 rounded-lg border-slate-200 bg-slate-50 text-slate-900 shadow-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary focus-visible:ring-offset-0"
               value={address}
               onChange={(event) => onAddressChange?.(event.target.value)}
             />

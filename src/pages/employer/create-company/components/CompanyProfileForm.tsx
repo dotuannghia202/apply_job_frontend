@@ -91,7 +91,7 @@ export function CompanyProfileForm({
               onDrop={handleLogoDrop}
               onDragOver={(event) => event.preventDefault()}
             >
-              <div className="size-16 overflow-hidden rounded-full bg-[#e3e8ee]">
+              <div className="size-16 overflow-hidden bg-[#e3e8ee]">
                 {logoPreviewUrl ? (
                   <img
                     src={logoPreviewUrl}
@@ -142,7 +142,9 @@ export function CompanyProfileForm({
             <Input
               value={address}
               onChange={(e) => onAddressChange(e.target.value)}
-              placeholder={t("employerCreateCompany.profile.addressPlaceholder")}
+              placeholder={t(
+                "employerCreateCompany.profile.addressPlaceholder",
+              )}
               className={inputCls}
             />
           </div>

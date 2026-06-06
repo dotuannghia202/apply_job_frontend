@@ -125,8 +125,8 @@ export default function CompanyProfile() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f8f2]">
-      <div className="mx-auto w-full max-w-4xl px-6 py-10">
+    <main className="min-h-screen bg-[#f7f9fc]">
+      <div className="mx-auto w-full max-w-7xl px-6 py-10">
         <div className="space-y-6">
           <CompanyHeader
             title="Company Profile"
@@ -136,12 +136,12 @@ export default function CompanyProfile() {
             onStatusChange={setStatus}
           />
           {companyQuery.isError ? (
-            <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               Khong the tai thong tin cong ty. Vui long thu lai.
             </div>
           ) : null}
           {companyQuery.isLoading ? (
-            <div className="rounded-2xl bg-white px-4 py-3 text-sm text-slate-500 shadow-sm">
+            <div className="rounded-lg bg-white px-4 py-3 text-sm text-slate-500 shadow-sm">
               Dang tai thong tin cong ty...
             </div>
           ) : null}
@@ -162,7 +162,7 @@ export default function CompanyProfile() {
           />
           <CompanyOverview role={role} about={about} onAboutChange={setAbout} />
           {saveError ? (
-            <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {saveError}
             </div>
           ) : null}
