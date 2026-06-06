@@ -1301,6 +1301,7 @@
   "companyDetail": {
     "common": {
       "confirm": "Confirm",
+      "cancel": "Cancel",
       "close": "Close"
     },
     "header": {

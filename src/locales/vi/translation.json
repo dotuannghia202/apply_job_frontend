@@ -1301,6 +1301,7 @@
   "companyDetail": {
     "common": {
       "confirm": "Xác nhận",
+      "cancel": "Hủy",
       "close": "Đóng"
     },
     "header": {

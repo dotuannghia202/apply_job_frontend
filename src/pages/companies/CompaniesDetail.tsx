@@ -376,6 +376,7 @@ export default function CompaniesDetail() {
             ? getConfirmContent(confirmState.action).confirmVariant
             : "primary"
         }
+        cancelLabel={t("companyDetail.common.cancel")}
         onConfirm={handleConfirmAction}
         onCancel={() => setConfirmState(null)}
         onDismiss={() => setConfirmState(null)}
