@@ -6,6 +6,24 @@ type RetryRequestConfig = InternalAxiosRequestConfig & {
   _retry?: boolean;
 };
 
+// --- CÁC BIẾN DÙNG ĐỂ XỬ LÝ HÀNG ĐỢI (QUEUE) KHI REFRESH TOKEN ---
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (error: any) => void;
+}> = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token as string);
+    }
+  });
+  failedQueue = [];
+};
+
 const axiosClient = axios.create({
   baseURL: baseUrl,
   headers: {
@@ -73,15 +91,26 @@ axiosClient.interceptors.response.use(
         return Promise.reject(error);
       }
 
+      // 1. NẾU ĐANG CÓ REQUEST KHÁC ĐI LẤY TOKEN RỒI -> CHO VÀO HÀNG ĐỢI
+      if (isRefreshing) {
+        return new Promise(function (resolve, reject) {
+          failedQueue.push({
+            resolve: (token) => {
+              originalRequest.headers!.Authorization = `Bearer ${token}`;
+              resolve(axiosClient(originalRequest));
+            },
+            reject: (err) => {
+              reject(err);
+            },
+          });
+        });
+      }
+
+      // 2. NẾU CHƯA CÓ AI ĐI LẤY -> KHÓA LẠI ĐỂ MÌNH ĐI LẤY
       originalRequest._retry = true;
+      isRefreshing = true;
 
       try {
-        /**
-         * The backend currently uses @GetMapping("/refresh"), so this must use GET.
-         *
-         * If the backend changes to @PostMapping("/refresh"), change this to:
-         * const refreshResponse = await axiosClient.post<RefreshTokenResponse>("/auth/refresh");
-         */
         const refreshResponse = await authApi.refreshToken();
 
         const newAccessToken = refreshResponse.data?.accessToken;
@@ -90,14 +119,24 @@ axiosClient.interceptors.response.use(
           throw new Error("Missing accessToken from refresh response");
         }
 
+        //Lưu token mới
         localStorage.setItem("accessToken", newAccessToken);
 
+        // Gắn token mới vào request bị lỗi
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        // Xử lý thành công -> Lấy token báo cho các request đang xếp hàng
+        processQueue(null, newAccessToken);
 
         return axiosClient(originalRequest);
       } catch (refreshError) {
+        // Nếu việc lấy token thất bại -> Báo lỗi cho cả hàng đợi và log out
+        processQueue(refreshError, null);
         clearAuthAndRedirect();
         return Promise.reject(refreshError);
+      } finally {
+        // Luôn mở khoá dù thành công hay thất bại
+        isRefreshing = false;
       }
     }
 
