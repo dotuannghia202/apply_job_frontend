@@ -64,6 +64,7 @@ export default function PostJobPage() {
     skillNames: prefill?.skillNames ?? [],
   }));
   const [errors, setErrors] = useState<PostJobFormErrors>({});
+  const [formResetKey, setFormResetKey] = useState(0);
   const [popup, setPopup] = useState<{
     open: boolean;
     variant: "success" | "error";
@@ -224,6 +225,7 @@ export default function PostJobPage() {
         skillIds: formData.skillIds,
       });
       setFormData(emptyFormData);
+      setFormResetKey((prev) => prev + 1);
       setErrors({});
       setPopup({
         open: true,
@@ -251,6 +253,7 @@ export default function PostJobPage() {
             onChange={handleFormChange}
             onSubmit={handleSubmit}
             errors={errors}
+            resetKey={formResetKey}
           />
           <PostJobPreview value={formData} />
         </div>

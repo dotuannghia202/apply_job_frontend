@@ -1,4 +1,4 @@
-import { useMemo, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, ChevronsUpDown, Plus, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -88,6 +88,7 @@ type Props = {
   onChange: (next: PostJobFormData) => void;
   onSubmit?: () => void;
   errors?: PostJobFormErrors;
+  resetKey?: number;
 };
 
 type Ward = {
@@ -313,7 +314,13 @@ function SearchableSelect({
   );
 }
 
-export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
+export function PostJobForm({
+  value,
+  onChange,
+  onSubmit,
+  errors,
+  resetKey = 0,
+}: Props) {
   const { t } = useTranslation();
   const update = (patch: Partial<PostJobFormData>) =>
     onChange({ ...value, ...patch });
@@ -335,6 +342,12 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
   const industryId = value.industryId ? Number(value.industryId) : 0;
   const debouncedIndustrySearch = useDebounce(industrySearch);
   const debouncedSkillSearch = useDebounce(skillSearch);
+
+  useEffect(() => {
+    setProvinceCode("");
+    setWardCode("");
+    setStreet("");
+  }, [resetKey]);
 
   const { data: industriesData } = useGetIndustries({
     page: 1,
