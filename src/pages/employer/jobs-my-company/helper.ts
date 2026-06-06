@@ -13,7 +13,7 @@ export const LEVEL_OPTIONS = [
 export const DEFAULT_PAGE_SIZE = 6;
 
 export const fieldClass =
-  "h-10 rounded-md border-slate-200 bg-white text-sm text-slate-800 shadow-none focus-visible:ring-primary/20";
+  "h-10 rounded-md border-slate-200 bg-white text-sm text-slate-800 shadow-none focus-visible:ring-primary focus-visible:border-primary";
 
 export type EmployerJobFilters = {
   name: string;

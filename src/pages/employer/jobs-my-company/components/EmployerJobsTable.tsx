@@ -90,20 +90,20 @@ export function EmployerJobsTable({
       {!isLoading && !isError ? (
         <Table>
           <TableHeader>
-            <TableRow className="bg-slate-100 hover:bg-slate-100">
-              <TableHead className="px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+            <TableRow className="bg-primary hover:bg-primary">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
                 {t("employerJobs.table.columns.job")}
               </TableHead>
-              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
                 {t("employerJobs.table.columns.salary")}
               </TableHead>
-              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
                 {t("employerJobs.table.columns.location")}
               </TableHead>
-              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
                 {t("employerJobs.table.columns.dates")}
               </TableHead>
-              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
                 {t("employerJobs.table.columns.actions")}
               </TableHead>
             </TableRow>

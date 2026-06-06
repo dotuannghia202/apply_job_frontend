@@ -52,7 +52,7 @@ export function SkillFilterPopover({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+      <Label className="text-xs font-semibold uppercase text-slate-500">
         {t("employerJobs.filters.skill")}
       </Label>
       <Popover open={open} onOpenChange={handleOpenChange}>
