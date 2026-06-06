@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import locationData from "@/assets/location-data/vietnam_provinces_wards_final.json";
+import locationData from "@/assets/location-data/provinces.json";
 import { useGetIndustries } from "@/api/industries/industry.queries";
 import { useGetSpecializationsByIndustryId } from "@/api/specializations/specialization.queries";
 import { useGetSkills } from "@/api/skills/skill.queries";
@@ -809,7 +809,9 @@ export function PostJobForm({ value, onChange, onSubmit, errors }: Props) {
             <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
               <Command>
                 <CommandInput
-                  placeholder={t("employerPostJob.form.placeholders.searchSkills")}
+                  placeholder={t(
+                    "employerPostJob.form.placeholders.searchSkills",
+                  )}
                   value={skillSearch}
                   onValueChange={setSkillSearch}
                 />

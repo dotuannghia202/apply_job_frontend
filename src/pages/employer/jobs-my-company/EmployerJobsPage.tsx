@@ -156,7 +156,10 @@ export default function EmployerJobsPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
         <AppBreadcrumb
           items={[
-            { label: t("employerJobs.breadcrumb.dashboard"), to: "/employer/dashboard" },
+            {
+              label: t("employerJobs.breadcrumb.dashboard"),
+              to: "/employer/dashboard",
+            },
             { label: t("employerJobs.breadcrumb.myJobs") },
           ]}
         />
@@ -174,7 +177,7 @@ export default function EmployerJobsPage() {
               {t("employerJobs.header.description")}
             </p>
           </div>
-          <div className="flex flex-col items-start gap-2 md:items-end">
+          <div className="h-full flex flex-col items-start md:items-end md:gap-9">
             <Button asChild>
               <Link to="/jobs/jd-generator">
                 <Plus className="size-4" aria-hidden="true" />
