@@ -1,12 +1,9 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { AlignLeft, Image, MapPin } from "lucide-react";
 
-import CompanyFooterActions from "./components/CompanyFooterActions";
-import CompanyGeneralInfo from "./components/CompanyGeneralInfo";
 import CompanyHeader from "./components/CompanyHeader";
-import CompanyLogoCard from "./components/CompanyLogoCard";
-import CompanyOverview from "./components/CompanyOverview";
-import CompanyStatusBanners from "./components/CompanyStatusBanners";
 
 import {
   useApproveCompany,
@@ -18,16 +15,6 @@ import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 import type { CompanyStatus } from "@/types/company";
 import { Button } from "@/components/ui/button";
-
-const mockCompany = {
-  name: "Botanical Talent Recruitment",
-  address: "123 Greenhouse Lane, Portland, OR 97201",
-  industry: "Sustainable Talent Ecosystem",
-  about:
-    "At Botanical Talent, we believe that the best professional relationships bloom in environments that prioritize growth, transparency, and natural talent development. Founded in 2024, our mission is to cultivate a recruitment ecosystem where candidates are not just resumes, but flourishing individuals seeking their next fertile ground.\n\nWe specialize in placing high-impact individuals in roles that resonate with their personal and professional core values.",
-  status: "PENDING" as CompanyStatus,
-  logo: null as string | null,
-};
 
 type StatusAction = "approve" | "reject" | "suspend" | "restore";
 
@@ -43,6 +30,7 @@ const resolveRole = (roles: RoleName[] = []): RoleName => {
 };
 
 export default function CompaniesDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const companyId = Number(id);
   const user = useAuthStore((state) => state.user);
@@ -60,61 +48,76 @@ export default function CompaniesDetail() {
   const company = companyQuery.data?.data ?? null;
   const resolvedCompany = useMemo(() => {
     return {
-      name: company?.name ?? mockCompany.name,
-      address: company?.address ?? mockCompany.address,
-      industry: company?.description ?? mockCompany.industry,
-      about: company?.description ?? mockCompany.about,
-      status: company?.status ?? mockCompany.status,
-      logo: company?.logo ?? mockCompany.logo,
+      name: company?.name ?? "",
+      address: company?.address ?? "",
+      about: company?.description ?? "",
+      status: company?.status ?? "PENDING",
+      logo: company?.logo ?? null,
     };
   }, [company]);
+  const overviewParagraphs = useMemo(
+    () =>
+      resolvedCompany.about
+        .split(/\n{2,}/)
+        .map((paragraph) => paragraph.trim())
+        .filter(Boolean),
+    [resolvedCompany.about],
+  );
 
   const getConfirmContent = (action: StatusAction) => {
     switch (action) {
       case "approve":
         return {
-          title: "Approve company?",
-          message: "This will approve the company and allow it to operate.",
-          confirmLabel: "Approve",
+          title: t("companyDetail.confirm.approve.title"),
+          message: t("companyDetail.confirm.approve.message"),
+          confirmLabel: t("companyDetail.confirm.approve.confirm"),
           confirmVariant: "primary" as const,
         };
       case "reject":
         return {
-          title: "Reject company?",
-          message: "This will mark the company as rejected.",
-          confirmLabel: "Reject",
+          title: t("companyDetail.confirm.reject.title"),
+          message: t("companyDetail.confirm.reject.message"),
+          confirmLabel: t("companyDetail.confirm.reject.confirm"),
           confirmVariant: "danger" as const,
         };
       case "suspend":
         return {
-          title: "Suspend company?",
-          message: "This will suspend the company from operating.",
-          confirmLabel: "Suspend",
+          title: t("companyDetail.confirm.suspend.title"),
+          message: t("companyDetail.confirm.suspend.message"),
+          confirmLabel: t("companyDetail.confirm.suspend.confirm"),
           confirmVariant: "danger" as const,
         };
       case "restore":
         return {
-          title: "Restore company?",
-          message: "This will restore the company to active status.",
-          confirmLabel: "Restore",
+          title: t("companyDetail.confirm.restore.title"),
+          message: t("companyDetail.confirm.restore.message"),
+          confirmLabel: t("companyDetail.confirm.restore.confirm"),
           confirmVariant: "primary" as const,
         };
       default:
         return {
-          title: "Update status?",
-          message: "This will update the company status.",
-          confirmLabel: "Confirm",
+          title: t("companyDetail.confirm.fallback.title"),
+          message: t("companyDetail.confirm.fallback.message"),
+          confirmLabel: t("companyDetail.common.confirm"),
           confirmVariant: "primary" as const,
         };
     }
   };
 
   const setSuccessNotice = (message: string) => {
-    setNotice({ variant: "success", title: "Success", message });
+    setNotice({
+      variant: "success",
+      title: t("companyDetail.notifications.successTitle"),
+      message,
+    });
   };
 
   const setErrorNotice = (message: string) => {
-    setNotice({ variant: "error", title: "Failed", message });
+    setNotice({
+      variant: "error",
+      title: t("companyDetail.notifications.errorTitle"),
+      message,
+    });
   };
 
   const handleStatusAction = (action: StatusAction) => {
@@ -135,14 +138,14 @@ export default function CompaniesDetail() {
           onSuccess: () =>
             setSuccessNotice(
               action === "approve"
-                ? "Company approved successfully."
-                : "Company rejected successfully.",
+                ? t("companyDetail.notifications.approveSuccess")
+                : t("companyDetail.notifications.rejectSuccess"),
             ),
           onError: () =>
             setErrorNotice(
               action === "approve"
-                ? "Failed to approve company. Please try again."
-                : "Failed to reject company. Please try again.",
+                ? t("companyDetail.notifications.approveError")
+                : t("companyDetail.notifications.rejectError"),
             ),
         },
       );
@@ -155,16 +158,38 @@ export default function CompaniesDetail() {
         onSuccess: () =>
           setSuccessNotice(
             action === "suspend"
-              ? "Company suspended successfully."
-              : "Company restored successfully.",
+              ? t("companyDetail.notifications.suspendSuccess")
+              : t("companyDetail.notifications.restoreSuccess"),
           ),
         onError: () =>
           setErrorNotice(
             action === "suspend"
-              ? "Failed to suspend company. Please try again."
-              : "Failed to restore company. Please try again.",
+              ? t("companyDetail.notifications.suspendError")
+              : t("companyDetail.notifications.restoreError"),
           ),
       },
+    );
+  };
+
+  const renderStatusBanner = () => {
+    if (role !== "EMPLOYER") return null;
+
+    const bannerClasses: Partial<Record<CompanyStatus, string>> = {
+      PENDING:
+        "rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800",
+      REJECTED:
+        "rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700",
+      SUSPENDED:
+        "rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700",
+    };
+    const className = bannerClasses[resolvedCompany.status];
+
+    if (!className) return null;
+
+    return (
+      <div className={className}>
+        {t(`companyDetail.statusBanners.${resolvedCompany.status}`)}
+      </div>
     );
   };
 
@@ -180,7 +205,7 @@ export default function CompaniesDetail() {
             className="rounded-lg bg-emerald-600 px-3 text-xs font-semibold text-white hover:bg-emerald-700"
             onClick={() => handleStatusAction("approve")}
           >
-            Approve
+            {t("companyDetail.adminStatus.actions.approve")}
           </Button>
           <Button
             type="button"
@@ -188,7 +213,7 @@ export default function CompaniesDetail() {
             className="rounded-lg bg-rose-600 px-3 text-xs font-semibold text-white hover:bg-rose-700"
             onClick={() => handleStatusAction("reject")}
           >
-            Reject
+            {t("companyDetail.adminStatus.actions.reject")}
           </Button>
         </div>
       );
@@ -202,7 +227,7 @@ export default function CompaniesDetail() {
           className="rounded-lg bg-amber-600 px-3 text-xs font-semibold text-white hover:bg-amber-700"
           onClick={() => handleStatusAction("suspend")}
         >
-          Suspend
+          {t("companyDetail.adminStatus.actions.suspend")}
         </Button>
       );
     }
@@ -215,7 +240,7 @@ export default function CompaniesDetail() {
           className="rounded-lg bg-emerald-600 px-3 text-xs font-semibold text-white hover:bg-emerald-700"
           onClick={() => handleStatusAction("restore")}
         >
-          Restore
+          {t("companyDetail.adminStatus.actions.restore")}
         </Button>
       );
     }
@@ -224,49 +249,114 @@ export default function CompaniesDetail() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f8f2]">
-      <div className="mx-auto w-full max-w-4xl px-6 py-10">
+    <main className="min-h-screen bg-[#f7f9fc]">
+      <div className="mx-auto w-full max-w-7xl px-6 py-10">
         <div className="space-y-6">
           <CompanyHeader
-            title="Company Profile"
-            subtitle="Manage your company's public information and branding."
+            title={t("companyDetail.header.title")}
+            subtitle={t("companyDetail.header.subtitle")}
             status={resolvedCompany.status}
             role={role}
             showStatusControl={false}
           />
           {companyQuery.isError ? (
-            <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-              Khong the tai thong tin cong ty. Vui long thu lai.
+            <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              {t("companyDetail.state.loadError")}
             </div>
           ) : null}
           {companyQuery.isLoading ? (
-            <div className="rounded-2xl bg-white px-4 py-3 text-sm text-slate-500 shadow-sm">
-              Dang tai thong tin cong ty...
+            <div className="rounded-lg bg-white px-4 py-3 text-sm text-slate-500 shadow-sm">
+              {t("companyDetail.state.loading")}
             </div>
           ) : null}
           {role === "ADMIN" ? (
-            <section className="rounded-2xl bg-white p-4 shadow-sm">
+            <section className="rounded-lg bg-white p-4 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="text-sm font-semibold text-slate-900">
-                  Company status actions
+                <div>
+                  <div className="text-sm font-semibold text-slate-900">
+                    {t("companyDetail.adminStatus.title")}
+                  </div>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {t("companyDetail.adminStatus.current", {
+                      status: t(
+                        `companyDetail.status.${resolvedCompany.status}`,
+                      ),
+                    })}
+                  </p>
                 </div>
                 {renderAdminActions()}
               </div>
             </section>
           ) : null}
-          <CompanyStatusBanners status={resolvedCompany.status} role={role} />
-          <CompanyLogoCard
-            role={role}
-            companyId={company?.id ?? null}
-            logoUrl={resolvedCompany.logo}
-          />
-          <CompanyGeneralInfo
-            role={role}
-            name={resolvedCompany.name}
-            address={resolvedCompany.address}
-          />
-          <CompanyOverview role={role} about={resolvedCompany.about} />
-          <CompanyFooterActions role={role} />
+          {renderStatusBanner()}
+          <section className="rounded-lg bg-white p-6 shadow-sm">
+            <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+              <aside className="min-h-[240px] overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+                <div className="flex h-full min-h-[240px] w-full items-center justify-center bg-white text-primary">
+                  {resolvedCompany.logo ? (
+                    <img
+                      src={resolvedCompany.logo}
+                      alt={t("companyDetail.profile.logoAlt", {
+                        company: resolvedCompany.name,
+                      })}
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <Image className="size-8" />
+                  )}
+                </div>
+              </aside>
+
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                    <span className="flex size-8 items-center justify-center rounded-lg text-primary">
+                      <MapPin className="size-6" />
+                    </span>
+                    {t("companyDetail.profile.generalInformation")}
+                  </div>
+
+                  <div className="mt-4 grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <p className="text-xs font-semibold text-slate-500">
+                        {t("companyDetail.profile.companyName")}
+                      </p>
+                      <div className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                        {resolvedCompany.name}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-xs font-semibold text-slate-500">
+                        {t("companyDetail.profile.headquartersAddress")}
+                      </p>
+                      <div className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                        {resolvedCompany.address}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-200 pt-6">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                    <span className="flex size-8 items-center justify-center rounded-lg text-primary">
+                      <AlignLeft className="size-6" />
+                    </span>
+                    {t("companyDetail.profile.companyOverview")}
+                  </div>
+
+                  <div className="mt-4 space-y-3 rounded-lg bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700">
+                    {overviewParagraphs.length > 0 ? (
+                      overviewParagraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))
+                    ) : (
+                      <p>{t("companyDetail.profile.noOverview")}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
       <NotificationPopup
@@ -279,7 +369,7 @@ export default function CompaniesDetail() {
         confirmLabel={
           confirmState
             ? getConfirmContent(confirmState.action).confirmLabel
-            : "Confirm"
+            : t("companyDetail.common.confirm")
         }
         confirmVariant={
           confirmState
@@ -296,7 +386,7 @@ export default function CompaniesDetail() {
         title={notice?.title ?? ""}
         message={notice?.message ?? ""}
         onDismiss={() => setNotice(null)}
-        dismissLabel="Close"
+        dismissLabel={t("companyDetail.common.close")}
       />
     </main>
   );

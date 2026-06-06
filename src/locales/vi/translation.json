@@ -1298,6 +1298,88 @@
       "status": "Trạng thái: 403 Bị cấm"
     }
   },
+  "companyDetail": {
+    "common": {
+      "confirm": "Xác nhận",
+      "close": "Đóng"
+    },
+    "header": {
+      "title": "Hồ sơ công ty",
+      "subtitle": "Xem thông tin công khai và nhận diện thương hiệu của công ty."
+    },
+    "state": {
+      "loadError": "Không thể tải thông tin công ty. Vui lòng thử lại.",
+      "loading": "Đang tải thông tin công ty..."
+    },
+    "status": {
+      "APPROVED": "Đã duyệt",
+      "PENDING": "Chờ duyệt",
+      "REJECTED": "Bị từ chối",
+      "SUSPENDED": "Tạm khóa"
+    },
+    "adminStatus": {
+      "title": "Thao tác trạng thái công ty",
+      "current": "Trạng thái hiện tại: {{status}}",
+      "actions": {
+        "approve": "Duyệt",
+        "reject": "Từ chối",
+        "suspend": "Tạm khóa",
+        "restore": "Khôi phục"
+      }
+    },
+    "profile": {
+      "logoLabel": "Logo công ty",
+      "logoAlt": "Logo {{company}}",
+      "generalInformation": "Thông tin chung",
+      "companyName": "Tên công ty",
+      "headquartersAddress": "Địa chỉ trụ sở",
+      "companyOverview": "Tổng quan công ty",
+      "noOverview": "Chưa có mô tả công ty."
+    },
+    "statusBanners": {
+      "PENDING": "Hồ sơ công ty của bạn đang được quản trị viên xem xét. Bạn vẫn có thể cập nhật thông tin từ trang hồ sơ công ty.",
+      "REJECTED": "Hồ sơ công ty của bạn đã bị từ chối. Vui lòng cập nhật thông tin và gửi lại.",
+      "SUSPENDED": "Công ty của bạn đã bị quản trị viên tạm khóa. Vui lòng liên hệ hỗ trợ."
+    },
+    "confirm": {
+      "approve": {
+        "title": "Duyệt công ty?",
+        "message": "Thao tác này sẽ duyệt công ty và cho phép công ty hoạt động.",
+        "confirm": "Duyệt"
+      },
+      "reject": {
+        "title": "Từ chối công ty?",
+        "message": "Thao tác này sẽ đánh dấu công ty là đã bị từ chối.",
+        "confirm": "Từ chối"
+      },
+      "suspend": {
+        "title": "Tạm khóa công ty?",
+        "message": "Thao tác này sẽ tạm khóa công ty khỏi hoạt động.",
+        "confirm": "Tạm khóa"
+      },
+      "restore": {
+        "title": "Khôi phục công ty?",
+        "message": "Thao tác này sẽ khôi phục công ty về trạng thái hoạt động.",
+        "confirm": "Khôi phục"
+      },
+      "fallback": {
+        "title": "Cập nhật trạng thái?",
+        "message": "Thao tác này sẽ cập nhật trạng thái công ty."
+      }
+    },
+    "notifications": {
+      "successTitle": "Thành công",
+      "errorTitle": "Thất bại",
+      "approveSuccess": "Đã duyệt công ty thành công.",
+      "rejectSuccess": "Đã từ chối công ty thành công.",
+      "suspendSuccess": "Đã tạm khóa công ty thành công.",
+      "restoreSuccess": "Đã khôi phục công ty thành công.",
+      "approveError": "Không thể duyệt công ty. Vui lòng thử lại.",
+      "rejectError": "Không thể từ chối công ty. Vui lòng thử lại.",
+      "suspendError": "Không thể tạm khóa công ty. Vui lòng thử lại.",
+      "restoreError": "Không thể khôi phục công ty. Vui lòng thử lại."
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Xác nhận",

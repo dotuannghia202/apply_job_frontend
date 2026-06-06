@@ -1298,6 +1298,88 @@
       "status": "Status: 403 Forbidden"
     }
   },
+  "companyDetail": {
+    "common": {
+      "confirm": "Confirm",
+      "close": "Close"
+    },
+    "header": {
+      "title": "Company Profile",
+      "subtitle": "Review the company's public information and branding."
+    },
+    "state": {
+      "loadError": "Could not load company information. Please try again.",
+      "loading": "Loading company information..."
+    },
+    "status": {
+      "APPROVED": "Approved",
+      "PENDING": "Pending",
+      "REJECTED": "Rejected",
+      "SUSPENDED": "Suspended"
+    },
+    "adminStatus": {
+      "title": "Company status actions",
+      "current": "Current status: {{status}}",
+      "actions": {
+        "approve": "Approve",
+        "reject": "Reject",
+        "suspend": "Suspend",
+        "restore": "Restore"
+      }
+    },
+    "profile": {
+      "logoLabel": "Company logo",
+      "logoAlt": "{{company}} logo",
+      "generalInformation": "General Information",
+      "companyName": "Company Name",
+      "headquartersAddress": "Headquarters Address",
+      "companyOverview": "Company Overview",
+      "noOverview": "No company overview has been provided."
+    },
+    "statusBanners": {
+      "PENDING": "Your company profile is currently under review by our admins. You can still update it from your company profile page.",
+      "REJECTED": "Your profile was rejected. Please update your information and save to resubmit.",
+      "SUSPENDED": "Your company has been suspended by admins. Please contact support for assistance."
+    },
+    "confirm": {
+      "approve": {
+        "title": "Approve company?",
+        "message": "This will approve the company and allow it to operate.",
+        "confirm": "Approve"
+      },
+      "reject": {
+        "title": "Reject company?",
+        "message": "This will mark the company as rejected.",
+        "confirm": "Reject"
+      },
+      "suspend": {
+        "title": "Suspend company?",
+        "message": "This will suspend the company from operating.",
+        "confirm": "Suspend"
+      },
+      "restore": {
+        "title": "Restore company?",
+        "message": "This will restore the company to active status.",
+        "confirm": "Restore"
+      },
+      "fallback": {
+        "title": "Update status?",
+        "message": "This will update the company status."
+      }
+    },
+    "notifications": {
+      "successTitle": "Success",
+      "errorTitle": "Failed",
+      "approveSuccess": "Company approved successfully.",
+      "rejectSuccess": "Company rejected successfully.",
+      "suspendSuccess": "Company suspended successfully.",
+      "restoreSuccess": "Company restored successfully.",
+      "approveError": "Failed to approve company. Please try again.",
+      "rejectError": "Failed to reject company. Please try again.",
+      "suspendError": "Failed to suspend company. Please try again.",
+      "restoreError": "Failed to restore company. Please try again."
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Confirm",
