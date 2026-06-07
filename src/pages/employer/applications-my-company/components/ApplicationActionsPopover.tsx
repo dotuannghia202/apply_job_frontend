@@ -50,7 +50,7 @@ export function ApplicationActionsPopover({
           type="button"
           variant="ghost"
           size="icon"
-          className="size-9 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+          className="size-9 rounded-full text-slate-500 hover:primary hover:text-primary"
           aria-label={t("employerApplications.actions.open")}
         >
           <MoreHorizontal className="size-4" aria-hidden="true" />

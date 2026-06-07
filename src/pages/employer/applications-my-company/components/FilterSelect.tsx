@@ -45,7 +45,7 @@ export function FilterSelect<TValue extends string>({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+      <Label className="text-xs font-semibold uppercase  text-slate-500">
         {label}
       </Label>
       <Popover open={open} onOpenChange={setOpen}>
@@ -55,7 +55,7 @@ export function FilterSelect<TValue extends string>({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="h-10 justify-between rounded-md border-slate-200 bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white"
+            className="h-10 justify-between rounded-md  bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white"
           >
             <span className="truncate">
               {selected?.label ?? t("employerApplications.filters.select")}

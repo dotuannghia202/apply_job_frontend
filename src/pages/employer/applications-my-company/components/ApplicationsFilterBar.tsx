@@ -52,10 +52,10 @@ export function ApplicationsFilterBar({
   ];
 
   return (
-    <section className="sticky top-18.25 z-30 rounded-xl border border-slate-200 bg-white/95 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur">
+    <section className="sticky top-18.25 z-30 rounded-xl border border-primary bg-white/95 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur">
       <div className="grid gap-4 lg:grid-cols-[minmax(260px,1.4fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(220px,1.2fr)]">
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+          <label className="text-xs font-semibold uppercase  text-slate-500">
             {t("employerApplications.filters.search")}
           </label>
           <div className="relative">
@@ -67,7 +67,7 @@ export function ApplicationsFilterBar({
               value={filters.search}
               onChange={(event) => onChange({ search: event.target.value })}
               placeholder={t("employerApplications.filters.searchPlaceholder")}
-              className="h-10 rounded-md border-slate-200 bg-white pl-9 text-sm shadow-none"
+              className="h-10 rounded-md border-primary bg-white pl-9 text-sm shadow-none"
             />
           </div>
         </div>

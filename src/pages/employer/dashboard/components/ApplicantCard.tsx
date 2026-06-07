@@ -1,4 +1,5 @@
 // ApplicantCard.tsx
+import { useUpdateApplicationStatus } from "@/api/applications/application.queries";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,7 @@ const normalizeScore = (score?: number | null) => {
 
 export function ApplicantCard({ application, highlighted }: Props) {
   const { t } = useTranslation();
+  const updateStatusMutation = useUpdateApplicationStatus();
   const candidateName =
     application.candidate?.name ||
     t("employerDashboard.applicant.fallbacks.unknownCandidate");
@@ -53,6 +55,17 @@ export function ApplicantCard({ application, highlighted }: Props) {
     t("employerDashboard.applicant.fallbacks.unknownJob");
   const score = normalizeScore(application.matchScore);
   const resumeUrl = application.resume?.fileUrl;
+
+  const handleViewCv = () => {
+    if (application.status !== "PENDING" || updateStatusMutation.isPending) {
+      return;
+    }
+
+    updateStatusMutation.mutate({
+      id: application.id,
+      data: { status: "REVIEWING" },
+    });
+  };
 
   return (
     <div
@@ -74,9 +87,7 @@ export function ApplicantCard({ application, highlighted }: Props) {
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <h5 className="font-bold text-[#2d3338] truncate">
-            {candidateName}
-          </h5>
+          <h5 className="font-bold text-[#2d3338] truncate">{candidateName}</h5>
           <p className="text-xs text-[#596065] truncate">{jobName}</p>
           <p className="text-[11px] text-slate-400 truncate">
             {candidateEmail}
@@ -105,7 +116,12 @@ export function ApplicantCard({ application, highlighted }: Props) {
           asChild={!!resumeUrl}
         >
           {resumeUrl ? (
-            <a href={resumeUrl} target="_blank" rel="noreferrer">
+            <a
+              href={`https://docs.google.com/viewer?url=${encodeURIComponent(resumeUrl)}`}
+              target="_blank"
+              rel="noreferrer"
+              onClick={handleViewCv}
+            >
               {t("employerDashboard.applicant.actions.viewCv")}
             </a>
           ) : (
