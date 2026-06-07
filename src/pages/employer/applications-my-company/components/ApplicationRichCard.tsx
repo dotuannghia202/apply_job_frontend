@@ -56,7 +56,7 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden border-primary bg-white p-0 shadow-[0_16px_42px_rgba(15,23,42,0.05)] transition hover:border-emerald-200 hover:shadow-[0_22px_55px_rgba(15,23,42,0.08)]">
+    <Card className="overflow-hidden border-primary bg-white p-0 shadow-[0_16px_42px_rgba(15,23,42,0.05)] transition  hover:shadow-[0_22px_55px_rgba(15,23,42,0.08)]">
       <div className="grid gap-5 p-5 lg:grid-cols-[minmax(260px,1.25fr)_minmax(220px,1fr)_minmax(180px,0.8fr)_minmax(150px,0.7fr)_minmax(220px,0.9fr)] lg:items-center">
         <div className="flex min-w-0 items-center gap-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-sm font-black text-emerald-700 ring-4 ring-emerald-50">
@@ -101,11 +101,11 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
           <ScoreRing score={score} size={11} />
         </div>
 
-        <div>
+        <div className="flex justify-center">
           <ApplicationStatusBadge status={application.status} />
         </div>
 
-        <div className="flex items-center justify-start gap-2 lg:justify-end">
+        <div className="flex items-center justify-between gap-2">
           <Button
             type="button"
             variant="outline"

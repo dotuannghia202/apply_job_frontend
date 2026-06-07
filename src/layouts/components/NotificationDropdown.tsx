@@ -135,6 +135,9 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
             : "/applications",
         );
         break;
+      case "NEW_APPLICATION":
+        navigate(`/employer/applicants`);
+        break;
       default:
         break;
     }
