@@ -194,6 +194,7 @@ export default function JobDetailPage() {
           </div>
 
           <JobDetailSidebar
+            companyId={job.company?.id}
             companyName={
               job.company?.name ?? t("jobDetail.fallbacks.unknownCompany")
             }

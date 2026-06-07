@@ -7,11 +7,13 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const chipCls =
   "px-3 py-1.5 bg-white text-slate-600 rounded-lg text-sm font-medium border hover:bg-primary-hover/10 hover:text-primary-hover transition-colors";
 
 type JobDetailSidebarProps = {
+  companyId: number;
   companyName: string;
   companyLogo: string;
   companySize: string;
@@ -26,6 +28,7 @@ type JobDetailSidebarProps = {
 };
 
 export function JobDetailSidebar({
+  companyId,
   companyName,
   companyLogo,
   companySize,
@@ -39,6 +42,7 @@ export function JobDetailSidebar({
   regions,
 }: JobDetailSidebarProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <aside className="w-full lg:w-1/3 flex flex-col gap-6">
@@ -86,7 +90,10 @@ export function JobDetailSidebar({
             </div>
           </div>
         </div>
-        <button className="text-primary font-semibold text-center mt-2 flex items-center justify-center gap-2 hover:text-primary-hover hover:underline">
+        <button
+          onClick={() => navigate(`/company/detail/${companyId}`)}
+          className="text-primary font-semibold text-center mt-2 flex items-center justify-center gap-2 hover:text-primary-hover hover:underline"
+        >
           {t("jobDetail.sidebar.viewCompanyPage")}
         </button>
       </div>
