@@ -215,6 +215,11 @@
       "saveFailed": "Không thể lưu CV này. Vui lòng kiểm tra lại biểu mẫu và thử lại.",
       "loadFailed": "Không thể tải danh sách CV lúc này. Vui lòng thử lại."
     },
+    "notifications": {
+      "createSuccessTitle": "Tạo CV thành công",
+      "createSuccessMessage": "CV của bạn đã được lưu vào hồ sơ.",
+      "dismiss": "Đã hiểu"
+    },
     "status": {
       "loading": "Đang tải danh sách CV...",
       "empty": "Chưa có CV nào được tải lên."

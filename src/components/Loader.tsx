@@ -6,15 +6,20 @@ interface LoaderProps {
   className?: string;
   fullScreen?: boolean;
   color?: string;
+  size?: number | string;
 }
 
 const Loader: React.FC<LoaderProps> = ({
   className,
   fullScreen = false,
   color = "text-primary",
+  size = 64,
 }) => {
   const loaderIcon = (
-    <div className={cn(`spinner-3d ${color}`, className)}>
+    <div
+      className={cn(`spinner-3d ${color}`, className)}
+      style={{ width: size, height: size }}
+    >
       <div className="spinner-3d-inner one"></div>
       <div className="spinner-3d-inner two"></div>
       <div className="spinner-3d-inner three"></div>

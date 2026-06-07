@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { uploadResumeFile } from "@/api/files/file.api";
 import { useCreateResume, useGetMyResumes } from "@/api/resumes/resume.queries";
+import { NotificationPopup } from "@/components/NotificationPopup";
 import { Card } from "@/components/ui/card";
 import {
   CreateResumeForm,
@@ -35,6 +36,17 @@ const MyCV = () => {
   const [uploadError, setUploadError] = useState("");
   const [createError, setCreateError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [popup, setPopup] = useState<{
+    open: boolean;
+    variant: "success";
+    title: string;
+    message: string;
+  }>({
+    open: false,
+    variant: "success",
+    title: "",
+    message: "",
+  });
 
   const resumes = data?.data ?? [];
   const currentLocale = i18n.language === "vi" ? "vi-VN" : "en-GB";
@@ -106,6 +118,12 @@ const MyCV = () => {
       });
 
       setUploadedDraft(null);
+      setPopup({
+        open: true,
+        variant: "success",
+        title: t("myCVManagement.notifications.createSuccessTitle"),
+        message: t("myCVManagement.notifications.createSuccessMessage"),
+      });
     } catch (error) {
       console.error("Failed to create CV", error);
       setCreateError(t("myCVManagement.errors.saveFailed"));
@@ -179,6 +197,14 @@ const MyCV = () => {
           </div>
         )}
       </section>
+      <NotificationPopup
+        open={popup.open}
+        variant={popup.variant}
+        title={popup.title}
+        message={popup.message}
+        dismissLabel={t("myCVManagement.notifications.dismiss")}
+        onDismiss={() => setPopup((prev) => ({ ...prev, open: false }))}
+      />
     </main>
   );
 };

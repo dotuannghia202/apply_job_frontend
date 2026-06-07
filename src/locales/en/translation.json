@@ -215,6 +215,11 @@
       "saveFailed": "Unable to save this CV. Please check the form and retry.",
       "loadFailed": "Unable to load CVs right now. Please try again."
     },
+    "notifications": {
+      "createSuccessTitle": "CV created successfully",
+      "createSuccessMessage": "Your CV has been saved to your profile.",
+      "dismiss": "Got it"
+    },
     "status": {
       "loading": "Loading CVs...",
       "empty": "No CVs uploaded yet."
