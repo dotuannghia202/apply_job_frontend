@@ -4,6 +4,7 @@ import type {
   CreateIndustryRequest,
   Industry,
   IndustryListFilters,
+  UpdateIndustryRequest,
 } from "@/types/industry";
 
 export const fetchIndustries = async (params: IndustryListFilters = {}) => {
@@ -20,6 +21,15 @@ export const fetchIndustryById = async (id: number) => {
 
 export const createIndustry = async (industryData: CreateIndustryRequest) => {
   return axiosClient.post("/industries", industryData) as Promise<
+    BackendResponse<Industry>
+  >;
+};
+
+export const updateIndustry = async (
+  id: number,
+  data: UpdateIndustryRequest,
+) => {
+  return axiosClient.put(`/industries/${id}`, data) as Promise<
     BackendResponse<Industry>
   >;
 };

@@ -37,6 +37,7 @@ import AccountSettingPage from "@/pages/settings/AccountSettingPage";
 import ManageUserPage from "@/pages/admin/management-users/ManageUserPage";
 import UserDetail from "@/pages/admin/management-users/UserDetail";
 import ManagementCompaniesPage from "@/pages/admin/management-companies/ManagementCompaniesPage";
+import SystemSettingPage from "@/pages/admin/system-setting/SystemSettingPage";
 
 import CompaniesDetail from "@/pages/companies/CompaniesDetail";
 import CompanyProfile from "@/pages/companies/CompanyProfile";
@@ -126,6 +127,10 @@ export const router = createBrowserRouter([
               {
                 path: "admin/companies",
                 element: <ManagementCompaniesPage />,
+              },
+              {
+                path: "admin/system-setting",
+                element: <SystemSettingPage />,
               },
               {
                 path: "analytics/system",

@@ -12,7 +12,8 @@
     "postJob": "Đăng tin mới",
     "adminDashboard": "Bảng điều khiển",
     "userManagement": "Quản lý Người dùng",
-    "companyManagement": "Quản lý Công ty"
+    "companyManagement": "Quản lý Công ty",
+    "systemSetting": "Cấu hình hệ thống"
   },
   "jobSearch": {
     "companyPlaceholder": "Tên công ty...",
@@ -476,7 +477,7 @@
   },
   "appFooter": {
     "brand": "Job Portal",
-    "tagline": "\u00a9 2026 Job Portal. Tuyển dụng lấy con người làm trung tâm.",
+    "tagline": "© 2026 Job Portal. Tuyển dụng lấy con người làm trung tâm.",
     "language": "Ngôn ngữ",
     "selected": "Đã chọn",
     "contactSupport": "Liên hệ hỗ trợ",
@@ -919,7 +920,6 @@
     },
     "filters": {
       "title": "Bộ lọc",
-
       "search": "Tìm kiếm",
       "reset": "Đặt lại",
       "keyword": "Từ khóa",
@@ -1801,6 +1801,103 @@
           "description": "Nhà tuyển dụng có thể yêu cầu hỗ trợ về thiết lập công ty, đăng tin tuyển dụng, quản lý ứng viên và sử dụng bảng điều khiển."
         }
       ]
+    }
+  },
+  "systemSetting": {
+    "breadcrumb": {
+      "admin": "Quản trị",
+      "systemSetting": "Cấu hình hệ thống"
+    },
+    "header": {
+      "title": "Cấu hình hệ thống",
+      "description": "Quản lý ngành nghề và chuyên ngành được sử dụng trong nền tảng."
+    },
+    "tabs": {
+      "industry": "Ngành nghề",
+      "specialization": "Chuyên ngành"
+    },
+    "common": {
+      "loading": "Đang tải dữ liệu...",
+      "errorLoading": "Không thể tải dữ liệu. Vui lòng thử lại.",
+      "noData": "Không tìm thấy dữ liệu.",
+      "edit": "Sửa",
+      "delete": "Xóa",
+      "cancel": "Hủy",
+      "create": "Tạo mới",
+      "update": "Cập nhật",
+      "saving": "Đang lưu...",
+      "close": "Đóng"
+    },
+    "pagination": {
+      "summary": "Hiển thị {{start}} – {{end}} trong tổng số {{total}} kết quả"
+    },
+    "notifications": {
+      "successTitle": "Thành công",
+      "errorTitle": "Lỗi"
+    },
+    "industry": {
+      "searchPlaceholder": "Tìm kiếm ngành nghề...",
+      "addButton": "Thêm ngành nghề",
+      "table": {
+        "name": "Tên ngành nghề",
+        "createdAt": "Ngày tạo",
+        "updatedAt": "Ngày cập nhật",
+        "actions": "Thao tác"
+      },
+      "modal": {
+        "createTitle": "Tạo ngành nghề",
+        "createDescription": "Thêm ngành nghề mới vào hệ thống.",
+        "editTitle": "Sửa ngành nghề",
+        "editDescription": "Cập nhật thông tin ngành nghề.",
+        "nameLabel": "Tên ngành nghề",
+        "namePlaceholder": "Nhập tên ngành nghề"
+      },
+      "confirm": {
+        "deleteTitle": "Xóa ngành nghề",
+        "deleteMessage": "Bạn có chắc muốn xóa \"{{name}}\"? Thao tác này không thể hoàn tác."
+      },
+      "notifications": {
+        "createSuccess": "Tạo ngành nghề thành công.",
+        "createError": "Không thể tạo ngành nghề.",
+        "updateSuccess": "Cập nhật ngành nghề thành công.",
+        "updateError": "Không thể cập nhật ngành nghề.",
+        "deleteSuccess": "Xóa ngành nghề thành công.",
+        "deleteError": "Không thể xóa ngành nghề."
+      }
+    },
+    "specialization": {
+      "searchPlaceholder": "Tìm kiếm chuyên ngành...",
+      "addButton": "Thêm chuyên ngành",
+      "allIndustries": "Tất cả ngành nghề",
+      "table": {
+        "name": "Tên chuyên ngành",
+        "industry": "Ngành nghề",
+        "createdAt": "Ngày tạo",
+        "updatedAt": "Ngày cập nhật",
+        "actions": "Thao tác"
+      },
+      "modal": {
+        "createTitle": "Tạo chuyên ngành",
+        "createDescription": "Thêm chuyên ngành mới thuộc một ngành nghề.",
+        "editTitle": "Sửa chuyên ngành",
+        "editDescription": "Cập nhật thông tin chuyên ngành.",
+        "industryLabel": "Ngành nghề",
+        "industryPlaceholder": "Chọn ngành nghề",
+        "nameLabel": "Tên chuyên ngành",
+        "namePlaceholder": "Nhập tên chuyên ngành"
+      },
+      "confirm": {
+        "deleteTitle": "Xóa chuyên ngành",
+        "deleteMessage": "Bạn có chắc muốn xóa \"{{name}}\"? Thao tác này không thể hoàn tác."
+      },
+      "notifications": {
+        "createSuccess": "Tạo chuyên ngành thành công.",
+        "createError": "Không thể tạo chuyên ngành.",
+        "updateSuccess": "Cập nhật chuyên ngành thành công.",
+        "updateError": "Không thể cập nhật chuyên ngành.",
+        "deleteSuccess": "Xóa chuyên ngành thành công.",
+        "deleteError": "Không thể xóa chuyên ngành."
+      }
     }
   }
 }

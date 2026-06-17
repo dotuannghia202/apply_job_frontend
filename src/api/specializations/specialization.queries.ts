@@ -4,10 +4,14 @@ import {
   fetchSpecializationById,
   fetchSpecializationsByIndustryId,
   createSpecialization,
+  updateSpecialization,
   deleteSpecialization,
 } from "./specialization.api";
 import { specializationKeys } from "./specialization.keys";
-import type { SpecializationListFilters } from "@/types/industry";
+import type {
+  SpecializationListFilters,
+  UpdateSpecializationRequest,
+} from "@/types/industry";
 
 export const useGetSpecializations = (
   filters: SpecializationListFilters = {},
@@ -54,6 +58,26 @@ export const useCreateSpecialization = () => {
     mutationFn: createSpecialization,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: specializationKeys.lists() });
+    },
+  });
+};
+
+export const useUpdateSpecialization = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: UpdateSpecializationRequest;
+    }) => updateSpecialization(id, data),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: specializationKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: specializationKeys.detail(variables.id),
+      });
     },
   });
 };

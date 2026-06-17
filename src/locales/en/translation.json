@@ -12,7 +12,8 @@
     "postJob": "Post a Job",
     "adminDashboard": "Dashboard",
     "userManagement": "User Management",
-    "companyManagement": "Company Management"
+    "companyManagement": "Company Management",
+    "systemSetting": "System Setting"
   },
   "jobSearch": {
     "companyPlaceholder": "Company name...",
@@ -476,7 +477,7 @@
   },
   "appFooter": {
     "brand": "Job Portal",
-    "tagline": "\u00a9 2026 Job Portal. Human-Centric Recruitment.",
+    "tagline": "© 2026 Job Portal. Human-Centric Recruitment.",
     "language": "Language",
     "selected": "Selected",
     "contactSupport": "Contact support",
@@ -919,7 +920,6 @@
     },
     "filters": {
       "title": "Filters",
-
       "search": "Search",
       "reset": "Reset",
       "keyword": "Keyword",
@@ -1801,6 +1801,103 @@
           "description": "Employers can request support for company setup, job posting, applicant management, and dashboard usage."
         }
       ]
+    }
+  },
+  "systemSetting": {
+    "breadcrumb": {
+      "admin": "Admin",
+      "systemSetting": "System Setting"
+    },
+    "header": {
+      "title": "System Setting",
+      "description": "Manage industries and specializations used across the platform."
+    },
+    "tabs": {
+      "industry": "Industries",
+      "specialization": "Specializations"
+    },
+    "common": {
+      "loading": "Loading data...",
+      "errorLoading": "Failed to load data. Please try again.",
+      "noData": "No data found.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
+      "saving": "Saving...",
+      "close": "Close"
+    },
+    "pagination": {
+      "summary": "Showing {{start}} – {{end}} of {{total}} results"
+    },
+    "notifications": {
+      "successTitle": "Success",
+      "errorTitle": "Error"
+    },
+    "industry": {
+      "searchPlaceholder": "Search industries...",
+      "addButton": "Add Industry",
+      "table": {
+        "name": "Industry Name",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "actions": "Actions"
+      },
+      "modal": {
+        "createTitle": "Create Industry",
+        "createDescription": "Add a new industry to the system.",
+        "editTitle": "Edit Industry",
+        "editDescription": "Update the industry information.",
+        "nameLabel": "Industry Name",
+        "namePlaceholder": "Enter industry name"
+      },
+      "confirm": {
+        "deleteTitle": "Delete Industry",
+        "deleteMessage": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
+      },
+      "notifications": {
+        "createSuccess": "Industry created successfully.",
+        "createError": "Failed to create industry.",
+        "updateSuccess": "Industry updated successfully.",
+        "updateError": "Failed to update industry.",
+        "deleteSuccess": "Industry deleted successfully.",
+        "deleteError": "Failed to delete industry."
+      }
+    },
+    "specialization": {
+      "searchPlaceholder": "Search specializations...",
+      "addButton": "Add Specialization",
+      "allIndustries": "All Industries",
+      "table": {
+        "name": "Specialization Name",
+        "industry": "Industry",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "actions": "Actions"
+      },
+      "modal": {
+        "createTitle": "Create Specialization",
+        "createDescription": "Add a new specialization under an industry.",
+        "editTitle": "Edit Specialization",
+        "editDescription": "Update the specialization information.",
+        "industryLabel": "Industry",
+        "industryPlaceholder": "Select an industry",
+        "nameLabel": "Specialization Name",
+        "namePlaceholder": "Enter specialization name"
+      },
+      "confirm": {
+        "deleteTitle": "Delete Specialization",
+        "deleteMessage": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
+      },
+      "notifications": {
+        "createSuccess": "Specialization created successfully.",
+        "createError": "Failed to create specialization.",
+        "updateSuccess": "Specialization updated successfully.",
+        "updateError": "Failed to update specialization.",
+        "deleteSuccess": "Specialization deleted successfully.",
+        "deleteError": "Failed to delete specialization."
+      }
     }
   }
 }

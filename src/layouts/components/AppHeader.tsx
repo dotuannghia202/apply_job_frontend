@@ -90,6 +90,10 @@ const AppHeader = () => {
           label: t("header.companyManagement", "Company Management"),
           to: "/admin/companies",
         },
+        {
+          label: t("header.systemSetting", "System Setting"),
+          to: "/admin/system-setting",
+        },
       ];
     }
     if (currentMode === "EMPLOYER") {

@@ -3,10 +3,11 @@ import {
   fetchIndustries,
   fetchIndustryById,
   createIndustry,
+  updateIndustry,
   deleteIndustry,
 } from "./industry.api";
 import { industryKeys } from "./industry.keys";
-import type { IndustryListFilters } from "@/types/industry";
+import type { IndustryListFilters, UpdateIndustryRequest } from "@/types/industry";
 
 export const useGetIndustries = (filters: IndustryListFilters = {}) => {
   const normalizedFilters: Required<
@@ -40,6 +41,21 @@ export const useCreateIndustry = () => {
     mutationFn: createIndustry,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: industryKeys.lists() });
+    },
+  });
+};
+
+export const useUpdateIndustry = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: UpdateIndustryRequest }) =>
+      updateIndustry(id, data),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: industryKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: industryKeys.detail(variables.id),
+      });
     },
   });
 };

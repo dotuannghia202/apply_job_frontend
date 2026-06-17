@@ -8,6 +8,7 @@ import type {
   CreateSpecializationRequest,
   Specialization,
   SpecializationListFilters,
+  UpdateSpecializationRequest,
 } from "@/types/industry";
 
 export const fetchSpecializations = async (
@@ -28,6 +29,15 @@ export const createSpecialization = async (
   specializationData: CreateSpecializationRequest,
 ) => {
   return axiosClient.post("/specializations", specializationData) as Promise<
+    BackendResponse<Specialization>
+  >;
+};
+
+export const updateSpecialization = async (
+  id: number,
+  data: UpdateSpecializationRequest,
+) => {
+  return axiosClient.put(`/specializations/${id}`, data) as Promise<
     BackendResponse<Specialization>
   >;
 };

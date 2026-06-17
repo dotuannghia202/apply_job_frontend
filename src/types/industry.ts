@@ -26,6 +26,14 @@ export interface CreateSpecializationRequest {
   industryId: number;
 }
 
+export interface UpdateIndustryRequest {
+  name: string;
+}
+
+export interface UpdateSpecializationRequest {
+  name: string;
+}
+
 export interface IndustryListFilters {
   page?: number;
   size?: number;
