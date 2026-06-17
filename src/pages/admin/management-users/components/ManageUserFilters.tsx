@@ -58,7 +58,7 @@ export default function ManageUserFilters({
               <option value="EMPLOYER">
                 {t("managementUsers.roles.employer")}
               </option>
-              <option value="ADMIN">{t("managementUsers.roles.admin")}</option>
+
             </select>
           </div>
           <div className="flex items-center gap-2 rounded-lg border   px-3 py-2 text-sm text-slate-600">
