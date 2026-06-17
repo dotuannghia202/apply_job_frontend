@@ -249,7 +249,7 @@ export default function CompaniesDetail() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f9fc]">
+    <main className="min-h-screen bg-main-background">
       <div className="mx-auto w-full max-w-7xl px-6 py-10">
         <div className="space-y-6">
           <CompanyHeader

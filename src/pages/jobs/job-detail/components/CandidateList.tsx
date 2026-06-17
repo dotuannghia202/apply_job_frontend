@@ -39,7 +39,7 @@ export function CandidateList() {
   const { t } = useTranslation();
 
   return (
-    <section className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-100">
+    <section className="bg-white rounded-xl p-6 md:p-8 border border-border">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-xl font-bold text-slate-900">

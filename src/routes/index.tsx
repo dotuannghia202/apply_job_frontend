@@ -229,10 +229,7 @@ export const router = createBrowserRouter([
             path: "profile",
             element: <AccountSettingPage />,
           },
-          {
-            path: "settings",
-            element: <AccountSettingPage />,
-          },
+
           {
             path: "change-password",
             element: <AccountSettingPage />,

@@ -22,7 +22,7 @@ export function JobDetailInfo({
   const { t } = useTranslation();
 
   return (
-    <section className="bg-white rounded-xl p-6 md:p-8 flex flex-col gap-8 shadow-sm border  relative">
+    <section className="bg-white rounded-xl p-6 md:p-8 flex flex-col gap-8 border  relative">
       <div className="absolute left-0 top-8 bottom-8 w-1.5 bg-green-500 rounded-r-full" />
       <div className="flex justify-between items-center">
         <h2 className="text-[20px] font-bold text-slate-900">

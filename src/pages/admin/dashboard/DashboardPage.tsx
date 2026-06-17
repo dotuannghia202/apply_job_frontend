@@ -10,7 +10,7 @@ function DashboardPage() {
   const stats = statsQuery.data?.data;
 
   return (
-    <main className="min-h-screen bg-[#f7f9fc]">
+    <main className="min-h-screen bg-main-background">
       <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <DashboardHeader
           isError={statsQuery.isError}

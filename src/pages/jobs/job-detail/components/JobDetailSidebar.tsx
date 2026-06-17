@@ -46,7 +46,7 @@ export function JobDetailSidebar({
 
   return (
     <aside className="w-full lg:w-1/3 flex flex-col gap-6">
-      <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-6 border ">
+      <div className="bg-white rounded-xl p-6 flex flex-col gap-6 border ">
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 bg-slate-100 rounded-lg flex items-center justify-center overflow-hidden border border-slate-200 shrink-0">
             <img
@@ -98,7 +98,7 @@ export function JobDetailSidebar({
         </button>
       </div>
 
-      <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-6 border ">
+      <div className="bg-white rounded-xl p-6 flex flex-col gap-6 border ">
         <h3 className="text-lg font-bold text-slate-900 border-b  pb-3">
           {t("jobDetail.sidebar.generalInfo")}
         </h3>
@@ -152,7 +152,7 @@ export function JobDetailSidebar({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-4 border">
+      <div className="bg-white rounded-xl p-6 flex flex-col gap-4 border">
         <h3 className="text-lg font-bold text-slate-900">
           {t("jobDetail.sidebar.relatedCategories")}
         </h3>
@@ -165,7 +165,7 @@ export function JobDetailSidebar({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col gap-4 border">
+      <div className="bg-white rounded-xl p-6 flex flex-col gap-4 border">
         <h3 className="text-lg font-bold text-slate-900">
           {t("jobDetail.sidebar.searchByRegion")}
         </h3>

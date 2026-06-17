@@ -66,8 +66,8 @@ export default function UserDetail() {
       gender: t(`managementUsers.detail.profile.gender.${genderKey}`),
       age: user.age
         ? t("managementUsers.detail.profile.ageYears", {
-            value: new Intl.NumberFormat(locale).format(user.age),
-          })
+          value: new Intl.NumberFormat(locale).format(user.age),
+        })
         : t("managementUsers.detail.fallbacks.notAvailable"),
       avatarUrl: user.avatarUrl?.trim() || user.avatar?.trim() || undefined,
     };
@@ -151,7 +151,7 @@ export default function UserDetail() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f9fc]">
+    <main className="min-h-screen bg-main-background">
       <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <AppBreadcrumb
           items={[

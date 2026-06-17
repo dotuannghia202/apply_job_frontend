@@ -78,7 +78,7 @@ export default function JobDetailPage() {
 
   if (!id || Number.isNaN(jobId)) {
     return (
-      <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
+      <main className="min-h-screen bg-main-background px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="rounded-xl border  bg-white p-6 text-slate-600">
             {t("jobDetail.status.notFound")}
@@ -90,7 +90,7 @@ export default function JobDetailPage() {
 
   if (jobQuery.isLoading) {
     return (
-      <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
+      <main className="min-h-screen bg-main-background px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="rounded-xl border bg-white p-6 text-slate-600">
             {t("jobDetail.status.loading")}
@@ -102,7 +102,7 @@ export default function JobDetailPage() {
 
   if (!job) {
     return (
-      <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
+      <main className="min-h-screen bg-main-background px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="rounded-xl border bg-white p-6 text-slate-600">
             {t("jobDetail.status.notFound")}
@@ -160,7 +160,7 @@ export default function JobDetailPage() {
     : t("jobDetail.fallbacks.notSpecified");
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 md:px-6 py-8 md:py-12">
+    <main className="min-h-screen bg-main-background px-4 md:px-6 py-8 md:py-12">
       <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
         <JobDetailHeader
           title={job.name}

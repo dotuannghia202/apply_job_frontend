@@ -31,7 +31,7 @@ export default function EmployerDashboard() {
   }, [applicationsQuery.data?.data?.result]);
 
   return (
-    <main className="min-h-screen bg-[#f7f9fc] p-8 lg:p-12">
+    <main className="min-h-screen bg-main-background p-8 lg:p-12">
       <div className="max-w-7xl mx-auto">
         <DashboardHeader />
 

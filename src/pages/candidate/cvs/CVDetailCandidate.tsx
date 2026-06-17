@@ -83,41 +83,41 @@ const mapResumeToAttachments = (
   resume: Resume,
   t: TFunction,
 ): AttachmentFile[] => [
-  {
-    id: String(resume.id),
-    name: resume.fileName,
-    size: t("myCVManagement.detail.fallbacks.pdfFile"),
-    type: "file",
-    url: resume.fileUrl,
-  },
-];
+    {
+      id: String(resume.id),
+      name: resume.fileName,
+      size: t("myCVManagement.detail.fallbacks.pdfFile"),
+      type: "file",
+      url: resume.fileUrl,
+    },
+  ];
 
 const mapResumeToInsights = (
   resume: Resume,
   t: TFunction,
 ): AiInsightMetric[] => [
-  {
-    id: "skills",
-    label: t("myCVManagement.detail.insights.metrics.skills.label"),
-    value: String(resume.skills?.length ?? 0),
-    caption: t("myCVManagement.detail.insights.metrics.skills.caption"),
-  },
-  {
-    id: "specialization",
-    label: t("myCVManagement.detail.insights.metrics.specialization.label"),
-    value:
-      resume.specialization?.name ?? t("myCVManagement.detail.fallbacks.na"),
-    caption: t("myCVManagement.detail.insights.metrics.specialization.caption"),
-  },
-  {
-    id: "status",
-    label: t("myCVManagement.detail.insights.metrics.status.label"),
-    value: resume.active
-      ? t("myCVManagement.detail.insights.metrics.status.default")
-      : t("myCVManagement.detail.insights.metrics.status.uploaded"),
-    caption: t("myCVManagement.detail.insights.metrics.status.caption"),
-  },
-];
+    {
+      id: "skills",
+      label: t("myCVManagement.detail.insights.metrics.skills.label"),
+      value: String(resume.skills?.length ?? 0),
+      caption: t("myCVManagement.detail.insights.metrics.skills.caption"),
+    },
+    {
+      id: "specialization",
+      label: t("myCVManagement.detail.insights.metrics.specialization.label"),
+      value:
+        resume.specialization?.name ?? t("myCVManagement.detail.fallbacks.na"),
+      caption: t("myCVManagement.detail.insights.metrics.specialization.caption"),
+    },
+    {
+      id: "status",
+      label: t("myCVManagement.detail.insights.metrics.status.label"),
+      value: resume.active
+        ? t("myCVManagement.detail.insights.metrics.status.default")
+        : t("myCVManagement.detail.insights.metrics.status.uploaded"),
+      caption: t("myCVManagement.detail.insights.metrics.status.caption"),
+    },
+  ];
 
 const PageMessage = ({ children }: { children: ReactNode }) => (
   <main className="mx-auto max-w-7xl px-6 py-12 md:py-16">
@@ -182,7 +182,7 @@ const CVDetailCandidate = () => {
           ]}
         />
 
-        <div className="rounded-2xl bg-secondary/30 p-6">
+        <div className="rounded-2xl bg-main-background p-6">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
             <div>
               {/* <p className="uppercase text-muted-foreground">CV detail</p> */}

@@ -165,7 +165,6 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* 🚨 NÚT QUẢ CHUÔNG (Đã được khôi phục lại) */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}

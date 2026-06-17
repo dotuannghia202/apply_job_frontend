@@ -101,7 +101,7 @@ export function RoleParametersForm({ onGenerate }: Props) {
   return (
     <section className="lg:col-span-5 space-y-8">
       {/* ── Main form card ── */}
-      <div className="bg-[#f1f4f7] rounded-xl p-8 space-y-6">
+      <div className="bg-white rounded-xl p-8 space-y-6">
         {/* Heading */}
         <div className="flex items-center gap-3">
           <PenLine size={20} className="text-[#72b183]" />
@@ -219,11 +219,10 @@ export function RoleParametersForm({ onGenerate }: Props) {
               {LEVEL_OPTIONS.map((level) => (
                 <label
                   key={level}
-                  className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold border transition ${
-                    levels.includes(level)
+                  className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold border transition ${levels.includes(level)
                       ? "bg-[#72b183]/15 border-[#72b183] text-[#2d3338]"
                       : "bg-white border-[#eaeef3] text-[#596065]"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
