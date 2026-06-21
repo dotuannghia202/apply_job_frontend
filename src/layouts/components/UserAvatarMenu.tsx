@@ -20,6 +20,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 import authApi from "@/api/authApi";
 import avatarPlaceholder from "@/assets/images/avatar-placeholder.webp";
@@ -242,28 +243,32 @@ function AccountDropdownSection({
         className="group/section flex w-full items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
       >
         <div
-          className={`flex size-10 shrink-0 items-center justify-center transition-colors group-hover/section:text-primary ${isOpen ? "text-primary" : "text-slate-500"
-            }`}
+          className={`flex size-10 shrink-0 items-center justify-center transition-colors group-hover/section:text-primary ${
+            isOpen ? "text-primary" : "text-slate-500"
+          }`}
         >
           <SectionIcon className="size-6" />
         </div>
 
         <span
-          className={`min-w-0 flex-1 text-[15px] font-semibold transition-colors group-hover/section:text-primary ${isOpen ? "text-primary" : "text-slate-800"
-            }`}
+          className={`min-w-0 flex-1 text-[15px] font-semibold transition-colors group-hover/section:text-primary ${
+            isOpen ? "text-primary" : "text-slate-800"
+          }`}
         >
           {t(section.titleKey)}
         </span>
 
         <ChevronDown
-          className={`size-5 shrink-0 transition-[color,transform] duration-300 group-hover/section:text-primary ${isOpen ? "rotate-180 text-primary" : "text-slate-500"
-            }`}
+          className={`size-5 shrink-0 transition-[color,transform] duration-300 group-hover/section:text-primary ${
+            isOpen ? "rotate-180 text-primary" : "text-slate-500"
+          }`}
         />
       </button>
 
       <div
-        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-          }`}
+        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
       >
         <div className="overflow-hidden">
           <div className="space-y-1 pb-3 pl-18 pr-5">
@@ -291,6 +296,7 @@ function AccountDropdownSection({
 }
 
 const UserAvatarMenu = () => {
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -326,6 +332,9 @@ const UserAvatarMenu = () => {
     if (isLoggingOut) return;
 
     setIsLoggingOut(true);
+    // Clear all cached data
+
+    queryClient.clear();
 
     try {
       await authApi.logout();
@@ -333,7 +342,7 @@ const UserAvatarMenu = () => {
       console.error("Failed to logout", error);
     } finally {
       logout();
-      navigate("/login", { replace: true });
+      navigate("/login");
     }
   };
 

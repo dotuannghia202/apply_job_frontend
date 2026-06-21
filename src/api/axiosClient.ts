@@ -39,6 +39,7 @@ const publicEndpoints = [
   "/auth/register",
   "/auth/forgot-password",
   "/auth/refresh",
+  "/auth/logout",
 ];
 
 function isPublicEndpoint(url?: string) {
@@ -46,6 +47,8 @@ function isPublicEndpoint(url?: string) {
 }
 
 function clearAuthAndRedirect() {
+  if (!useAuthStore.getState().isAuthenticated) return;
+
   useAuthStore.getState().logout();
   window.location.href = "/401";
 }
@@ -69,6 +72,10 @@ axiosClient.interceptors.response.use(
     const url = originalRequest.url || "";
 
     if (status === 401 && !originalRequest._retry) {
+      if (!useAuthStore.getState().isAuthenticated) {
+        return Promise.reject(error);
+      }
+
       if (isPublicEndpoint(url)) {
         if (url.includes("/auth/refresh")) clearAuthAndRedirect();
         return Promise.reject(error);

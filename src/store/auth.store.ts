@@ -6,7 +6,7 @@ interface AuthState {
   avatarUrl: string | null;
   company: AuthUser["company"] | null;
   isAuthenticated: boolean;
-  setAuth: (user: AuthUser) => void;
+  setAuth: (user: AuthUser | null) => void;
   setAvatar: (avatarUrl: string | null) => void;
   setCompany: (company: AuthUser["company"] | null) => void;
   setRoles: (roles: RoleName[]) => void;
@@ -20,10 +20,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
 
   setAuth: (user) => {
+    if (!user) {
+      set({
+        user: null,
+        avatarUrl: null,
+        company: null,
+        isAuthenticated: false,
+      });
+      return;
+    }
+
     const normalizedUser = {
       ...user,
-      avatarUrl: user.avatarUrl ?? null,
-      isActive: user.isActive ?? null,
+      avatarUrl: user?.avatarUrl ?? null,
+      isActive: user?.isActive ?? null,
     };
 
     set({
