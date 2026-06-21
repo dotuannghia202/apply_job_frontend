@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 
 import { fetchAccountInfo } from "@/api/users/user.api";
 import { useUpdateUserRoles } from "@/api/users/user.queries";
-import authApi from "@/api/authApi";
 import { Switch } from "@/components/ui/switch";
 import { normalizeRoles } from "@/helper/auth-roles";
 import { cn } from "@/lib/utils";
@@ -67,7 +66,7 @@ const AppHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  const accessToken = useAuthStore((state) => state.accessToken);
+
   const setAuth = useAuthStore((state) => state.setAuth);
   const updateUserRolesMutation = useUpdateUserRoles();
   const roles = user?.roles ?? [];
@@ -159,45 +158,31 @@ const AppHeader = () => {
         const updatedRoles =
           responseRoles.length > 0 ? responseRoles : nextRoles;
 
-        const refreshResponse = await authApi.refreshToken();
-        const nextAccessToken = refreshResponse.data?.accessToken;
-        if (nextAccessToken) {
-          localStorage.setItem("accessToken", nextAccessToken);
-        }
-
         const profileResponse = await fetchAccountInfo();
         const profileData = profileResponse.data ?? null;
         const profile =
           profileData && "user" in profileData ? profileData.user : profileData;
-        const resolvedAccessToken =
-          nextAccessToken ?? accessToken ?? localStorage.getItem("accessToken");
 
-        if (profile && resolvedAccessToken) {
-          setAuth(
-            {
-              id: profile.id,
-              email: profile.email,
-              name: profile.name,
-              avatarUrl: profile.avatarUrl ?? null,
-              isActive: profile.isActive ?? null,
-              roles: normalizeRoles(profile.roles ?? []),
-              company: profile.company ?? null,
-            },
-            resolvedAccessToken,
-          );
-        } else if (resolvedAccessToken) {
-          setAuth(
-            {
-              id: user.id,
-              email: user.email,
-              name: user.name,
-              avatarUrl: user.avatarUrl ?? null,
-              isActive: user.isActive ?? null,
-              roles: updatedRoles,
-              company: user.company ?? null,
-            },
-            resolvedAccessToken,
-          );
+        if (profile) {
+          setAuth({
+            id: profile.id,
+            email: profile.email,
+            name: profile.name,
+            avatarUrl: profile.avatarUrl ?? null,
+            isActive: profile.isActive ?? null,
+            roles: normalizeRoles(profile.roles ?? []),
+            company: profile.company ?? null,
+          });
+        } else {
+          setAuth({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            avatarUrl: user.avatarUrl ?? null,
+            isActive: user.isActive ?? null,
+            roles: updatedRoles,
+            company: user.company ?? null,
+          });
         }
 
         const hasCompany = Boolean(profile?.company?.id ?? user.company?.id);

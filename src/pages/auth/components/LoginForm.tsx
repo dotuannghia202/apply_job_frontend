@@ -72,9 +72,9 @@ export const LoginForm = () => {
       try {
         const res = await authApi.login(formLogin);
         if (res.statusCode === 200 && res.data) {
-          const { accessToken, user } = res.data;
+          const { user } = res.data;
 
-          setAuth(user, accessToken);
+          setAuth(user);
           navigate("/");
         }
       } catch (error) {
@@ -193,26 +193,6 @@ export const LoginForm = () => {
           t("auth.login.submit")
         )}
       </Button>
-
-      {/* Social Logins */}
-      {/* <div className="flex justify-center gap-4 mt-8">
-        <SocialButton icon={<Chrome className="w-5 h-5" />} />
-        <SocialButton icon={<Github className="w-5 h-5" />} />
-        <SocialButton
-          icon={
-            <Facebook className="w-5 h-5 text-blue-600" fill="currentColor" />
-          }
-        />
-      </div> */}
     </form>
   );
 };
-
-// const SocialButton = ({ icon }: { icon: React.ReactNode }) => (
-//   <button
-//     type="button"
-//     className="w-12 h-12 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer shadow-md"
-//   >
-//     {icon}
-//   </button>
-// );

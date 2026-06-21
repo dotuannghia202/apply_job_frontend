@@ -72,8 +72,7 @@ function mapToAuthUser(updatedUser: User, fallbackUser: AuthUser | null) {
 export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
   const { t } = useTranslation();
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
-  const authUser = useAuthStore((state) => state.user);
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const currentUser = useAuthStore((state) => state.user);
   const setAuth = useAuthStore((state) => state.setAuth);
   const updateUserMutation = useUpdateUser();
 
@@ -217,7 +216,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
     event.preventDefault();
     if (!user || !validate()) return;
 
-    const roles = normalizeRoles(user.roles ?? authUser?.roles ?? []);
+    const roles = normalizeRoles(user.roles ?? currentUser?.roles ?? []);
     const parsedAge = form.age ? Number(form.age) : undefined;
 
     try {
@@ -229,8 +228,8 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
           age: parsedAge,
           gender: form.gender || null,
           address: form.address.trim() || null,
-          isActive: user.isActive ?? authUser?.isActive ?? null,
-          companyId: user.company?.id ?? authUser?.company?.id ?? null,
+          isActive: user.isActive ?? currentUser?.isActive ?? null,
+          companyId: user.company?.id ?? currentUser?.company?.id ?? null,
           roles,
         },
       });
@@ -245,9 +244,7 @@ export default function ProfileForm({ user, isLoading }: ProfileFormProps) {
         roles,
       };
 
-      if (accessToken) {
-        setAuth(mapToAuthUser(updatedUser, authUser), accessToken);
-      }
+      setAuth(mapToAuthUser(updatedUser, currentUser));
 
       setPopup({
         open: true,

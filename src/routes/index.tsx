@@ -42,18 +42,7 @@ import SystemSettingPage from "@/pages/admin/system-setting/SystemSettingPage";
 import CompaniesDetail from "@/pages/companies/CompaniesDetail";
 import CompanyProfile from "@/pages/companies/CompanyProfile";
 import PlaceholderPage from "@/pages/static/PlaceholderPage";
-
-function getUserRoles(): RoleName[] {
-  const rawUser = localStorage.getItem("authUser");
-  if (!rawUser) return [];
-
-  try {
-    const user = JSON.parse(rawUser);
-    return normalizeRoles(user?.roles);
-  } catch {
-    return [];
-  }
-}
+import { useAuthStore } from "@/store/auth.store";
 
 function getDefaultHomePath(roles: RoleName[]) {
   if (roles.includes("ADMIN")) return "/admin/dashboard";
@@ -63,10 +52,10 @@ function getDefaultHomePath(roles: RoleName[]) {
 }
 
 function HomeRedirect() {
-  const token = localStorage.getItem("accessToken");
-  const roles = getUserRoles();
+  const user = useAuthStore((state) => state.user);
+  const roles = normalizeRoles(user?.roles ?? []);
 
-  if (!token || roles.length === 0) {
+  if (roles.length === 0) {
     return <Navigate to="/login" replace />;
   }
 

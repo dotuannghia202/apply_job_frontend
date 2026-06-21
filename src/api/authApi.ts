@@ -25,11 +25,9 @@ const authApi = {
     return axiosClient.post(url, data);
   },
 
-  refreshToken(): Promise<BackendResponse<{ accessToken: string }>> {
+  refreshToken(): Promise<BackendResponse<void>> {
     const url = `/auth/refresh`;
-    return axiosClient.get(url) as Promise<
-      BackendResponse<{ accessToken: string }>
-    >;
+    return axiosClient.get(url) as Promise<BackendResponse<void>>;
   },
 
   logout(): Promise<BackendResponse<void>> {
