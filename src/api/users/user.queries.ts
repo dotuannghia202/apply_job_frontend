@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "@/store/auth.store";
 import {
   assignCompanyToCurrentUser,
   changePassword,
@@ -51,6 +52,7 @@ export const useGetAccountInfo = () => {
     queryKey: userKeys.account(),
     queryFn: fetchAccountInfo,
     staleTime: 5 * 60 * 1000,
+    enabled: useAuthStore((state) => state.isAuthenticated), // Only fetch if user is not already set
   });
 };
 

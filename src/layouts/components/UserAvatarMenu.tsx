@@ -334,14 +334,13 @@ const UserAvatarMenu = () => {
     setIsLoggingOut(true);
     // Clear all cached data
 
-    queryClient.clear();
-
     try {
       await authApi.logout();
     } catch (error) {
       console.error("Failed to logout", error);
     } finally {
       logout();
+      queryClient.clear();
       navigate("/login");
     }
   };
