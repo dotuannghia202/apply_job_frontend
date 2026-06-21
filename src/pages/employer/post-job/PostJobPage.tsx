@@ -245,7 +245,7 @@ export default function PostJobPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f9fc] px-6 py-12">
+    <main className="min-h-screen bg-main-background px-6 py-12">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <PostJobForm

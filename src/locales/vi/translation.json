@@ -1213,6 +1213,13 @@
       "addressRequired": "Vui lòng nhập địa chỉ công ty.",
       "createFailed": "Đã xảy ra lỗi khi tạo công ty."
     },
+    "notifications": {
+      "successTitle": "Tạo công ty thành công",
+      "successMessage": "Hồ sơ công ty của bạn đã được tạo thành công.",
+      "successAction": "Đến bảng điều khiển",
+      "errorTitle": "Tạo công ty thất bại",
+      "errorAction": "Thử lại"
+    },
     "profile": {
       "title": "Tạo công ty mới",
       "description": "Thiết lập hồ sơ công ty để bắt đầu tuyển dụng nhanh hơn.",

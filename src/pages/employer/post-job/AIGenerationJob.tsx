@@ -45,7 +45,7 @@ interface PopupState {
 }
 
 export default function AIGenerationJob() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const company = useAuthStore((state) => state.company);
   const navigate = useNavigate();
   const [roleParams, setRoleParams] = useState<RoleParams | null>(null);

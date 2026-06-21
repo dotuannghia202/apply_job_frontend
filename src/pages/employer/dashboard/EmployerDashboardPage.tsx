@@ -30,6 +30,8 @@ export default function EmployerDashboard() {
       .slice(0, 3);
   }, [applicationsQuery.data?.data?.result]);
 
+  console.log("statsQuery.data?.data:", statsQuery.data?.data);
+
   return (
     <main className="min-h-screen bg-main-background p-8 lg:p-12">
       <div className="max-w-7xl mx-auto">

@@ -1213,6 +1213,13 @@
       "addressRequired": "Please enter a company address.",
       "createFailed": "Something went wrong while creating the company."
     },
+    "notifications": {
+      "successTitle": "Company created",
+      "successMessage": "Your company profile has been created successfully.",
+      "successAction": "Go to dashboard",
+      "errorTitle": "Company creation failed",
+      "errorAction": "Try again"
+    },
     "profile": {
       "title": "Create a new company",
       "description": "Set up your company profile to start hiring talent faster.",

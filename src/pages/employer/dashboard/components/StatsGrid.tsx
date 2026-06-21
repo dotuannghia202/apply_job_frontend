@@ -104,6 +104,8 @@ function StatCardItem({
   const isAI = stat.variant === "ai";
   const isSecondary = stat.variant === "secondary";
 
+  console.log("Stats value:", stat.value);
+
   return (
     <Card
       className={cn(

@@ -5,7 +5,17 @@ import { CompanyProfileForm } from "./components/CompanyProfileForm";
 import { CompanySelectPanel } from "./components/CompanySelectPanel";
 import { uploadCompanyLogo } from "@/api/files/file.api";
 import { useCreateCompany } from "@/api/companies/company.queries";
+import { NotificationPopup } from "@/components/NotificationPopup";
 import { useAuthStore } from "@/store/auth.store";
+
+type PopupState = {
+  open: boolean;
+  variant: "success" | "error";
+  title: string;
+  message: string;
+  dismissLabel: string;
+  onDismiss?: () => void;
+};
 
 export default function CreateCompanyPage() {
   const { t } = useTranslation();
@@ -18,6 +28,13 @@ export default function CreateCompanyPage() {
   const [companyName, setCompanyName] = useState("");
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
+  const [popup, setPopup] = useState<PopupState>({
+    open: false,
+    variant: "success",
+    title: "",
+    message: "",
+    dismissLabel: "",
+  });
 
   useEffect(() => {
     if (!logoPreviewUrl) return;
@@ -32,21 +49,31 @@ export default function CreateCompanyPage() {
     setLogoPreviewUrl(URL.createObjectURL(file));
   };
 
+  const showCreateError = (message: string) => {
+    setPopup({
+      open: true,
+      variant: "error",
+      title: t("employerCreateCompany.notifications.errorTitle"),
+      message,
+      dismissLabel: t("employerCreateCompany.notifications.errorAction"),
+    });
+  };
+
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (!logoFile) {
-      window.alert(t("employerCreateCompany.validation.logoRequired"));
+      showCreateError(t("employerCreateCompany.validation.logoRequired"));
       return;
     }
 
     if (!companyName.trim()) {
-      window.alert(t("employerCreateCompany.validation.nameRequired"));
+      showCreateError(t("employerCreateCompany.validation.nameRequired"));
       return;
     }
 
     if (!address.trim()) {
-      window.alert(t("employerCreateCompany.validation.addressRequired"));
+      showCreateError(t("employerCreateCompany.validation.addressRequired"));
       return;
     }
 
@@ -72,17 +99,24 @@ export default function CreateCompanyPage() {
         setCompany({ id: response.data.id, name: response.data.name });
       }
 
-      navigate("/employer/dashboard", { replace: true });
+      setPopup({
+        open: true,
+        variant: "success",
+        title: t("employerCreateCompany.notifications.successTitle"),
+        message: t("employerCreateCompany.notifications.successMessage"),
+        dismissLabel: t("employerCreateCompany.notifications.successAction"),
+        onDismiss: () => navigate("/employer/dashboard", { replace: true }),
+      });
     } catch (error) {
       console.error("Failed to create company", error);
-      window.alert(t("employerCreateCompany.validation.createFailed"));
+      showCreateError(t("employerCreateCompany.validation.createFailed"));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f9fc] px-6 py-12">
+    <main className="min-h-screen bg-main-background px-6 py-12">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#2d3338] mb-4 leading-tight">
@@ -114,6 +148,17 @@ export default function CreateCompanyPage() {
           <CompanySelectPanel />
         </form>
       </div>
+      <NotificationPopup
+        open={popup.open}
+        variant={popup.variant}
+        title={popup.title}
+        message={popup.message}
+        dismissLabel={popup.dismissLabel}
+        onDismiss={() => {
+          setPopup((current) => ({ ...current, open: false }));
+          popup.onDismiss?.();
+        }}
+      />
     </main>
   );
 }
