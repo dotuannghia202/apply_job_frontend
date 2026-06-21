@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
-export function PageHero() {
+export function PageHero({ handleClickBtn }: { handleClickBtn: () => void }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   return (
     <header className="mb-12">
@@ -22,7 +20,7 @@ export function PageHero() {
         variant="outline"
         size="lg"
         className="mt-8 rounded-lg font-bold text-primary border-primary hover:bg-primary hover:text-white"
-        onClick={() => navigate("/jobs/publish")}
+        onClick={handleClickBtn}
       >
         {t("employerPostJob.aiHero.postManually")}
       </Button>

@@ -1039,6 +1039,11 @@
     "common": {
       "removeItem": "Xóa {{item}}"
     },
+    "postJobClick": {
+      "noCompanyTitle": "Không tìm thấy hồ sơ công ty",
+      "noCompanyMessage": "Vui lòng tạo hồ sơ công ty trước khi đăng tuyển dụng.",
+      "redirectToCompanySetup": "Tạo hồ sơ công ty"
+    },
     "validation": {
       "startDatePast": "Ngày bắt đầu không được nằm trong quá khứ.",
       "descriptionRequired": "Vui lòng nhập mô tả công việc.",

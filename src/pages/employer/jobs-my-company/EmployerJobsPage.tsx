@@ -1,7 +1,7 @@
 import { BriefcaseBusiness, Plus } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   useDeleteJob,
@@ -29,12 +29,14 @@ import {
 } from "@/pages/employer/jobs-my-company/helper";
 import type { Job } from "@/types/job";
 import { NotificationPopup } from "@/components/NotificationPopup";
+import { useAuthStore } from "@/store/auth.store";
 
 const getLocale = (language: string) =>
   language.startsWith("vi") ? "vi-VN" : "en-US";
 
 export default function EmployerJobsPage() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [filters, setFilters] =
     useState<EmployerJobFilters>(createInitialFilters);
   const [appliedFilters, setAppliedFilters] =
@@ -55,6 +57,8 @@ export default function EmployerJobsPage() {
     title: "",
     message: "",
   });
+  const companyId = useAuthStore((state) => state.company?.id);
+
   const locale = getLocale(i18n.language);
   const queryFilters = useMemo(
     () => toQueryFilters(appliedFilters, page, DEFAULT_PAGE_SIZE),
@@ -69,6 +73,24 @@ export default function EmployerJobsPage() {
   const meta = hrJobsQuery.data?.data?.meta;
   const total = meta?.total ?? jobs.length;
   const hasNextPage = meta ? meta.page < meta.pages : false;
+
+  const handlePostNewJobClick = () => {
+    if (!companyId) {
+      setPopup({
+        open: true,
+        variant: "error",
+        title: t("employerPostJob.postJobClick.noCompanyTitle"),
+        message: t("employerPostJob.postJobClick.noCompanyMessage"),
+      });
+      return;
+    }
+    navigate("/jobs/jd-generator");
+  };
+
+  const handleRediretc = () => {
+    setPopup((prev) => ({ ...prev, open: false }));
+    navigate("/employer/onboarding/company");
+  };
 
   const updateFilters = (patch: Partial<EmployerJobFilters>) => {
     setFilters((current) => ({ ...current, ...patch }));
@@ -178,11 +200,9 @@ export default function EmployerJobsPage() {
             </p>
           </div>
           <div className="h-full flex flex-col items-start md:items-end md:gap-9">
-            <Button asChild>
-              <Link to="/jobs/jd-generator">
-                <Plus className="size-4" aria-hidden="true" />
-                {t("employerJobs.header.postNewJob")}
-              </Link>
+            <Button onClick={handlePostNewJobClick}>
+              <Plus className="size-4" aria-hidden="true" />
+              {t("employerJobs.header.postNewJob")}
             </Button>
             <div className="text-sm font-semibold text-slate-600">
               {t("employerJobs.header.totalJobs")}{" "}
@@ -267,6 +287,10 @@ export default function EmployerJobsPage() {
         variant={popup.variant}
         title={popup.title}
         message={popup.message}
+        onCancel={() => setPopup((prev) => ({ ...prev, open: false }))}
+        confirmLabel={t("employerPostJob.postJobClick.redirectToCompanySetup")}
+        onConfirm={() => handleRediretc()}
+        closeOnBackdrop={true}
         onDismiss={() => setPopup((prev) => ({ ...prev, open: false }))}
       />
       <NotificationPopup

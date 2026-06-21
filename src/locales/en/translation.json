@@ -1039,6 +1039,11 @@
     "common": {
       "removeItem": "Remove {{item}}"
     },
+    "postJobClick": {
+      "noCompanyTitle": "No company profile found",
+      "noCompanyMessage": "Please create a company profile before posting a job.",
+      "redirectToCompanySetup": "Go to company setup"
+    },
     "validation": {
       "startDatePast": "Start date cannot be in the past.",
       "descriptionRequired": "Please enter a job description.",
