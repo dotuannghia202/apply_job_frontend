@@ -63,12 +63,13 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
   // XỬ LÝ WEBSOCKET (REAL-TIME)
   useEffect(() => {
     if (!user) return;
-
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api/v1";
+    const wsUrl = apiBaseUrl.replace(/\/api\/v1\/?$/, "") + "/ws";
     const stompClient = new Client({
       // Đảm bảo URL trỏ đúng về cổng backend của bạn
-      webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
+      webSocketFactory: () => new SockJS(wsUrl),
       onConnect: () => {
-        console.log("🔗 Đã kết nối WebSocket");
+        console.log("Đã kết nối WebSocket", wsUrl);
 
         // Lắng nghe kênh Cá nhân
         stompClient.subscribe(`/topic/user/${user.id}`, (message) => {
