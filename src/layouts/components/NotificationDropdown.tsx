@@ -65,41 +65,24 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
     if (!user) return;
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api/v1";
     const wsUrl = apiBaseUrl.replace(/\/api\/v1\/?$/, "") + "/ws";
+
     const stompClient = new Client({
-      // Đảm bảo URL trỏ đúng về cổng backend của bạn
       webSocketFactory: () => new SockJS(wsUrl),
+
       onConnect: () => {
         console.log("Đã kết nối WebSocket", wsUrl);
 
-        // Lắng nghe kênh Cá nhân
-        stompClient.subscribe(`/topic/user/${user.id}`, (message) => {
-          const newNotif = JSON.parse(message.body);
+        // 1. Lắng nghe kênh Cá nhân (Bỏ if đi để nhận full thông báo)
+        stompClient.subscribe(`/topic/user/${user.id}`, () => {
+          refetch();
 
-          if (
-            newNotif.targetRole === currentRole ||
-            newNotif.targetRole === `ROLE_${currentRole}`
-          ) {
-            alert(
-              t("notificationDropdown.alerts.newNotification", {
-                title: newNotif.title,
-              }),
-            );
-            refetch();
-          }
         });
 
-        // Lắng nghe kênh Admin
-        if (user.roles.includes("ADMIN") || user.roles.includes("ADMIN")) {
-          stompClient.subscribe(`/topic/admin`, (message) => {
-            const newNotif = JSON.parse(message.body);
-            if (currentRole === "ADMIN") {
-              alert(
-                t("notificationDropdown.alerts.adminAlert", {
-                  title: newNotif.title,
-                }),
-              );
-              refetch();
-            }
+        // 2. Lắng nghe kênh Admin (Chỉ cần user có quyền Admin là được nghe)
+        if (user.roles.includes("ADMIN")) {
+          stompClient.subscribe(`/topic/admin`, () => {
+            refetch();
+
           });
         }
       },
@@ -110,7 +93,7 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
     return () => {
       stompClient.deactivate();
     };
-  }, [user, currentRole, refetch, t]);
+  }, [user, refetch, t]);
 
   // HÀM CHUYỂN HƯỚNG KHI CLICK VÀO 1 THÔNG BÁO
   const handleNotifClick = (notif: INotification) => {
