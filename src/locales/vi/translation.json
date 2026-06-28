@@ -13,7 +13,9 @@
     "adminDashboard": "Bảng điều khiển",
     "userManagement": "Quản lý Người dùng",
     "companyManagement": "Quản lý Công ty",
-    "systemSetting": "Cấu hình hệ thống"
+    "systemSetting": "Cấu hình hệ thống",
+    "login": "Đăng nhập",
+    "register": "Đăng ký"
   },
   "jobSearch": {
     "companyPlaceholder": "Tên công ty...",
@@ -1943,5 +1945,11 @@
         "deleteError": "Không thể xóa kỹ năng."
       }
     }
+  },
+  "authNotice": {
+    "title": "Yêu cầu đăng nhập",
+    "message": "Bạn cần đăng nhập để thực hiện chức năng này. Bạn có muốn đi tới trang đăng nhập không?",
+    "loginBtn": "Đăng nhập",
+    "cancelBtn": "Hủy"
   }
 }

@@ -13,7 +13,9 @@
     "adminDashboard": "Dashboard",
     "userManagement": "User Management",
     "companyManagement": "Company Management",
-    "systemSetting": "System Setting"
+    "systemSetting": "System Setting",
+    "login": "Log In",
+    "register": "Register"
   },
   "jobSearch": {
     "companyPlaceholder": "Company name...",
@@ -1943,5 +1945,11 @@
         "deleteError": "Failed to delete skill."
       }
     }
+  },
+  "authNotice": {
+    "title": "Authentication Required",
+    "message": "You need to log in to perform this action. Would you like to go to the login page?",
+    "loginBtn": "Log In",
+    "cancelBtn": "Cancel"
   }
 }

@@ -17,7 +17,6 @@ import AuthRequiredPage from "@/pages/errors/AuthRequiredPage";
 import AdminDashboardPage from "@/pages/admin/dashboard/DashboardPage";
 
 import { normalizeRoles } from "@/helper/auth-roles";
-import type { RoleName } from "@/types/auth";
 import JobListPage from "@/pages/jobs/list-jobs/JobListPage";
 import EmployerDashboard from "@/pages/employer/dashboard/EmployerDashboardPage";
 import EmployerApplicationsPage from "@/pages/employer/applications-my-company/EmployerApplicationsPage";
@@ -44,22 +43,17 @@ import CompanyProfile from "@/pages/companies/CompanyProfile";
 import PlaceholderPage from "@/pages/static/PlaceholderPage";
 import { useAuthStore } from "@/store/auth.store";
 
-function getDefaultHomePath(roles: RoleName[]) {
-  if (roles.includes("ADMIN")) return "/admin/dashboard";
-  if (roles.includes("EMPLOYER")) return "/employer/dashboard";
-  if (roles.includes("CANDIDATE")) return "/jobs";
-  return "/403";
-}
-
-function HomeRedirect() {
+function RootPathHandler() {
   const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const roles = normalizeRoles(user?.roles ?? []);
 
-  if (roles.length === 0) {
-    return <Navigate to="/login" replace />;
+  if (isAuthenticated) {
+    if (roles.includes("ADMIN")) return <Navigate to="/admin/dashboard" replace />;
+    if (roles.includes("EMPLOYER")) return <Navigate to="/employer/dashboard" replace />;
   }
 
-  return <Navigate to={getDefaultHomePath(roles)} replace />;
+  return <JobListPage />;
 }
 
 function SimplePage({ title }: { title: string }) {
@@ -71,7 +65,7 @@ function SimplePage({ title }: { title: string }) {
 }
 
 export const router = createBrowserRouter([
-  // Public routes
+  // Public routes (Auth)
   {
     element: <AuthLayout />,
     children: [
@@ -85,18 +79,52 @@ export const router = createBrowserRouter([
   { path: "/401", element: <AuthRequiredPage /> },
   { path: "/403", element: <UnauthorizedPage /> },
 
-  // Protected routes
+  // App Layout (contains public and protected pages)
   {
-    element: <RequireAuth />,
+    element: <AppLayout />,
     children: [
+      // 1. PUBLIC routes
       {
-        element: <AppLayout />,
-        children: [
-          {
-            index: true,
-            element: <HomeRedirect />,
-          },
+        path: "/",
+        element: <RootPathHandler />,
+      },
+      {
+        path: "jobs",
+        element: <JobListPage />,
+      },
+      {
+        path: "jobs/detail/:id",
+        element: <JobDetailPage />,
+      },
+      {
+        path: "company/detail/:id",
+        element: <CompaniesDetail />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PlaceholderPage type="privacy" />,
+      },
+      {
+        path: "terms-of-service",
+        element: <PlaceholderPage type="terms" />,
+      },
+      {
+        path: "cookie-settings",
+        element: <PlaceholderPage type="cookies" />,
+      },
+      {
+        path: "accessibility",
+        element: <PlaceholderPage type="accessibility" />,
+      },
+      {
+        path: "support",
+        element: <PlaceholderPage type="support" />,
+      },
 
+      // 2. PROTECTED routes (require authentication)
+      {
+        element: <RequireAuth />,
+        children: [
           // ADMIN only
           {
             element: <RequireRoles allowedRoles={["ADMIN"]} />,
@@ -197,56 +225,14 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // Public jobs listing (available to all auth roles)
-          {
-            element: (
-              <RequireRoles allowedRoles={["CANDIDATE", "EMPLOYER", "ADMIN"]} />
-            ),
-            children: [
-              {
-                path: "jobs",
-                element: <JobListPage />,
-              },
-              {
-                path: "jobs/detail/:id",
-                element: <JobDetailPage />,
-              },
-              {
-                path: "company/detail/:id",
-                element: <CompaniesDetail />,
-              },
-            ],
-          },
-
           // Shared for all authenticated users
           {
             path: "profile",
             element: <AccountSettingPage />,
           },
-
           {
             path: "change-password",
             element: <AccountSettingPage />,
-          },
-          {
-            path: "privacy-policy",
-            element: <PlaceholderPage type="privacy" />,
-          },
-          {
-            path: "terms-of-service",
-            element: <PlaceholderPage type="terms" />,
-          },
-          {
-            path: "cookie-settings",
-            element: <PlaceholderPage type="cookies" />,
-          },
-          {
-            path: "accessibility",
-            element: <PlaceholderPage type="accessibility" />,
-          },
-          {
-            path: "support",
-            element: <PlaceholderPage type="support" />,
           },
         ],
       },

@@ -1,5 +1,7 @@
 import { Heart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -9,6 +11,8 @@ import { formatSalaryRange, getCityFromAddress } from "../../helper";
 import { JobPopup } from "@/pages/jobs/list-jobs/components/JobPopup";
 import { useToggleSaveJob } from "@/api/users/user.queries";
 import { ApplyJobModal } from "@/pages/jobs/components/ApplyJobModal";
+import { NotificationPopup } from "@/components/NotificationPopup";
+import { useAuthStore } from "@/store/auth.store";
 
 type JobCardViewMode = "grid" | "list";
 
@@ -18,11 +22,16 @@ interface JobCardProps {
 }
 
 const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   const anchorRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<number | null>(null);
   const openTimerRef = useRef<number | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [isAuthNoticeOpen, setIsAuthNoticeOpen] = useState(false);
   const [isSaved, setIsSaved] = useState(job.isSaved);
   const toggleSaveMutation = useToggleSaveJob();
 
@@ -38,6 +47,10 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
   }, [job.isSaved]);
 
   const handleToggleSave = async () => {
+    if (!isAuthenticated) {
+      setIsAuthNoticeOpen(true);
+      return;
+    }
     if (isSaving) return;
 
     try {
@@ -105,6 +118,11 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
   };
 
   const openApplyModal = () => {
+    if (!isAuthenticated) {
+      closePopup();
+      setIsAuthNoticeOpen(true);
+      return;
+    }
     if (job.isApplied) return;
 
     closePopup();
@@ -296,6 +314,23 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
           onClose={() => setIsApplyModalOpen(false)}
         />
       ) : null}
+
+      {isAuthNoticeOpen && (
+        <NotificationPopup
+          open={isAuthNoticeOpen}
+          variant="confirm"
+          title={t("authNotice.title")}
+          message={t("authNotice.message")}
+          confirmLabel={t("authNotice.loginBtn")}
+          cancelLabel={t("authNotice.cancelBtn")}
+          onConfirm={() => {
+            setIsAuthNoticeOpen(false);
+            navigate("/login");
+          }}
+          onCancel={() => setIsAuthNoticeOpen(false)}
+          onDismiss={() => setIsAuthNoticeOpen(false)}
+        />
+      )}
     </>
   );
 };

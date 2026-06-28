@@ -1,7 +1,7 @@
 import type { TFunction } from "i18next";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useGetJobById } from "@/api/jobs/job.queries";
 import { useToggleSaveJob } from "@/api/users/user.queries";
 import { ApplyJobModal } from "@/pages/jobs/components/ApplyJobModal";
@@ -10,6 +10,8 @@ import { JobDetailHeader } from "./components/JobDetailHeader";
 import { JobDetailInfo } from "./components/JobDetailInfo";
 import { JobDetailSidebar } from "./components/JobDetailSidebar";
 import { formatVND, getCityFromAddress } from "../helper";
+import { NotificationPopup } from "@/components/NotificationPopup";
+import { useAuthStore } from "@/store/auth.store";
 
 const formatJobDetailSalary = (
   minSalary: number | null | undefined,
@@ -39,12 +41,15 @@ const formatJobDetailSalary = (
 export default function JobDetailPage() {
   const { t, i18n } = useTranslation();
   const { id } = useParams();
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const jobId = Number(id);
   const jobQuery = useGetJobById(jobId);
   const toggleSaveMutation = useToggleSaveJob();
   const job = jobQuery.data?.data;
   const [isSaved, setIsSaved] = useState(false);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [isAuthNoticeOpen, setIsAuthNoticeOpen] = useState(false);
 
   const locale = i18n.language === "vi" ? "vi-VN" : "en-GB";
   const deadlineLabel = t("jobDetail.header.applicationDeadline");
@@ -113,6 +118,10 @@ export default function JobDetailPage() {
   }
 
   const handleToggleSave = async () => {
+    if (!isAuthenticated) {
+      setIsAuthNoticeOpen(true);
+      return;
+    }
     if (toggleSaveMutation.isPending) return;
 
     try {
@@ -124,6 +133,10 @@ export default function JobDetailPage() {
   };
 
   const handleApply = () => {
+    if (!isAuthenticated) {
+      setIsAuthNoticeOpen(true);
+      return;
+    }
     if (job.isApplied) return;
 
     setIsApplyModalOpen(true);
@@ -222,6 +235,23 @@ export default function JobDetailPage() {
           onClose={() => setIsApplyModalOpen(false)}
         />
       ) : null}
+
+      {isAuthNoticeOpen && (
+        <NotificationPopup
+          open={isAuthNoticeOpen}
+          variant="confirm"
+          title={t("authNotice.title")}
+          message={t("authNotice.message")}
+          confirmLabel={t("authNotice.loginBtn")}
+          cancelLabel={t("authNotice.cancelBtn")}
+          onConfirm={() => {
+            setIsAuthNoticeOpen(false);
+            navigate("/login");
+          }}
+          onCancel={() => setIsAuthNoticeOpen(false)}
+          onDismiss={() => setIsAuthNoticeOpen(false)}
+        />
+      )}
     </main>
   );
 }

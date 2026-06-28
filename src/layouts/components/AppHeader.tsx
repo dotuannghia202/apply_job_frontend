@@ -11,6 +11,7 @@ import { normalizeRoles } from "@/helper/auth-roles";
 import { cn } from "@/lib/utils";
 import NotificationDropdown from "@/layouts/components/NotificationDropdown";
 import UserAvatarMenu from "@/layouts/components/UserAvatarMenu";
+import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 import LanguageSwitch from "./LanguageSwitch";
@@ -66,6 +67,7 @@ const AppHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const setAuth = useAuthStore((state) => state.setAuth);
   const updateUserRolesMutation = useUpdateUserRoles();
@@ -123,7 +125,7 @@ const AppHeader = () => {
     ];
   };
 
-  const navLinks = getNavLinks(mode);
+  const navLinks = isAuthenticated ? getNavLinks(mode) : [];
 
   const canSwitchCandidateEmployer = mode !== "ADMIN";
   const isEmployerMode = mode === "EMPLOYER";
@@ -214,18 +216,20 @@ const AppHeader = () => {
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center gap-3 md:gap-8">
             {/* Nút Hamburger Menu (Mobile) */}
-            <button
-              type="button"
-              className="block rounded-md p-1.5 text-slate-600 transition-colors hover:bg-slate-100 hover:text-primary md:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="size-6" />
-              ) : (
-                <Menu className="size-6" />
-              )}
-            </button>
+            {isAuthenticated && (
+              <button
+                type="button"
+                className="block rounded-md p-1.5 text-slate-600 transition-colors hover:bg-slate-100 hover:text-primary md:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="size-6" />
+                ) : (
+                  <Menu className="size-6" />
+                )}
+              </button>
+            )}
 
             <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary">
               Job Portal
@@ -256,39 +260,59 @@ const AppHeader = () => {
           <div className="flex items-center gap-2 sm:gap-3">
             <LanguageSwitch />
 
-            {/* Nút Switch Role */}
-            {canSwitchCandidateEmployer && (
-              <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 sm:px-3 sm:py-1.5">
-                <span
-                  className={cn(
-                    "hidden text-xs font-semibold transition-colors lg:inline",
-                    !isEmployerMode ? "text-primary" : "text-slate-500",
-                  )}
+            {!isAuthenticated ? (
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Button
+                  variant="outline"
+                  className="rounded-full border-primary text-primary hover:bg-primary/5 px-5 py-2 text-sm font-semibold transition-colors"
+                  onClick={() => navigate("/register")}
                 >
-                  {t("header.candidate", "Candidate")}
-                </span>
-                <Switch
-                  checked={isEmployerMode}
-                  onCheckedChange={handleModeChange}
-                  disabled={isModeSwitchPending}
-                  aria-busy={isModeSwitchPending}
-                  aria-label="Switch between candidate and employer mode"
-                />
-                <span
-                  className={cn(
-                    "hidden text-xs font-semibold transition-colors lg:inline",
-                    isEmployerMode ? "text-primary" : "text-slate-500",
-                  )}
+                  {t("header.register", "Register")}
+                </Button>
+                <Button
+                  className="rounded-full bg-primary text-white hover:bg-primary/95 px-5 py-2 text-sm font-semibold transition-colors"
+                  onClick={() => navigate("/login")}
                 >
-                  {t("header.employer", "Employer")}
-                </span>
+                  {t("header.login", "Log In")}
+                </Button>
               </div>
+            ) : (
+              <>
+                {/* Nút Switch Role */}
+                {canSwitchCandidateEmployer && (
+                  <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 sm:px-3 sm:py-1.5">
+                    <span
+                      className={cn(
+                        "hidden text-xs font-semibold transition-colors lg:inline",
+                        !isEmployerMode ? "text-primary" : "text-slate-500",
+                      )}
+                    >
+                      {t("header.candidate", "Candidate")}
+                    </span>
+                    <Switch
+                      checked={isEmployerMode}
+                      onCheckedChange={handleModeChange}
+                      disabled={isModeSwitchPending}
+                      aria-busy={isModeSwitchPending}
+                      aria-label="Switch between candidate and employer mode"
+                    />
+                    <span
+                      className={cn(
+                        "hidden text-xs font-semibold transition-colors lg:inline",
+                        isEmployerMode ? "text-primary" : "text-slate-500",
+                      )}
+                    >
+                      {t("header.employer", "Employer")}
+                    </span>
+                  </div>
+                )}
+
+                {/* Nút Notification */}
+                <NotificationDropdown currentRole={mode} />
+
+                <UserAvatarMenu />
+              </>
             )}
-
-            {/* Nút Notification */}
-            <NotificationDropdown currentRole={mode} />
-
-            <UserAvatarMenu />
           </div>
         </div>
       </div>
