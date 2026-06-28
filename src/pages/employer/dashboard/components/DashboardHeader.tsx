@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export function DashboardHeader() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <header className="flex justify-between items-center mb-10">
@@ -17,6 +19,7 @@ export function DashboardHeader() {
       <Button
         variant="outline"
         className="px-6 py-5 bg-primary hover:bg-primary-hover text-white text-sm font-semibold hover:text-white rounded-xs"
+        onClick={() => navigate('/jobs/jd-generator')}
       >
         {t("employerDashboard.header.postJob")}
       </Button>
