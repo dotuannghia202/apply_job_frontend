@@ -543,7 +543,8 @@
       "companyProfile": "Hồ sơ công ty",
       "managementUser": "Quản lý người dùng",
       "companyManagement": "Quản lý công ty",
-      "jobListings": "Danh sách việc làm"
+      "jobListings": "Danh sách việc làm",
+      "systemSetting": "Cài đặt hệ thống"
     },
     "actions": {
       "openAdminPanel": "Mở trang quản trị",
@@ -1818,10 +1819,10 @@
   "systemSetting": {
     "breadcrumb": {
       "admin": "Quản trị",
-      "systemSetting": "Cấu hình hệ thống"
+      "systemSetting": "Cài đặt hệ thống"
     },
     "header": {
-      "title": "Cấu hình hệ thống",
+      "title": "Cài đặt hệ thống",
       "description": "Quản lý ngành nghề, chuyên ngành và kĩ năng được sử dụng trong nền tảng."
     },
     "tabs": {

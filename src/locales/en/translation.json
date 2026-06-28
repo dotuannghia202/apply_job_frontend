@@ -543,7 +543,8 @@
       "companyProfile": "Company Profile",
       "managementUser": "Management User",
       "companyManagement": "Company Management",
-      "jobListings": "Job Listings"
+      "jobListings": "Job Listings",
+      "systemSetting": "System Setting"
     },
     "actions": {
       "openAdminPanel": "Open Admin Panel",
