@@ -1822,11 +1822,12 @@
     },
     "header": {
       "title": "System Setting",
-      "description": "Manage industries and specializations used across the platform."
+      "description": "Manage industries, specializations and skills used across the platform."
     },
     "tabs": {
       "industry": "Industries",
-      "specialization": "Specializations"
+      "specialization": "Specializations",
+      "skill": "Skills"
     },
     "common": {
       "loading": "Loading data...",
@@ -1909,6 +1910,36 @@
         "updateError": "Failed to update specialization.",
         "deleteSuccess": "Specialization deleted successfully.",
         "deleteError": "Failed to delete specialization."
+      }
+    },
+    "skill": {
+      "searchPlaceholder": "Search skills...",
+      "addButton": "Add Skill",
+      "table": {
+        "name": "Skill Name",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "actions": "Actions"
+      },
+      "modal": {
+        "createTitle": "Create Skill",
+        "createDescription": "Add a new skill to the system.",
+        "editTitle": "Edit Skill",
+        "editDescription": "Update the skill information.",
+        "nameLabel": "Skill Name",
+        "namePlaceholder": "Enter skill name"
+      },
+      "confirm": {
+        "deleteTitle": "Delete Skill",
+        "deleteMessage": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
+      },
+      "notifications": {
+        "createSuccess": "Skill created successfully.",
+        "createError": "Failed to create skill.",
+        "updateSuccess": "Skill updated successfully.",
+        "updateError": "Failed to update skill.",
+        "deleteSuccess": "Skill deleted successfully.",
+        "deleteError": "Failed to delete skill."
       }
     }
   }

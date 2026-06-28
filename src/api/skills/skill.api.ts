@@ -4,6 +4,7 @@ import type {
   CreateSkillRequest,
   Skill,
   SkillListFilters,
+  UpdateSkillRequest,
 } from "@/types/skill";
 
 export const fetchSkills = async (params: SkillListFilters = {}) => {
@@ -18,6 +19,15 @@ export const fetchSkillById = async (id: number) => {
 
 export const createSkill = async (skillData: CreateSkillRequest) => {
   return axiosClient.post("/skills", skillData) as Promise<
+    BackendResponse<Skill>
+  >;
+};
+
+export const updateSkill = async (
+  id: number,
+  data: UpdateSkillRequest,
+) => {
+  return axiosClient.put(`/skills/${id}`, data) as Promise<
     BackendResponse<Skill>
   >;
 };

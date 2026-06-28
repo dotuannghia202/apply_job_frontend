@@ -3,10 +3,11 @@ import {
   fetchSkills,
   fetchSkillById,
   createSkill,
+  updateSkill,
   deleteSkill,
 } from "./skill.api";
 import { skillKeys } from "./skill.keys";
-import type { SkillListFilters } from "@/types/skill";
+import type { SkillListFilters, UpdateSkillRequest } from "@/types/skill";
 
 export const useGetSkills = (
   filters: SkillListFilters = {},
@@ -43,6 +44,19 @@ export const useCreateSkill = () => {
     mutationFn: createSkill,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: skillKeys.lists() });
+    },
+  });
+};
+
+export const useUpdateSkill = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: UpdateSkillRequest }) =>
+      updateSkill(id, data),
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: skillKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: skillKeys.detail(id) });
     },
   });
 };

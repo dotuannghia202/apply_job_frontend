@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Factory, Layers } from "lucide-react";
+import { Factory, Layers, Wrench } from "lucide-react";
 
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 
 import IndustryTab from "./components/IndustryTab";
 import SpecializationTab from "./components/SpecializationTab";
+import SkillTab from "./components/SkillTab";
 
-type TabKey = "industry" | "specialization";
+type TabKey = "industry" | "specialization" | "skill";
 
 const tabs: { key: TabKey; icon: typeof Factory }[] = [
   { key: "industry", icon: Factory },
   { key: "specialization", icon: Layers },
+  { key: "skill", icon: Wrench },
 ];
 
 export default function SystemSettingPage() {
@@ -68,6 +70,7 @@ export default function SystemSettingPage() {
         {/* Tab Content */}
         {activeTab === "industry" && <IndustryTab />}
         {activeTab === "specialization" && <SpecializationTab />}
+        {activeTab === "skill" && <SkillTab />}
       </div>
     </main>
   );

@@ -1822,11 +1822,12 @@
     },
     "header": {
       "title": "Cấu hình hệ thống",
-      "description": "Quản lý ngành nghề và chuyên ngành được sử dụng trong nền tảng."
+      "description": "Quản lý ngành nghề, chuyên ngành và kĩ năng được sử dụng trong nền tảng."
     },
     "tabs": {
       "industry": "Ngành nghề",
-      "specialization": "Chuyên ngành"
+      "specialization": "Chuyên ngành",
+      "skill": "Kỹ năng"
     },
     "common": {
       "loading": "Đang tải dữ liệu...",
@@ -1909,6 +1910,36 @@
         "updateError": "Không thể cập nhật chuyên ngành.",
         "deleteSuccess": "Xóa chuyên ngành thành công.",
         "deleteError": "Không thể xóa chuyên ngành."
+      }
+    },
+    "skill": {
+      "searchPlaceholder": "Tìm kiếm kỹ năng...",
+      "addButton": "Thêm kỹ năng",
+      "table": {
+        "name": "Tên kỹ năng",
+        "createdAt": "Ngày tạo",
+        "updatedAt": "Ngày cập nhật",
+        "actions": "Thao tác"
+      },
+      "modal": {
+        "createTitle": "Tạo kỹ năng",
+        "createDescription": "Thêm kỹ năng mới vào hệ thống.",
+        "editTitle": "Sửa kỹ năng",
+        "editDescription": "Cập nhật thông tin kỹ năng.",
+        "nameLabel": "Tên kỹ năng",
+        "namePlaceholder": "Nhập tên kỹ năng"
+      },
+      "confirm": {
+        "deleteTitle": "Xóa kỹ năng",
+        "deleteMessage": "Bạn có chắc muốn xóa \"{{name}}\"? Thao tác này không thể hoàn tác."
+      },
+      "notifications": {
+        "createSuccess": "Tạo kỹ năng thành công.",
+        "createError": "Không thể tạo kỹ năng.",
+        "updateSuccess": "Cập nhật kỹ năng thành công.",
+        "updateError": "Không thể cập nhật kỹ năng.",
+        "deleteSuccess": "Xóa kỹ năng thành công.",
+        "deleteError": "Không thể xóa kỹ năng."
       }
     }
   }

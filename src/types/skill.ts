@@ -11,6 +11,10 @@ export interface CreateSkillRequest {
   name: string;
 }
 
+export interface UpdateSkillRequest {
+  name: string;
+}
+
 export interface SkillListFilters {
   page?: number;
   size?: number;
