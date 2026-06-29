@@ -29,6 +29,8 @@ import { cn } from "@/lib/utils";
 export type PostJobFormData = {
   name: string;
   location: string;
+  provinceCode: string;
+  wardCode: string;
   minSalary: string;
   maxSalary: string;
   quantity: string;
@@ -50,6 +52,9 @@ export type PostJobFormData = {
 
 export type PostJobFormErrors = Partial<
   Record<
+    | "name"
+    | "provinceCode"
+    | "wardCode"
     | "startDate"
     | "endDate"
     | "industryId"
@@ -329,23 +334,19 @@ export function PostJobForm({
     .slice(0, 10);
 
   const provinces = locationData as Province[];
-  const [provinceCode, setProvinceCode] = useState("");
-  const [wardCode, setWardCode] = useState("");
   const [street, setStreet] = useState("");
   const [industrySearch, setIndustrySearch] = useState("");
   const [skillSearch, setSkillSearch] = useState("");
   const [selectedSkillLabels, setSelectedSkillLabels] = useState<
     Record<number, string>
   >({});
-  const provinceId = provinceCode ? Number(provinceCode) : null;
-  const wardId = wardCode ? Number(wardCode) : null;
+  const provinceId = value.provinceCode ? Number(value.provinceCode) : null;
+  const wardId = value.wardCode ? Number(value.wardCode) : null;
   const industryId = value.industryId ? Number(value.industryId) : 0;
   const debouncedIndustrySearch = useDebounce(industrySearch);
   const debouncedSkillSearch = useDebounce(skillSearch);
 
   useEffect(() => {
-    setProvinceCode("");
-    setWardCode("");
     setStreet("");
   }, [resetKey]);
 
@@ -411,19 +412,23 @@ export function PostJobForm({
   }
 
   function handleProvinceChange(next: string) {
-    setProvinceCode(next);
-    setWardCode("");
-    setStreet("");
     const province = provinces.find((item) => item.code === Number(next));
-    update({ location: buildLocation("", undefined, province) });
+    update({
+      provinceCode: next,
+      wardCode: "",
+      location: buildLocation("", undefined, province),
+    });
+    setStreet("");
   }
 
   function handleWardChange(next: string) {
-    setWardCode(next);
     const ward = selectedProvince?.wards.find(
       (item) => item.code === Number(next),
     );
-    update({ location: buildLocation(street, ward, selectedProvince) });
+    update({
+      wardCode: next,
+      location: buildLocation(street, ward, selectedProvince),
+    });
   }
 
   function handleStreetChange(next: string) {
@@ -490,8 +495,14 @@ export function PostJobForm({
               value={value.name}
               onChange={(event) => update({ name: event.target.value })}
               placeholder={t("employerPostJob.form.placeholders.jobTitle")}
-              className={inputCls}
+              className={cn(
+                inputCls,
+                errors?.name && "ring-2 ring-red-300 bg-red-50",
+              )}
             />
+            {errors?.name ? (
+              <p className="text-xs text-red-500">{errors.name}</p>
+            ) : null}
           </div>
         </div>
         <div className="flex flex-col gap-4">
@@ -505,12 +516,13 @@ export function PostJobForm({
               searchPlaceholder={t(
                 "employerPostJob.form.placeholders.searchProvince",
               )}
-              value={provinceCode}
+              value={value.provinceCode}
               options={provinces.map((province) => ({
                 value: province.code.toString(),
                 label: province.name,
               }))}
               onChange={handleProvinceChange}
+              errorMessage={errors?.provinceCode}
             />
             <SearchableSelect
               label={t("employerPostJob.form.fields.ward")}
@@ -518,12 +530,13 @@ export function PostJobForm({
               searchPlaceholder={t(
                 "employerPostJob.form.placeholders.searchWard",
               )}
-              value={wardCode}
+              value={value.wardCode}
               options={(selectedProvince?.wards ?? []).map((ward) => ({
                 value: ward.code.toString(),
                 label: ward.name,
               }))}
               onChange={handleWardChange}
+              errorMessage={errors?.wardCode}
             />
           </div>
 

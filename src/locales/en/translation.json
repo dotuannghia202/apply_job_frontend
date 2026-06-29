@@ -1048,6 +1048,9 @@
       "redirectToCompanySetup": "Go to company setup"
     },
     "validation": {
+      "nameRequired": "Please enter a job title.",
+      "provinceRequired": "Please select a province/city.",
+      "wardRequired": "Please select a ward/commune.",
       "startDatePast": "Start date cannot be in the past.",
       "descriptionRequired": "Please enter a job description.",
       "requirementsRequired": "Please add at least one requirement.",
@@ -1951,5 +1954,8 @@
     "message": "You need to log in to perform this action. Would you like to go to the login page?",
     "loginBtn": "Log In",
     "cancelBtn": "Cancel"
+  },
+  "common": {
+    "understood": "Understood"
   }
 }

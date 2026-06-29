@@ -12,6 +12,8 @@ import { useCreateJob } from "@/api/jobs/job.queries";
 import { useAuthStore } from "@/store/auth.store";
 import { toUtcMidnightIso } from "@/helper";
 import { NotificationPopup } from "@/components/NotificationPopup";
+import { isAxiosError } from "axios";
+import i18n from "@/i18n";
 
 export default function PostJobPage() {
   const { t } = useTranslation();
@@ -23,6 +25,8 @@ export default function PostJobPage() {
   const emptyFormData: PostJobFormData = {
     name: "",
     location: "",
+    provinceCode: "",
+    wardCode: "",
     minSalary: "",
     maxSalary: "",
     quantity: "",
@@ -45,6 +49,8 @@ export default function PostJobPage() {
   const [formData, setFormData] = useState<PostJobFormData>(() => ({
     name: prefill?.name ?? "",
     location: prefill?.location ?? "",
+    provinceCode: prefill?.provinceCode ?? "",
+    wardCode: prefill?.wardCode ?? "",
     minSalary: prefill?.minSalary ?? "",
     maxSalary: prefill?.maxSalary ?? "",
     quantity: prefill?.quantity ?? "",
@@ -70,6 +76,7 @@ export default function PostJobPage() {
     variant: "success" | "error";
     title: string;
     message?: string;
+    dismissLabel?: string;
   }>({
     open: false,
     variant: "success",
@@ -86,6 +93,17 @@ export default function PostJobPage() {
     )
       .toISOString()
       .slice(0, 10);
+
+    if (!formData.name.trim()) {
+      nextErrors.name = t("employerPostJob.validation.nameRequired");
+    }
+
+    if (!formData.provinceCode) {
+      nextErrors.provinceCode = t("employerPostJob.validation.provinceRequired");
+    }
+    if (!formData.wardCode) {
+      nextErrors.wardCode = t("employerPostJob.validation.wardRequired");
+    }
 
     if (formData.startDate && formData.startDate < todayIso) {
       nextErrors.startDate = t("employerPostJob.validation.startDatePast");
@@ -143,6 +161,17 @@ export default function PostJobPage() {
     )
       .toISOString()
       .slice(0, 10);
+
+    if (nextErrors.name && nextData.name.trim()) {
+      delete nextErrors.name;
+    }
+
+    if (nextErrors.provinceCode && nextData.provinceCode) {
+      delete nextErrors.provinceCode;
+    }
+    if (nextErrors.wardCode && nextData.wardCode) {
+      delete nextErrors.wardCode;
+    }
 
     if (
       nextErrors.startDate &&
@@ -234,6 +263,36 @@ export default function PostJobPage() {
         message: t("employerPostJob.notifications.createSuccessMessage"),
       });
     } catch (error) {
+      if (isAxiosError(error)) {
+        console.log("Axios error:", error);
+        // 1. Lấy nguyên văn câu lỗi từ Backend
+        const backendMessage = error.response?.data?.message || "";
+
+        // 2. Khởi tạo biến message sẽ hiện cho người dùng
+        let displayMessage = backendMessage;
+
+        // 3. Nếu Frontend đang ở chế độ Tiếng Anh, ta "dịch tay" câu lỗi phổ biến của Backend
+        if (i18n.language === "en") {
+          // Bắt theo từ khóa hoặc câu đầy đủ mà Backend hay trả về
+          if (backendMessage.includes("chưa được Admin phê duyệt")) {
+            displayMessage = "Your company profile has not been approved by Admin yet. Please wait for approval to post a job!";
+          } else if (backendMessage.includes("đình chỉ hoạt động")) {
+            displayMessage = "Your company profile has been suspended. Please contact the administrator!";
+          }
+          // (Có thể thêm các if-else khác ở đây nếu Backend ném ra nhiều lỗi khác nhau)
+        }
+
+        // 4. Hiển thị Popup
+        setPopup({
+          open: true,
+          variant: "error",
+          title: t("employerPostJob.notifications.createErrorTitle"), // Đã có hàm t() dịch tự động
+          message: displayMessage,
+          dismissLabel: t("common.understood", "Đã hiểu"), // Nên đưa vào file i18n
+        });
+
+        return;
+      }
       console.error("Failed to create job", error);
       setPopup({
         open: true,
@@ -263,6 +322,7 @@ export default function PostJobPage() {
         variant={popup.variant}
         title={popup.title}
         message={popup.message}
+        dismissLabel={popup.dismissLabel}
         onDismiss={() => setPopup((prev) => ({ ...prev, open: false }))}
       />
     </main>

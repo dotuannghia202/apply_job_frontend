@@ -1048,6 +1048,9 @@
       "redirectToCompanySetup": "Tạo hồ sơ công ty"
     },
     "validation": {
+      "nameRequired": "Vui lòng nhập tiêu đề công việc.",
+      "provinceRequired": "Vui lòng chọn tỉnh/thành phố.",
+      "wardRequired": "Vui lòng chọn phường/xã.",
       "startDatePast": "Ngày bắt đầu không được nằm trong quá khứ.",
       "descriptionRequired": "Vui lòng nhập mô tả công việc.",
       "requirementsRequired": "Vui lòng thêm ít nhất một yêu cầu.",
@@ -1951,5 +1954,8 @@
     "message": "Bạn cần đăng nhập để thực hiện chức năng này. Bạn có muốn đi tới trang đăng nhập không?",
     "loginBtn": "Đăng nhập",
     "cancelBtn": "Hủy"
+  },
+  "common": {
+    "understood": "Đã hiểu"
   }
 }
