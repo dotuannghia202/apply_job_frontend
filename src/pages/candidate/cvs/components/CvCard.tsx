@@ -113,7 +113,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
             <Button
               variant="outline"
               size="sm"
-              className="w-fit gap-1.5 text-muted-foreground hover:text-primary border-border h-7 px-3 py-1"
+              className="w-fit"
               disabled={setDefaultResumeMutation.isPending}
               onClick={handleSetDefault}
             >
