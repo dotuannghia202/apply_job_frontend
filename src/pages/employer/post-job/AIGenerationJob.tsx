@@ -135,7 +135,7 @@ export default function AIGenerationJob() {
         <PageHero handleClickBtn={handleClickBtnPostJob} />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <RoleParametersForm onGenerate={handleGenerate} />
+          <RoleParametersForm onGenerate={handleGenerate} isGenerating={isPending} />
           <JDPreview
             data={{
               title: roleParams?.jobTitle,

@@ -32,6 +32,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 import { SkillTag } from "../components/SkillTag";
 import type { Skill } from "../../types";
+import Loader from "@/components/Loader";
 
 const DEFAULT_SKILLS: Skill[] = [];
 
@@ -42,6 +43,7 @@ interface Props {
 
     levels: string[];
   }) => void;
+  isGenerating?: boolean;
 }
 
 // Shared class for every input/textarea, matching the original HTML.
@@ -64,7 +66,7 @@ const LEVEL_OPTIONS = [
   "MANAGER",
 ];
 
-export function RoleParametersForm({ onGenerate }: Props) {
+export function RoleParametersForm({ onGenerate, isGenerating }: Props) {
   const { t } = useTranslation();
   const [jobTitle, setJobTitle] = useState("");
   const [skills, setSkills] = useState<Skill[]>(DEFAULT_SKILLS);
@@ -240,13 +242,18 @@ export function RoleParametersForm({ onGenerate }: Props) {
         {/* Generate button */}
         <Button
           onClick={() => onGenerate?.({ jobTitle, skills, levels })}
-          className="w-full py-6 rounded-lg font-bold text-white shadow-lg hover:scale-[1.02] active:scale-95 transition-all border-0"
+          disabled={isGenerating}
+          className="w-full py-6 rounded-lg font-bold text-white shadow-lg hover:scale-[1.02] active:scale-95 transition-all border-0 flex items-center justify-center gap-2"
           style={{
             background: "linear-gradient(135deg, #72b183 0%, #aed6ba 100%)",
           }}
         >
-          <Sparkles size={18} className="mr-2" fill="currentColor" />
-          {t("employerPostJob.aiForm.generate")}
+          {isGenerating ? (
+            <Loader size={20} color="text-white" className="p-0" />
+          ) : (
+            <Sparkles size={18} className="mr-2" fill="currentColor" />
+          )}
+          {isGenerating ? "Generating..." : t("employerPostJob.aiForm.generate")}
         </Button>
       </div>
 

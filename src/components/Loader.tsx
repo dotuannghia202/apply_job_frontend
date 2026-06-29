@@ -17,7 +17,7 @@ const Loader: React.FC<LoaderProps> = ({
 }) => {
   const loaderIcon = (
     <div
-      className={cn(`spinner-3d ${color}`, className)}
+      className={`spinner-3d ${color}`}
       style={{ width: size, height: size }}
     >
       <div className="spinner-3d-inner one"></div>
@@ -29,7 +29,7 @@ const Loader: React.FC<LoaderProps> = ({
   // Nếu muốn hiển thị full màn hình khóa tương tác
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
+      <div className={cn("fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm", className)}>
         {loaderIcon}
       </div>
     );
@@ -37,7 +37,7 @@ const Loader: React.FC<LoaderProps> = ({
 
   // Nếu chỉ dùng như 1 component nhỏ
   return (
-    <div className="flex items-center justify-center p-4">{loaderIcon}</div>
+    <div className={cn("flex items-center justify-center p-4", className)}>{loaderIcon}</div>
   );
 };
 
