@@ -107,7 +107,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
 
     if (currentSelectionStillExists) return;
 
-    const defaultResume = resumes.find((resume) => resume.active) ?? resumes[0];
+    const defaultResume = resumes.find((resume) => resume.isDefault) ?? resumes[0];
     setSelectedResumeId(defaultResume?.id ?? null);
   }, [open, resumes, selectedResumeId]);
 
@@ -353,7 +353,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
                               <span className="truncate text-sm font-semibold text-slate-900">
                                 {resume.fileName}
                               </span>
-                              {resume.active ? (
+                              {resume.isDefault ? (
                                 <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
                                   <Star className="size-3 fill-current" />
                                   {t("jobDetail.applyModal.defaultCv")}

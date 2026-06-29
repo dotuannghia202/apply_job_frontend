@@ -5,7 +5,7 @@ import { Star, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useDeleteResume, useUpdateResume } from "@/api/resumes/resume.queries";
+import { useDeleteResume, useSetDefaultResume } from "@/api/resumes/resume.queries";
 import CvActions from "@/pages/candidate/cvs/components/CvActions";
 import type { CvItem } from "@/pages/candidate/cvs/components/types";
 
@@ -24,7 +24,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
   const { t } = useTranslation();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteError, setDeleteError] = useState("");
-  const updateResumeMutation = useUpdateResume();
+  const setDefaultResumeMutation = useSetDefaultResume();
   const deleteResumeMutation = useDeleteResume();
   const resumeId = Number(item.id);
   const isValidResumeId = Number.isFinite(resumeId);
@@ -37,16 +37,11 @@ const CvCard = ({ item }: { item: CvItem }) => {
   };
 
   const handleSetDefault = () => {
-    if (!isValidResumeId || item.isDefault || updateResumeMutation.isPending) {
+    if (!isValidResumeId || item.isDefault || setDefaultResumeMutation.isPending) {
       return;
     }
 
-    updateResumeMutation.mutate({
-      id: resumeId,
-      data: {
-        active: true,
-      },
-    });
+    setDefaultResumeMutation.mutate(resumeId);
   };
 
   const handleDelete = () => {
@@ -110,20 +105,29 @@ const CvCard = ({ item }: { item: CvItem }) => {
           </div>
 
           {item.isDefault ? (
-            <Badge className="w-fit gap-1.5 bg-chart-4/10 px-3 py-1 text-chart-4">
-              <Star className="h-3.5 w-3.5" aria-hidden="true" />
+            <Badge className="w-fit gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1 text-amber-700 font-semibold shadow-none hover:bg-amber-50">
+              <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" aria-hidden="true" />
               {t("myCVManagement.card.defaultCv")}
             </Badge>
           ) : (
-            <div className="h-6" />
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-fit gap-1.5 text-muted-foreground hover:text-primary border-border h-7 px-3 py-1"
+              disabled={setDefaultResumeMutation.isPending}
+              onClick={handleSetDefault}
+            >
+              <Star className="h-3.5 w-3.5" aria-hidden="true" />
+              {setDefaultResumeMutation.isPending
+                ? t("myCVManagement.card.actions.saving")
+                : t("myCVManagement.card.actions.setDefault")}
+            </Button>
           )}
         </CardContent>
         <CardFooter className="justify-between border-t border-border">
           <CvActions
             item={item}
-            isUpdating={updateResumeMutation.isPending}
             onDownload={handleDownload}
-            onSetDefault={handleSetDefault}
           />
           <Button
             variant="ghost"

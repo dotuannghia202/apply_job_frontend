@@ -57,7 +57,7 @@ const MyCV = () => {
     fileUrl: resume.fileUrl,
     updatedAt: formatDate(resume.updatedAt ?? resume.createdAt, currentLocale),
     skills: resume.skills ?? [],
-    isDefault: resume.active,
+    isDefault: resume.isDefault,
   }));
 
   const handleUploadFile = async (file: File) => {

@@ -16,6 +16,7 @@ export interface Resume {
   fileName: string;
   fileUrl: string;
   active: boolean;
+  isDefault: boolean;
   createdAt: string;
   updatedAt?: string | null;
   skills: string[];

@@ -36,3 +36,9 @@ export const updateResume = async ({ id, data }: UpdateResumePayload) => {
 export const deleteResume = async (id: number) => {
   return axiosClient.delete(`/resumes/${id}`) as Promise<BackendResponse<void>>;
 };
+
+export const setDefaultResume = async (id: number) => {
+  return axiosClient.put(`/resumes/${id}/default`) as Promise<
+    BackendResponse<Resume>
+  >;
+};

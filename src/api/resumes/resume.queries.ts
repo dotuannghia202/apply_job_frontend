@@ -6,6 +6,7 @@ import {
   fetchResumeById,
   fetchResumes,
   updateResume,
+  setDefaultResume,
 } from "./resume.api";
 import { resumeKeys } from "./resume.keys";
 import type { ResumeListFilters } from "@/types/resume";
@@ -71,6 +72,19 @@ export const useDeleteResume = () => {
 
   return useMutation({
     mutationFn: deleteResume,
+    onSuccess: (_data, id) => {
+      queryClient.invalidateQueries({ queryKey: resumeKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: resumeKeys.mine() });
+      queryClient.invalidateQueries({ queryKey: resumeKeys.detail(id) });
+    },
+  });
+};
+
+export const useSetDefaultResume = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: setDefaultResume,
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: resumeKeys.lists() });
       queryClient.invalidateQueries({ queryKey: resumeKeys.mine() });

@@ -4,10 +4,10 @@ import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import { useGetResumeById } from "@/api/resumes/resume.queries";
+import { useGetResumeById, useSetDefaultResume } from "@/api/resumes/resume.queries";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Badge } from "@/components/ui/badge";
-
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import AIProfileInsights from "@/pages/candidate/cvs/components/AIProfileInsights";
 import AttachmentFiles from "@/pages/candidate/cvs/components/AttachmentFiles";
@@ -57,10 +57,10 @@ const mapResumeToProfile = (
     t("myCVManagement.detail.fallbacks.candidateCv"),
   location: t("myCVManagement.detail.fallbacks.notSpecified"),
   experienceYears: 0,
-  statusLabel: resume.active
+  statusLabel: resume.isDefault
     ? t("myCVManagement.detail.badges.defaultCv")
     : t("myCVManagement.detail.badges.uploadedCv"),
-  statusTone: resume.active ? "active" : "open",
+  statusTone: resume.isDefault ? "active" : "open",
   noticePeriod: t("myCVManagement.detail.header.updated", {
     date: formatDate(
       resume.updatedAt ?? resume.createdAt,
@@ -112,7 +112,7 @@ const mapResumeToInsights = (
     {
       id: "status",
       label: t("myCVManagement.detail.insights.metrics.status.label"),
-      value: resume.active
+      value: resume.isDefault
         ? t("myCVManagement.detail.insights.metrics.status.default")
         : t("myCVManagement.detail.insights.metrics.status.uploaded"),
       caption: t("myCVManagement.detail.insights.metrics.status.caption"),
@@ -134,6 +134,7 @@ const CVDetailCandidate = () => {
   const isValidResumeId = Boolean(id) && Number.isFinite(resumeId);
   const locale = getLocale(i18n.language);
   const resumeQuery = useGetResumeById(isValidResumeId ? resumeId : 0);
+  const setDefaultResumeMutation = useSetDefaultResume();
 
   if (!isValidResumeId) {
     return (
@@ -194,18 +195,32 @@ const CVDetailCandidate = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {resume.active ? (
-                <Badge className="gap-1.5 bg-primary/10 px-3 py-1 text-primary">
-                  <Star className="h-3.5 w-3.5" aria-hidden="true" />
+            <div className="flex flex-wrap items-center gap-2">
+              {resume.isDefault ? (
+                <Badge className="gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1 text-amber-700 font-semibold shadow-none hover:bg-amber-50">
+                  <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" aria-hidden="true" />
                   {t("myCVManagement.detail.badges.defaultCv")}
                 </Badge>
               ) : (
-                <Badge variant="secondary">
-                  {t("myCVManagement.detail.badges.uploadedCv")}
-                </Badge>
+                <>
+                  <Badge variant="secondary">
+                    {t("myCVManagement.detail.badges.uploadedCv")}
+                  </Badge>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5 text-muted-foreground hover:text-primary border-border h-7"
+                    disabled={setDefaultResumeMutation.isPending}
+                    onClick={() => setDefaultResumeMutation.mutate(resumeId)}
+                  >
+                    <Star className="h-3.5 w-3.5" aria-hidden="true" />
+                    {setDefaultResumeMutation.isPending
+                      ? t("myCVManagement.card.actions.saving")
+                      : t("myCVManagement.card.actions.setDefault")}
+                  </Button>
+                </>
               )}
-              <Badge variant="outline" className="gap-1.5">
+              <Badge variant="outline" className="gap-1.5 py-1">
                 <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
                 {t("myCVManagement.detail.header.updated", {
                   date: updatedDate,
