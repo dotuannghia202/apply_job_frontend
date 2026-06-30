@@ -612,7 +612,7 @@ const MyApplicationDetail = () => {
                       >
                         {isCompleted ? (
                           <Check
-                            className="size-4 stroke-[3]"
+                            className="size-4 stroke-3"
                             aria-hidden="true"
                           />
                         ) : isActive ? (

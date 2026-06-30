@@ -167,11 +167,11 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
           <div className="flex flex-col md:flex-row min-w-0 flex-1 items-center justify-start gap-6">
             <div className="min-w-[320px]">
               <div className="flex flex-wrap items-center gap-1.5">
-                {job.active && (
+                {/* {job.active && (
                   <Badge className="rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white hover:bg-rose-600">
                     HOT
                   </Badge>
-                )}
+                )} */}
                 <h3
                   className="min-w-0 flex-1 text-[15px] font-bold leading-snug text-slate-900"
                   style={{
@@ -214,11 +214,11 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
               <div className="min-w-0 flex-1">
                 {/* HOT badge + Title */}
                 <div className="flex flex-wrap items-center gap-1.5">
-                  {job.active && (
+                  {/* {job.active && (
                     <Badge className="rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white hover:bg-rose-600">
                       HOT
                     </Badge>
-                  )}
+                  )} */}
                   <h3
                     className="min-w-0 flex-1 text-[15px] font-bold leading-snug text-slate-900"
                     style={{
