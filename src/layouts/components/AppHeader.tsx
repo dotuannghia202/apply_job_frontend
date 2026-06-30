@@ -273,7 +273,7 @@ const AppHeader = () => {
               <div className="flex items-center gap-2 sm:gap-3">
                 <Button
                   variant="outline"
-                  className="rounded-full border-primary text-primary hover:bg-primary/5 px-5 py-2 text-sm font-semibold transition-colors"
+                  className="rounded-full border-primary text-primary hover:bg-primary px-5 py-2 text-sm font-semibold transition-colors"
                   onClick={() => navigate("/register")}
                 >
                   {t("header.register", "Register")}
