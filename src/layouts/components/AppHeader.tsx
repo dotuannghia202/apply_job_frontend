@@ -1,9 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-// 🚨 IMPORT THÊM HOOK CỦA i18n
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
 import { fetchAccountInfo } from "@/api/users/user.api";
 import { useUpdateUserRoles } from "@/api/users/user.queries";
 import { Switch } from "@/components/ui/switch";
@@ -125,7 +123,15 @@ const AppHeader = () => {
     ];
   };
 
-  const navLinks = isAuthenticated ? getNavLinks(mode) : [];
+  const navLinks = isAuthenticated
+    ? getNavLinks(mode)
+    : [
+        {
+          label: t("header.findJobs", "Find Jobs"),
+          to: "/jobs",
+          end: true,
+        },
+      ];
 
   const canSwitchCandidateEmployer = mode !== "ADMIN";
   const isEmployerMode = mode === "EMPLOYER";
@@ -216,7 +222,7 @@ const AppHeader = () => {
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center gap-3 md:gap-8">
             {/* Nút Hamburger Menu (Mobile) */}
-            {isAuthenticated && (
+            {navLinks.length > 0 && (
               <button
                 type="button"
                 className="block rounded-md p-1.5 text-slate-600 transition-colors hover:bg-slate-100 hover:text-primary md:hidden"
@@ -231,9 +237,12 @@ const AppHeader = () => {
               </button>
             )}
 
-            <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary">
+            <Link
+              to="/"
+              className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary hover:opacity-90"
+            >
               Job Portal
-            </span>
+            </Link>
 
             {/* Thanh Menu (Desktop) */}
             <div className="hidden gap-6 md:flex">

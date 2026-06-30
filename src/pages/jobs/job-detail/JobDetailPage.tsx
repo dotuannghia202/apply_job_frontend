@@ -5,7 +5,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useGetJobById } from "@/api/jobs/job.queries";
 import { useToggleSaveJob } from "@/api/users/user.queries";
 import { ApplyJobModal } from "@/pages/jobs/components/ApplyJobModal";
-import { CandidateList } from "./components/CandidateList";
 import { JobDetailHeader } from "./components/JobDetailHeader";
 import { JobDetailInfo } from "./components/JobDetailInfo";
 import { JobDetailSidebar } from "./components/JobDetailSidebar";
@@ -203,7 +202,7 @@ export default function JobDetailPage() {
               })}
             />
 
-            <CandidateList />
+            {/* <CandidateList /> */}
           </div>
 
           <JobDetailSidebar
