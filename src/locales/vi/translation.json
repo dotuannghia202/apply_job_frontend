@@ -902,6 +902,11 @@
     }
   },
   "employerJobs": {
+    "noCompany": {
+      "title": "Chưa thiết lập công ty",
+      "message": "Bạn chưa thiết lập thông tin công ty. Vui lòng thiết lập thông tin công ty để quản lý và đăng tin tuyển dụng.",
+      "setupButton": "Thiết lập công ty ngay"
+    },
     "common": {
       "cancel": "Hủy"
     },

@@ -902,6 +902,11 @@
     }
   },
   "employerJobs": {
+    "noCompany": {
+      "title": "No Company Profile",
+      "message": "You have not set up your company profile. Please set up your company profile to manage and post jobs.",
+      "setupButton": "Set up company now"
+    },
     "common": {
       "cancel": "Cancel"
     },

@@ -31,6 +31,7 @@ export const useGetApplications = (filters: ApplicationListFilters = {}) => {
 
 export const useGetHrApplications = (
   filters: ApplicationListFilters = {},
+  options?: { enabled?: boolean },
 ) => {
   const normalizedFilters: Required<
     Pick<ApplicationListFilters, "page" | "size">
@@ -46,6 +47,7 @@ export const useGetHrApplications = (
     queryKey: applicationKeys.hrList(normalizedFilters),
     queryFn: () => fetchHrApplications(normalizedFilters),
     staleTime: 5 * 60 * 1000,
+    ...options,
   });
 };
 

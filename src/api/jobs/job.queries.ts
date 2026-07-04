@@ -47,13 +47,17 @@ export const useGetJobs = (filters: JobListFilters = {}) => {
   });
 };
 
-export const useGetHrJobs = (filters: JobListFilters = {}) => {
+export const useGetHrJobs = (
+  filters: JobListFilters = {},
+  options?: { enabled?: boolean },
+) => {
   const normalizedFilters = normalizeJobFilters(filters);
 
   return useQuery({
     queryKey: jobKeys.hrList(normalizedFilters),
     queryFn: () => fetchHrJobs(normalizedFilters),
     staleTime: 5 * 60 * 1000,
+    ...options,
   });
 };
 

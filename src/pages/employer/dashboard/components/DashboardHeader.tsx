@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/auth.store";
 
 export function DashboardHeader() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const companyId = useAuthStore((state) => state.company?.id);
 
   return (
     <header className="flex justify-between items-center mb-10">
@@ -16,13 +18,15 @@ export function DashboardHeader() {
           {t("employerDashboard.header.subtitle")}
         </p>
       </div>
-      <Button
-        variant="outline"
-        className="px-6 py-5 bg-primary hover:bg-primary-hover text-white text-sm font-semibold hover:text-white rounded-xs"
-        onClick={() => navigate('/jobs/jd-generator')}
-      >
-        {t("employerDashboard.header.postJob")}
-      </Button>
+      {companyId && (
+        <Button
+          variant="outline"
+          className="px-6 py-5 bg-primary hover:bg-primary-hover text-white text-sm font-semibold hover:text-white rounded-xs"
+          onClick={() => navigate('/jobs/jd-generator')}
+        >
+          {t("employerDashboard.header.postJob")}
+        </Button>
+      )}
     </header>
   );
 }

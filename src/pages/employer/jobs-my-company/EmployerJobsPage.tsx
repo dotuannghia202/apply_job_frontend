@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Plus } from "lucide-react";
+import { BriefcaseBusiness, Building2, Plus } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -65,7 +65,7 @@ export default function EmployerJobsPage() {
     [appliedFilters, page],
   );
 
-  const hrJobsQuery = useGetHrJobs(queryFilters);
+  const hrJobsQuery = useGetHrJobs(queryFilters, { enabled: !!companyId });
   const updateJobMutation = useUpdateJob();
   const deleteJobMutation = useDeleteJob();
 
@@ -224,63 +224,87 @@ export default function EmployerJobsPage() {
           />
         ) : null}
 
-        <EmployerJobsFilterPanel
-          filters={filters}
-          isFetching={hrJobsQuery.isFetching}
-          onFilterChange={updateFilters}
-          onSubmit={handleSearch}
-          onReset={handleReset}
-        />
-
-        <EmployerJobsTable
-          jobs={jobs}
-          isLoading={hrJobsQuery.isLoading}
-          isError={hrJobsQuery.isError}
-          onUpdate={openUpdatePanel}
-          onDelete={handleRequestDelete}
-          deletingJobId={deletingJobId}
-          locale={locale}
-        />
-
-        {meta && meta.pages > 1 ? (
-          <div className="flex justify-center">
-            <Pagination>
-              <PaginationContent className="gap-4">
-                <PaginationItem>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    disabled={hrJobsQuery.isFetching || page <= 1}
-                    onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-                  >
-                    {t("employerJobs.pagination.previous")}
-                  </Button>
-                </PaginationItem>
-                <PaginationItem>
-                  <span className="text-sm font-semibold text-slate-600">
-                    {t("employerJobs.pagination.page")}{" "}
-                    <span className="text-primary">
-                      {new Intl.NumberFormat(locale).format(meta.page)}
-                    </span>{" "}
-                    / {new Intl.NumberFormat(locale).format(meta.pages)}
-                  </span>
-                </PaginationItem>
-                <PaginationItem>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    disabled={hrJobsQuery.isFetching || !hasNextPage}
-                    onClick={() => setPage((prev) => prev + 1)}
-                  >
-                    {t("employerJobs.pagination.next")}
-                  </Button>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+        {!companyId ? (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center shadow-[0_12px_30px_rgba(15,23,42,0.03)]">
+            <div className="flex size-16 items-center justify-center rounded-full bg-amber-50 text-amber-600 ring-8 ring-amber-50/50">
+              <Building2 className="size-8" aria-hidden="true" />
+            </div>
+            <h3 className="mt-6 text-xl font-bold text-slate-950">
+              {t("employerJobs.noCompany.title")}
+            </h3>
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-500">
+              {t("employerJobs.noCompany.message")}
+            </p>
+            <div className="mt-8">
+              <Button
+                onClick={() => navigate("/employer/onboarding/company")}
+                className="px-6 py-2.5 font-semibold shadow-md transition-transform hover:scale-[1.02]"
+              >
+                {t("employerJobs.noCompany.setupButton")}
+              </Button>
+            </div>
           </div>
-        ) : null}
+        ) : (
+          <>
+            <EmployerJobsFilterPanel
+              filters={filters}
+              isFetching={hrJobsQuery.isFetching}
+              onFilterChange={updateFilters}
+              onSubmit={handleSearch}
+              onReset={handleReset}
+            />
+
+            <EmployerJobsTable
+              jobs={jobs}
+              isLoading={hrJobsQuery.isLoading}
+              isError={hrJobsQuery.isError}
+              onUpdate={openUpdatePanel}
+              onDelete={handleRequestDelete}
+              deletingJobId={deletingJobId}
+              locale={locale}
+            />
+
+            {meta && meta.pages > 1 ? (
+              <div className="flex justify-center">
+                <Pagination>
+                  <PaginationContent className="gap-4">
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={hrJobsQuery.isFetching || page <= 1}
+                        onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                      >
+                        {t("employerJobs.pagination.previous")}
+                      </Button>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <span className="text-sm font-semibold text-slate-600">
+                        {t("employerJobs.pagination.page")}{" "}
+                        <span className="text-primary">
+                          {new Intl.NumberFormat(locale).format(meta.page)}
+                        </span>{" "}
+                        / {new Intl.NumberFormat(locale).format(meta.pages)}
+                      </span>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={hrJobsQuery.isFetching || !hasNextPage}
+                        onClick={() => setPage((prev) => prev + 1)}
+                      >
+                        {t("employerJobs.pagination.next")}
+                      </Button>
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            ) : null}
+          </>
+        )}
       </div>
       <NotificationPopup
         open={popup.open}

@@ -56,11 +56,12 @@ export const useGetAccountInfo = () => {
   });
 };
 
-export const useGetHrDashboardStats = () => {
+export const useGetHrDashboardStats = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: userKeys.hrDashboardStats(),
     queryFn: fetchHrDashboardStats,
     staleTime: 5 * 60 * 1000,
+    ...options,
   });
 };
 
