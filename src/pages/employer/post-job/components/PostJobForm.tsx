@@ -352,7 +352,7 @@ export function PostJobForm({
 
   const { data: industriesData } = useGetIndustries({
     page: 1,
-    size: 8,
+    size: 1000,
     name: debouncedIndustrySearch || undefined,
   });
 
@@ -361,7 +361,7 @@ export function PostJobForm({
 
   const { data: skillsData } = useGetSkills({
     page: 1,
-    size: 8,
+    size: 1000,
     name: debouncedSkillSearch || undefined,
   });
 

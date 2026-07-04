@@ -79,7 +79,7 @@ export function RoleParametersForm({ onGenerate, isGenerating }: Props) {
   const { data: skillsData } = useGetSkills(
     {
       page: 1,
-      size: 8,
+      size: 1000,
       name: debouncedSkillSearch || undefined,
     },
     { enabled: skillOpen },
