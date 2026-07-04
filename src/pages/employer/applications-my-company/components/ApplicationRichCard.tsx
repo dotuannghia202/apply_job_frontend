@@ -2,6 +2,7 @@ import { CalendarDays, FileText, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { useUpdateApplicationStatus } from "@/api/applications/application.queries";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ApplicationActionsPopover } from "@/pages/employer/applications-my-company/components/ApplicationActionsPopover";
@@ -59,13 +60,20 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
     <Card className="overflow-hidden border-primary bg-white p-0 shadow-[0_16px_42px_rgba(15,23,42,0.05)] transition  hover:shadow-[0_22px_55px_rgba(15,23,42,0.08)]">
       <div className="grid gap-5 p-5 lg:grid-cols-[minmax(260px,1.25fr)_minmax(220px,1fr)_minmax(180px,0.8fr)_minmax(150px,0.7fr)_minmax(220px,0.9fr)] lg:items-center">
         <div className="flex min-w-0 items-center gap-4">
-          <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-sm font-black text-emerald-700 ring-4 ring-emerald-50">
-            {getCandidateInitials(
-              application.candidate?.name,
-              application.candidate?.email,
-              t("employerApplications.fallbacks.initials"),
-            )}
-          </div>
+          <Avatar className="size-12">
+            <AvatarImage
+              src={application.candidate?.avatarUrl || undefined}
+              alt={candidateName}
+              className="object-cover"
+            />
+            <AvatarFallback className="bg-emerald-100 text-sm font-black text-emerald-700">
+              {getCandidateInitials(
+                application.candidate?.name,
+                application.candidate?.email,
+                t("employerApplications.fallbacks.initials"),
+              )}
+            </AvatarFallback>
+          </Avatar>
           <div className="min-w-0">
             <h3 className="truncate text-base font-bold text-slate-950">
               {candidateName}

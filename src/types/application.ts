@@ -27,6 +27,7 @@ export interface ApplicationCandidateInfo {
   id: number;
   name?: string | null;
   email?: string | null;
+  avatarUrl?: string | null;
 }
 
 export interface Application {

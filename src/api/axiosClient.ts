@@ -72,10 +72,6 @@ axiosClient.interceptors.response.use(
     const url = originalRequest.url || "";
 
     if (status === 401 && !originalRequest._retry) {
-      if (!useAuthStore.getState().isAuthenticated) {
-        return Promise.reject(error);
-      }
-
       if (isPublicEndpoint(url)) {
         if (url.includes("/auth/refresh")) clearAuthAndRedirect();
         return Promise.reject(error);

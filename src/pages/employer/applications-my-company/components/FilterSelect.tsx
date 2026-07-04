@@ -55,7 +55,7 @@ export function FilterSelect<TValue extends string>({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="h-10 justify-between rounded-md  bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white"
+            className="h-10 justify-between rounded-md  bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white hover:text-slate-800"
           >
             <span className="truncate">
               {selected?.label ?? t("employerApplications.filters.select")}
