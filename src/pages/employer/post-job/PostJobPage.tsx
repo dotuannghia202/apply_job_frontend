@@ -322,7 +322,7 @@ export default function PostJobPage() {
         variant={popup.variant}
         title={popup.title}
         message={popup.message}
-        dismissLabel={popup.dismissLabel}
+        dismissLabel={popup.dismissLabel || t("common.understood")}
         onDismiss={() => setPopup((prev) => ({ ...prev, open: false }))}
       />
     </main>
