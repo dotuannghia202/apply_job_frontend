@@ -950,7 +950,9 @@
       "loadingSpecializations": "Loading specializations...",
       "noSpecialization": "No specialization found.",
       "clearSpecialization": "Clear specialization filter",
-      "levels": "Levels"
+      "levels": "Levels",
+      "allLevels": "All levels",
+      "status": "Status"
     },
     "table": {
       "error": "Failed to load your jobs. Please try again.",
@@ -958,6 +960,7 @@
       "empty": "No jobs match the current filters.",
       "columns": {
         "job": "Job",
+        "status": "Status",
         "salary": "Salary",
         "location": "Location",
         "dates": "Dates",
@@ -981,6 +984,7 @@
       "skillWithId": "Skill #{{id}}"
     },
     "status": {
+      "all": "All",
       "active": "Active",
       "inactive": "Inactive"
     },

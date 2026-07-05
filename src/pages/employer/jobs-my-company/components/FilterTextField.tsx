@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { fieldClass } from "@/pages/employer/jobs-my-company/helper";
+import { cn } from "@/lib/utils";
 
 type FilterTextFieldProps = {
   label: string;
@@ -9,6 +10,7 @@ type FilterTextFieldProps = {
   placeholder?: string;
   type?: string;
   min?: number;
+  className?: string;
 };
 
 export function FilterTextField({
@@ -18,6 +20,7 @@ export function FilterTextField({
   placeholder,
   type = "text",
   min,
+  className,
 }: FilterTextFieldProps) {
   const handleChange = (nextValue: string) => {
     if (typeof min === "number" && nextValue !== "") {
@@ -43,7 +46,7 @@ export function FilterTextField({
         value={value}
         onChange={(event) => handleChange(event.target.value)}
         placeholder={placeholder}
-        className={fieldClass}
+        className={cn(fieldClass, className)}
       />
     </div>
   );

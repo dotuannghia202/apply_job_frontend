@@ -25,6 +25,7 @@ export type EmployerJobFilters = {
   minSalary: string;
   maxSalary: string;
   skill: string;
+  active: string;
 };
 
 export type SelectedSkill = {
@@ -59,6 +60,7 @@ export const createInitialFilters = (): EmployerJobFilters => ({
   minSalary: "",
   maxSalary: "",
   skill: "",
+  active: "all",
 });
 
 export const parseOptionalNumber = (value: string) => {
@@ -126,6 +128,10 @@ export function toQueryFilters(
   page: number,
   size: number,
 ): JobListFilters {
+  let active: boolean | undefined = undefined;
+  if (filters.active === "active") active = true;
+  else if (filters.active === "inactive") active = false;
+
   return {
     page,
     size,
@@ -137,7 +143,7 @@ export function toQueryFilters(
     name: filters.name,
     keyword: filters.keyword,
     skill: filters.skill,
-    active: true,
+    active,
   };
 }
 

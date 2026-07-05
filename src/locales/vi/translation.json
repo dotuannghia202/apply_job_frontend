@@ -950,7 +950,9 @@
       "loadingSpecializations": "Đang tải chuyên môn...",
       "noSpecialization": "Không tìm thấy chuyên môn.",
       "clearSpecialization": "Xóa bộ lọc chuyên môn",
-      "levels": "Cấp bậc"
+      "levels": "Cấp bậc",
+      "allLevels": "Tất cả cấp bậc",
+      "status": "Trạng thái"
     },
     "table": {
       "error": "Không thể tải danh sách việc làm của bạn. Vui lòng thử lại.",
@@ -958,6 +960,7 @@
       "empty": "Không có việc làm nào khớp với bộ lọc hiện tại.",
       "columns": {
         "job": "Công việc",
+        "status": "Trạng thái",
         "salary": "Mức lương",
         "location": "Địa điểm",
         "dates": "Thời gian",
@@ -981,6 +984,7 @@
       "skillWithId": "Kỹ năng #{{id}}"
     },
     "status": {
+      "all": "Tất cả",
       "active": "Đang hoạt động",
       "inactive": "Không hoạt động"
     },

@@ -24,11 +24,13 @@ import { cn } from "@/lib/utils";
 type SkillFilterPopoverProps = {
   value: string;
   onChange: (next: string) => void;
+  className?: string;
 };
 
 export function SkillFilterPopover({
   value,
   onChange,
+  className,
 }: SkillFilterPopoverProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -62,7 +64,10 @@ export function SkillFilterPopover({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="h-10 justify-between rounded-md border-slate-200 bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white"
+            className={cn(
+              "h-10 justify-between rounded-md border-slate-200 bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white",
+              className,
+            )}
             onFocus={() => setOpen(true)}
           >
             <span className={cn("truncate", !value && "text-slate-400")}>

@@ -12,7 +12,10 @@ import {
 import { jobKeys } from "./job.keys";
 import type { JobListFilters } from "@/types/job";
 
-const normalizeJobFilters = (filters: JobListFilters = {}) => {
+const normalizeJobFilters = (
+  filters: JobListFilters = {},
+  defaultActive: boolean | undefined = true,
+) => {
   const cleanText = (value?: string) => value?.trim() || undefined;
   const cleanNumber = (value?: number) =>
     typeof value === "number" && Number.isFinite(value) ? value : undefined;
@@ -32,13 +35,13 @@ const normalizeJobFilters = (filters: JobListFilters = {}) => {
     name: cleanText(filters.name),
     keyword: cleanText(filters.keyword),
     skill: cleanText(filters.skill),
-    active: typeof filters.active === "boolean" ? filters.active : true,
+    active: typeof filters.active === "boolean" ? filters.active : defaultActive,
     sort: cleanText(filters.sort),
   } satisfies Required<Pick<JobListFilters, "page" | "size">> & JobListFilters;
 };
 
 export const useGetJobs = (filters: JobListFilters = {}) => {
-  const normalizedFilters = normalizeJobFilters(filters);
+  const normalizedFilters = normalizeJobFilters(filters, true);
 
   return useQuery({
     queryKey: jobKeys.list(normalizedFilters),
@@ -51,7 +54,7 @@ export const useGetHrJobs = (
   filters: JobListFilters = {},
   options?: { enabled?: boolean },
 ) => {
-  const normalizedFilters = normalizeJobFilters(filters);
+  const normalizedFilters = normalizeJobFilters(filters, undefined);
 
   return useQuery({
     queryKey: jobKeys.hrList(normalizedFilters),

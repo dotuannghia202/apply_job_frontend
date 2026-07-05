@@ -25,12 +25,14 @@ type SpecializationFilterPopoverProps = {
   value: string;
   label: string;
   onChange: (next: { id: string; name: string }) => void;
+  className?: string;
 };
 
 export function SpecializationFilterPopover({
   value,
   label,
   onChange,
+  className,
 }: SpecializationFilterPopoverProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -64,7 +66,10 @@ export function SpecializationFilterPopover({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="h-10 justify-between rounded-md border-slate-200 bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white"
+            className={cn(
+              "h-10 justify-between rounded-md border-slate-200 bg-white px-3 text-sm font-normal text-slate-800 shadow-none hover:bg-white",
+              className,
+            )}
             onFocus={() => setOpen(true)}
           >
             <span className={cn("truncate", !label && "text-slate-400")}>

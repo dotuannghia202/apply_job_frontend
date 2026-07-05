@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table";
 import { formatDateLabel } from "@/pages/employer/jobs-my-company/helper";
 import type { Job } from "@/types/job";
+import { JobStatusBadge } from "./JobStatusBadge";
 
 type EmployerJobsTableProps = {
   jobs: Job[];
@@ -95,6 +96,9 @@ export function EmployerJobsTable({
                 {t("employerJobs.table.columns.job")}
               </TableHead>
               <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
+                {t("employerJobs.table.columns.status")}
+              </TableHead>
+              <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
                 {t("employerJobs.table.columns.salary")}
               </TableHead>
               <TableHead className="px-4 py-3 text-center text-xs font-bold uppercase  text-white">
@@ -127,6 +131,9 @@ export function EmployerJobsTable({
                         </Badge>
                       ))}
                     </div>
+                  </TableCell>
+                  <TableCell className="px-4 py-4 text-center">
+                    <JobStatusBadge active={job.active} />
                   </TableCell>
                   <TableCell className="px-4 py-4 text-sm font-semibold text-slate-700">
                     <span className="inline-flex items-center gap-2">
@@ -209,7 +216,7 @@ export function EmployerJobsTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={6}
                   className="px-4 py-10 text-center text-sm text-slate-500"
                 >
                   {t("employerJobs.table.empty")}

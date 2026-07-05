@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { FilterTextField } from "@/pages/employer/jobs-my-company/components/FilterTextField";
-import { LevelToggleGroup } from "@/pages/employer/jobs-my-company/components/LevelToggleGroup";
+import { LevelDropdown } from "@/pages/employer/jobs-my-company/components/LevelDropdown";
 import { SkillFilterPopover } from "@/pages/employer/jobs-my-company/components/SkillFilterPopover";
 import { SpecializationFilterPopover } from "@/pages/employer/jobs-my-company/components/SpecializationFilterPopover";
-import { type EmployerJobFilters } from "@/pages/employer/jobs-my-company/helper";
+import { fieldClass, type EmployerJobFilters } from "@/pages/employer/jobs-my-company/helper";
+import { cn } from "@/lib/utils";
 
 type EmployerJobsFilterPanelProps = {
   filters: EmployerJobFilters;
@@ -56,22 +57,26 @@ export function EmployerJobsFilterPanel({
             value={filters.keyword}
             onChange={(keyword) => onFilterChange({ keyword })}
             placeholder={t("employerJobs.filters.keywordPlaceholder")}
+            className="h-9"
           />
           <FilterTextField
             label={t("employerJobs.filters.jobName")}
             value={filters.name}
             onChange={(name) => onFilterChange({ name })}
             placeholder={t("employerJobs.filters.jobNamePlaceholder")}
+            className="h-9"
           />
           <FilterTextField
             label={t("employerJobs.filters.location")}
             value={filters.location}
             onChange={(location) => onFilterChange({ location })}
             placeholder={t("employerJobs.filters.locationPlaceholder")}
+            className="h-9"
           />
           <SkillFilterPopover
             value={filters.skill}
             onChange={(skill) => onFilterChange({ skill })}
+            className="h-9"
           />
 
           <FilterTextField
@@ -80,6 +85,7 @@ export function EmployerJobsFilterPanel({
             min={0}
             value={filters.minSalary}
             onChange={(minSalary) => onFilterChange({ minSalary })}
+            className="h-9"
           />
           <FilterTextField
             label={t("employerJobs.filters.maxSalary")}
@@ -87,6 +93,7 @@ export function EmployerJobsFilterPanel({
             min={0}
             value={filters.maxSalary}
             onChange={(maxSalary) => onFilterChange({ maxSalary })}
+            className="h-9"
           />
 
           <SpecializationFilterPopover
@@ -98,17 +105,32 @@ export function EmployerJobsFilterPanel({
                 specializationName: specialization.name,
               })
             }
+            className="h-9"
           />
-        </div>
 
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-            {t("employerJobs.filters.levels")}
-          </Label>
-          <LevelToggleGroup
+          <LevelDropdown
             value={filters.levels}
             onChange={(levels) => onFilterChange({ levels })}
+            className="h-9"
           />
+
+          <div className="flex flex-col gap-1.5">
+            <Label className="text-xs font-semibold uppercase text-slate-500">
+              {t("employerJobs.filters.status", "Trạng thái")}
+            </Label>
+            <select
+              value={filters.active}
+              onChange={(e) => onFilterChange({ active: e.target.value })}
+              className={cn(
+                fieldClass,
+                "w-full cursor-pointer px-3 text-sm text-slate-800 bg-white border border-slate-200 rounded-md focus-visible:ring-primary focus-visible:border-primary focus:outline-none h-9",
+              )}
+            >
+              <option value="all">{t("employerJobs.status.all", "Tất cả")}</option>
+              <option value="active">{t("employerJobs.status.active", "Đang hoạt động")}</option>
+              <option value="inactive">{t("employerJobs.status.inactive", "Không hoạt động")}</option>
+            </select>
+          </div>
         </div>
       </form>
     </Card>
