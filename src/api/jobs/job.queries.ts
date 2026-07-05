@@ -14,7 +14,7 @@ import type { JobListFilters } from "@/types/job";
 
 const normalizeJobFilters = (
   filters: JobListFilters = {},
-  defaultActive: boolean | undefined = true,
+  defaultActive: boolean | undefined = undefined,
 ) => {
   const cleanText = (value?: string) => value?.trim() || undefined;
   const cleanNumber = (value?: number) =>
@@ -54,7 +54,7 @@ export const useGetHrJobs = (
   filters: JobListFilters = {},
   options?: { enabled?: boolean },
 ) => {
-  const normalizedFilters = normalizeJobFilters(filters, undefined);
+  const normalizedFilters = normalizeJobFilters(filters);
 
   return useQuery({
     queryKey: jobKeys.hrList(normalizedFilters),
