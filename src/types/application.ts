@@ -34,6 +34,8 @@ export interface Application {
   id: number;
   status: ApplicationStatus;
   matchScore?: number | null;
+  matchedSkills?: string[] | null;
+  missingSkills?: string[] | null;
   coverLetter?: string | null;
   hasCoverLetter?: boolean | null;
   appliedAt?: string | null;

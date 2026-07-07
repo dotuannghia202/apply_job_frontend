@@ -101,7 +101,10 @@
         "potentialFit": "Potential fit for this role",
         "description": "Your profile is compared against the job requirements. Matched and missing skills help you decide what to improve before the employer reviews your application.",
         "matchedSkills": "Matched Skills",
-        "missingSkills": "Missing Skills"
+        "missingSkills": "Missing Skills",
+        "noData": "Data could not be retrieved",
+        "noMatched": "No matched skills found",
+        "noMissing": "No missing skills found"
       },
       "documents": {
         "title": "Documents",

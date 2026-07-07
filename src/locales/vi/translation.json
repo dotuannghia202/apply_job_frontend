@@ -101,7 +101,10 @@
         "potentialFit": "Có tiềm năng phù hợp với vị trí này",
         "description": "Hồ sơ của bạn được so sánh với yêu cầu công việc. Kỹ năng phù hợp và còn thiếu giúp bạn biết cần cải thiện gì trước khi nhà tuyển dụng xem hồ sơ.",
         "matchedSkills": "Kỹ năng phù hợp",
-        "missingSkills": "Kỹ năng còn thiếu"
+        "missingSkills": "Kỹ năng còn thiếu",
+        "noData": "Không truy xuất được dữ liệu",
+        "noMatched": "Không có kỹ năng phù hợp nào",
+        "noMissing": "Không có kỹ năng còn thiếu nào"
       },
       "documents": {
         "title": "Tài liệu đã nộp",

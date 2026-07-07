@@ -6,7 +6,7 @@ import {
   Clock3,
   FileText,
   MapPin,
-  PencilLine,
+  // PencilLine,
   Sparkles,
   WalletCards,
   type LucideIcon,
@@ -18,15 +18,13 @@ import { Link, useParams } from "react-router-dom";
 
 import { useGetApplicationById } from "@/api/applications/application.queries";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { Application, ApplicationStatus } from "@/types/application";
 
 type TimelineState = "completed" | "active" | "muted";
 
 type ApplicationWithOptionalDetails = Application & {
-  matchedSkills?: string[] | null;
-  missingSkills?: string[] | null;
   job?: Application["job"] & {
     salaryRange?: string | null;
     skills?: string[] | null;
@@ -36,9 +34,6 @@ type ApplicationWithOptionalDetails = Application & {
     } | null;
   };
 };
-
-const defaultMatchedSkills = ["Java", "Spring", "REST APIs", "PostgreSQL"];
-const defaultMissingSkills = ["AWS", "Kubernetes"];
 
 const statusBadgeStyles: Record<ApplicationStatus, string> = {
   PENDING: "border-amber-200 bg-amber-50 text-amber-700",
@@ -317,15 +312,8 @@ const MyApplicationDetail = () => {
     0,
     Math.min(100, Math.round(application.matchScore ?? 0)),
   );
-  const matchedSkills =
-    application.matchedSkills?.length || job?.skills?.length
-      ? ((application.matchedSkills?.length
-          ? application.matchedSkills
-          : job?.skills) ?? [])
-      : defaultMatchedSkills;
-  const missingSkills = application.missingSkills?.length
-    ? application.missingSkills
-    : defaultMissingSkills;
+  const matchedSkills = application.matchedSkills;
+  const missingSkills = application.missingSkills;
   const cvFileName =
     application.resume?.fileName ?? t("myApplications.detail.fallbacks.resume");
   const cvFileUrl = application.resume?.fileUrl ?? null;
@@ -345,7 +333,7 @@ const MyApplicationDetail = () => {
     t("myApplications.detail.fallbacks.notAvailable"),
   );
   const timelineSteps = getTimelineSteps(status, t);
-  const canUpdateApplication = status === "PENDING";
+  // const canUpdateApplication = status === "PENDING";
 
   return (
     <main className="min-h-screen bg-slate-50/70">
@@ -438,9 +426,19 @@ const MyApplicationDetail = () => {
                     {t("myApplications.detail.ai.matchedSkills")}
                   </h3>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {matchedSkills.map((skill) => (
-                      <SkillTag key={skill} label={skill} tone="matched" />
-                    ))}
+                    {matchedSkills === null || matchedSkills === undefined ? (
+                      <span className="text-sm italic text-slate-500">
+                        {t("myApplications.detail.ai.noData")}
+                      </span>
+                    ) : matchedSkills.length === 0 ? (
+                      <span className="text-sm italic text-slate-500">
+                        {t("myApplications.detail.ai.noMatched")}
+                      </span>
+                    ) : (
+                      matchedSkills.map((skill) => (
+                        <SkillTag key={skill} label={skill} tone="matched" />
+                      ))
+                    )}
                   </div>
                 </div>
 
@@ -449,9 +447,19 @@ const MyApplicationDetail = () => {
                     {t("myApplications.detail.ai.missingSkills")}
                   </h3>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {missingSkills.map((skill) => (
-                      <SkillTag key={skill} label={skill} tone="missing" />
-                    ))}
+                    {missingSkills === null || missingSkills === undefined ? (
+                      <span className="text-sm italic text-slate-500">
+                        {t("myApplications.detail.ai.noData")}
+                      </span>
+                    ) : missingSkills.length === 0 ? (
+                      <span className="text-sm italic text-slate-500">
+                        {t("myApplications.detail.ai.noMissing")}
+                      </span>
+                    ) : (
+                      missingSkills.map((skill) => (
+                        <SkillTag key={skill} label={skill} tone="missing" />
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
@@ -515,7 +523,7 @@ const MyApplicationDetail = () => {
                 </p>
               </div>
 
-              {canUpdateApplication ? (
+              {/* {canUpdateApplication ? (
                 <div className="rounded-xl border border-green-200 bg-green-50/70 p-4">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm leading-6 text-green-800">
@@ -530,7 +538,7 @@ const MyApplicationDetail = () => {
                     </Button>
                   </div>
                 </div>
-              ) : null}
+              ) : null} */}
             </Card>
           </section>
 
