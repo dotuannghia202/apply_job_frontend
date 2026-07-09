@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { linkGmail } from "@/api/users/user.api";
 import { useUpdateApplicationStatus } from "@/api/applications/application.queries";
+import { useTranslation } from "react-i18next";
+import { NotificationPopup } from "@/components/NotificationPopup";
 
 interface InterviewModalProps {
   applicationId: number;
@@ -15,6 +17,7 @@ interface InterviewModalProps {
 }
 
 export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) => {
+  const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
   const setGmailLinked = useAuthStore((state) => state.setGmailLinked);
   const updateStatusMutation = useUpdateApplicationStatus();
@@ -27,11 +30,23 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
   const [formData, setFormData] = useState({
     time: "",
     location: "",
-    message: "Vui lòng chuẩn bị kỹ lưỡng và phản hồi lại email này để xác nhận khả năng tham dự phỏng vấn của bạn. Hẹn gặp lại bạn!",
+    message: "",
   });
 
   const [isLinking, setIsLinking] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [popup, setPopup] = useState<{
+    open: boolean;
+    variant: "success" | "error" | "info" | "warning";
+    title: string;
+    message: string;
+    onDismiss?: () => void;
+  }>({
+    open: false,
+    variant: "info",
+    title: "",
+    message: "",
+  });
 
   // Dùng Ref để tránh lỗi closure biến formData cũ trong callback OAuth
   const latestFormData = useRef(formData);
@@ -54,14 +69,29 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
           status: "INTERVIEW",
           interviewTime: isoTime,
           interviewLocation: dataToSubmit.location,
+          interviewMessage: dataToSubmit.message.trim() || undefined,
         },
       });
 
-      alert("🎉 Lên lịch phỏng vấn và gửi thư mời thành công!");
-      onClose();
+      setPopup({
+        open: true,
+        variant: "success",
+        title: t("common.success", "Thành công"),
+        message: t("interviewModal.successMessage", "🎉 Lên lịch phỏng vấn và gửi thư mời thành công!"),
+        onDismiss: () => {
+          setPopup((prev) => ({ ...prev, open: false }));
+          onClose();
+        },
+      });
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Lỗi khi cập nhật trạng thái phỏng vấn.";
-      alert(`Thất bại: ${errorMessage}`);
+      const errorMessage = error.response?.data?.message || t("interviewModal.errorUpdateStatus", "Lỗi khi cập nhật trạng thái phỏng vấn.");
+      setPopup({
+        open: true,
+        variant: "error",
+        title: t("interviewModal.failedLabel", "Thất bại"),
+        message: errorMessage,
+        onDismiss: () => setPopup((prev) => ({ ...prev, open: false })),
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -83,15 +113,27 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
         // AUTO RESUME: Tự động chạy tiếp hàm gửi Form với dữ liệu mới nhất
         await submitInterviewData(latestFormData.current);
       } catch (error: any) {
-        const msg = error.response?.data?.message || "Lỗi khi liên kết tài khoản Gmail.";
-        alert(`Lỗi liên kết Gmail: ${msg}`);
+        const msg = error.response?.data?.message || t("interviewModal.errorGmailLink", "Lỗi khi liên kết tài khoản Gmail.");
+        setPopup({
+          open: true,
+          variant: "error",
+          title: t("interviewModal.errorGmailLinkPrefix", "Lỗi liên kết Gmail"),
+          message: msg,
+          onDismiss: () => setPopup((prev) => ({ ...prev, open: false })),
+        });
       } finally {
         setIsLinking(false);
       }
     },
     onError: (err) => {
       console.error("Google Auth error:", err);
-      alert("Đăng nhập Google thất bại hoặc đã bị hủy.");
+      setPopup({
+        open: true,
+        variant: "error",
+        title: t("interviewModal.failedLabel", "Thất bại"),
+        message: t("interviewModal.errorGoogleAuth", "Đăng nhập Google thất bại hoặc đã bị hủy."),
+        onDismiss: () => setPopup((prev) => ({ ...prev, open: false })),
+      });
       setIsLinking(false);
     }
   });
@@ -100,11 +142,23 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
   const handleSendClick = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.time) {
-      alert("Vui lòng chọn thời gian phỏng vấn!");
+      setPopup({
+        open: true,
+        variant: "warning",
+        title: t("common.warning", "Cảnh báo"),
+        message: t("interviewModal.errorNoTime", "Vui lòng chọn thời gian phỏng vấn!"),
+        onDismiss: () => setPopup((prev) => ({ ...prev, open: false })),
+      });
       return;
     }
     if (!formData.location.trim()) {
-      alert("Vui lòng nhập địa điểm phỏng vấn hoặc link Google Meet!");
+      setPopup({
+        open: true,
+        variant: "warning",
+        title: t("common.warning", "Cảnh báo"),
+        message: t("interviewModal.errorNoLocation", "Vui lòng nhập địa điểm phỏng vấn hoặc link Google Meet!"),
+        onDismiss: () => setPopup((prev) => ({ ...prev, open: false })),
+      });
       return;
     }
 
@@ -150,17 +204,17 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
           <div className="min-w-0">
             <h2 id={titleId} className="text-xl font-bold text-slate-900">
-              Lên lịch Phỏng vấn & Gửi Thư mời
+              {t("interviewModal.title", "Lên lịch Phỏng vấn & Gửi Thư mời")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              Thông tin sẽ được gửi trực tiếp từ hòm thư Gmail của bạn tới ứng viên.
+              {t("interviewModal.description", "Thông tin sẽ được gửi trực tiếp từ hòm thư Gmail của bạn tới ứng viên.")}
             </p>
           </div>
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="Đóng"
+            aria-label={t("interviewModal.close", "Đóng")}
             className="size-9 shrink-0 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700"
             disabled={isProcessing}
             onClick={onClose}
@@ -177,9 +231,9 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
             <div className="flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
               <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-600" />
               <div>
-                <p className="font-semibold">Chưa liên kết tài khoản Gmail</p>
+                <p className="font-semibold">{t("interviewModal.notLinkedTitle", "Chưa liên kết tài khoản Gmail")}</p>
                 <p className="mt-1 text-xs text-amber-700 leading-relaxed">
-                  Để hệ thống gửi email trực tiếp từ hòm thư của bạn, Google sẽ yêu cầu xin quyền gửi email khi bạn nhấn gửi. Dữ liệu đã nhập trên form này vẫn sẽ được giữ nguyên và tự động hoàn thành gửi sau khi bạn liên kết.
+                  {t("interviewModal.notLinkedDesc", "Để hệ thống gửi email trực tiếp từ hòm thư của bạn, Google sẽ yêu cầu xin quyền gửi email khi bạn nhấn gửi. Dữ liệu đã nhập trên form này vẫn sẽ được giữ nguyên và tự động hoàn thành gửi sau khi bạn liên kết.")}
                 </p>
               </div>
             </div>
@@ -187,9 +241,9 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
             <div className="flex gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
               <ShieldCheck className="mt-0.5 size-5 shrink-0 text-emerald-600" />
               <div>
-                <p className="font-semibold">Gmail đã liên kết thành công</p>
+                <p className="font-semibold">{t("interviewModal.linkedTitle", "Gmail đã liên kết thành công")}</p>
                 <p className="mt-1 text-xs text-emerald-700 leading-relaxed">
-                  Thư mời phỏng vấn sẽ được gửi ngay lập tức bằng Gmail của bạn tới ứng viên mà không cần xin lại quyền.
+                  {t("interviewModal.linkedDesc", "Thư mời phỏng vấn sẽ được gửi ngay lập tức bằng Gmail của bạn tới ứng viên mà không cần xin lại quyền.")}
                 </p>
               </div>
             </div>
@@ -199,7 +253,7 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
           <div className="space-y-2">
             <Label htmlFor={timeInputId} className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
               <Calendar className="size-4 text-slate-500" />
-              Thời gian phỏng vấn <span className="text-red-500">*</span>
+              {t("interviewModal.timeLabel", "Thời gian phỏng vấn")} <span className="text-red-500">*</span>
             </Label>
             <Input
               id={timeInputId}
@@ -216,12 +270,12 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
           <div className="space-y-2">
             <Label htmlFor={locationInputId} className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
               <MapPin className="size-4 text-slate-500" />
-              Địa điểm / Link Google Meet <span className="text-red-500">*</span>
+              {t("interviewModal.locationLabel", "Địa điểm / Link Google Meet")} <span className="text-red-500">*</span>
             </Label>
             <Input
               id={locationInputId}
               type="text"
-              placeholder="VD: Phòng họp số 1 hoặc link Google Meet"
+              placeholder={t("interviewModal.locationPlaceholder", "VD: Phòng họp số 1 hoặc link Google Meet")}
               className="border-slate-200 focus-visible:ring-emerald-500/30"
               required
               disabled={isProcessing}
@@ -234,12 +288,12 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
           <div className="space-y-2">
             <Label htmlFor={messageInputId} className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
               <MessageSquare className="size-4 text-slate-500" />
-              Lời nhắn từ Nhà tuyển dụng
+              {t("interviewModal.messageLabel", "Lời nhắn từ Nhà tuyển dụng")}
             </Label>
             <Textarea
               id={messageInputId}
               rows={4}
-              placeholder="Nhập lời dặn dò, hướng dẫn chuẩn bị trước phỏng vấn cho ứng viên..."
+              placeholder={t("interviewModal.messagePlaceholder", "Nhập lời mời phỏng vấn (bỏ qua nếu muốn dùng lời nhắn mặc định từ hệ thống)")}
               className="resize-none border-slate-200 focus-visible:ring-emerald-500/30"
               disabled={isProcessing}
               value={formData.message}
@@ -257,7 +311,7 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
             disabled={isProcessing}
             onClick={onClose}
           >
-            Hủy bỏ
+            {t("interviewModal.cancelBtn", "Hủy bỏ")}
           </Button>
           <Button
             type="submit"
@@ -267,14 +321,22 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
             {isProcessing ? (
               <span className="flex items-center gap-2">
                 <LoaderCircle className="size-4 animate-spin" />
-                {isLinking ? "Đang liên kết Gmail..." : "Đang gửi thư mời..."}
+                {isLinking ? t("interviewModal.linkingBtn", "Đang liên kết Gmail...") : t("interviewModal.submittingBtn", "Đang gửi thư mời...")}
               </span>
             ) : (
-              "Lên lịch & Gửi thư mời"
+              t("interviewModal.submitBtn", "Lên lịch & Gửi thư mời")
             )}
           </Button>
         </div>
       </form>
+      <NotificationPopup
+        open={popup.open}
+        variant={popup.variant}
+        title={popup.title}
+        message={popup.message}
+        onDismiss={popup.onDismiss}
+        dismissLabel={t("common.understood", "Đã hiểu")}
+      />
     </div>
   );
 };

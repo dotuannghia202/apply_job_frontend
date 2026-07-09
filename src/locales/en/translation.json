@@ -1967,7 +1967,36 @@
     "loginBtn": "Log In",
     "cancelBtn": "Cancel"
   },
+  "interviewModal": {
+    "title": "Schedule Interview & Send Invitation",
+    "description": "Information will be sent directly from your Gmail account to the candidate.",
+    "notLinkedTitle": "Gmail account not linked",
+    "notLinkedDesc": "To send email directly from your inbox, Google will request email sending permission when you click send. The data entered in this form will be kept and auto-submitted after you link.",
+    "linkedTitle": "Gmail linked successfully",
+    "linkedDesc": "The interview invitation will be sent immediately using your Gmail to the candidate without requesting permission again.",
+    "timeLabel": "Interview Time",
+    "locationLabel": "Location / Google Meet Link",
+    "locationPlaceholder": "e.g., Meeting Room 1 or Google Meet link",
+    "messageLabel": "Message from Employer",
+    "messagePlaceholder": "Enter interview invitation message (leave blank to use the default system message)",
+    "cancelBtn": "Cancel",
+    "linkingBtn": "Linking Gmail...",
+    "submittingBtn": "Sending invitation...",
+    "submitBtn": "Schedule & Send Invitation",
+    "errorNoTime": "Please select an interview time!",
+    "errorNoLocation": "Please enter an interview location or Google Meet link!",
+    "successMessage": "🎉 Interview scheduled and invitation sent successfully!",
+    "errorUpdateStatus": "Error updating interview status.",
+    "errorGoogleAuth": "Google login failed or was cancelled.",
+    "errorGmailLink": "Error linking Gmail account.",
+    "failedLabel": "Failed",
+    "errorGmailLinkPrefix": "Gmail linking error"
+  },
   "common": {
-    "understood": "Understood"
+    "understood": "Understood",
+    "success": "Success",
+    "failed": "Failed",
+    "warning": "Warning",
+    "close": "Close"
   }
 }

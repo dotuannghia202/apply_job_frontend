@@ -67,6 +67,7 @@ export interface UpdateApplicationStatusRequest {
   status: ApplicationStatus;
   interviewTime?: string;
   interviewLocation?: string;
+  interviewMessage?: string;
 }
 
 export interface UpdateApplicationPayload {

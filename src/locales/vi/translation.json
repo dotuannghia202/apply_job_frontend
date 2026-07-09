@@ -1967,7 +1967,36 @@
     "loginBtn": "Đăng nhập",
     "cancelBtn": "Hủy"
   },
+  "interviewModal": {
+    "title": "Lên lịch Phỏng vấn & Gửi Thư mời",
+    "description": "Thông tin sẽ được gửi trực tiếp từ hòm thư Gmail của bạn tới ứng viên.",
+    "notLinkedTitle": "Chưa liên kết tài khoản Gmail",
+    "notLinkedDesc": "Để hệ thống gửi email trực tiếp từ hòm thư của bạn, Google sẽ yêu cầu xin quyền gửi email khi bạn nhấn gửi. Dữ liệu đã nhập trên form này vẫn sẽ được giữ nguyên và tự động hoàn thành gửi sau khi bạn liên kết.",
+    "linkedTitle": "Gmail đã liên kết thành công",
+    "linkedDesc": "Thư mời phỏng vấn sẽ được gửi ngay lập tức bằng Gmail của bạn tới ứng viên mà không cần xin lại quyền.",
+    "timeLabel": "Thời gian phỏng vấn",
+    "locationLabel": "Địa điểm / Link Google Meet",
+    "locationPlaceholder": "VD: Phòng họp số 1 hoặc link Google Meet",
+    "messageLabel": "Lời nhắn từ Nhà tuyển dụng",
+    "messagePlaceholder": "Nhập lời mời phỏng vấn (bỏ qua nếu muốn dùng lời nhắn mặc định từ hệ thống)",
+    "cancelBtn": "Hủy bỏ",
+    "linkingBtn": "Đang liên kết Gmail...",
+    "submittingBtn": "Đang gửi thư mời...",
+    "submitBtn": "Lên lịch & Gửi thư mời",
+    "errorNoTime": "Vui lòng chọn thời gian phỏng vấn!",
+    "errorNoLocation": "Vui lòng nhập địa điểm phỏng vấn hoặc link Google Meet!",
+    "successMessage": "🎉 Lên lịch phỏng vấn và gửi thư mời thành công!",
+    "errorUpdateStatus": "Lỗi khi cập nhật trạng thái phỏng vấn.",
+    "errorGoogleAuth": "Đăng nhập Google thất bại hoặc đã bị hủy.",
+    "errorGmailLink": "Lỗi khi liên kết tài khoản Gmail.",
+    "failedLabel": "Thất bại",
+    "errorGmailLinkPrefix": "Lỗi liên kết Gmail"
+  },
   "common": {
-    "understood": "Đã hiểu"
+    "understood": "Đã hiểu",
+    "success": "Thành công",
+    "failed": "Thất bại",
+    "warning": "Cảnh báo",
+    "close": "Đóng"
   }
 }
