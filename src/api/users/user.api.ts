@@ -87,3 +87,10 @@ export const toggleSaveJob = async (jobId: number) => {
     BackendResponse<boolean>
   >;
 };
+
+export const linkGmail = async (code: string) => {
+  return axiosClient.post("/users/link-gmail", { code }) as Promise<
+    BackendResponse<void>
+  >;
+};
+

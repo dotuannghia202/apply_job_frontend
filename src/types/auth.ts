@@ -11,7 +11,9 @@ export interface AuthUser {
     id: number;
     name: string;
   } | null;
+  isGmailLinked?: boolean | null;
 }
+
 
 export interface LoginRequest {
   username: string;

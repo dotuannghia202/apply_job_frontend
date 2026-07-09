@@ -10,6 +10,7 @@ interface AuthState {
   setAvatar: (avatarUrl: string | null) => void;
   setCompany: (company: AuthUser["company"] | null) => void;
   setRoles: (roles: RoleName[]) => void;
+  setGmailLinked: (linked: boolean) => void;
   logout: () => void;
 }
 
@@ -68,6 +69,15 @@ export const useAuthStore = create<AuthState>((set) => ({
   setRoles: (roles) => {
     set((state) => {
       const user = state.user ? { ...state.user, roles } : null;
+      return {
+        user,
+      };
+    });
+  },
+
+  setGmailLinked: (linked) => {
+    set((state) => {
+      const user = state.user ? { ...state.user, isGmailLinked: linked } : null;
       return {
         user,
       };
