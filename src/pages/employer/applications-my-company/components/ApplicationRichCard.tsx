@@ -1,5 +1,6 @@
 import { CalendarDays, FileText, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 import { useUpdateApplicationStatus } from "@/api/applications/application.queries";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -75,9 +76,14 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <h3 className="truncate text-base font-bold text-slate-950">
-              {candidateName}
-            </h3>
+            <Link
+              to={`/employer/applicants/${application.id}`}
+              className="hover:underline"
+            >
+              <h3 className="truncate text-base font-bold text-slate-950">
+                {candidateName}
+              </h3>
+            </Link>
             <div className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
               <Mail className="size-3.5 shrink-0" aria-hidden="true" />
               <span className="truncate">{candidateEmail}</span>
@@ -117,22 +123,11 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
           <Button
             type="button"
             variant="outline"
-            className=""
-            asChild={Boolean(resumeUrl)}
-            disabled={!resumeUrl}
+            asChild
           >
-            {resumeUrl ? (
-              <a
-                href={resumePreviewUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={handleReviewCv}
-              >
-                {t("employerApplications.actions.reviewProfile")}
-              </a>
-            ) : (
-              t("employerApplications.actions.reviewProfile")
-            )}
+            <Link to={`/employer/applicants/${application.id}`}>
+              {t("employerApplications.actions.reviewProfile")}
+            </Link>
           </Button>
           <ApplicationActionsPopover application={application} />
         </div>

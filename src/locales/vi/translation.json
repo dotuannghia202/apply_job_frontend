@@ -888,7 +888,20 @@
       "noCvAttached": "Chưa đính kèm CV"
     },
     "aiFit": {
-      "label": "Độ phù hợp AI"
+      "label": "Độ phù hợp AI",
+      "badge": "Điểm phù hợp AI",
+      "strongFit": "Ứng viên rất phù hợp với vị trí này",
+      "potentialFit": "Ứng viên có tiềm năng phù hợp với vị trí này",
+      "description": "Hệ thống tự động phân tích và so sánh kỹ năng trong CV của ứng viên với mô tả công việc.",
+      "matchedSkills": "Kỹ năng phù hợp",
+      "missingSkills": "Kỹ năng còn thiếu"
+    },
+    "documents": {
+      "title": "Tài liệu ứng tuyển",
+      "description": "CV đính kèm và thư giới thiệu từ ứng viên.",
+      "pdfResume": "CV định dạng PDF",
+      "coverLetter": "Thư xin việc (Cover Letter)",
+      "noCoverLetter": "Ứng viên không gửi kèm thư ứng tuyển."
     },
     "actions": {
       "open": "Mở thao tác hồ sơ ứng tuyển",

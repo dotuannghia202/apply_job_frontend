@@ -133,7 +133,7 @@ export function ApplicantCard({ application, highlighted }: Props) {
           className="flex-1 text-xs font-bold bg-primary hover:bg-primary-hover text-white rounded-xs"
           asChild
         >
-          <Link to="/employer/applicants">
+          <Link to={`/employer/applicants/${application.id}`}>
             {t("employerDashboard.applicant.actions.review")}
           </Link>
         </Button>

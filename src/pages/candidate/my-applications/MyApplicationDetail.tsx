@@ -21,6 +21,8 @@ import AppBreadcrumb from "@/components/AppBreadcrumb";
 // import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { Application, ApplicationStatus } from "@/types/application";
+import { AiFitCard } from "@/components/applications/AiFitCard";
+import { ApplicationDocumentsCard } from "@/components/applications/ApplicationDocumentsCard";
 
 type TimelineState = "completed" | "active" | "muted";
 
@@ -35,7 +37,7 @@ type ApplicationWithOptionalDetails = Application & {
   };
 };
 
-const statusBadgeStyles: Record<ApplicationStatus, string> = {
+export const statusBadgeStyles: Record<ApplicationStatus, string> = {
   PENDING: "border-amber-200 bg-amber-50 text-amber-700",
   REVIEWING: "border-sky-200 bg-sky-50 text-sky-700",
   INTERVIEW: "border-green-200 bg-green-50 text-green-700",
@@ -46,7 +48,7 @@ const statusBadgeStyles: Record<ApplicationStatus, string> = {
 const getLocale = (language: string) =>
   language.startsWith("vi") ? "vi-VN" : "en-US";
 
-const formatAppliedDate = (
+export const formatAppliedDate = (
   value: string | null | undefined,
   locale: string,
   fallback: string,
@@ -70,7 +72,7 @@ const formatVND = (value: number, locale: string) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-const formatApplicationSalary = (
+export const formatApplicationSalary = (
   minSalary: number | null | undefined,
   maxSalary: number | null | undefined,
   locale: string,
@@ -109,7 +111,7 @@ const formatApplicationSalary = (
   return t("myApplications.detail.salary.agree");
 };
 
-const getCompanyInitial = (companyName: string) =>
+export const getCompanyInitial = (companyName: string) =>
   companyName.trim().slice(0, 1).toUpperCase() || "?";
 
 const getTimelineStates = (status: ApplicationStatus): TimelineState[] => {
@@ -122,7 +124,7 @@ const getTimelineStates = (status: ApplicationStatus): TimelineState[] => {
   return ["completed", "active", "muted", "muted"];
 };
 
-const getTimelineSteps = (status: ApplicationStatus, t: TFunction) => {
+export const getTimelineSteps = (status: ApplicationStatus, t: TFunction) => {
   const states = getTimelineStates(status);
 
   return [
@@ -154,7 +156,7 @@ const getTimelineSteps = (status: ApplicationStatus, t: TFunction) => {
   ] as const;
 };
 
-const CircularMatchScore = ({
+export const CircularMatchScore = ({
   score,
   label,
   ariaLabel,
@@ -209,7 +211,7 @@ const CircularMatchScore = ({
   );
 };
 
-const SkillTag = ({
+export const SkillTag = ({
   label,
   tone,
 }: {
@@ -230,7 +232,7 @@ const SkillTag = ({
   );
 };
 
-const DetailRow = ({
+export const DetailRow = ({
   icon: Icon,
   label,
   value,
@@ -250,7 +252,7 @@ const DetailRow = ({
   </div>
 );
 
-const PageMessage = ({ children }: { children: ReactNode }) => (
+export const PageMessage = ({ children }: { children: ReactNode }) => (
   <main className="min-h-screen bg-slate-50/70 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
     <div className="mx-auto w-full max-w-7xl rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
       {children}
@@ -392,154 +394,19 @@ const MyApplicationDetail = () => {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
           <section className="flex flex-col gap-6">
-            <Card className="overflow-hidden border-slate-200 bg-white p-0 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
-              <div className="border-b border-slate-200 bg-[linear-gradient(135deg,#f0fdf4_0%,#ffffff_54%,#fffbeb_100%)] p-6">
-                <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="max-w-xl">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-white/80 px-3 py-1 text-sm font-semibold text-green-700 shadow-sm">
-                      <Sparkles className="size-4" aria-hidden="true" />
-                      {t("myApplications.detail.ai.badge")}
-                    </div>
-                    <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950">
-                      {matchScore >= 80
-                        ? t("myApplications.detail.ai.strongFit")
-                        : t("myApplications.detail.ai.potentialFit")}
-                    </h2>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">
-                      {t("myApplications.detail.ai.description")}
-                    </p>
-                  </div>
+            <AiFitCard
+              matchScore={matchScore}
+              matchedSkills={matchedSkills}
+              missingSkills={missingSkills}
+              role="candidate"
+            />
 
-                  <CircularMatchScore
-                    score={matchScore}
-                    label={t("myApplications.detail.matchLabel")}
-                    ariaLabel={t("myApplications.detail.matchScoreAria", {
-                      score: matchScore,
-                    })}
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-6 p-6 md:grid-cols-2">
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-slate-500">
-                    {t("myApplications.detail.ai.matchedSkills")}
-                  </h3>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {matchedSkills === null || matchedSkills === undefined ? (
-                      <span className="text-sm italic text-slate-500">
-                        {t("myApplications.detail.ai.noData")}
-                      </span>
-                    ) : matchedSkills.length === 0 ? (
-                      <span className="text-sm italic text-slate-500">
-                        {t("myApplications.detail.ai.noMatched")}
-                      </span>
-                    ) : (
-                      matchedSkills.map((skill) => (
-                        <SkillTag key={skill} label={skill} tone="matched" />
-                      ))
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-slate-500">
-                    {t("myApplications.detail.ai.missingSkills")}
-                  </h3>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {missingSkills === null || missingSkills === undefined ? (
-                      <span className="text-sm italic text-slate-500">
-                        {t("myApplications.detail.ai.noData")}
-                      </span>
-                    ) : missingSkills.length === 0 ? (
-                      <span className="text-sm italic text-slate-500">
-                        {t("myApplications.detail.ai.noMissing")}
-                      </span>
-                    ) : (
-                      missingSkills.map((skill) => (
-                        <SkillTag key={skill} label={skill} tone="missing" />
-                      ))
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)]">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <h2 className="text-xl font-bold tracking-tight text-slate-950">
-                    {t("myApplications.detail.documents.title")}
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {t("myApplications.detail.documents.description")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-2 rounded-xl border border-slate-200 bg-slate-50/80 p-4">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-red-100 bg-red-50 text-red-600">
-                      <FileText className="size-5" aria-hidden="true" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-slate-950">
-                        {cvFileName}
-                      </p>
-                      <p className="text-xs text-slate-500">
-                        {t("myApplications.detail.documents.pdfResume")}
-                      </p>
-                    </div>
-                  </div>
-
-                  {cvFileUrl ? (
-                    <a
-                      href={`https://docs.google.com/viewer?url=${encodeURIComponent(
-                        cvFileUrl,
-                      )}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-600 transition hover:text-green-700"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {t("myApplications.detail.documents.viewFile")}
-                      <ArrowUpRight className="size-4" aria-hidden="true" />
-                    </a>
-                  ) : (
-                    <span className="text-sm font-medium text-slate-400">
-                      {t("myApplications.detail.fallbacks.noFileUrl")}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 bg-white p-5">
-                <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-slate-500">
-                  {t("myApplications.detail.documents.coverLetter")}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-700">
-                  {coverLetter ||
-                    t("myApplications.detail.documents.noCoverLetter")}
-                </p>
-              </div>
-
-              {/* {canUpdateApplication ? (
-                <div className="rounded-xl border border-green-200 bg-green-50/70 p-4">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-sm leading-6 text-green-800">
-                      {t("myApplications.detail.documents.updateHint")}
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="w-full rounded-md border-green-600 bg-white text-green-700 hover:bg-green-50 hover:text-green-800 sm:w-auto"
-                    >
-                      <PencilLine className="size-4" aria-hidden="true" />
-                      {t("myApplications.detail.documents.updateAction")}
-                    </Button>
-                  </div>
-                </div>
-              ) : null} */}
-            </Card>
+            <ApplicationDocumentsCard
+              cvFileName={cvFileName}
+              cvFileUrl={cvFileUrl}
+              coverLetter={coverLetter}
+              role="candidate"
+            />
           </section>
 
           <aside className="flex flex-col gap-6">

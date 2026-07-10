@@ -84,16 +84,18 @@ export function ApplicationActionsPopover({
                 </>
               )}
             </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="justify-start gap-2 rounded-md px-3 text-slate-700"
-              disabled={isUpdating}
-              onClick={handleOpenInterviewModal}
-            >
-              <CalendarPlus className="size-4" aria-hidden="true" />
-              {t("employerApplications.actions.scheduleInterview")}
-            </Button>
+            {application.status !== "INTERVIEW" && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="justify-start gap-2 rounded-md px-3 text-slate-700"
+                disabled={isUpdating}
+                onClick={handleOpenInterviewModal}
+              >
+                <CalendarPlus className="size-4" aria-hidden="true" />
+                {t("employerApplications.actions.scheduleInterview")}
+              </Button>
+            )}
             <Button
               type="button"
               variant="ghost"

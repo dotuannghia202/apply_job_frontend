@@ -888,7 +888,20 @@
       "noCvAttached": "No CV attached"
     },
     "aiFit": {
-      "label": "AI Fit"
+      "label": "AI Fit Score",
+      "badge": "AI Fit Score",
+      "strongFit": "Strong fit for the position",
+      "potentialFit": "Potential fit for the position",
+      "description": "The system automatically analyzes and compares skills in the candidate's CV with the job description.",
+      "matchedSkills": "Matched Skills",
+      "missingSkills": "Missing Skills"
+    },
+    "documents": {
+      "title": "Application Documents",
+      "description": "Resume and cover letter submitted by the candidate.",
+      "pdfResume": "PDF Resume",
+      "coverLetter": "Cover Letter",
+      "noCoverLetter": "The candidate did not submit a cover letter."
     },
     "actions": {
       "open": "Open application actions",
