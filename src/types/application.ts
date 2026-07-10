@@ -42,6 +42,9 @@ export interface Application {
   job?: ApplicationJobInfo | null;
   resume?: ApplicationResumeInfo | null;
   candidate?: ApplicationCandidateInfo | null;
+  interviewTime?: string | null;
+  interviewLocation?: string | null;
+  interviewMessage?: string | null;
 }
 
 export interface ApplicationListFilters extends Pick<

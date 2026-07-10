@@ -124,8 +124,40 @@ const getTimelineStates = (status: ApplicationStatus): TimelineState[] => {
   return ["completed", "active", "muted", "muted"];
 };
 
-export const getTimelineSteps = (status: ApplicationStatus, t: TFunction) => {
+export const formatInterviewTime = (
+  timeStr: string | null | undefined,
+  locale: string,
+) => {
+  if (!timeStr) return "";
+  const date = new Date(timeStr);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+};
+
+export const getTimelineSteps = (
+  application: {
+    status: ApplicationStatus;
+    interviewTime?: string | null;
+    interviewLocation?: string | null;
+    interviewMessage?: string | null;
+  },
+  t: TFunction,
+) => {
+  const status = application.status;
   const states = getTimelineStates(status);
+
+  const getReviewDescription = () => {
+    if (status === "PENDING") {
+      return t("myApplications.detail.timeline.reviewDescription");
+    }
+    return t("myApplications.detail.timeline.reviewOngoing");
+  };
 
   return [
     {
@@ -135,13 +167,24 @@ export const getTimelineSteps = (status: ApplicationStatus, t: TFunction) => {
     },
     {
       title: t("myApplications.detail.timeline.reviewTitle"),
-      description: t("myApplications.detail.timeline.reviewDescription"),
+      description: getReviewDescription(),
       state: states[1],
     },
     {
       title: t("myApplications.detail.timeline.interviewTitle"),
       description: t("myApplications.detail.timeline.interviewDescription"),
       state: states[2],
+      interviewDetails:
+        (status === "INTERVIEW" ||
+          status === "ACCEPTED" ||
+          status === "REJECTED") &&
+        application.interviewTime
+          ? {
+              time: application.interviewTime,
+              location: application.interviewLocation,
+              message: application.interviewMessage,
+            }
+          : null,
     },
     {
       title: t("myApplications.detail.timeline.finalTitle"),
@@ -334,7 +377,7 @@ const MyApplicationDetail = () => {
     locale,
     t("myApplications.detail.fallbacks.notAvailable"),
   );
-  const timelineSteps = getTimelineSteps(status, t);
+  const timelineSteps = getTimelineSteps(application, t);
   // const canUpdateApplication = status === "PENDING";
 
   return (
@@ -500,7 +543,7 @@ const MyApplicationDetail = () => {
                         )}
                       </span>
 
-                      <div className="min-w-0 pb-1">
+                      <div className="min-w-0 pb-1 flex-1">
                         <h3
                           className={`text-sm font-semibold ${
                             step.state === "muted"
@@ -513,6 +556,33 @@ const MyApplicationDetail = () => {
                         <p className="mt-1 text-sm leading-6 text-slate-500">
                           {step.description}
                         </p>
+                        {"interviewDetails" in step && step.interviewDetails && (
+                          <div className="mt-2 rounded-lg border border-amber-100 bg-amber-50/50 p-3 text-xs text-slate-700 space-y-1">
+                            <p className="font-semibold text-amber-800">
+                              {t("myApplications.detail.timeline.interviewInfo", "Thông tin phỏng vấn:")}
+                            </p>
+                            <p>
+                              <span className="font-medium">
+                                {t("myApplications.detail.timeline.interviewTime", "Thời gian")}:
+                              </span>{" "}
+                              {formatInterviewTime(step.interviewDetails.time, locale)}
+                            </p>
+                            <p>
+                              <span className="font-medium">
+                                {t("myApplications.detail.timeline.interviewLocation", "Địa điểm")}:
+                              </span>{" "}
+                              {step.interviewDetails.location}
+                            </p>
+                            {step.interviewDetails.message && (
+                              <p>
+                                <span className="font-medium">
+                                  {t("myApplications.detail.timeline.interviewMsg", "Lời nhắn")}:
+                                </span>{" "}
+                                {step.interviewDetails.message}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </li>
                   );
