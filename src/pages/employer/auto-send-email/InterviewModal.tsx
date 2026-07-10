@@ -10,6 +10,7 @@ import { linkGmail } from "@/api/users/user.api";
 import { useUpdateApplicationStatus } from "@/api/applications/application.queries";
 import { useTranslation } from "react-i18next";
 import { NotificationPopup } from "@/components/NotificationPopup";
+import { getLocalDatetimeMin } from "@/helper";
 
 interface InterviewModalProps {
   applicationId: number;
@@ -151,6 +152,18 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
       });
       return;
     }
+    const selectedTime = new Date(formData.time).getTime();
+    const currentTime = Date.now();
+    if (selectedTime <= currentTime) {
+      setPopup({
+        open: true,
+        variant: "warning",
+        title: t("common.warning", "Cảnh báo"),
+        message: t("interviewModal.errorPastTime", "Thời gian phỏng vấn phải lớn hơn thời gian hiện tại!"),
+        onDismiss: () => setPopup((prev) => ({ ...prev, open: false })),
+      });
+      return;
+    }
     if (!formData.location.trim()) {
       setPopup({
         open: true,
@@ -258,6 +271,7 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
             <Input
               id={timeInputId}
               type="datetime-local"
+              min={getLocalDatetimeMin()}
               className="border-slate-200 focus-visible:ring-emerald-500/30"
               required
               disabled={isProcessing}

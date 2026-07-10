@@ -10,4 +10,12 @@ export const toUtcMidnightIso = (dateInput?: string) => {
   const month = sourceDate.getMonth();
   const day = sourceDate.getDate();
   return new Date(Date.UTC(year, month, day, 0, 0, 0)).toISOString();
+};export const getLocalDatetimeMin = (): string => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
