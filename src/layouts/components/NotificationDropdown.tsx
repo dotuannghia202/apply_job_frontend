@@ -229,7 +229,7 @@ const NotificationDropdown = ({ currentRole }: NotificationProps) => {
                     >
                       {notif.title}
                     </h4>
-                    <p className="text-sm text-slate-600 line-clamp-2 leading-snug">
+                    <p className="text-sm text-slate-600 leading-snug">
                       {notif.message}
                     </p>
                     <p className="text-xs font-medium text-slate-400 mt-2">
