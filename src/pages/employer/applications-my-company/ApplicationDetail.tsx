@@ -1,15 +1,12 @@
 import {
   ArrowLeft,
   ArrowUpRight,
-  BriefcaseBusiness,
   CalendarDays,
   CalendarPlus,
   CheckCircle2,
   Clock3,
-  FileText,
   Mail,
   MapPin,
-  Sparkles,
   WalletCards,
   XCircle,
 } from "lucide-react";

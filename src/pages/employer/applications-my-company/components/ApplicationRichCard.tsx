@@ -2,7 +2,7 @@ import { CalendarDays, FileText, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { useUpdateApplicationStatus } from "@/api/applications/application.queries";
+
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -26,7 +26,7 @@ const getLocale = (language: string) =>
 
 export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
   const { t, i18n } = useTranslation();
-  const updateStatusMutation = useUpdateApplicationStatus();
+
   const locale = getLocale(i18n.language);
   const candidateName =
     application.candidate?.name ||
@@ -41,21 +41,7 @@ export function ApplicationRichCard({ application }: ApplicationRichCardProps) {
     t("employerApplications.fallbacks.notAvailable"),
   );
   const score = getMatchScore(application);
-  const resumeUrl = application.resume?.fileUrl ?? "";
-  const resumePreviewUrl = resumeUrl
-    ? `https://docs.google.com/viewer?url=${encodeURIComponent(resumeUrl)}`
-    : "";
 
-  const handleReviewCv = () => {
-    if (application.status !== "PENDING" || updateStatusMutation.isPending) {
-      return;
-    }
-
-    updateStatusMutation.mutate({
-      id: application.id,
-      data: { status: "REVIEWING" },
-    });
-  };
 
   return (
     <Card className="overflow-hidden border-primary bg-white p-0 shadow-[0_16px_42px_rgba(15,23,42,0.05)] transition  hover:shadow-[0_22px_55px_rgba(15,23,42,0.08)]">

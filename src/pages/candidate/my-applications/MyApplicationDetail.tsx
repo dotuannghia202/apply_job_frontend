@@ -4,10 +4,8 @@ import {
   CalendarDays,
   Check,
   Clock3,
-  FileText,
   MapPin,
   // PencilLine,
-  Sparkles,
   WalletCards,
   type LucideIcon,
 } from "lucide-react";
