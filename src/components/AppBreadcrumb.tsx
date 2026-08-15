@@ -19,7 +19,7 @@ const AppBreadcrumb = ({ items, className }: AppBreadcrumbProps) => {
   return (
     <nav
       className={cn(
-        "flex flex-wrap items-center gap-2 text-[14px] text-slate-500 sm:text-lg",
+        "flex flex-wrap items-center gap-2 text-[14px] text-slate-500",
         className,
       )}
       aria-label="Breadcrumb"
@@ -34,14 +34,15 @@ const AppBreadcrumb = ({ items, className }: AppBreadcrumbProps) => {
               className="flex items-center gap-2"
             >
               {item.to && !isLast ? (
-                <Link to={item.to} className="transition hover:text-slate-900">
+                <Link
+                  to={item.to}
+                  className="transition hover:text-slate-900 hover:underline"
+                >
                   {item.label}
                 </Link>
               ) : (
                 <span
-                  className={cn(
-                    isLast ? "font-semibold text-primary" : "text-slate-500",
-                  )}
+                  className={cn(isLast ? "text-primary" : "text-slate-500")}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.label}

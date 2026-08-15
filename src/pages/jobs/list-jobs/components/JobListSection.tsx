@@ -134,7 +134,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
         ))}
       </div>
 
-      {meta ? (
+      {meta && jobs.length ? (
         <div className="mt-12 flex justify-center">
           <Pagination>
             <PaginationContent className="gap-4">
@@ -173,7 +173,11 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
             </PaginationContent>
           </Pagination>
         </div>
-      ) : null}
+      ) : (
+        <p className="text-center text-sm text-slate-600">
+          {t("jobListSection.noJobsFound")}
+        </p>
+      )}
     </section>
   );
 };

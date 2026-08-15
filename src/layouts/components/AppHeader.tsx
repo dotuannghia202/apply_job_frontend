@@ -218,7 +218,7 @@ const AppHeader = () => {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+      <div className="w-full px-4 sm:px-6">
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center gap-3 md:gap-8">
             {/* Nút Hamburger Menu (Mobile) */}

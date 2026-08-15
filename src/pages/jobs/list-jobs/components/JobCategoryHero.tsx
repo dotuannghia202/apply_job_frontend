@@ -108,7 +108,7 @@ const ImageSlider = () => {
           key={i}
           src={img.src}
           alt={img.alt}
-          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+          className="absolute inset-0 h-full w-full object-contain transition-opacity duration-700"
           style={{ opacity: i === current ? 1 : 0 }}
         />
       ))}

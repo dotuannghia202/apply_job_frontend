@@ -5,7 +5,10 @@ import { Star, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useDeleteResume, useSetDefaultResume } from "@/api/resumes/resume.queries";
+import {
+  useDeleteResume,
+  useSetDefaultResume,
+} from "@/api/resumes/resume.queries";
 import CvActions from "@/pages/candidate/cvs/components/CvActions";
 import type { CvItem } from "@/pages/candidate/cvs/components/types";
 
@@ -37,7 +40,11 @@ const CvCard = ({ item }: { item: CvItem }) => {
   };
 
   const handleSetDefault = () => {
-    if (!isValidResumeId || item.isDefault || setDefaultResumeMutation.isPending) {
+    if (
+      !isValidResumeId ||
+      item.isDefault ||
+      setDefaultResumeMutation.isPending
+    ) {
       return;
     }
 
@@ -89,24 +96,37 @@ const CvCard = ({ item }: { item: CvItem }) => {
           </div>
 
           <div className="flex-1">
-            <p className="mb-3 text-[14px] text-muted-foreground">
-              {t("myCVManagement.card.skillsTitle")}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {item.skills.map((skill) => (
-                <Badge
-                  key={`${item.id}-${skill}`}
-                  className="rounded-full bg-primary/10 text-primary"
-                >
-                  {skill}
-                </Badge>
-              ))}
+            <div className="space-y-2">
+              {item.skills && item.skills.length > 0 ? (
+                <>
+                  <p className="text-xs text-muted-foreground">
+                    {t("myCVManagement.card.skillsTitle")}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {item.skills.map((skill) => (
+                      <Badge
+                        key={`${item.id}-${skill}`}
+                        className="rounded-full bg-primary/10 text-primary"
+                      >
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <span className="text-xs italic text-muted-foreground">
+                  {t("myCVManagement.card.noSkills")}
+                </span>
+              )}
             </div>
           </div>
 
           {item.isDefault ? (
             <Badge className="w-fit gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1 text-amber-700 font-semibold shadow-none hover:bg-amber-50">
-              <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" aria-hidden="true" />
+              <Star
+                className="h-3.5 w-3.5 fill-amber-500 text-amber-500"
+                aria-hidden="true"
+              />
               {t("myCVManagement.card.defaultCv")}
             </Badge>
           ) : (
@@ -125,10 +145,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
           )}
         </CardContent>
         <CardFooter className="justify-between border-t border-border">
-          <CvActions
-            item={item}
-            onDownload={handleDownload}
-          />
+          <CvActions item={item} onDownload={handleDownload} />
           <Button
             variant="ghost"
             size="icon"

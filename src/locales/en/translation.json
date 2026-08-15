@@ -38,7 +38,8 @@
     "loading": "Loading opportunities...",
     "foundJobs": "Found {{count}} matching career opportunities",
     "errorLoad": "Failed to load jobs. Please try again.",
-    "pages": "pages"
+    "pages": "pages",
+    "noJobsFound": "No job data to display."
   },
   "myApplications": {
     "title": "My Applications",
@@ -175,6 +176,7 @@
       "previewTitle": "Preview {{fileName}}",
       "updated": "Updated: {{date}}",
       "skillsTitle": "Skills listed in this CV",
+      "noSkills": "There is no data on skills in this CV",
       "defaultCv": "Default CV",
       "deleteTitle": "Are you sure you want to delete this CV?",
       "deleteDescription": "This action cannot be undone. The CV \"{{fileName}}\" will be permanently removed.",
@@ -242,6 +244,7 @@
         "loadFailed": "Unable to load CV details. Please try again."
       },
       "breadcrumb": {
+        "homePage": "Home",
         "jobs": "Jobs",
         "myCv": "My CV"
       },

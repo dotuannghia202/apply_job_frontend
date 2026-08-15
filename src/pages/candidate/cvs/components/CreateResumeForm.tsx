@@ -1,4 +1,11 @@
-import { Check, ChevronsUpDown, FileText, LoaderCircle, X } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  FileCheck,
+  FileText,
+  LoaderCircle,
+  X,
+} from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -25,11 +32,7 @@ import {
 import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 import type { Skill } from "@/types/skill";
-
-export type UploadedResumeDraft = {
-  fileName: string;
-  fileUrl: string;
-};
+import { formatFileSize } from "@/helper";
 
 type SelectedSpecialization = {
   id: number;
@@ -37,7 +40,7 @@ type SelectedSpecialization = {
 } | null;
 
 type CreateResumeFormProps = {
-  draft: UploadedResumeDraft;
+  file: File;
   isSubmitting: boolean;
   onCancel: () => void;
   onSubmit: (data: {
@@ -288,13 +291,13 @@ function SkillSelect({
 }
 
 export function CreateResumeForm({
-  draft,
+  file,
   isSubmitting,
   onCancel,
   onSubmit,
 }: CreateResumeFormProps) {
   const { t } = useTranslation();
-  const [fileName, setFileName] = useState(draft.fileName);
+  const [fileName, setFileName] = useState(file.name);
   const [specialization, setSpecialization] =
     useState<SelectedSpecialization>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -330,6 +333,7 @@ export function CreateResumeForm({
             </div>
           </div>
           <Button
+            className="text-destructive hover:text-destructive hover:bg-destructive/20"
             type="button"
             variant="ghost"
             disabled={isSubmitting}
@@ -340,18 +344,23 @@ export function CreateResumeForm({
           </Button>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-            {t("myCVManagement.form.uploadedFileUrl")}
-          </p>
-          <a
-            href={draft.fileUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-1 block truncate text-sm font-medium text-primary hover:underline"
-          >
-            {draft.fileUrl}
-          </a>
+        <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/70 p-3">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-white text-primary shadow-sm">
+              <FileCheck className="size-5" />
+            </div>
+            <div className="truncate">
+              <p className="truncate text-sm font-medium text-slate-800">
+                {file.name}
+              </p>
+              <p className="text-xs text-slate-500">
+                {formatFileSize(file.size)}
+              </p>
+            </div>
+          </div>
+          <Badge variant="outline" className="shrink-0 bg-white text-slate-600">
+            PDF
+          </Badge>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-2">
@@ -364,7 +373,7 @@ export function CreateResumeForm({
             </Label>
             <Input
               id="resume-file-name"
-              value={fileName}
+              value={file.name}
               disabled={isSubmitting}
               className={inputClass}
               onChange={(event) => setFileName(event.target.value)}

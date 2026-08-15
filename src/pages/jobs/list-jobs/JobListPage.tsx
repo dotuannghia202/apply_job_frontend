@@ -19,13 +19,11 @@ const JobListPage = () => {
   const [filters, setFilters] = useState<JobSearchFilters>({});
 
   return (
-    <div className="min-h-screen bg-main-background">
-      <main className="mx-auto w-full max-w-7xl px-6 py-10">
-        <JobCategoryHero filters={filters} onSearch={setFilters} />
+    <main className="main-wrapper">
+      <JobCategoryHero filters={filters} onSearch={setFilters} />
 
-        <JobListSection filters={filters} />
-      </main>
-    </div>
+      <JobListSection filters={filters} />
+    </main>
   );
 };
 

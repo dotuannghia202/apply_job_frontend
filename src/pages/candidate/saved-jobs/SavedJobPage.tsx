@@ -65,7 +65,8 @@ const formatSavedSalaryRange = (
 };
 
 const mapJobToSavedJob = (job: Job, t: TFunction): SavedJob => {
-  const companyName = job.company?.name ?? t("savedJobs.fallbacks.unknownCompany");
+  const companyName =
+    job.company?.name ?? t("savedJobs.fallbacks.unknownCompany");
   const city =
     getCityFromAddress(job.location) ||
     job.location ||
@@ -115,7 +116,7 @@ const SavedJobPage = () => {
   // console.log("Saved jobs data:", savedJobs);
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12">
+    <main className="main-wrapper">
       <AppBreadcrumb
         items={[
           { label: t("savedJobs.breadcrumb.jobs"), to: "/jobs" },

@@ -29,7 +29,7 @@ const AppFooter = () => {
     <footer className="pt-6 pb-4 border-t border-slate-200 bg-white">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-6 py-10 px-6 md:flex-row">
         <div className="text-center md:text-left">
-          <p className="text-lg font-bold text-slate-900">
+          <p className="text-lg font-bold text-primary">
             {t("appFooter.brand")}
           </p>
           <p className="mt-1 text-xs text-slate-500">

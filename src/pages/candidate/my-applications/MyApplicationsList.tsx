@@ -111,7 +111,7 @@ const MyApplicationsList = () => {
   }, [data?.data?.result, t, i18n.language]);
 
   return (
-    <main className="bg-main-background mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12">
+    <main className="main-wrapper">
       <section>
         <h1 className="mb-2 text-[2rem] font-bold leading-tight tracking-[-0.02em] text-foreground">
           {t("myApplications.title")}

@@ -4,7 +4,10 @@ import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import { useGetResumeById, useSetDefaultResume } from "@/api/resumes/resume.queries";
+import {
+  useGetResumeById,
+  useSetDefaultResume,
+} from "@/api/resumes/resume.queries";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -83,41 +86,41 @@ const mapResumeToAttachments = (
   resume: Resume,
   t: TFunction,
 ): AttachmentFile[] => [
-    {
-      id: String(resume.id),
-      name: resume.fileName,
-      size: t("myCVManagement.detail.fallbacks.pdfFile"),
-      type: "file",
-      url: resume.fileUrl,
-    },
-  ];
+  {
+    id: String(resume.id),
+    name: resume.fileName,
+    size: t("myCVManagement.detail.fallbacks.pdfFile"),
+    type: "file",
+    url: resume.fileUrl,
+  },
+];
 
 const mapResumeToInsights = (
   resume: Resume,
   t: TFunction,
 ): AiInsightMetric[] => [
-    {
-      id: "skills",
-      label: t("myCVManagement.detail.insights.metrics.skills.label"),
-      value: String(resume.skills?.length ?? 0),
-      caption: t("myCVManagement.detail.insights.metrics.skills.caption"),
-    },
-    {
-      id: "specialization",
-      label: t("myCVManagement.detail.insights.metrics.specialization.label"),
-      value:
-        resume.specialization?.name ?? t("myCVManagement.detail.fallbacks.na"),
-      caption: t("myCVManagement.detail.insights.metrics.specialization.caption"),
-    },
-    {
-      id: "status",
-      label: t("myCVManagement.detail.insights.metrics.status.label"),
-      value: resume.isDefault
-        ? t("myCVManagement.detail.insights.metrics.status.default")
-        : t("myCVManagement.detail.insights.metrics.status.uploaded"),
-      caption: t("myCVManagement.detail.insights.metrics.status.caption"),
-    },
-  ];
+  {
+    id: "skills",
+    label: t("myCVManagement.detail.insights.metrics.skills.label"),
+    value: String(resume.skills?.length ?? 0),
+    caption: t("myCVManagement.detail.insights.metrics.skills.caption"),
+  },
+  {
+    id: "specialization",
+    label: t("myCVManagement.detail.insights.metrics.specialization.label"),
+    value:
+      resume.specialization?.name ?? t("myCVManagement.detail.fallbacks.na"),
+    caption: t("myCVManagement.detail.insights.metrics.specialization.caption"),
+  },
+  {
+    id: "status",
+    label: t("myCVManagement.detail.insights.metrics.status.label"),
+    value: resume.isDefault
+      ? t("myCVManagement.detail.insights.metrics.status.default")
+      : t("myCVManagement.detail.insights.metrics.status.uploaded"),
+    caption: t("myCVManagement.detail.insights.metrics.status.caption"),
+  },
+];
 
 const PageMessage = ({ children }: { children: ReactNode }) => (
   <main className="mx-auto max-w-7xl px-6 py-12 md:py-16">
@@ -173,135 +176,139 @@ const CVDetailCandidate = () => {
   );
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-12 md:py-16">
-      <div className="space-y-8">
-        <AppBreadcrumb
-          items={[
-            { label: t("myCVManagement.detail.breadcrumb.jobs"), to: "/jobs" },
-            { label: t("myCVManagement.detail.breadcrumb.myCv"), to: "/my-cv" },
-            { label: resume.fileName },
-          ]}
-        />
+    <main className="main-wrapper">
+      <AppBreadcrumb
+        items={[
+          {
+            label: t("myCVManagement.detail.breadcrumb.homePage"),
+            to: "/jobs",
+          },
+          { label: t("myCVManagement.detail.breadcrumb.myCv"), to: "/my-cv" },
+          { label: resume.fileName },
+        ]}
+      />
 
-        <div className="rounded-2xl bg-main-background p-6">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
-            <div>
-              {/* <p className="uppercase text-muted-foreground">CV detail</p> */}
-              <h2 className="text-2xl font-semibold text-foreground">
-                {resume.fileName}
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                {t("myCVManagement.detail.header.description")}
-              </p>
-            </div>
+      <div className="rounded-2xl bg-main-background">
+        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
+          <div>
+            {/* <p className="uppercase text-muted-foreground">CV detail</p> */}
+            <h2 className="text-2xl font-semibold text-foreground">
+              {resume.fileName}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {t("myCVManagement.detail.header.description")}
+            </p>
+          </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              {resume.isDefault ? (
-                <Badge className="gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1 text-amber-700 font-semibold shadow-none hover:bg-amber-50">
-                  <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" aria-hidden="true" />
-                  {t("myCVManagement.detail.badges.defaultCv")}
-                </Badge>
-              ) : (
-                <>
-                  <Badge variant="secondary">
-                    {t("myCVManagement.detail.badges.uploadedCv")}
-                  </Badge>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-1.5 text-muted-foreground hover:text-primary border-border h-7"
-                    disabled={setDefaultResumeMutation.isPending}
-                    onClick={() => setDefaultResumeMutation.mutate(resumeId)}
-                  >
-                    <Star className="h-3.5 w-3.5" aria-hidden="true" />
-                    {setDefaultResumeMutation.isPending
-                      ? t("myCVManagement.card.actions.saving")
-                      : t("myCVManagement.card.actions.setDefault")}
-                  </Button>
-                </>
-              )}
-              <Badge variant="outline" className="gap-1.5 py-1">
-                <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
-                {t("myCVManagement.detail.header.updated", {
-                  date: updatedDate,
-                })}
+          <div className="flex flex-wrap items-center gap-2">
+            {resume.isDefault ? (
+              <Badge className="gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1 text-amber-700 font-semibold shadow-none hover:bg-amber-50">
+                <Star
+                  className="h-3.5 w-3.5 fill-amber-500 text-amber-500"
+                  aria-hidden="true"
+                />
+                {t("myCVManagement.detail.badges.defaultCv")}
               </Badge>
-            </div>
+            ) : (
+              <>
+                <Badge variant="secondary">
+                  {t("myCVManagement.detail.badges.uploadedCv")}
+                </Badge>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5 text-muted-foreground hover:text-primary border-border h-7"
+                  disabled={setDefaultResumeMutation.isPending}
+                  onClick={() => setDefaultResumeMutation.mutate(resumeId)}
+                >
+                  <Star className="h-3.5 w-3.5" aria-hidden="true" />
+                  {setDefaultResumeMutation.isPending
+                    ? t("myCVManagement.card.actions.saving")
+                    : t("myCVManagement.card.actions.setDefault")}
+                </Button>
+              </>
+            )}
+            <Badge variant="outline" className="gap-1.5 py-1">
+              <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+              {t("myCVManagement.detail.header.updated", {
+                date: updatedDate,
+              })}
+            </Badge>
           </div>
         </div>
+      </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div className="space-y-6">
-            <CandidateProfileCard profile={profile} cvUrl={resume.fileUrl} />
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <div className="space-y-6">
+          <CandidateProfileCard profile={profile} cvUrl={resume.fileUrl} />
 
-            {skills.length ? (
-              <SkillsMatrix skills={skills} />
-            ) : (
-              <Card className="border-border p-6 shadow-[0_10px_32px_rgba(25,28,25,0.06)]">
-                <h2 className="text-lg font-semibold text-foreground">
-                  {t("myCVManagement.detail.skills.title")}
-                </h2>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {t("myCVManagement.detail.skills.empty")}
-                </p>
-              </Card>
-            )}
-
-            <AttachmentFiles files={attachments} />
-          </div>
-
-          <div className="space-y-6">
-            <AIProfileInsights
-              metrics={aiMetrics}
-              summary={t("myCVManagement.detail.insights.summary")}
-            />
-
-            <Card className="border-border p-6 shadow-[0_12px_40px_rgba(25,28,25,0.08)]">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg text-primary">
-                  <FileText className="h-full w-full" aria-hidden="true" />
-                </div>
-                <div>
-                  <h3 className="text-[18px] font-semibold text-foreground">
-                    {t("myCVManagement.detail.metadata.title")}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {t("myCVManagement.detail.metadata.description")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 space-y-4 text-sm">
-                <div>
-                  <p className="text-xs uppercase text-muted-foreground">
-                    {t("myCVManagement.detail.metadata.candidate")}
-                  </p>
-                  <p className="text-foreground">
-                    {resume.candidate?.name ??
-                      t("myCVManagement.detail.fallbacks.unknown")}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase text-muted-foreground">
-                    {t("myCVManagement.detail.metadata.email")}
-                  </p>
-                  <p className="text-foreground">
-                    {resume.candidate?.email ??
-                      t("myCVManagement.detail.fallbacks.notSpecified")}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase text-muted-foreground">
-                    {t("myCVManagement.detail.metadata.specialization")}
-                  </p>
-                  <p className="text-foreground">
-                    {resume.specialization?.name ??
-                      t("myCVManagement.detail.fallbacks.notSpecified")}
-                  </p>
-                </div>
-              </div>
+          {skills.length ? (
+            <SkillsMatrix skills={skills} />
+          ) : (
+            <Card className="border-border p-6 shadow-[0_10px_32px_rgba(25,28,25,0.06)]">
+              <h2 className="text-lg font-semibold text-foreground">
+                {t("myCVManagement.detail.skills.title")}
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {t("myCVManagement.detail.skills.empty")}
+              </p>
             </Card>
-          </div>
+          )}
+
+          <AttachmentFiles files={attachments} />
+        </div>
+
+        <div className="space-y-6">
+          <AIProfileInsights
+            metrics={aiMetrics}
+            summary={t("myCVManagement.detail.insights.summary")}
+          />
+
+          <Card className="border-border p-6 shadow-[0_12px_40px_rgba(25,28,25,0.08)]">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg text-primary">
+                <FileText className="h-full w-full" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 className="text-[18px] font-semibold text-foreground">
+                  {t("myCVManagement.detail.metadata.title")}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t("myCVManagement.detail.metadata.description")}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 space-y-4 text-sm">
+              <div>
+                <p className="text-xs uppercase text-muted-foreground">
+                  {t("myCVManagement.detail.metadata.candidate")}
+                </p>
+                <p className="text-foreground">
+                  {resume.candidate?.name ??
+                    t("myCVManagement.detail.fallbacks.unknown")}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs uppercase text-muted-foreground">
+                  {t("myCVManagement.detail.metadata.email")}
+                </p>
+                <p className="text-foreground">
+                  {resume.candidate?.email ??
+                    t("myCVManagement.detail.fallbacks.notSpecified")}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs uppercase text-muted-foreground">
+                  {t("myCVManagement.detail.metadata.specialization")}
+                </p>
+                <p className="text-foreground">
+                  {resume.specialization?.name ??
+                    t("myCVManagement.detail.fallbacks.notSpecified")}
+                </p>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
     </main>

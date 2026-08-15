@@ -38,7 +38,8 @@
     "loading": "Đang tải danh sách công việc...",
     "foundJobs": "Tìm thấy {{count}} công việc phù hợp",
     "errorLoad": "Lỗi khi tải danh sách công việc. Vui lòng thử lại.",
-    "pages": "trang"
+    "pages": "trang",
+    "noJobsFound": "Không có dữ liệu công việc để hiển thị."
   },
   "myApplications": {
     "title": "Việc làm đã nộp",
@@ -175,6 +176,7 @@
       "previewTitle": "Xem trước {{fileName}}",
       "updated": "Cập nhật: {{date}}",
       "skillsTitle": "Kỹ năng trong CV này",
+      "noSkills": "CV này không có dữ liệu về kỹ năng",
       "defaultCv": "CV mặc định",
       "deleteTitle": "Bạn có chắc muốn xóa CV này?",
       "deleteDescription": "Thao tác này không thể hoàn tác. CV \"{{fileName}}\" sẽ bị xóa vĩnh viễn.",
@@ -242,6 +244,7 @@
         "loadFailed": "Không thể tải chi tiết CV. Vui lòng thử lại."
       },
       "breadcrumb": {
+        "homePage": "Trang chủ",
         "jobs": "Việc làm",
         "myCv": "Hồ sơ của tôi"
       },

@@ -9,6 +9,11 @@ body {
   min-height: 100vh;
 }
 
+@theme {
+  --text-base: 0.875rem; /* Đổi kích thước font (ví dụ: 18px = 1.125rem) */
+  --text-base--line-height: 1.25rem; /* Đổi line-height tương ứng */
+}
+
 @theme inline {
   --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
@@ -190,4 +195,18 @@ body {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
+}
+
+@utility main-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  width: 100%;
+  max-width: 80rem; /* max-w-7xl */
+  flex-direction: column;
+  gap: 2rem; /* gap-10 */
+  padding-left: 1.5rem; /* px-6 */
+  padding-right: 1.5rem;
+  padding-top: 1.5rem; /* py-12 */
+  padding-bottom: 3rem;
 }
