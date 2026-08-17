@@ -156,10 +156,13 @@ export const handleDownloadFile = async (
       await writableStream.write(blobData);
       await writableStream.close();
       return; // Lưu thành công
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Nếu người dùng bấm "Cancel" / "Hủy" trên cửa sổ Save As thì dừng lại, không báo lỗi
-      if (err.name === "AbortError") {
-        return;
+      if (
+        (err instanceof DOMException || err instanceof Error) &&
+        err.name === "AbortError"
+      ) {
+        return; // Người dùng ấn "Cancel" / "Hủy" trên popup Save As
       }
       console.warn("showSaveFilePicker lỗi, chuyển sang tải thông thường", err);
     }
@@ -175,3 +178,62 @@ export const handleDownloadFile = async (
   document.body.removeChild(link);
   window.URL.revokeObjectURL(blobUrl);
 };
+
+/**
+ * Copy text vào clipboard hỗ trợ cả môi trường HTTPS, localhost lẫn HTTP Production (Fallback document.execCommand)
+ */
+export const copyToClipboard = async (text: string): Promise<boolean> => {
+  if (!text) return false;
+
+  // 1. Thử dùng Clipboard API (Chỉ hoạt động trên HTTPS hoặc localhost)
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (err) {
+      console.warn("Clipboard API failed, trying fallback execCommand:", err);
+    }
+  }
+
+  // 2. Fallback dùng document.execCommand('copy') cho HTTP Production / Trình duyệt không hỗ trợ Clipboard API
+  try {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+
+    // Định dạng textarea ẩn không làm nảy giao diện
+    textArea.style.position = "fixed";
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.width = "2em";
+    textArea.style.height = "2em";
+    textArea.style.padding = "0";
+    textArea.style.border = "none";
+    textArea.style.outline = "none";
+    textArea.style.boxShadow = "none";
+    textArea.style.background = "transparent";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    // Xử lý riêng cho iOS Safari
+    if (navigator.userAgent.match(/ipad|iphone/i)) {
+      const range = document.createRange();
+      range.selectNodeContents(textArea);
+      const selection = window.getSelection();
+      if (selection) {
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+      textArea.setSelectionRange(0, 999999);
+    }
+
+    const successful = document.execCommand("copy");
+    document.body.removeChild(textArea);
+    return successful;
+  } catch (err) {
+    console.error("Fallback copy to clipboard failed:", err);
+    return false;
+  }
+};
+
