@@ -3,3 +3,8 @@ export interface ResUploadFileDTO {
   uploadedAt?: string;
   fileName?: string;
 }
+
+export interface ResDownloadFileDTO {
+  downloadUrl: string;
+  fileName: string;
+}

@@ -113,7 +113,7 @@ const MyApplicationsList = () => {
   return (
     <main className="main-wrapper">
       <section>
-        <h1 className="mb-2 text-[2rem] font-bold leading-tight tracking-[-0.02em] text-foreground">
+        <h1 className="mb-2 text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-foreground">
           {t("myApplications.title")}
         </h1>
         <p className="text-base text-muted-foreground">

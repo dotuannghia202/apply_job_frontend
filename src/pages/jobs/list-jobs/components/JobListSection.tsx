@@ -79,7 +79,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
     <section className="flex-1">
       <div className="mb-8 flex items-end justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="text-[1.125rem] font-bold text-slate-900">
             {t("jobListSection.title")}
           </h2>
           <p className="mt-1 text-sm text-slate-600">
@@ -96,7 +96,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
             className={`rounded-lg p-2 transition-colors ${
               viewMode === "grid"
                 ? "bg-primary/10 text-primary"
-                : "border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
+                : " bg-white text-slate-500 hover:bg-slate-50"
             }`}
           >
             <Grid2x2 className="size-4" />
@@ -108,7 +108,7 @@ const JobListSection = ({ filters = {} }: JobListSectionProps) => {
             className={`rounded-lg p-2 transition-colors ${
               viewMode === "list"
                 ? "bg-primary/10 text-primary"
-                : "border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
+                : " bg-white text-slate-500 hover:bg-slate-50"
             }`}
           >
             <List className="size-4" />

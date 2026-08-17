@@ -1,59 +1,95 @@
-import { MapPin } from "lucide-react";
+import { useState } from "react";
+import { Download, ExternalLink, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { CandidateProfile } from "@/pages/candidate/my-applications/components/types";
+
+import { openFileInNewTab, handleDownloadFile } from "@/helper";
+import { NotificationPopup } from "@/components/NotificationPopup";
 
 const CandidateProfileCard = ({
-  profile,
+  fileName,
   cvUrl,
 }: {
-  profile: CandidateProfile;
+  fileName: string;
   cvUrl: string;
 }) => {
   const { t } = useTranslation();
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleDownloadCV = async () => {
+    try {
+      setIsDownloading(true);
+      await handleDownloadFile(cvUrl, fileName);
+    } catch (err) {
+      setError(
+        t(
+          "myCVManagement.detail.status.downloadFailed",
+          "Không thể tải xuống file. Vui lòng thử lại sau.",
+        ),
+      );
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
-    <Card className="flex flex-col gap-6 border-border p-6 shadow-[0_12px_40px_rgba(25,28,25,0.08)]">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded border border-border bg-white text-primary shadow-sm">
-            <div className="absolute inset-0 z-10 bg-transparent" />
-
-            <iframe
-              src={`${cvUrl}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
-              title={t("myCVManagement.detail.profile.previewTitle")}
-              className="pointer-events-none absolute left-0 top-0 h-[565%] w-[400%] origin-top-left scale-[0.25] border-none"
-            />
+    <div className="flex flex-col gap-6">
+      <Card className="flex flex-col gap-4 border-border p-6 shadow-[0_12px_40px_rgba(25,28,25,0.08)]">
+        <div className="flex items-center justify-between">
+          <h2 className="text-[1.125rem] font-semibold text-foreground">
+            {fileName}
+          </h2>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <a
+                href={openFileInNewTab(cvUrl)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <ExternalLink className="mr-1.5 h-4 w-4" />
+                {t("myCVManagement.actions.openNewTab", "Mở tab mới")}
+              </a>
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleDownloadCV}
+              disabled={isDownloading}
+            >
+              {isDownloading ? (
+                <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="mr-1.5 h-4 w-4" />
+              )}
+              {t("myCVManagement.actions.download", "Tải xuống")}
+            </Button>
           </div>
+        </div>
 
-          <div>
-            <h1 className="text-xl font-bold text-foreground">
-              {profile.name}
-            </h1>
-            <p className="text-base text-muted-foreground">{profile.title}</p>
-            <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4" aria-hidden="true" />
-              {profile.location}
-            </div>
-          </div>
+        {/* Khung xem PDF gọn gàng, vừa vặn chiều cao và không bị khoảng thừa màu đen */}
+        <div className="relative h-187.5 w-full overflow-hidden rounded-lg border border-border bg-slate-100 shadow-inner">
+          <iframe
+            src={`${cvUrl}#toolbar=1&navpanes=0&scrollbar=0&view=FitH`}
+            title={t(
+              "myCVManagement.detail.profile.previewTitle",
+              "Xem trước CV",
+            )}
+            className="h-full w-[calc(100%+20px)] border-none"
+          />
         </div>
-      </div>
+      </Card>
 
-      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-        <div className="rounded-full bg-secondary px-4 py-1.5">
-          {t("myCVManagement.detail.profile.yearsExperience", {
-            count: profile.experienceYears,
-          })}
-        </div>
-        <div className="rounded-full bg-secondary px-4 py-1.5">
-          {profile.noticePeriod}
-        </div>
-        <div className="rounded-full bg-secondary px-4 py-1.5">
-          {profile.availability}
-        </div>
-      </div>
-    </Card>
+      <NotificationPopup
+        open={Boolean(error)}
+        variant="error"
+        title={t("common.notification", "Thông báo")}
+        message={error}
+        onDismiss={() => setError("")}
+        dismissLabel={t("common.close", "Đóng")}
+      />
+    </div>
   );
 };
 

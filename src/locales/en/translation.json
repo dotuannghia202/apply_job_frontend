@@ -1,4 +1,12 @@
 {
+  "common": {
+    "notification": "Notification",
+    "close": "Close",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "header": {
     "candidate": "Candidate",
     "employer": "Employer",
@@ -43,7 +51,7 @@
   },
   "myApplications": {
     "title": "My Applications",
-    "subtitle": "Track and manage your job applications",
+    "subtitle": "Track and manage your job applications.",
     "errorLoad": "Failed to load applications. Please try again.",
     "loading": "Loading applications...",
     "empty": "No applications found for this status.",
@@ -172,6 +180,10 @@
       "prompt": "Drag and drop a PDF here or click to select",
       "hint": "PDF only, up to 5MB"
     },
+    "actions": {
+      "openNewTab": "Open in new tab",
+      "download": "Download"
+    },
     "card": {
       "previewTitle": "Preview {{fileName}}",
       "updated": "Updated: {{date}}",
@@ -241,7 +253,8 @@
       "status": {
         "notFound": "CV not found.",
         "loading": "Loading CV details...",
-        "loadFailed": "Unable to load CV details. Please try again."
+        "loadFailed": "Unable to load CV details. Please try again.",
+        "downloadFailed": "Unable to download file. Please try again later."
       },
       "breadcrumb": {
         "homePage": "Home",

@@ -1,3 +1,5 @@
+import { downloadFile } from "@/api/files/file.api";
+
 export const preventSpaceKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.key === " ") {
     e.preventDefault();
@@ -72,4 +74,104 @@ export const formatFileSize = (bytes: number) => {
   const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
+
+export const openFileInNewTab = (fileUrl: string) =>
+  `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=false`;
+
+//   fileUrl: string,
+//   fileName?: string,
+// ) => {
+//   if (!fileUrl) {
+//     throw new Error("EMPTY_FILE_URL");
+//   }
+
+//   // 1. Gọi API nhận dữ liệu nhị phân (Blob)
+//   const res = await downloadFile(fileUrl, fileName);
+
+//   // Xử lý linh hoạt theo cấu trúc Axios interceptor (nếu interceptor trả về thẳng res.data hay full response)
+//   const blobData = res instanceof Blob ? res : (res as any)?.data || res;
+
+//   if (!(blobData instanceof Blob)) {
+//     throw new Error("INVALID_BLOB_RESPONSE");
+//   }
+
+//   // 2. Tạo link ảo từ Blob trong bộ nhớ trình duyệt
+//   const blobUrl = window.URL.createObjectURL(blobData);
+//   const targetName = fileName || "CV_Resume.pdf";
+
+//   // 3. Tự động click kích hoạt tải xuống
+//   const link = document.createElement("a");
+//   link.href = blobUrl;
+//   link.download = targetName.endsWith(".pdf")
+//     ? targetName
+//     : `${targetName}.pdf`;
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+
+//   // 4. Giải phóng bộ nhớ tạm
+//   window.URL.revokeObjectURL(blobUrl);
+// };
+
+// src/helpers/file.helper.ts
+
+export const handleDownloadFile = async (
+  fileUrl: string,
+  fileName?: string,
+) => {
+  if (!fileUrl) {
+    throw new Error("EMPTY_FILE_URL");
+  }
+
+  // 1. Gọi API nhận dữ liệu file (Blob) từ Backend
+  const res = await downloadFile(fileUrl, fileName);
+  const blobData = res instanceof Blob ? res : (res as any)?.data || res;
+
+  if (!(blobData instanceof Blob)) {
+    throw new Error("INVALID_BLOB_RESPONSE");
+  }
+
+  const targetFileName = fileName
+    ? fileName.endsWith(".pdf")
+      ? fileName
+      : `${fileName}.pdf`
+    : "CV_Resume.pdf";
+
+  // 1: Dùng File System Access API để BẮT BUỘC hiện cửa sổ chọn thư mục "Save As" (Chrome, Edge, Cốc Cốc, Brave...)
+  if ("showSaveFilePicker" in window) {
+    try {
+      const fileHandle = await (window as any).showSaveFilePicker({
+        suggestedName: targetFileName,
+        types: [
+          {
+            description: "Tài liệu PDF",
+            accept: { "application/pdf": [".pdf"] },
+          },
+        ],
+      });
+
+      // Ghi dữ liệu file vào vị trí người dùng vừa chọn
+      const writableStream = await fileHandle.createWritable();
+      await writableStream.write(blobData);
+      await writableStream.close();
+      return; // Lưu thành công
+    } catch (err: any) {
+      // Nếu người dùng bấm "Cancel" / "Hủy" trên cửa sổ Save As thì dừng lại, không báo lỗi
+      if (err.name === "AbortError") {
+        return;
+      }
+      console.warn("showSaveFilePicker lỗi, chuyển sang tải thông thường", err);
+    }
+  }
+
+  // 2: Fallback cho các trình duyệt không hỗ trợ showSaveFilePicker (Firefox / Safari)
+  const blobUrl = window.URL.createObjectURL(blobData);
+  const link = document.createElement("a");
+  link.href = blobUrl;
+  link.download = targetFileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(blobUrl);
 };

@@ -13,15 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import AIProfileInsights from "@/pages/candidate/cvs/components/AIProfileInsights";
-import AttachmentFiles from "@/pages/candidate/cvs/components/AttachmentFiles";
 import CandidateProfileCard from "@/pages/candidate/cvs/components/CandidateProfileCard";
-import SkillsMatrix from "@/pages/candidate/cvs/components/SkillsMatrix";
-import type {
-  AiInsightMetric,
-  AttachmentFile,
-  CandidateProfile,
-  SkillItem,
-} from "@/pages/candidate/my-applications/components/types";
+
+import type { AiInsightMetric } from "@/pages/candidate/my-applications/components/types";
 import type { Resume } from "@/types/resume";
 
 const getLocale = (language: string) =>
@@ -39,61 +33,6 @@ const formatDate = (
 
   return date.toLocaleDateString(locale);
 };
-
-const getSkillLevel = (index: number): SkillItem["level"] => {
-  if (index < 3) return "Advanced";
-  if (index < 6) return "Intermediate";
-  return "Beginner";
-};
-
-const mapResumeToProfile = (
-  resume: Resume,
-  t: TFunction,
-  locale: string,
-): CandidateProfile => ({
-  name:
-    resume.candidate?.name ??
-    t("myCVManagement.detail.fallbacks.unknownCandidate"),
-  email: resume.candidate?.email ?? null,
-  title:
-    resume.specialization?.name ??
-    t("myCVManagement.detail.fallbacks.candidateCv"),
-  location: t("myCVManagement.detail.fallbacks.notSpecified"),
-  experienceYears: 0,
-  statusLabel: resume.isDefault
-    ? t("myCVManagement.detail.badges.defaultCv")
-    : t("myCVManagement.detail.badges.uploadedCv"),
-  statusTone: resume.isDefault ? "active" : "open",
-  noticePeriod: t("myCVManagement.detail.header.updated", {
-    date: formatDate(
-      resume.updatedAt ?? resume.createdAt,
-      locale,
-      t("myCVManagement.detail.fallbacks.empty"),
-    ),
-  }),
-  availability: resume.fileName,
-});
-
-const mapResumeToSkills = (resume: Resume): SkillItem[] =>
-  (resume.skills ?? []).map((skill, index) => ({
-    id: `${resume.id}-${skill}`,
-    name: skill,
-    level: getSkillLevel(index),
-    score: Math.max(52, 92 - index * 6),
-  }));
-
-const mapResumeToAttachments = (
-  resume: Resume,
-  t: TFunction,
-): AttachmentFile[] => [
-  {
-    id: String(resume.id),
-    name: resume.fileName,
-    size: t("myCVManagement.detail.fallbacks.pdfFile"),
-    type: "file",
-    url: resume.fileUrl,
-  },
-];
 
 const mapResumeToInsights = (
   resume: Resume,
@@ -165,9 +104,6 @@ const CVDetailCandidate = () => {
     );
   }
 
-  const profile = mapResumeToProfile(resume, t, locale);
-  const skills = mapResumeToSkills(resume);
-  const attachments = mapResumeToAttachments(resume, t);
   const aiMetrics = mapResumeToInsights(resume, t);
   const updatedDate = formatDate(
     resume.updatedAt ?? resume.createdAt,
@@ -192,9 +128,7 @@ const CVDetailCandidate = () => {
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
           <div>
             {/* <p className="uppercase text-muted-foreground">CV detail</p> */}
-            <h2 className="text-2xl font-semibold text-foreground">
-              {resume.fileName}
-            </h2>
+
             <p className="text-sm text-muted-foreground">
               {t("myCVManagement.detail.header.description")}
             </p>
@@ -240,22 +174,10 @@ const CVDetailCandidate = () => {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="space-y-6">
-          <CandidateProfileCard profile={profile} cvUrl={resume.fileUrl} />
-
-          {skills.length ? (
-            <SkillsMatrix skills={skills} />
-          ) : (
-            <Card className="border-border p-6 shadow-[0_10px_32px_rgba(25,28,25,0.06)]">
-              <h2 className="text-lg font-semibold text-foreground">
-                {t("myCVManagement.detail.skills.title")}
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {t("myCVManagement.detail.skills.empty")}
-              </p>
-            </Card>
-          )}
-
-          <AttachmentFiles files={attachments} />
+          <CandidateProfileCard
+            cvUrl={resume.fileUrl}
+            fileName={resume.fileName}
+          />
         </div>
 
         <div className="space-y-6">

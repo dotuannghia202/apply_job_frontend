@@ -15,6 +15,16 @@ const uploadFile = async (file: File, folder: string) => {
   }) as Promise<BackendResponse<ResUploadFileDTO>>;
 };
 
+export const downloadFile = async (fileUrl: string, fileName?: string) => {
+  return axiosClient.get("/files/download", {
+    params: {
+      fileUrl,
+      fileName,
+    },
+    responseType: "blob", 
+  }) as Promise<Blob>; 
+};
+
 export const uploadCompanyLogo = async (file: File) => {
   return uploadFile(file, "logo");
 };

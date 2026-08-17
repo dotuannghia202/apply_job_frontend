@@ -325,9 +325,7 @@ const MyApplicationDetail = () => {
 
   if (applicationQuery.isError) {
     return (
-      <PageMessage>
-        {t("myApplications.detail.status.loadFailed")}
-      </PageMessage>
+      <PageMessage>{t("myApplications.detail.status.loadFailed")}</PageMessage>
     );
   }
 
@@ -510,7 +508,7 @@ const MyApplicationDetail = () => {
                     <li key={step.title} className="relative flex gap-4">
                       {!isLast ? (
                         <span
-                          className={`absolute left-[15px] top-8 h-[calc(100%+1.5rem)] w-px ${
+                          className={`absolute left-3.75 top-8 h-[calc(100%+1.5rem)] w-px ${
                             isCompleted ? "bg-green-200" : "bg-slate-200"
                           }`}
                           aria-hidden="true"
@@ -554,33 +552,52 @@ const MyApplicationDetail = () => {
                         <p className="mt-1 text-sm leading-6 text-slate-500">
                           {step.description}
                         </p>
-                        {"interviewDetails" in step && step.interviewDetails && (
-                          <div className="mt-2 rounded-lg border border-amber-100 bg-amber-50/50 p-3 text-xs text-slate-700 space-y-1">
-                            <p className="font-semibold text-amber-800">
-                              {t("myApplications.detail.timeline.interviewInfo", "Thông tin phỏng vấn:")}
-                            </p>
-                            <p>
-                              <span className="font-medium">
-                                {t("myApplications.detail.timeline.interviewTime", "Thời gian")}:
-                              </span>{" "}
-                              {formatInterviewTime(step.interviewDetails.time, locale)}
-                            </p>
-                            <p>
-                              <span className="font-medium">
-                                {t("myApplications.detail.timeline.interviewLocation", "Địa điểm")}:
-                              </span>{" "}
-                              {step.interviewDetails.location}
-                            </p>
-                            {step.interviewDetails.message && (
+                        {"interviewDetails" in step &&
+                          step.interviewDetails && (
+                            <div className="mt-2 rounded-lg border border-amber-100 bg-amber-50/50 p-3 text-xs text-slate-700 space-y-1">
+                              <p className="font-semibold text-amber-800">
+                                {t(
+                                  "myApplications.detail.timeline.interviewInfo",
+                                  "Thông tin phỏng vấn:",
+                                )}
+                              </p>
                               <p>
                                 <span className="font-medium">
-                                  {t("myApplications.detail.timeline.interviewMsg", "Lời nhắn")}:
+                                  {t(
+                                    "myApplications.detail.timeline.interviewTime",
+                                    "Thời gian",
+                                  )}
+                                  :
                                 </span>{" "}
-                                {step.interviewDetails.message}
+                                {formatInterviewTime(
+                                  step.interviewDetails.time,
+                                  locale,
+                                )}
                               </p>
-                            )}
-                          </div>
-                        )}
+                              <p>
+                                <span className="font-medium">
+                                  {t(
+                                    "myApplications.detail.timeline.interviewLocation",
+                                    "Địa điểm",
+                                  )}
+                                  :
+                                </span>{" "}
+                                {step.interviewDetails.location}
+                              </p>
+                              {step.interviewDetails.message && (
+                                <p>
+                                  <span className="font-medium">
+                                    {t(
+                                      "myApplications.detail.timeline.interviewMsg",
+                                      "Lời nhắn",
+                                    )}
+                                    :
+                                  </span>{" "}
+                                  {step.interviewDetails.message}
+                                </p>
+                              )}
+                            </div>
+                          )}
                       </div>
                     </li>
                   );

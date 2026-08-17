@@ -1,10 +1,18 @@
 {
+  "common": {
+    "notification": "Thông báo",
+    "close": "Đóng",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy"
+  },
   "header": {
     "candidate": "Ứng viên",
     "employer": "Nhà tuyển dụng",
     "findJobs": "Tìm việc làm",
     "myApplications": "Việc làm đã nộp",
-    "myCv": "Hồ sơ của tôi",
+    "myCv": "CV của tôi",
     "savedJobs": "Việc làm đã lưu",
     "employerDashboard": "Bảng điều khiển",
     "applicants": "Quản lý Ứng viên",
@@ -43,7 +51,7 @@
   },
   "myApplications": {
     "title": "Việc làm đã nộp",
-    "subtitle": "Theo dõi và quản lý các đơn ứng tuyển của bạn",
+    "subtitle": "Theo dõi và quản lý các đơn ứng tuyển của bạn.",
     "errorLoad": "Lỗi khi tải danh sách ứng tuyển. Vui lòng thử lại.",
     "loading": "Đang tải danh sách...",
     "empty": "Không tìm thấy đơn ứng tuyển nào cho trạng thái này.",
@@ -172,6 +180,10 @@
       "prompt": "Kéo thả file PDF vào đây hoặc nhấn để chọn",
       "hint": "Chỉ hỗ trợ PDF, tối đa 5MB"
     },
+    "actions": {
+      "openNewTab": "Mở tab mới",
+      "download": "Tải xuống"
+    },
     "card": {
       "previewTitle": "Xem trước {{fileName}}",
       "updated": "Cập nhật: {{date}}",
@@ -241,12 +253,13 @@
       "status": {
         "notFound": "Không tìm thấy CV.",
         "loading": "Đang tải chi tiết CV...",
-        "loadFailed": "Không thể tải chi tiết CV. Vui lòng thử lại."
+        "loadFailed": "Không thể tải chi tiết CV. Vui lòng thử lại.",
+        "downloadFailed": "Không thể tải xuống file. Vui lòng thử lại sau."
       },
       "breadcrumb": {
         "homePage": "Trang chủ",
         "jobs": "Việc làm",
-        "myCv": "Hồ sơ của tôi"
+        "myCv": "CV của tôi"
       },
       "fallbacks": {
         "empty": "-",
