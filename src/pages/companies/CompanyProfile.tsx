@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { isAxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 import CompanyFooterActions from "./components/CompanyFooterActions";
 import CompanyGeneralInfo from "./components/CompanyGeneralInfo";
@@ -12,6 +14,7 @@ import {
   useUpdateCompany,
 } from "@/api/companies/company.queries";
 import { uploadCompanyLogo } from "@/api/files/file.api";
+import { NotificationPopup } from "@/components/NotificationPopup";
 import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 import type { CompanyStatus } from "@/types/company";
@@ -33,7 +36,9 @@ const resolveRole = (roles: RoleName[] = []): RoleName => {
 };
 
 export default function CompanyProfile() {
+  const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
+  const setCompany = useAuthStore((state) => state.setCompany);
   const role = resolveRole(user?.roles ?? []);
   const companyQuery = useGetMyCompany(role === "EMPLOYER");
   const updateCompanyMutation = useUpdateCompany();
@@ -55,6 +60,26 @@ export default function CompanyProfile() {
   const [address, setAddress] = useState(resolvedCompany.address);
   const [about, setAbout] = useState(resolvedCompany.about);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notice, setNotice] = useState<{
+    open: boolean;
+    variant: "success" | "error";
+    title: string;
+    message: string;
+  }>({
+    open: false,
+    variant: "success",
+    title: "",
+    message: "",
+  });
+
+  const isSaving = isSubmitting || updateCompanyMutation.isPending;
+
+  useEffect(() => {
+    if (company && (!user?.company || user.company.id !== company.id)) {
+      setCompany({ id: company.id, name: company.name });
+    }
+  }, [company, user?.company, setCompany]);
 
   useEffect(() => {
     setStatus(resolvedCompany.status);
@@ -96,31 +121,131 @@ export default function CompanyProfile() {
   };
 
   const handleSaveChanges = async () => {
-    if (!company?.id || role !== "EMPLOYER") return;
+    if (!company?.id) {
+      setNotice({
+        open: true,
+        variant: "error",
+        title: t("companyProfile.notifications.errorTitle", "Cập nhật thất bại"),
+        message: t(
+          "companyProfile.notifications.notFoundMessage",
+          "Không tìm thấy thông tin công ty để cập nhật.",
+        ),
+      });
+      return;
+    }
+
+    if (role !== "EMPLOYER") {
+      setNotice({
+        open: true,
+        variant: "error",
+        title: t("companyProfile.notifications.errorTitle", "Cập nhật thất bại"),
+        message: t(
+          "companyProfile.notifications.noPermissionMessage",
+          "Bạn không có quyền cập nhật thông tin công ty.",
+        ),
+      });
+      return;
+    }
+
+    if (!name.trim()) {
+      setNotice({
+        open: true,
+        variant: "error",
+        title: t("companyProfile.notifications.errorTitle", "Cập nhật thất bại"),
+        message: t(
+          "companyProfile.validation.nameRequired",
+          "Vui lòng nhập tên công ty.",
+        ),
+      });
+      return;
+    }
+
+    if (!address.trim()) {
+      setNotice({
+        open: true,
+        variant: "error",
+        title: t("companyProfile.notifications.errorTitle", "Cập nhật thất bại"),
+        message: t(
+          "companyProfile.validation.addressRequired",
+          "Vui lòng nhập địa chỉ trụ sở.",
+        ),
+      });
+      return;
+    }
+
     setSaveError(null);
+    setIsSubmitting(true);
 
     try {
       let nextLogo = resolvedCompany.logo;
 
       if (logoFile) {
         const uploadResponse = await uploadCompanyLogo(logoFile);
-        nextLogo = uploadResponse.data?.filePath ?? nextLogo;
+        const uploadedLogo =
+          uploadResponse.data?.filePath ?? uploadResponse.data?.fileName;
+        if (uploadedLogo) {
+          nextLogo = uploadedLogo;
+        }
       }
 
-      await updateCompanyMutation.mutateAsync({
+      const updateResponse = await updateCompanyMutation.mutateAsync({
         id: company.id,
         data: {
-          name,
-          address,
-          description: about,
+          name: name.trim(),
+          address: address.trim(),
+          description: about.trim(),
           logo: nextLogo ?? undefined,
         },
       });
 
+      if (updateResponse?.data) {
+        setCompany({
+          id: updateResponse.data.id,
+          name: updateResponse.data.name,
+        });
+      }
+
       setLogoFile(null);
       setLogoPreview(null);
+
+      setNotice({
+        open: true,
+        variant: "success",
+        title: t(
+          "companyProfile.notifications.successTitle",
+          "Cập nhật thành công",
+        ),
+        message: t(
+          "companyProfile.notifications.successMessage",
+          "Thông tin công ty đã được cập nhật thành công.",
+        ),
+      });
     } catch (error) {
-      setSaveError("Khong the cap nhat cong ty. Vui long thu lai.");
+      let errorMessage = t(
+        "companyProfile.notifications.errorMessage",
+        "Không thể cập nhật thông tin công ty. Vui lòng thử lại.",
+      );
+
+      if (isAxiosError(error)) {
+        const backendMessage = error.response?.data?.message;
+        if (Array.isArray(backendMessage)) {
+          errorMessage = backendMessage.join(", ");
+        } else if (typeof backendMessage === "string" && backendMessage.trim()) {
+          errorMessage = backendMessage;
+        }
+      } else if (error instanceof Error && error.message) {
+        errorMessage = error.message;
+      }
+
+      setSaveError(errorMessage);
+      setNotice({
+        open: true,
+        variant: "error",
+        title: t("companyProfile.notifications.errorTitle", "Cập nhật thất bại"),
+        message: errorMessage,
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -129,20 +254,29 @@ export default function CompanyProfile() {
       <div className="mx-auto w-full max-w-7xl px-6 py-10">
         <div className="space-y-6">
           <CompanyHeader
-            title="Company Profile"
-            subtitle="Manage your company's public information and branding."
+            title={t("companyProfile.header.title", "Company Profile")}
+            subtitle={t(
+              "companyProfile.header.subtitle",
+              "Manage your company's public information and branding.",
+            )}
             status={status}
             role={role}
             onStatusChange={setStatus}
           />
           {companyQuery.isError ? (
             <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-              Khong the tai thong tin cong ty. Vui long thu lai.
+              {t(
+                "companyProfile.state.loadError",
+                "Không thể tải thông tin công ty. Vui lòng thử lại.",
+              )}
             </div>
           ) : null}
           {companyQuery.isLoading ? (
             <div className="rounded-lg bg-white px-4 py-3 text-sm text-slate-500 shadow-sm">
-              Dang tai thong tin cong ty...
+              {t(
+                "companyProfile.state.loading",
+                "Đang tải thông tin công ty...",
+              )}
             </div>
           ) : null}
           <CompanyStatusBanners status={status} role={role} />
@@ -151,16 +285,29 @@ export default function CompanyProfile() {
             companyId={company?.id ?? null}
             logoUrl={logoPreview ?? resolvedCompany.logo}
             onSelectFile={handleSelectLogo}
-            isUploading={updateCompanyMutation.isPending}
+            isUploading={isSaving}
           />
           <CompanyGeneralInfo
             role={role}
             name={name}
             address={address}
-            onNameChange={setName}
-            onAddressChange={setAddress}
+            onNameChange={(val) => {
+              setName(val);
+              setSaveError(null);
+            }}
+            onAddressChange={(val) => {
+              setAddress(val);
+              setSaveError(null);
+            }}
           />
-          <CompanyOverview role={role} about={about} onAboutChange={setAbout} />
+          <CompanyOverview
+            role={role}
+            about={about}
+            onAboutChange={(val) => {
+              setAbout(val);
+              setSaveError(null);
+            }}
+          />
           {saveError ? (
             <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {saveError}
@@ -170,10 +317,20 @@ export default function CompanyProfile() {
             role={role}
             onSave={handleSaveChanges}
             onCancel={handleCancelChanges}
-            isSaving={updateCompanyMutation.isPending}
+            isSaving={isSaving}
           />
         </div>
       </div>
+
+      <NotificationPopup
+        open={notice.open}
+        variant={notice.variant}
+        title={notice.title}
+        message={notice.message}
+        dismissLabel={t("common.close", "Đóng")}
+        onDismiss={() => setNotice((prev) => ({ ...prev, open: false }))}
+        closeOnBackdrop
+      />
     </main>
   );
 }

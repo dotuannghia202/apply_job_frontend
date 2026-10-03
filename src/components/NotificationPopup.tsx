@@ -1,8 +1,14 @@
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
+import {
+  HelpCircle,
+  CheckCircle2,
+  AlertTriangle,
+  Info,
+  type LucideIcon,
+} from "lucide-react";
 
 type PopupVariant = "confirm" | "success" | "error" | "info" | "warning";
-
 type PopupActionStyle = "primary" | "outline" | "danger";
 
 interface PopupAction {
@@ -18,116 +24,58 @@ interface PopupProps {
   title: string;
   message?: ReactNode;
   actions?: PopupAction[];
+
+  // Gộp chung hàm đóng Popup
+  onClose?: () => void;
   onConfirm?: () => void;
-  onCancel?: () => void;
+
+  // Labels
   confirmLabel?: string;
-  confirmVariant?: "primary" | "danger";
   cancelLabel?: string;
-  dismissLabel?: string;
-  onDismiss?: () => void;
+  confirmVariant?: "primary" | "danger";
   closeOnBackdrop?: boolean;
+
+  // Deprecated Props (giữ lại làm fallback để không hỏng code cũ nếu dự án đang dùng)
+  onCancel?: () => void;
+  onDismiss?: () => void;
+  dismissLabel?: string;
 }
 
-const variantConfig: Record<
+const variantStyles: Record<
   PopupVariant,
-  { icon: ReactNode; iconBg: string; primaryBtn: string }
+  { Icon: LucideIcon; iconColor: string; iconBg: string; primaryBtn: string }
 > = {
   confirm: {
-    icon: (
-      <svg
-        className="h-6 w-6 text-blue-600"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
+    Icon: HelpCircle,
+    iconColor: "text-blue-600",
     iconBg: "bg-blue-50",
     primaryBtn:
       "bg-blue-600 hover:bg-blue-700 focus-visible:ring-blue-400 text-white",
   },
   success: {
-    icon: (
-      <svg
-        className="h-6 w-6 text-emerald-600"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
+    Icon: CheckCircle2,
+    iconColor: "text-emerald-600",
     iconBg: "bg-emerald-50",
     primaryBtn:
       "bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400 text-white",
   },
   error: {
-    icon: (
-      <svg
-        className="h-6 w-6 text-red-600"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-        />
-      </svg>
-    ),
+    Icon: AlertTriangle,
+    iconColor: "text-red-600",
     iconBg: "bg-red-50",
     primaryBtn:
       "bg-red-600 hover:bg-red-700 focus-visible:ring-red-400 text-white",
   },
   warning: {
-    icon: (
-      <svg
-        className="h-6 w-6 text-amber-600"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-        />
-      </svg>
-    ),
+    Icon: AlertTriangle,
+    iconColor: "text-amber-600",
     iconBg: "bg-amber-50",
     primaryBtn:
       "bg-amber-500 hover:bg-amber-600 focus-visible:ring-amber-400 text-white",
   },
   info: {
-    icon: (
-      <svg
-        className="h-6 w-6 text-sky-600"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
+    Icon: Info,
+    iconColor: "text-sky-600",
     iconBg: "bg-sky-50",
     primaryBtn:
       "bg-sky-600 hover:bg-sky-700 focus-visible:ring-sky-400 text-white",
@@ -150,59 +98,51 @@ export function NotificationPopup({
   title,
   message,
   actions,
+  onClose,
   onConfirm,
-  onCancel,
   confirmLabel = "Confirm",
+  cancelLabel,
   confirmVariant = "primary",
-  cancelLabel = "Cancel",
-  dismissLabel = "Got it",
-  onDismiss,
   closeOnBackdrop = false,
+
+  // Fallbacks
+  onCancel,
+  onDismiss,
+  dismissLabel,
 }: PopupProps) {
   if (!open) return null;
 
-  const baseConfig = variantConfig[variant];
-  const config =
-    variant === "confirm" && confirmVariant === "danger"
-      ? {
-          ...baseConfig,
-          iconBg: "bg-red-50",
-          icon: (
-            <svg
-              className="h-6 w-6 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          ),
-        }
-      : baseConfig;
+  // 1. Gộp tất cả các callback đóng thành 1 hàm duy nhất
+  const handleClose = onClose || onCancel || onDismiss;
 
-  const handleBackdrop = () => {
-    if (closeOnBackdrop) onDismiss?.();
-  };
+  // 2. Tự động tính toán Label cho nút Hủy/Đóng
+  const closeText =
+    cancelLabel || dismissLabel || (onConfirm ? "Cancel" : "Got it");
+
+  const isDangerConfirm = variant === "confirm" && confirmVariant === "danger";
+  const styleConfig = variantStyles[variant];
+
+  const IconComponent = styleConfig.Icon;
+  const iconBg = isDangerConfirm ? "bg-red-50" : styleConfig.iconBg;
+  const iconColor = isDangerConfirm ? "text-red-600" : styleConfig.iconColor;
+  const primaryBtn = isDangerConfirm
+    ? actionButtonStyles.danger
+    : styleConfig.primaryBtn;
 
   return createPortal(
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-4"
-      onClick={handleBackdrop}
+      onClick={() => closeOnBackdrop && handleClose?.()}
     >
       <div
         className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start gap-4">
           <div
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${config.iconBg}`}
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${iconBg}`}
           >
-            {config.icon}
+            <IconComponent className={`size-6 ${iconColor}`} />
           </div>
           <div className="flex-1 pt-0.5">
             <h3 className="text-base font-bold text-[#2d3338]">{title}</h3>
@@ -214,9 +154,11 @@ export function NotificationPopup({
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
           {actions?.length ? (
+            /* Trường hợp 1: Danh sách nút tùy biến (Custom Actions) */
             actions.map((action, index) => {
               const style = action.style ?? "primary";
-              const primaryClass = style === "primary" ? config.primaryBtn : "";
+              const btnClass =
+                style === "primary" ? primaryBtn : actionButtonStyles[style];
 
               return (
                 <button
@@ -224,20 +166,21 @@ export function NotificationPopup({
                   type="button"
                   onClick={action.onClick}
                   disabled={action.disabled}
-                  className={`${baseButtonCls} ${actionButtonStyles[style]} ${primaryClass}`}
+                  className={`${baseButtonCls} ${btnClass}`}
                 >
                   {action.label}
                 </button>
               );
             })
           ) : onConfirm ? (
+            /* Trường hợp 2: Popup Xác nhận (Confirm Dialog - có 2 nút) */
             <>
               <button
                 type="button"
-                onClick={onCancel}
+                onClick={handleClose}
                 className={`${baseButtonCls} ${actionButtonStyles.outline}`}
               >
-                {cancelLabel}
+                {closeText}
               </button>
               <button
                 type="button"
@@ -245,19 +188,20 @@ export function NotificationPopup({
                 className={`${baseButtonCls} ${
                   confirmVariant === "danger"
                     ? actionButtonStyles.danger
-                    : config.primaryBtn
+                    : primaryBtn
                 }`}
               >
                 {confirmLabel}
               </button>
             </>
           ) : (
+            /* Trường hợp 3: Popup Thông báo đơn thuần (Single Button) */
             <button
               type="button"
-              onClick={onDismiss}
-              className={`${baseButtonCls} ${config.primaryBtn}`}
+              onClick={handleClose}
+              className={`${baseButtonCls} ${primaryBtn}`}
             >
-              {dismissLabel}
+              {closeText}
             </button>
           )}
         </div>

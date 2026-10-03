@@ -1450,6 +1450,28 @@
       "restoreError": "Không thể khôi phục công ty. Vui lòng thử lại."
     }
   },
+  "companyProfile": {
+    "header": {
+      "title": "Hồ sơ công ty",
+      "subtitle": "Quản lý thông tin công khai và nhận diện thương hiệu của công ty."
+    },
+    "state": {
+      "loadError": "Không thể tải thông tin công ty. Vui lòng thử lại.",
+      "loading": "Đang tải thông tin công ty..."
+    },
+    "validation": {
+      "nameRequired": "Vui lòng nhập tên công ty.",
+      "addressRequired": "Vui lòng nhập địa chỉ trụ sở."
+    },
+    "notifications": {
+      "successTitle": "Cập nhật thành công",
+      "successMessage": "Thông tin công ty đã được cập nhật thành công.",
+      "errorTitle": "Cập nhật thất bại",
+      "errorMessage": "Không thể cập nhật thông tin công ty. Vui lòng thử lại.",
+      "notFoundMessage": "Không tìm thấy thông tin công ty để cập nhật.",
+      "noPermissionMessage": "Bạn không có quyền cập nhật thông tin công ty."
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Xác nhận",

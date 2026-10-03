@@ -76,6 +76,7 @@ export const useUpdateCompany = () => {
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: companyKeys.lists() });
       queryClient.invalidateQueries({ queryKey: companyKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: companyKeys.myCompany() });
     },
   });
 };

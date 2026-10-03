@@ -1450,6 +1450,28 @@
       "restoreError": "Failed to restore company. Please try again."
     }
   },
+  "companyProfile": {
+    "header": {
+      "title": "Company Profile",
+      "subtitle": "Manage your company's public information and branding."
+    },
+    "state": {
+      "loadError": "Could not load company information. Please try again.",
+      "loading": "Loading company information..."
+    },
+    "validation": {
+      "nameRequired": "Please enter company name.",
+      "addressRequired": "Please enter headquarters address."
+    },
+    "notifications": {
+      "successTitle": "Update Successful",
+      "successMessage": "Company information has been updated successfully.",
+      "errorTitle": "Update Failed",
+      "errorMessage": "Failed to update company information. Please try again.",
+      "notFoundMessage": "Company information not found to update.",
+      "noPermissionMessage": "You do not have permission to update company information."
+    }
+  },
   "managementCompanies": {
     "common": {
       "confirm": "Confirm",
