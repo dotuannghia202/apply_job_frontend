@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { RefObject } from "react";
 import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 import type { Job } from "@/types/job";
 import { formatVND, getCityFromAddress } from "../../helper";
@@ -52,6 +54,7 @@ export const JobPopup = ({
 }: JobPopupProps) => {
   const { t } = useTranslation();
   const popupRef = useRef<HTMLDivElement>(null);
+  const [isPositioned, setIsPositioned] = useState(false);
   const navigate = useNavigate();
   const companyName = job.company?.name ?? t("jobPopup.fallbacks.unknownCompany");
   const companyLogo = job.company?.logo;
@@ -63,12 +66,10 @@ export const JobPopup = ({
   const specialization = job.specialization?.name;
   const levelsText = job.levels?.length ? job.levels.join(", ") : undefined;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const popup = popupRef.current;
     const anchor = anchorRef.current;
     if (!popup || !anchor) return;
-
-    let rafId = 0;
 
     const updatePosition = () => {
       const popupEl = popupRef.current;
@@ -103,30 +104,34 @@ export const JobPopup = ({
 
       popupEl.style.left = `${clampedLeft}px`;
       popupEl.style.top = `${clampedTop}px`;
+      setIsPositioned(true);
     };
 
-    rafId = window.requestAnimationFrame(updatePosition);
+    updatePosition();
     window.addEventListener("resize", updatePosition);
     window.addEventListener("scroll", updatePosition, true);
 
     return () => {
-      window.cancelAnimationFrame(rafId);
       window.removeEventListener("resize", updatePosition);
       window.removeEventListener("scroll", updatePosition, true);
     };
   }, [anchorRef, job.id]);
 
-  return (
-    <>
-      <div
-        ref={popupRef}
-        role="dialog"
-        aria-label={job.name}
-        className="fixed z-50 flex w-95 flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
-        style={{ maxWidth: "480px", maxHeight: "510px" }}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave ?? onClose}
-      >
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
+    <div
+      ref={popupRef}
+      role="dialog"
+      aria-label={job.name}
+      className={cn(
+        "fixed z-50 flex w-96 flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-opacity duration-150",
+        isPositioned ? "opacity-100" : "pointer-events-none opacity-0",
+      )}
+      style={{ maxWidth: "480px", maxHeight: "510px" }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave ?? onClose}
+    >
         {/* Scrollable body */}
         <div className="flex-1 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {/* Header */}
@@ -252,7 +257,7 @@ export const JobPopup = ({
             </Button>
           </div>
         </div>
-      </div>
-    </>
-  );
-};
+      </div>,
+      document.body,
+    );
+  };

@@ -74,12 +74,12 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
   };
 
   const scheduleOpenPopup = () => {
-    if (isPopupOpen) return;
-
     if (closeTimerRef.current) {
       window.clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
     }
+
+    if (isPopupOpen) return;
 
     if (openTimerRef.current) {
       window.clearTimeout(openTimerRef.current);
@@ -102,7 +102,7 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
     closeTimerRef.current = window.setTimeout(() => {
       setIsPopupOpen(false);
       closeTimerRef.current = null;
-    }, 120);
+    }, 200);
   };
 
   const closePopup = () => {
