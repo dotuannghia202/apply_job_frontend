@@ -42,12 +42,22 @@ import SystemSettingPage from "@/pages/admin/system-setting/SystemSettingPage";
 import CompaniesDetail from "@/pages/companies/CompaniesDetail";
 import CompanyProfile from "@/pages/companies/CompanyProfile";
 import PlaceholderPage from "@/pages/static/PlaceholderPage";
+import { LoaderCircle } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 
 function RootPathHandler() {
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isInitialized = useAuthStore((state) => state.isInitialized);
   const roles = normalizeRoles(user?.roles ?? []);
+
+  if (!isInitialized && !isAuthenticated) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (isAuthenticated) {
     if (roles.includes("ADMIN")) return <Navigate to="/admin/dashboard" replace />;
@@ -56,6 +66,8 @@ function RootPathHandler() {
 
   return <JobListPage />;
 }
+
+
 
 function SimplePage({ title }: { title: string }) {
   return (

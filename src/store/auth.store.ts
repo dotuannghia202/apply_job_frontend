@@ -6,11 +6,13 @@ interface AuthState {
   avatarUrl: string | null;
   company: AuthUser["company"] | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
   setAuth: (user: AuthUser | null) => void;
   setAvatar: (avatarUrl: string | null) => void;
   setCompany: (company: AuthUser["company"] | null) => void;
   setRoles: (roles: RoleName[]) => void;
   setGmailLinked: (linked: boolean) => void;
+  setInitialized: (initialized: boolean) => void;
   logout: () => void;
 }
 
@@ -19,6 +21,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   avatarUrl: "",
   company: null,
   isAuthenticated: false,
+  isInitialized: false,
 
   setAuth: (user) => {
     if (!user) {
@@ -82,6 +85,10 @@ export const useAuthStore = create<AuthState>((set) => ({
         user,
       };
     });
+  },
+
+  setInitialized: (initialized) => {
+    set({ isInitialized: initialized });
   },
 
   logout: () => {

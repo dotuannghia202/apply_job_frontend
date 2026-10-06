@@ -1,4 +1,5 @@
-import type { RoleName } from "@/types/auth";
+import type { AuthUser, RoleName } from "@/types/auth";
+import type { User } from "@/types/user";
 
 const ROLE_NAMES: readonly RoleName[] = ["ADMIN", "EMPLOYER", "CANDIDATE"];
 
@@ -37,3 +38,29 @@ export function normalizeRoles(roles: unknown): RoleName[] {
     return normalizedRoles;
   }, []);
 }
+
+export function getAccountUser(
+  data: User | { user: User } | null | undefined,
+): User | null {
+  if (!data) return null;
+  return "user" in data ? data.user : data;
+}
+
+export function mapAccountToAuthUser(user: User): AuthUser {
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    avatarUrl: user.avatarUrl ?? (user as { avatar?: string | null }).avatar ?? null,
+    isActive: user.isActive ?? null,
+    roles: normalizeRoles(user.roles ?? []),
+    company: user.company
+      ? {
+          id: user.company.id,
+          name: user.company.name,
+        }
+      : null,
+    isGmailLinked: (user as { isGmailLinked?: boolean | null }).isGmailLinked ?? null,
+  };
+}
+

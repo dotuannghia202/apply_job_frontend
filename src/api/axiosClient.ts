@@ -50,7 +50,30 @@ function clearAuthAndRedirect() {
   if (!useAuthStore.getState().isAuthenticated) return;
 
   useAuthStore.getState().logout();
-  window.location.href = "/401";
+
+  const publicPaths = [
+    "/",
+    "/jobs",
+    "/privacy-policy",
+    "/terms-of-service",
+    "/cookie-settings",
+    "/accessibility",
+    "/support",
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/401",
+    "/403",
+  ];
+  const currentPath = window.location.pathname;
+  const isPublic =
+    publicPaths.some((p) => currentPath === p) ||
+    currentPath.startsWith("/jobs/") ||
+    currentPath.startsWith("/company/detail/");
+
+  if (!isPublic) {
+    window.location.href = "/login";
+  }
 }
 
 axiosClient.interceptors.request.use(

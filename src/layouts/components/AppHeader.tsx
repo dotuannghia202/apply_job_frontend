@@ -66,6 +66,7 @@ const AppHeader = () => {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isInitialized = useAuthStore((state) => state.isInitialized);
 
   const setAuth = useAuthStore((state) => state.setAuth);
   const updateUserRolesMutation = useUpdateUserRoles();
@@ -123,15 +124,17 @@ const AppHeader = () => {
     ];
   };
 
-  const navLinks = isAuthenticated
-    ? getNavLinks(mode)
-    : [
-        {
-          label: t("header.findJobs", "Find Jobs"),
-          to: "/jobs",
-          end: true,
-        },
-      ];
+  const navLinks = !isInitialized
+    ? []
+    : isAuthenticated
+      ? getNavLinks(mode)
+      : [
+          {
+            label: t("header.findJobs", "Find Jobs"),
+            to: "/jobs",
+            end: true,
+          },
+        ];
 
   const canSwitchCandidateEmployer = mode !== "ADMIN";
   const isEmployerMode = mode === "EMPLOYER";
@@ -269,7 +272,9 @@ const AppHeader = () => {
           <div className="flex items-center gap-2 sm:gap-3">
             <LanguageSwitch />
 
-            {!isAuthenticated ? (
+            {!isInitialized ? (
+              <div className="h-9 w-20 animate-pulse rounded-full bg-slate-100" />
+            ) : !isAuthenticated ? (
               <div className="flex items-center gap-2 sm:gap-3">
                 <Button
                   variant="outline"
