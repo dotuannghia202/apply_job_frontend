@@ -36,3 +36,4 @@ seed
 
 # Loại trừ tất cả các file .env khác (nếu có)
 .env.*
+codebase.xml

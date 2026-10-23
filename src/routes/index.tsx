@@ -31,6 +31,7 @@ import SavedJobPage from "@/pages/candidate/saved-jobs/SavedJobPage";
 
 import MyApplicationsList from "@/pages/candidate/my-applications/MyApplicationsList";
 import MyApplicationDetail from "@/pages/candidate/my-applications/MyApplicationDetail";
+import InterviewRoomPage from "@/pages/candidate/interview/InterviewRoomPage";
 
 import CVDetailCandidate from "@/pages/candidate/cvs/CVDetailCandidate";
 import AccountSettingPage from "@/pages/settings/AccountSettingPage";
@@ -192,6 +193,10 @@ export const router = createBrowserRouter([
               {
                 path: "jobs/saved",
                 element: <SavedJobPage />,
+              },
+              {
+                path: "interview/:sessionId",
+                element: <InterviewRoomPage />,
               },
             ],
           },

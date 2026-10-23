@@ -45,6 +45,8 @@ export interface Application {
   interviewTime?: string | null;
   interviewLocation?: string | null;
   interviewMessage?: string | null;
+  interviewSessionId?: number | null;
+  interviewSessionStatus?: import("./interview").InterviewSessionStatus | null;
 }
 
 export interface ApplicationListFilters extends Pick<

@@ -23,6 +23,7 @@
     "companyManagement": "Quản lý Công ty",
     "systemSetting": "Cấu hình hệ thống",
     "login": "Đăng nhập",
+    "loginWithGoogle": "Đăng nhập với Google",
     "register": "Đăng ký"
   },
   "jobSearch": {
@@ -1761,6 +1762,9 @@
       "createAccount": "Bạn chưa có tài khoản? Tạo tài khoản",
       "forgotPassword": "Quên mật khẩu",
       "submit": "Đăng nhập",
+      "or": "Hoặc",
+      "googleSuccess": "Đăng nhập Google thành công!",
+      "googleError": "Đăng nhập Google thất bại. Vui lòng thử lại.",
       "errors": {
         "invalidCredentials": "Email hoặc mật khẩu không chính xác!"
       }
@@ -2049,11 +2053,48 @@
     "failedLabel": "Thất bại",
     "errorGmailLinkPrefix": "Lỗi liên kết Gmail"
   },
-  "common": {
-    "understood": "Đã hiểu",
-    "success": "Thành công",
-    "failed": "Thất bại",
-    "warning": "Cảnh báo",
-    "close": "Đóng"
+  "apiErrors": {
+    "RESOURCE_NOT_FOUND": "Không tìm thấy dữ liệu yêu cầu!",
+    "FORBIDDEN_ACCESS": "Bạn không có quyền thực hiện thao tác này!",
+    "ACCOUNT_LOCKED": "Tài khoản của bạn đã bị khóa bởi Quản trị viên.",
+    "NETWORK_ERROR": "Lỗi kết nối mạng, vui lòng kiểm tra lại đường truyền.",
+    "UNKNOWN_ERROR": "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau!"
+  },
+  "interviewRoom": {
+    "headerTitle": "PHÒNG PHỎNG VẤN AI",
+    "recLive": "ĐANG GHI HÌNH",
+    "cameraReady": "Camera sẵn sàng",
+    "micReady": "Microphone sẵn sàng",
+    "noCamera": "Chưa có Camera",
+    "noMic": "Chưa có Mic",
+    "instructions": "HƯỚNG DẪN THI",
+    "lobbyTitle": "Sẵn sàng cho buổi phỏng vấn AI",
+    "rule1": "Buổi phỏng vấn gồm 5 câu hỏi thực chiến bám sát CV của bạn.",
+    "rule2": "Mỗi câu có thời gian đếm ngược. Trả lời xong có thể bấm nộp để sang câu tiếp theo.",
+    "rule3": "Vui lòng giữ ánh sáng rõ ràng và nói to, rõ ràng vào microphone.",
+    "startBtn": "Bắt đầu phỏng vấn ngay",
+    "questionLabel": "Câu hỏi",
+    "candidateSpeaking": "Ứng viên đang trả lời...",
+    "timeRemaining": "Thời gian còn lại",
+    "nextBtn": "Xong câu này",
+    "finishBtn": "Hoàn thành phỏng vấn",
+    "completedTitle": "Hoàn thành buổi phỏng vấn!",
+    "completedDesc": "Video và câu trả lời của bạn đã được ghi lại thành công. Hệ thống AI đang phân tích và gửi báo cáo đánh giá đến nhà tuyển dụng.",
+    "backBtn": "Quay lại danh sách việc đã nộp",
+    "takeInterviewNow": "Tham gia phỏng vấn AI ngay",
+    "interviewPendingDesc": "Hồ sơ của bạn đã sẵn sàng cho buổi phỏng vấn AI. Hãy tham gia ngay để hoàn thiện ứng tuyển!"
+  },
+  "interviewAssessment": {
+    "badgeTitle": "KẾT QUẢ PHỎNG VẤN AI",
+    "assessmentTitle": "Đánh giá chi tiết buổi phỏng vấn",
+    "totalScoreLabel": "ĐIỂM TỔNG KẾT",
+    "questionLabel": "Câu hỏi",
+    "transcriptLabel": "Bản gỡ băng lời nói ứng viên",
+    "evidenceQuoteLabel": "Bằng chứng AI trích dẫn thực tế (Zero-Hallucination)",
+    "aiFeedbackLabel": "Nhận xét của AI",
+    "noSpeechDetected": "Không có dữ liệu âm thanh",
+    "switchLang": "Đổi ngôn ngữ hiển thị",
+    "sessionStatus": "Trạng thái phỏng vấn",
+    "videoPlayback": "Video ghi hình buổi thi"
   }
 }

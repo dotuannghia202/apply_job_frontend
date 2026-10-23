@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 
 import type { RegisterRequest } from "@/types/auth";
 
-import authApi from "@/api/authApi";
+import authApi from "@/api/authentication/authApi";
 import { isAxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";

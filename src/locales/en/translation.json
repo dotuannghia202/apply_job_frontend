@@ -23,6 +23,7 @@
     "companyManagement": "Company Management",
     "systemSetting": "System Setting",
     "login": "Log In",
+    "loginWithGoogle": "Login with Google",
     "register": "Register"
   },
   "jobSearch": {
@@ -1761,6 +1762,9 @@
       "createAccount": "You haven't an account? Create an account",
       "forgotPassword": "Forgot Password",
       "submit": "Sign in",
+      "or": "Or",
+      "googleSuccess": "Google sign-in successful!",
+      "googleError": "Google sign-in failed. Please try again.",
       "errors": {
         "invalidCredentials": "Incorrect email or password!"
       }
@@ -2049,11 +2053,48 @@
     "failedLabel": "Failed",
     "errorGmailLinkPrefix": "Gmail linking error"
   },
-  "common": {
-    "understood": "Understood",
-    "success": "Success",
-    "failed": "Failed",
-    "warning": "Warning",
-    "close": "Close"
+  "apiErrors": {
+    "RESOURCE_NOT_FOUND": "The requested resource was not found!",
+    "FORBIDDEN_ACCESS": "You do not have permission to perform this action!",
+    "ACCOUNT_LOCKED": "Your account has been locked by Administrator.",
+    "NETWORK_ERROR": "Network connection error. Please check your internet.",
+    "UNKNOWN_ERROR": "An unexpected error occurred. Please try again later!"
+  },
+  "interviewRoom": {
+    "headerTitle": "AI VIDEO INTERVIEW",
+    "recLive": "REC LIVE",
+    "cameraReady": "Camera Ready",
+    "micReady": "Mic Ready",
+    "noCamera": "No Camera",
+    "noMic": "No Mic",
+    "instructions": "INSTRUCTIONS",
+    "lobbyTitle": "Get Ready for Your AI Interview",
+    "rule1": "The interview consists of 5 practical questions tailored to your CV.",
+    "rule2": "Each question has a countdown timer. You can submit early to proceed.",
+    "rule3": "Please ensure good lighting and speak clearly into your microphone.",
+    "startBtn": "Start Interview Now",
+    "questionLabel": "Question",
+    "candidateSpeaking": "Candidate is speaking...",
+    "timeRemaining": "Time Remaining",
+    "nextBtn": "Next Question",
+    "finishBtn": "Finish Interview",
+    "completedTitle": "Interview Completed!",
+    "completedDesc": "Your video and responses have been successfully recorded. Our AI is analyzing and submitting the report to the employer.",
+    "backBtn": "Back to My Applications",
+    "takeInterviewNow": "Take AI Interview Now",
+    "interviewPendingDesc": "Your application is ready for the AI interview. Take it now to complete your submission!"
+  },
+  "interviewAssessment": {
+    "badgeTitle": "AI INTERVIEW ASSESSMENT",
+    "assessmentTitle": "Candidate Interview Evaluation",
+    "totalScoreLabel": "TOTAL SCORE",
+    "questionLabel": "Question",
+    "transcriptLabel": "Candidate Transcript",
+    "evidenceQuoteLabel": "Verified Evidence Quote (Zero-Hallucination)",
+    "aiFeedbackLabel": "AI Feedback",
+    "noSpeechDetected": "No speech detected",
+    "switchLang": "Toggle Language",
+    "sessionStatus": "Interview Status",
+    "videoPlayback": "Recorded Session Video"
   }
 }

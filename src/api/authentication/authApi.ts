@@ -1,10 +1,10 @@
-import axiosClient from "./axiosClient";
+import axiosClient from "../axiosClient";
 import type {
   ForgotPasswordRequest,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
-} from "../types/auth";
+} from "../../types/auth";
 
 import type { BackendResponse } from "@/types/common";
 const authApi = {
@@ -33,6 +33,9 @@ const authApi = {
   logout(): Promise<BackendResponse<void>> {
     const url = `/auth/logout`;
     return axiosClient.post(url);
+  },
+  loginWithGoogle: async (code: string) => {
+    return axiosClient.post("/auth/google", { code });
   },
 };
 

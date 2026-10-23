@@ -1,6 +1,6 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "@/store/auth.store";
-import authApi from "./authApi";
+import authApi from "./authentication/authApi";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -40,6 +40,7 @@ const publicEndpoints = [
   "/auth/forgot-password",
   "/auth/refresh",
   "/auth/logout",
+  "/auth/google",
 ];
 
 function isPublicEndpoint(url?: string) {

@@ -4,7 +4,7 @@ import { LoaderCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import authApi from "@/api/authApi";
+import authApi from "@/api/authentication/authApi";
 import { NotificationPopup } from "@/components/NotificationPopup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

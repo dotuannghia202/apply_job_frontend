@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
-import authApi from "@/api/authApi";
+import authApi from "@/api/authentication/authApi";
 import type { LoginRequest } from "@/types/auth";
 import { preventSpaceKey } from "@/helper";
 import { useAuthStore } from "@/store/auth.store";
+import SignInWithGoogleBtn from "./SignInWithGoogleBtn";
 
 export const LoginForm = () => {
   const { t } = useTranslation();
@@ -185,7 +186,7 @@ export const LoginForm = () => {
       <Button
         disabled={isLoading}
         type="submit"
-        className="w-full bg-primary hover:bg-primary-hover text-white font-bold h-12 rounded-xl transition-all"
+        className="w-full bg-primary hover:bg-primary-hover text-white font-bold h-12 rounded-xl transition-all cursor-pointer"
       >
         {isLoading ? (
           <LoaderCircle className="w-5 h-5 animate-spin" />
@@ -193,6 +194,19 @@ export const LoginForm = () => {
           t("auth.login.submit")
         )}
       </Button>
+
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-white/10" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-[#121412] px-3 text-gray-400">
+            {t("auth.login.or")}
+          </span>
+        </div>
+      </div>
+
+      <SignInWithGoogleBtn />
     </form>
   );
 };

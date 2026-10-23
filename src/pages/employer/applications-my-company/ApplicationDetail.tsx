@@ -35,6 +35,8 @@ import { AiFitCard } from "@/components/applications/AiFitCard";
 import { ApplicationDocumentsCard } from "@/components/applications/ApplicationDocumentsCard";
 import { getCandidateInitials } from "@/pages/employer/applications-my-company/helper";
 import { InterviewModal } from "@/pages/employer/auto-send-email/InterviewModal";
+import { useGetInterviewSessionByApplication } from "@/api/interviews/interview.queries";
+import { InterviewAssessmentCard } from "@/components/interview/InterviewAssessmentCard";
 import type { ApplicationStatus } from "@/types/application";
 
 const getLocale = (language: string) =>
@@ -50,10 +52,14 @@ export default function ApplicationDetail() {
   const applicationQuery = useGetApplicationById(
     isValidApplicationId ? applicationId : 0,
   );
+  const interviewSessionQuery = useGetInterviewSessionByApplication(
+    isValidApplicationId ? applicationId : 0,
+  );
   const updateStatusMutation = useUpdateApplicationStatus();
   const [showInterviewModal, setShowInterviewModal] = useState(false);
 
   const application = applicationQuery.data?.data;
+  const interviewSession = interviewSessionQuery.data?.data;
   const status = application?.status;
 
   // Auto transition PENDING to REVIEWING when employer opens the detail page
@@ -220,6 +226,30 @@ export default function ApplicationDetail() {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
           <section className="flex flex-col gap-6">
+            {interviewSession && interviewSession.status === "COMPLETED" && (
+              <InterviewAssessmentCard session={interviewSession} />
+            )}
+
+            {interviewSession && interviewSession.status === "EVALUATING" && (
+              <Card className="border-amber-200 bg-amber-50/50 p-6">
+                <div className="flex items-center gap-3 text-amber-800">
+                  <Clock3 className="size-5 animate-spin" />
+                  <div>
+                    <h3 className="font-bold text-sm">
+                      {i18n.language.startsWith("vi")
+                        ? "AI đang chấm điểm buổi phỏng vấn video..."
+                        : "AI is evaluating interview video..."}
+                    </h3>
+                    <p className="text-xs text-amber-700 mt-0.5">
+                      {i18n.language.startsWith("vi")
+                        ? "Hệ thống đang bóc băng STT, dịch thuật và đối chiếu Rubric chống ảo giác. Vui lòng quay lại sau ít phút!"
+                        : "Video STT transcription, translation, and rubric evaluation in progress. Please refresh in a moment!"}
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            )}
+
             <AiFitCard
               matchScore={matchScore}
               matchedSkills={matchedSkills}
