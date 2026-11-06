@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth.store";
 import type { RoleName } from "@/types/auth";
 import LanguageSwitch from "./LanguageSwitch";
+import authApi from "@/api/authentication/authApi";
 
 type HeaderNavLink = {
   label: string;
@@ -73,7 +74,7 @@ const AppHeader = () => {
   const roles = user?.roles ?? [];
   const mode = getHeaderMode(location.pathname, roles);
 
-  // 🚨 CHUYỂN LOGIC GET LINKS VÀO ĐÂY ĐỂ DÙNG HÀM t()
+  // CHUYỂN LOGIC GET LINKS VÀO ĐÂY ĐỂ DÙNG HÀM t()
   const getNavLinks = (currentMode: RoleName): HeaderNavLink[] => {
     if (currentMode === "ADMIN") {
       return [
@@ -168,6 +169,9 @@ const AppHeader = () => {
         const responseRoles = normalizeRoles(response.data?.roles);
         const updatedRoles =
           responseRoles.length > 0 ? responseRoles : nextRoles;
+
+        // Gọi refresh token để Backend cấp lại cookie access_token mới với role EMPLOYER
+        await authApi.refreshToken();
 
         const profileResponse = await fetchAccountInfo();
         const profileData = profileResponse.data ?? null;
