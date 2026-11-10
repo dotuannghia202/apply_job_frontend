@@ -94,3 +94,8 @@ export const linkGmail = async (code: string) => {
   >;
 };
 
+
+export const updatePreferredLanguage = async (language: "vi" | "en") => {
+  return axiosClient.put("/users/preferred-language", { language }) as Promise<BackendResponse<void>>;
+};
+

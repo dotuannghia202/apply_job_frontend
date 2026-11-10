@@ -2055,10 +2055,16 @@
   },
   "apiErrors": {
     "RESOURCE_NOT_FOUND": "The requested resource was not found!",
-    "FORBIDDEN_ACCESS": "You do not have permission to perform this action!",
+    "FORBIDDEN_ACCESS": "You do not have permission to access this resource!",
     "ACCOUNT_LOCKED": "Your account has been locked by Administrator.",
     "NETWORK_ERROR": "Network connection error. Please check your internet.",
-    "UNKNOWN_ERROR": "An unexpected error occurred. Please try again later!"
+    "UNKNOWN_ERROR": "An unexpected error occurred. Please try again later!",
+    "UNAUTHORIZED": "Invalid username or password!",
+    "BAD_REQUEST": "Invalid request!",
+    "FORBIDDEN": "You do not have permission to perform this action!",
+    "SESSION_EXPIRED": "Your session has expired. Please log in again!",
+    "FILE_UPLOAD_ERROR": "File upload failed!",
+    "INVALID_REQUEST_BODY": "Invalid request body format!"
   },
   "interviewRoom": {
     "headerTitle": "AI VIDEO INTERVIEW",

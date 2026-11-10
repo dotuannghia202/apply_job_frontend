@@ -6,6 +6,7 @@ import AppHeader from "@/layouts/components/AppHeader";
 import { fetchAccountInfo } from "@/api/users/user.api";
 import { getAccountUser, mapAccountToAuthUser } from "@/helper/auth-roles";
 import { useAuthStore } from "@/store/auth.store";
+import i18n from "@/i18n";
 
 // Shared promise to deduplicate session restoration requests
 let restoreSessionPromise: Promise<any> | null = null;
@@ -33,6 +34,9 @@ export default function AppLayout() {
 
         if (accountUser && isMounted) {
           setAuth(mapAccountToAuthUser(accountUser));
+          if (accountUser.preferredLanguage && accountUser.preferredLanguage !== i18n.language) {
+            void i18n.changeLanguage(accountUser.preferredLanguage);
+          }
         } else if (isMounted) {
           logout();
         }

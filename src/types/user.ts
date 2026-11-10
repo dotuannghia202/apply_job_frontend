@@ -19,6 +19,7 @@ export interface User {
     logo?: string | null;
   } | null;
   roles?: Array<RoleName>;
+  preferredLanguage?: string | null;
 }
 
 export interface UserListFilters extends Pick<QueryParams, "page" | "size"> {
@@ -48,6 +49,7 @@ export interface CreateUserRequest {
 
 export interface UpdateUserRequest {
   name: string;
+  preferredLanguage?: string | null;
   avatarUrl?: string | null;
   age?: number;
   gender?: UserGender | null;

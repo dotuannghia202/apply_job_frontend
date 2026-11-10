@@ -9,7 +9,10 @@ interface ApiErrorResponse {
 export function getApiErrorMessage(error: unknown): string {
   if (isAxiosError(error)) {
     if (!error.response) {
-      return i18n.t("apiErrors.NETWORK_ERROR", "Lỗi kết nối mạng, vui lòng kiểm tra lại đường truyền.");
+      return i18n.t(
+        "apiErrors.NETWORK_ERROR",
+        "Network connection error. Please check your internet connection."
+      );
     }
 
     const data = error.response.data as ApiErrorResponse | undefined;
@@ -29,5 +32,8 @@ export function getApiErrorMessage(error: unknown): string {
     }
   }
 
-  return i18n.t("apiErrors.UNKNOWN_ERROR", "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau!");
+  return i18n.t(
+    "apiErrors.UNKNOWN_ERROR",
+    "An unexpected error occurred. Please try again later!"
+  );
 }

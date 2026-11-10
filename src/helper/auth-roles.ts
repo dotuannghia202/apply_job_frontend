@@ -61,6 +61,7 @@ export function mapAccountToAuthUser(user: User): AuthUser {
         }
       : null,
     isGmailLinked: (user as { isGmailLinked?: boolean | null }).isGmailLinked ?? null,
+    preferredLanguage: user.preferredLanguage ?? null,
   };
 }
 

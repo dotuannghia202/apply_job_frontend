@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "@/store/auth.store";
+import { updatePreferredLanguage } from "@/api/users/user.api";
 import VietnamFlag from "@/assets/images/Flag_of_Vietnam.svg.webp";
 import UKFlag from "@/assets/images/Flag_of_the_United_Kingdom_3-5.svg.webp";
 
@@ -11,7 +13,10 @@ const LanguageSwitch = () => {
   // Hàm xử lý đổi ngôn ngữ
   const toggleLanguage = () => {
     const newLang = isVi ? "en" : "vi";
-    i18n.changeLanguage(newLang);
+    void i18n.changeLanguage(newLang);
+    if (useAuthStore.getState().isAuthenticated) {
+      void updatePreferredLanguage(newLang);
+    }
   };
 
   return (

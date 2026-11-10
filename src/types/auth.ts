@@ -12,6 +12,7 @@ export interface AuthUser {
     name: string;
   } | null;
   isGmailLinked?: boolean | null;
+  preferredLanguage?: string | null;
 }
 
 

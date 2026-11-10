@@ -2055,10 +2055,16 @@
   },
   "apiErrors": {
     "RESOURCE_NOT_FOUND": "Không tìm thấy dữ liệu yêu cầu!",
-    "FORBIDDEN_ACCESS": "Bạn không có quyền thực hiện thao tác này!",
+    "FORBIDDEN_ACCESS": "Bạn không có quyền truy cập tài nguyên này!",
     "ACCOUNT_LOCKED": "Tài khoản của bạn đã bị khóa bởi Quản trị viên.",
     "NETWORK_ERROR": "Lỗi kết nối mạng, vui lòng kiểm tra lại đường truyền.",
-    "UNKNOWN_ERROR": "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau!"
+    "UNKNOWN_ERROR": "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau!",
+    "UNAUTHORIZED": "Tài khoản hoặc mật khẩu không chính xác!",
+    "BAD_REQUEST": "Yêu cầu không hợp lệ!",
+    "FORBIDDEN": "Bạn không có quyền thực hiện thao tác này!",
+    "SESSION_EXPIRED": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!",
+    "FILE_UPLOAD_ERROR": "Tải lên tệp tin thất bại!",
+    "INVALID_REQUEST_BODY": "Dữ liệu gửi lên không đúng định dạng!"
   },
   "interviewRoom": {
     "headerTitle": "PHÒNG PHỎNG VẤN AI",

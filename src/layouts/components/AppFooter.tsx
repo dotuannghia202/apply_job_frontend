@@ -1,5 +1,7 @@
 import { Globe, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "@/store/auth.store";
+import { updatePreferredLanguage } from "@/api/users/user.api";
 import { Link } from "react-router-dom";
 
 import {
@@ -69,7 +71,12 @@ const AppFooter = () => {
                   <button
                     key={option.code}
                     type="button"
-                    onClick={() => void i18n.changeLanguage(option.code)}
+                    onClick={() => {
+                      void i18n.changeLanguage(option.code);
+                      if (useAuthStore.getState().isAuthenticated && (option.code === "vi" || option.code === "en")) {
+                        void updatePreferredLanguage(option.code);
+                      }
+                    }}
                     className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs font-medium transition-colors ${
                       option.code === currentLanguage
                         ? "bg-primary/10 text-primary"
