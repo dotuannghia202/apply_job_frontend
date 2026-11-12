@@ -8,11 +8,11 @@ import type { Industry } from "@/types/industry";
 
 interface SpecializationFormModalProps {
   open: boolean;
-  initialData?: { id: number; name: string } | null;
+  initialData?: { id: string; name: string } | null;
   isPending?: boolean;
   industries: Industry[];
-  selectedIndustryId?: number | null;
-  onSubmit: (name: string, industryId: number) => void;
+  selectedIndustryId?: string | null;
+  onSubmit: (name: string, industryId: string) => void;
   onClose: () => void;
 }
 
@@ -27,14 +27,14 @@ export default function SpecializationFormModal({
 }: SpecializationFormModalProps) {
   const { t } = useTranslation();
   const [name, setName] = useState("");
-  const [industryId, setIndustryId] = useState<number>(0);
+  const [industryId, setIndustryId] = useState<string>("");
 
   const isEdit = !!initialData;
 
   useEffect(() => {
     if (open) {
       setName(initialData?.name ?? "");
-      setIndustryId(selectedIndustryId ?? industries[0]?.id ?? 0);
+      setIndustryId(selectedIndustryId ?? industries[0]?.id ?? "");
     }
   }, [open, initialData, selectedIndustryId, industries]);
 
@@ -84,10 +84,10 @@ export default function SpecializationFormModal({
                 id="spec-industry"
                 className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:border-primary focus:outline-none focus:ring-[3px] focus:ring-primary"
                 value={industryId}
-                onChange={(e) => setIndustryId(Number(e.target.value))}
+                onChange={(e) => setIndustryId(e.target.value)}
                 disabled={isPending || isEdit}
               >
-                <option value={0} disabled>
+                <option value="" disabled>
                   {t(
                     "systemSetting.specialization.modal.industryPlaceholder",
                   )}

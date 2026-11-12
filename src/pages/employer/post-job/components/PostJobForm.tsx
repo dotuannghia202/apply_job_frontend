@@ -342,7 +342,7 @@ export function PostJobForm({
   >({});
   const provinceId = value.provinceCode ? Number(value.provinceCode) : null;
   const wardId = value.wardCode ? Number(value.wardCode) : null;
-  const industryId = value.industryId ? Number(value.industryId) : 0;
+  const industryId = value.industryId || "";
   const debouncedIndustrySearch = useDebounce(industrySearch);
   const debouncedSkillSearch = useDebounce(skillSearch);
 

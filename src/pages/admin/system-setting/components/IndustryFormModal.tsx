@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 
 interface IndustryFormModalProps {
   open: boolean;
-  initialData?: { id: number; name: string } | null;
+  initialData?: { id: string | number; name: string } | null;
   isPending?: boolean;
   onSubmit: (name: string) => void;
   onClose: () => void;

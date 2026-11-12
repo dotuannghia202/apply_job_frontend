@@ -161,7 +161,7 @@ export function getUpdatePayload(form: UpdateJobFormState): JobUpdatePayload {
     endDate: form.endDate ? toUtcMidnightIso(form.endDate) : undefined,
     benefits: form.benefits.map((item) => item.trim()).filter(Boolean),
     workingHours: form.workingHours.trim() || undefined,
-    specializationId: parseOptionalNumber(form.specializationId),
+    specializationId: form.specializationId ? form.specializationId : undefined,
     skillIds: form.selectedSkills.length
       ? form.selectedSkills.map((skill) => skill.id)
       : undefined,

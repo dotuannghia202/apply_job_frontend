@@ -5,8 +5,8 @@ export const specializationKeys = {
   lists: () => [...specializationKeys.all, "list"] as const,
   list: (filters: SpecializationListFilters) =>
     [...specializationKeys.lists(), filters] as const,
-  byIndustry: (industryId: number) =>
+  byIndustry: (industryId: string) =>
     [...specializationKeys.all, "by-industry", industryId] as const,
   details: () => [...specializationKeys.all, "detail"] as const,
-  detail: (id: number) => [...specializationKeys.details(), id] as const,
+  detail: (id: string) => [...specializationKeys.details(), id] as const,
 };

@@ -248,9 +248,7 @@ export default function PostJobPage() {
         benefits: formData.benefits,
         workingHours: formData.workingHours.trim() || undefined,
         companyId,
-        specializationId: formData.specializationId
-          ? Number(formData.specializationId)
-          : undefined,
+        specializationId: formData.specializationId || undefined,
         skillIds: formData.skillIds,
       });
       setFormData(emptyFormData);
@@ -266,20 +264,30 @@ export default function PostJobPage() {
       if (isAxiosError(error)) {
         console.log("Axios error:", error);
         // 1. Lấy nguyên văn câu lỗi từ Backend
-        const backendMessage = error.response?.data?.message || "";
+        const rawMessage = error.response?.data?.message;
+        let displayMessage = "";
 
-        // 2. Khởi tạo biến message sẽ hiện cho người dùng
-        let displayMessage = backendMessage;
+        if (typeof rawMessage === "string") {
+          displayMessage = rawMessage;
+        } else if (typeof rawMessage === "object" && rawMessage !== null) {
+          const errorMap = rawMessage as Record<string, string>;
+          displayMessage = Object.values(errorMap).filter(Boolean).join("\n");
+          setErrors((prev) => ({
+            ...prev,
+            ...errorMap,
+          }));
+        } else {
+          displayMessage = error.message || t("employerPostJob.notifications.createErrorMessage");
+        }
 
         // 3. Nếu Frontend đang ở chế độ Tiếng Anh, ta "dịch tay" câu lỗi phổ biến của Backend
         if (i18n.language === "en") {
           // Bắt theo từ khóa hoặc câu đầy đủ mà Backend hay trả về
-          if (backendMessage.includes("chưa được Admin phê duyệt")) {
+          if (displayMessage.includes("chưa được Admin phê duyệt")) {
             displayMessage = "Your company profile has not been approved by Admin yet. Please wait for approval to post a job!";
-          } else if (backendMessage.includes("đình chỉ hoạt động")) {
+          } else if (displayMessage.includes("đình chỉ hoạt động")) {
             displayMessage = "Your company profile has been suspended. Please contact the administrator!";
           }
-          // (Có thể thêm các if-else khác ở đây nếu Backend ném ra nhiều lỗi khác nhau)
         }
 
         // 4. Hiển thị Popup

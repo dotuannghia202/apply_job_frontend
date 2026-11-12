@@ -28,7 +28,7 @@ export default function SpecializationTab() {
 
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
-  const [filterIndustryId, setFilterIndustryId] = useState<number | "">("");
+  const [filterIndustryId, setFilterIndustryId] = useState<string>("");
   const debouncedKeyword = useDebounce(keyword);
 
   // Modal state
@@ -54,6 +54,7 @@ export default function SpecializationTab() {
     page,
     size: PAGE_SIZE,
     name: debouncedKeyword || undefined,
+    industryId: filterIndustryId || undefined,
   });
 
   const createMutation = useCreateSpecialization();
@@ -63,11 +64,6 @@ export default function SpecializationTab() {
   const specializations = specializationsQuery.data?.data?.result ?? [];
   const meta = specializationsQuery.data?.data?.meta;
   const totalPages = Math.max(1, meta?.pages ?? 1);
-
-  // Filter by industry on client side (API may not support industryId filter in list)
-  const filteredSpecializations = filterIndustryId
-    ? specializations.filter((s) => s.industry?.id === filterIndustryId)
-    : specializations;
 
   useEffect(() => {
     setPage(1);
@@ -100,7 +96,7 @@ export default function SpecializationTab() {
     setEditingItem(null);
   };
 
-  const handleSubmit = (name: string, industryId: number) => {
+  const handleSubmit = (name: string, industryId: string) => {
     if (editingItem) {
       updateMutation.mutate(
         { id: editingItem.id, data: { name } },
@@ -202,11 +198,7 @@ export default function SpecializationTab() {
         <select
           className="h-10 rounded border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none"
           value={filterIndustryId}
-          onChange={(e) =>
-            setFilterIndustryId(
-              e.target.value ? Number(e.target.value) : "",
-            )
-          }
+          onChange={(e) => setFilterIndustryId(e.target.value)}
         >
           <option value="">
             {t("systemSetting.specialization.allIndustries")}
@@ -256,7 +248,7 @@ export default function SpecializationTab() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filteredSpecializations.length === 0 ? (
+              {specializations.length === 0 ? (
                 <tr>
                   <td
                     colSpan={6}
@@ -266,7 +258,7 @@ export default function SpecializationTab() {
                   </td>
                 </tr>
               ) : (
-                filteredSpecializations.map((item, index) => (
+                specializations.map((item, index) => (
                   <tr
                     key={item.id}
                     className={index % 2 === 0 ? "bg-white" : "bg-primary/10"}
@@ -380,10 +372,16 @@ export default function SpecializationTab() {
       {/* Form Modal */}
       <SpecializationFormModal
         open={modalOpen}
-        initialData={editingItem}
+        initialData={
+          editingItem
+            ? { id: editingItem.id, name: editingItem.name }
+            : null
+        }
         isPending={createMutation.isPending || updateMutation.isPending}
         industries={allIndustries}
-        selectedIndustryId={editingItem?.industry?.id ?? null}
+        selectedIndustryId={
+          editingItem?.industry?.id ?? (filterIndustryId || null)
+        }
         onSubmit={handleSubmit}
         onClose={handleCloseModal}
       />

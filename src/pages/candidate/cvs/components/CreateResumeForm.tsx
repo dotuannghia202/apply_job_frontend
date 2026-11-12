@@ -35,7 +35,7 @@ import type { Skill } from "@/types/skill";
 import { formatFileSize } from "@/helper";
 
 type SelectedSpecialization = {
-  id: number;
+  id: string | number;
   name: string;
 } | null;
 
@@ -45,7 +45,7 @@ type CreateResumeFormProps = {
   onCancel: () => void;
   onSubmit: (data: {
     fileName: string;
-    specializationId?: number;
+    specializationId?: string | number;
     skillIds?: number[];
   }) => void;
 };

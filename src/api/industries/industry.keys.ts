@@ -6,5 +6,5 @@ export const industryKeys = {
   list: (filters: IndustryListFilters) =>
     [...industryKeys.lists(), filters] as const,
   details: () => [...industryKeys.all, "detail"] as const,
-  detail: (id: number) => [...industryKeys.details(), id] as const,
+  detail: (id: string) => [...industryKeys.details(), id] as const,
 };

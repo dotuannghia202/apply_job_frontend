@@ -28,7 +28,7 @@ const normalizeJobFilters = (
     size: filters.size ?? 10,
     location: cleanText(filters.location),
     levels: cleanLevels?.length ? cleanLevels : undefined,
-    specialization: cleanNumber(filters.specialization),
+    specialization: typeof filters.specialization === "string" ? (filters.specialization.trim() || undefined) : cleanNumber(filters.specialization),
     companyName: cleanText(filters.companyName),
     minSalary: cleanNumber(filters.minSalary),
     maxSalary: cleanNumber(filters.maxSalary),

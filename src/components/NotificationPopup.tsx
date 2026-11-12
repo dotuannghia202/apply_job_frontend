@@ -147,7 +147,11 @@ export function NotificationPopup({
           <div className="flex-1 pt-0.5">
             <h3 className="text-base font-bold text-[#2d3338]">{title}</h3>
             {message && (
-              <p className="mt-1.5 text-sm text-[#596065]">{message}</p>
+              <div className="mt-1.5 text-sm text-[#596065] whitespace-pre-line">
+                {typeof message === "object" && message !== null && !Array.isArray(message) && !(message as any)?.$$typeof
+                  ? Object.values(message as Record<string, any>).join("\n")
+                  : message}
+              </div>
             )}
           </div>
         </div>

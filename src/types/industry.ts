@@ -1,5 +1,5 @@
 export interface Industry {
-  id: number;
+  id: string;
   name: string;
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -8,7 +8,7 @@ export interface Industry {
 }
 
 export interface Specialization {
-  id: number;
+  id: string;
   name: string;
   industry?: Industry;
   createdAt?: string | null;
@@ -23,7 +23,7 @@ export interface CreateIndustryRequest {
 
 export interface CreateSpecializationRequest {
   name: string;
-  industryId: number;
+  industryId: string;
 }
 
 export interface UpdateIndustryRequest {
@@ -44,5 +44,5 @@ export interface SpecializationListFilters {
   page?: number;
   size?: number;
   name?: string;
-  industryId?: number;
+  industryId?: string;
 }

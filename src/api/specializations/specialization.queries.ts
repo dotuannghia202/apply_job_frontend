@@ -34,7 +34,7 @@ export const useGetSpecializations = (
   });
 };
 
-export const useGetSpecializationById = (id: number) => {
+export const useGetSpecializationById = (id: string) => {
   return useQuery({
     queryKey: specializationKeys.detail(id),
     queryFn: () => fetchSpecializationById(id),
@@ -42,10 +42,10 @@ export const useGetSpecializationById = (id: number) => {
   });
 };
 
-export const useGetSpecializationsByIndustryId = (industryId: number) => {
+export const useGetSpecializationsByIndustryId = (industryId?: string) => {
   return useQuery({
-    queryKey: specializationKeys.byIndustry(industryId),
-    queryFn: () => fetchSpecializationsByIndustryId(industryId),
+    queryKey: specializationKeys.byIndustry(industryId ?? ""),
+    queryFn: () => fetchSpecializationsByIndustryId(industryId ?? ""),
     enabled: !!industryId,
     staleTime: 5 * 60 * 1000,
   });
@@ -70,7 +70,7 @@ export const useUpdateSpecialization = () => {
       id,
       data,
     }: {
-      id: number;
+      id: string;
       data: UpdateSpecializationRequest;
     }) => updateSpecialization(id, data),
     onSuccess: (_data, variables) => {
@@ -86,7 +86,7 @@ export const useDeleteSpecialization = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteSpecialization,
+    mutationFn: (id: string) => deleteSpecialization(id),
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: specializationKeys.lists() });
       queryClient.invalidateQueries({

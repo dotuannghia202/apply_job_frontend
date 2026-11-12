@@ -33,7 +33,7 @@ export interface CreateResumeRequest {
   fileUrl: string;
   active?: boolean;
   skillIds?: number[];
-  specializationId?: number;
+  specializationId?: string | number;
 }
 
 export interface UpdateResumeRequest {
@@ -41,7 +41,7 @@ export interface UpdateResumeRequest {
   fileUrl?: string;
   active?: boolean;
   skillIds?: number[];
-  specializationId?: number;
+  specializationId?: string | number;
 }
 
 export interface UpdateResumePayload {

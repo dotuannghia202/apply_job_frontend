@@ -23,6 +23,6 @@ export interface Pagination<T> {
 }
 
 export interface ResObjectCommon {
-  id: number;
+  id: string | number;
   name: string;
 }

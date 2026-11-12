@@ -26,7 +26,7 @@ export const useGetIndustries = (filters: IndustryListFilters = {}) => {
   });
 };
 
-export const useGetIndustryById = (id: number) => {
+export const useGetIndustryById = (id: string) => {
   return useQuery({
     queryKey: industryKeys.detail(id),
     queryFn: () => fetchIndustryById(id),
@@ -49,7 +49,7 @@ export const useUpdateIndustry = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdateIndustryRequest }) =>
+    mutationFn: ({ id, data }: { id: string; data: UpdateIndustryRequest }) =>
       updateIndustry(id, data),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: industryKeys.lists() });

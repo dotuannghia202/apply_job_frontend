@@ -19,7 +19,7 @@ export const fetchSpecializations = async (
   }) as Promise<BackendResponse<Pagination<Specialization>>>;
 };
 
-export const fetchSpecializationById = async (id: number) => {
+export const fetchSpecializationById = async (id: string) => {
   return axiosClient.get(`/specializations/${id}`) as Promise<
     BackendResponse<Specialization>
   >;
@@ -34,7 +34,7 @@ export const createSpecialization = async (
 };
 
 export const updateSpecialization = async (
-  id: number,
+  id: string,
   data: UpdateSpecializationRequest,
 ) => {
   return axiosClient.put(`/specializations/${id}`, data) as Promise<
@@ -42,13 +42,13 @@ export const updateSpecialization = async (
   >;
 };
 
-export const deleteSpecialization = async (id: number) => {
+export const deleteSpecialization = async (id: string) => {
   return axiosClient.delete(`/specializations/${id}`) as Promise<
     BackendResponse<void>
   >;
 };
 
-export const fetchSpecializationsByIndustryId = async (industryId: number) => {
+export const fetchSpecializationsByIndustryId = async (industryId: string) => {
   return axiosClient.get(
     `/specializations/by-industry/${industryId}`,
   ) as Promise<BackendResponse<ResObjectCommon[]>>;

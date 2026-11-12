@@ -9,7 +9,7 @@ export interface Job {
   description: string;
   active: boolean;
   company: { id: number; name: string; logo: string };
-  specialization: { id: number; name: string };
+  specialization: { id: string | number; name: string };
   skills: string[];
   startDate: string;
   endDate: string;
@@ -29,7 +29,7 @@ export interface JobListFilters {
   size?: number;
   location?: string;
   levels?: string[];
-  specialization?: number;
+  specialization?: string | number;
   companyName?: string;
   minSalary?: number;
   maxSalary?: number;
@@ -55,6 +55,6 @@ export interface JobUpdatePayload {
   benefits?: string[];
   workingHours?: string;
   companyId?: number;
-  specializationId?: number;
+  specializationId?: string | number;
   skillIds?: number[];
 }

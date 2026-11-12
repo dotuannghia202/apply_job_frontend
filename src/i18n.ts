@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import { queryClient } from "@/lib/queryClient";
 
 import translationEN from "./locales/en/translation.json";
 import translationVI from "./locales/vi/translation.json";
@@ -20,5 +21,10 @@ i18n
       escapeValue: false, // React đã tự động chống XSS rồi nên không cần
     },
   });
+
+// Tự động làm mới cache của mọi API query khi người dùng chuyển đổi ngôn ngữ
+i18n.on("languageChanged", () => {
+  void queryClient.invalidateQueries();
+});
 
 export default i18n;

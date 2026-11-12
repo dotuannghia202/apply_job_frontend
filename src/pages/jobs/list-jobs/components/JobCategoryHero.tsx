@@ -11,7 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useGetIndustries } from "@/api/industries/industry.queries";
 import { useGetSpecializationsByIndustryId } from "@/api/specializations/specialization.queries";
-import type { Industry, Specialization } from "@/types/industry";
+import type { Industry } from "@/types/industry";
 import type { JobListFilters } from "@/types/job";
 import Img1 from "@/assets/images/ImgSlide1.png";
 import Img2 from "@/assets/images/ImgSlide2.png";
@@ -154,10 +154,10 @@ const ImageSlider = () => {
 
 interface SubcategoryPanelProps {
   industryName: string;
-  specializations: Specialization[] | undefined;
+  specializations: Array<{ id: string | number; name: string }> | undefined;
   isLoading: boolean;
-  selectedSpecializationId?: number;
-  onSelect: (specializationId: number) => void;
+  selectedSpecializationId?: string | number;
+  onSelect: (specializationId: string | number) => void;
 }
 
 const SubcategoryPanel = ({
@@ -237,7 +237,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
   const [companyName, setCompanyName] = useState(filters.companyName ?? "");
   const [location, setLocation] = useState(filters.location ?? "");
   const [selectedSpecializationId, setSelectedSpecializationId] = useState<
-    number | undefined
+    string | number | undefined
   >(filters.specialization);
   const [minSalary, setMinSalary] = useState(
     filters.minSalary?.toString() ?? "",
@@ -259,7 +259,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
 
   // Fetch specializations for hovered industry
   const { data: specializationsData, isLoading: specializationsLoading } =
-    useGetSpecializationsByIndustryId(hoveredIndustry?.id ?? 0);
+    useGetSpecializationsByIndustryId(hoveredIndustry?.id ?? "");
 
   const allIndustries: Industry[] = industriesData?.data?.result ?? [];
   const totalItems = industriesData?.data?.meta.total ?? 0;
@@ -342,7 +342,7 @@ const JobCategoryHero = ({ filters, onSearch }: JobCategoryHeroProps) => {
     onSearch(buildFilters());
   };
 
-  const handleSpecializationSelect = (specializationId: number) => {
+  const handleSpecializationSelect = (specializationId: string | number) => {
     const nextSpecializationId =
       selectedSpecializationId === specializationId
         ? undefined

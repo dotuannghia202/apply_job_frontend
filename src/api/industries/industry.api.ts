@@ -13,7 +13,7 @@ export const fetchIndustries = async (params: IndustryListFilters = {}) => {
   }) as Promise<BackendResponse<Pagination<Industry>>>;
 };
 
-export const fetchIndustryById = async (id: number) => {
+export const fetchIndustryById = async (id: string) => {
   return axiosClient.get(`/industries/${id}`) as Promise<
     BackendResponse<Industry>
   >;
@@ -26,7 +26,7 @@ export const createIndustry = async (industryData: CreateIndustryRequest) => {
 };
 
 export const updateIndustry = async (
-  id: number,
+  id: string,
   data: UpdateIndustryRequest,
 ) => {
   return axiosClient.put(`/industries/${id}`, data) as Promise<
@@ -34,7 +34,7 @@ export const updateIndustry = async (
   >;
 };
 
-export const deleteIndustry = async (id: number) => {
+export const deleteIndustry = async (id: string) => {
   return axiosClient.delete(`/industries/${id}`) as Promise<
     BackendResponse<void>
   >;
