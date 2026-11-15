@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 
 import type { Job } from "@/types/job";
 import { formatVND, getCityFromAddress } from "../../helper";
+import { useAuthStore } from "@/store/auth.store";
+import { normalizeRoles } from "@/helper/auth-roles";
 
 const formatPopupSalaryRange = (
   minSalary: number | null | undefined,
@@ -53,6 +55,9 @@ export const JobPopup = ({
   onMouseLeave,
 }: JobPopupProps) => {
   const { t } = useTranslation();
+  const user = useAuthStore((state) => state.user);
+  const roles = normalizeRoles(user?.roles ?? []);
+  const canApply = !roles.includes("ADMIN") && !roles.includes("EMPLOYER");
   const popupRef = useRef<HTMLDivElement>(null);
   const [isPositioned, setIsPositioned] = useState(false);
   const navigate = useNavigate();
@@ -236,16 +241,18 @@ export const JobPopup = ({
         {/* Sticky footer buttons */}
         <div className="border-t border-slate-100 bg-white p-4">
           <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="flex-1 rounded-xl border-green-500 font-semibold text-green-600 hover:bg-green-50 hover:text-green-700"
-              disabled={job.isApplied}
-              onClick={onApply}
-            >
-              {job.isApplied
-                ? t("jobPopup.actions.applied")
-                : t("jobPopup.actions.applyNow")}
-            </Button>
+            {canApply ? (
+              <Button
+                variant="outline"
+                className="flex-1 rounded-xl border-green-500 font-semibold text-green-600 hover:bg-green-50 hover:text-green-700"
+                disabled={job.isApplied}
+                onClick={onApply}
+              >
+                {job.isApplied
+                  ? t("jobPopup.actions.applied")
+                  : t("jobPopup.actions.applyNow")}
+              </Button>
+            ) : null}
             <Button
               className="flex-1 rounded-xl bg-green-500 font-semibold text-white hover:bg-green-600"
               onClick={() => {

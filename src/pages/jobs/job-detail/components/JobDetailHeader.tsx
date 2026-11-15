@@ -14,6 +14,7 @@ type JobDetailHeaderProps = {
   onApply: () => void;
   onToggleSave: () => void;
   isSaving?: boolean;
+  canApply?: boolean;
 };
 
 export function JobDetailHeader({
@@ -28,6 +29,7 @@ export function JobDetailHeader({
   onApply,
   onToggleSave,
   isSaving = false,
+  canApply = true,
 }: JobDetailHeaderProps) {
   const { t } = useTranslation();
 
@@ -83,16 +85,18 @@ export function JobDetailHeader({
           <span className="font-semibold text-slate-900">{timeLeftLabel}</span>
         </div>
         <div className="flex gap-4 w-full md:w-auto">
-          <Button
-            className="grow md:grow-0 bg-green-500 text-white hover:bg-green-50 hover:border hover:border-green-400 hover:text-green-500 px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 "
-            disabled={isApplied}
-            onClick={onApply}
-          >
-            <Send size={18} />
-            {isApplied
-              ? t("jobDetail.header.applied")
-              : t("jobDetail.header.applyNow")}
-          </Button>
+          {canApply ? (
+            <Button
+              className="grow md:grow-0 bg-green-500 text-white hover:bg-green-50 hover:border hover:border-green-400 hover:text-green-500 px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 "
+              disabled={isApplied}
+              onClick={onApply}
+            >
+              <Send size={18} />
+              {isApplied
+                ? t("jobDetail.header.applied")
+                : t("jobDetail.header.applyNow")}
+            </Button>
+          ) : null}
           <Button
             variant="outline"
             className={`bg-white  py-3 rounded-lg font-medium border  transition-colors flex items-center gap-2 ${isSaved ? "border-rose-200 bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600" : "border-green-400 text-green-500 hover:bg-green-50 hover:text-green-600"}`}

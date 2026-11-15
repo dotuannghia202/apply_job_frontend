@@ -19,6 +19,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { Job } from "@/types/job";
 import { NotificationPopup } from "@/components/NotificationPopup";
+import { useAuthStore } from "@/store/auth.store";
+import { normalizeRoles } from "@/helper/auth-roles";
 
 type ApplyJobModalProps = {
   job: Job;
@@ -62,6 +64,9 @@ const formatResumeDate = (
 
 export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
   const { t, i18n } = useTranslation();
+  const user = useAuthStore((state) => state.user);
+  const roles = normalizeRoles(user?.roles ?? []);
+  const canApply = !roles.includes("ADMIN") && !roles.includes("EMPLOYER");
   const titleId = useId();
   const fileInputId = useId();
   const coverLetterId = useId();
@@ -236,7 +241,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
     }
   };
 
-  if (!open && !popup.open) {
+  if ((!open && !popup.open) || !canApply) {
     return null;
   }
 

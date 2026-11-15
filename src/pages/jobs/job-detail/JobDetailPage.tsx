@@ -11,6 +11,7 @@ import { JobDetailSidebar } from "./components/JobDetailSidebar";
 import { formatVND, getCityFromAddress } from "../helper";
 import { NotificationPopup } from "@/components/NotificationPopup";
 import { useAuthStore } from "@/store/auth.store";
+import { normalizeRoles } from "@/helper/auth-roles";
 import Loader from "@/components/Loader";
 
 const formatJobDetailSalary = (
@@ -42,7 +43,10 @@ export default function JobDetailPage() {
   const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const roles = normalizeRoles(user?.roles ?? []);
+  const canApply = !roles.includes("ADMIN") && !roles.includes("EMPLOYER");
   const jobQuery = useGetJobById(id);
   const toggleSaveMutation = useToggleSaveJob();
   const job = jobQuery.data?.data;
@@ -128,6 +132,7 @@ export default function JobDetailPage() {
   };
 
   const handleApply = () => {
+    if (!canApply) return;
     if (!isAuthenticated) {
       setIsAuthNoticeOpen(true);
       return;
@@ -180,6 +185,7 @@ export default function JobDetailPage() {
           isSaved={isSaved}
           isApplied={job.isApplied}
           isSaving={toggleSaveMutation.isPending}
+          canApply={canApply}
           onApply={handleApply}
           onToggleSave={handleToggleSave}
         />

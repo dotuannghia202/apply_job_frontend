@@ -13,6 +13,7 @@ import { useToggleSaveJob } from "@/api/users/user.queries";
 import { ApplyJobModal } from "@/pages/jobs/components/ApplyJobModal";
 import { NotificationPopup } from "@/components/NotificationPopup";
 import { useAuthStore } from "@/store/auth.store";
+import { normalizeRoles } from "@/helper/auth-roles";
 
 type JobCardViewMode = "grid" | "list";
 
@@ -24,7 +25,10 @@ interface JobCardProps {
 const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const roles = normalizeRoles(user?.roles ?? []);
+  const canApply = !roles.includes("ADMIN") && !roles.includes("EMPLOYER");
 
   const anchorRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<number | null>(null);
@@ -118,6 +122,7 @@ const JobCard = ({ job, viewMode = "grid" }: JobCardProps) => {
   };
 
   const openApplyModal = () => {
+    if (!canApply) return;
     if (!isAuthenticated) {
       closePopup();
       setIsAuthNoticeOpen(true);

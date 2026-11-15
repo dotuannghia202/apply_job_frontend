@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { SavedJob } from "@/pages/candidate/saved-jobs/components/types";
+import { useAuthStore } from "@/store/auth.store";
+import { normalizeRoles } from "@/helper/auth-roles";
 
 const logoFallbackStyles = {
   building: "bg-secondary text-primary",
@@ -19,6 +21,9 @@ type SavedJobCardProps = {
 
 const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => {
   const { t } = useTranslation();
+  const user = useAuthStore((state) => state.user);
+  const roles = normalizeRoles(user?.roles ?? []);
+  const canApply = !roles.includes("ADMIN") && !roles.includes("EMPLOYER");
   const applyLabel = t("savedJobs.card.applyNow");
 
   return (
@@ -98,19 +103,21 @@ const SavedJobCard = ({ job, isUnsaving, onUnsave }: SavedJobCardProps) => {
           </Button>
 
           <div className="flex w-full items-center gap-3 sm:w-auto">
-            <Button
-              asChild={!job.isClosed && !job.isApplied}
-              className="w-25.75 flex-1  text-white hover:bg-primary/70 sm:flex-none disabled:pointer-events-auto disabled:cursor-not-allowed"
-              disabled={job.isClosed || job.isApplied}
-            >
-              {job.isApplied ? (
-                t("savedJobs.card.applied")
-              ) : job.isClosed ? (
-                applyLabel
-              ) : (
-                <Link to={`/jobs/detail/${job.id}`}>{applyLabel}</Link>
-              )}
-            </Button>
+            {canApply ? (
+              <Button
+                asChild={!job.isClosed && !job.isApplied}
+                className="w-25.75 flex-1  text-white hover:bg-primary/70 sm:flex-none disabled:pointer-events-auto disabled:cursor-not-allowed"
+                disabled={job.isClosed || job.isApplied}
+              >
+                {job.isApplied ? (
+                  t("savedJobs.card.applied")
+                ) : job.isClosed ? (
+                  applyLabel
+                ) : (
+                  <Link to={`/jobs/detail/${job.id}`}>{applyLabel}</Link>
+                )}
+              </Button>
+            ) : null}
             <Button
               variant="ghost"
               size="icon"
