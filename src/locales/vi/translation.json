@@ -5,7 +5,8 @@
     "error": "Lỗi",
     "success": "Thành công",
     "confirm": "Xác nhận",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+    "understood": "Đã hiểu"
   },
   "header": {
     "candidate": "Ứng viên",

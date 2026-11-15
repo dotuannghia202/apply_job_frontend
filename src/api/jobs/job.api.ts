@@ -53,7 +53,7 @@ export const fetchHrJobs = async (params: JobListFilters = {}) => {
   }) as Promise<BackendResponse<Pagination<Job>>>;
 };
 
-export const fetchJobById = async (id: number) => {
+export const fetchJobById = async (id: number | string) => {
   return axiosClient.get(`/jobs/${id}`) as Promise<BackendResponse<Job>>;
 };
 
@@ -65,13 +65,13 @@ export const updateJob = async ({
   id,
   data,
 }: {
-  id: number;
+  id: number | string;
   data: JobUpdatePayload;
 }) => {
   return axiosClient.put(`/jobs/${id}`, data) as Promise<BackendResponse<Job>>;
 };
 
-export const deleteJob = async (id: number) => {
+export const deleteJob = async (id: number | string) => {
   return axiosClient.delete(`/jobs/${id}`) as Promise<BackendResponse<void>>;
 };
 

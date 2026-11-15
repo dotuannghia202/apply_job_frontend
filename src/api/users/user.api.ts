@@ -82,7 +82,7 @@ export const deleteUser = async (id: number) => {
   return axiosClient.delete(`/users/${id}`) as Promise<BackendResponse<void>>;
 };
 
-export const toggleSaveJob = async (jobId: number) => {
+export const toggleSaveJob = async (jobId: number | string) => {
   return axiosClient.post(`/users/save-job/${jobId}`) as Promise<
     BackendResponse<boolean>
   >;

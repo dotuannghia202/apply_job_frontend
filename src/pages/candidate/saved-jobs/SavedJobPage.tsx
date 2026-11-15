@@ -107,10 +107,9 @@ const SavedJobPage = () => {
     : undefined;
 
   const handleUnsave = (jobId: string) => {
-    const numericJobId = Number(jobId);
-    if (!Number.isFinite(numericJobId) || toggleSaveMutation.isPending) return;
+    if (!jobId || toggleSaveMutation.isPending) return;
 
-    toggleSaveMutation.mutate(numericJobId);
+    toggleSaveMutation.mutate(jobId);
   };
 
   // console.log("Saved jobs data:", savedJobs);

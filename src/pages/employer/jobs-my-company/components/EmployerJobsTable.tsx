@@ -30,7 +30,7 @@ type EmployerJobsTableProps = {
   isError: boolean;
   onUpdate: (job: Job) => void;
   onDelete: (job: Job) => void;
-  deletingJobId: number | null;
+  deletingJobId: number | string | null;
   locale: string;
 };
 

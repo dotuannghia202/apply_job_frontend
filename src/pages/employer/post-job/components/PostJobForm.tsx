@@ -94,6 +94,7 @@ type Props = {
   onSubmit?: () => void;
   errors?: PostJobFormErrors;
   resetKey?: number;
+  isSubmitting?: boolean;
 };
 
 type Ward = {
@@ -325,6 +326,7 @@ export function PostJobForm({
   onSubmit,
   errors,
   resetKey = 0,
+  isSubmitting = false,
 }: Props) {
   const { t } = useTranslation();
   const update = (patch: Partial<PostJobFormData>) =>
@@ -900,7 +902,8 @@ export function PostJobForm({
         <Button
           type="button"
           onClick={onSubmit}
-          className="bg-primary hover:bg-primary-hover rounded-md px-6! font-bold text-white shadow-md hover:shadow-lg transition-shadow"
+          disabled={isSubmitting}
+          className="bg-primary hover:bg-primary-hover rounded-md px-6! font-bold text-white shadow-md hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Save size={16} className="mr-1" />
           {t("employerPostJob.form.publish")}

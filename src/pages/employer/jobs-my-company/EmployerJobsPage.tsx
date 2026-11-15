@@ -44,7 +44,7 @@ export default function EmployerJobsPage() {
   const [page, setPage] = useState(1);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [updateForm, setUpdateForm] = useState<UpdateJobFormState | null>(null);
-  const [deletingJobId, setDeletingJobId] = useState<number | null>(null);
+  const [deletingJobId, setDeletingJobId] = useState<number | string | null>(null);
   const [pendingDeleteJob, setPendingDeleteJob] = useState<Job | null>(null);
   const [popup, setPopup] = useState<{
     open: boolean;

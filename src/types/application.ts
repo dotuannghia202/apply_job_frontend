@@ -58,8 +58,8 @@ export interface ApplicationListFilters extends Pick<
 }
 
 export interface CreateApplicationRequest {
-  jobId: number;
-  resumeId: number;
+  jobId: number | string;
+  resumeId: number | string;
   coverLetter?: string;
 }
 

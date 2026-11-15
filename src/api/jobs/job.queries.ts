@@ -64,10 +64,10 @@ export const useGetHrJobs = (
   });
 };
 
-export const useGetJobById = (id: number) => {
+export const useGetJobById = (id?: number | string) => {
   return useQuery({
-    queryKey: jobKeys.detail(id),
-    queryFn: () => fetchJobById(id),
+    queryKey: jobKeys.detail(id ?? ""),
+    queryFn: () => fetchJobById(id!),
     enabled: !!id,
   });
 };

@@ -1,5 +1,5 @@
 export interface Job {
-  id: number;
+  id: string | number;
   name: string;
   location: string;
   minSalary?: number;
@@ -8,7 +8,7 @@ export interface Job {
   levels: string[];
   description: string;
   active: boolean;
-  company: { id: number; name: string; logo: string };
+  company: { id: string | number; name: string; logo: string };
   specialization: { id: string | number; name: string };
   skills: string[];
   startDate: string;

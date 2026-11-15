@@ -13,7 +13,7 @@ const chipCls =
   "px-3 py-1.5 bg-white text-slate-600 rounded-lg text-sm font-medium border hover:bg-primary-hover/10 hover:text-primary-hover transition-colors";
 
 type JobDetailSidebarProps = {
-  companyId: number;
+  companyId?: number | string;
   companyName: string;
   companyLogo: string;
   companySize: string;

@@ -11,6 +11,7 @@ import { JobDetailSidebar } from "./components/JobDetailSidebar";
 import { formatVND, getCityFromAddress } from "../helper";
 import { NotificationPopup } from "@/components/NotificationPopup";
 import { useAuthStore } from "@/store/auth.store";
+import Loader from "@/components/Loader";
 
 const formatJobDetailSalary = (
   minSalary: number | null | undefined,
@@ -39,11 +40,10 @@ const formatJobDetailSalary = (
 
 export default function JobDetailPage() {
   const { t, i18n } = useTranslation();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const jobId = Number(id);
-  const jobQuery = useGetJobById(jobId);
+  const jobQuery = useGetJobById(id);
   const toggleSaveMutation = useToggleSaveJob();
   const job = jobQuery.data?.data;
   const [isSaved, setIsSaved] = useState(false);
@@ -80,11 +80,11 @@ export default function JobDetailPage() {
     }
   }, [job]);
 
-  if (!id || Number.isNaN(jobId)) {
+  if (!id) {
     return (
       <main className="min-h-screen bg-main-background px-4 md:px-6 py-8 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
-          <div className="rounded-xl border  bg-white p-6 text-slate-600">
+          <div className="rounded-xl border bg-white p-6 text-slate-600">
             {t("jobDetail.status.notFound")}
           </div>
         </div>
@@ -94,12 +94,8 @@ export default function JobDetailPage() {
 
   if (jobQuery.isLoading) {
     return (
-      <main className="min-h-screen bg-main-background px-4 md:px-6 py-8 md:py-12">
-        <div className="mx-auto w-full max-w-7xl">
-          <div className="rounded-xl border bg-white p-6 text-slate-600">
-            {t("jobDetail.status.loading")}
-          </div>
-        </div>
+      <main className="min-h-screen bg-main-background px-4 md:px-6 py-8 md:py-12 flex items-center justify-center">
+        <Loader />
       </main>
     );
   }

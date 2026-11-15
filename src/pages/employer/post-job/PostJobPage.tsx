@@ -12,6 +12,7 @@ import { useCreateJob } from "@/api/jobs/job.queries";
 import { useAuthStore } from "@/store/auth.store";
 import { toUtcMidnightIso } from "@/helper";
 import { NotificationPopup } from "@/components/NotificationPopup";
+import Loader from "@/components/Loader";
 import { isAxiosError } from "axios";
 import i18n from "@/i18n";
 
@@ -84,7 +85,9 @@ export default function PostJobPage() {
     message: "",
   });
   const companyId = useAuthStore((state) => state.company?.id ?? null);
-  const { mutateAsync: createJob } = useCreateJob();
+  const { mutateAsync: createJob, isPending: isMutationPending } = useCreateJob();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isLoading = isSubmitting || isMutationPending;
 
   const validate = (): PostJobFormErrors => {
     const nextErrors: PostJobFormErrors = {};
@@ -222,7 +225,7 @@ export default function PostJobPage() {
   };
 
   const handleSubmit = async () => {
-    if (!companyId) return;
+    if (!companyId || isLoading) return;
 
     const nextErrors = validate();
     if (Object.keys(nextErrors).length) {
@@ -231,6 +234,7 @@ export default function PostJobPage() {
     }
 
     setErrors({});
+    setIsSubmitting(true);
 
     try {
       await createJob({
@@ -296,7 +300,7 @@ export default function PostJobPage() {
           variant: "error",
           title: t("employerPostJob.notifications.createErrorTitle"), // Đã có hàm t() dịch tự động
           message: displayMessage,
-          dismissLabel: t("common.understood", "Đã hiểu"), // Nên đưa vào file i18n
+          dismissLabel: t("common.understood"),
         });
 
         return;
@@ -308,6 +312,8 @@ export default function PostJobPage() {
         title: t("employerPostJob.notifications.createErrorTitle"),
         message: t("employerPostJob.notifications.createErrorMessage"),
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -321,10 +327,12 @@ export default function PostJobPage() {
             onSubmit={handleSubmit}
             errors={errors}
             resetKey={formResetKey}
+            isSubmitting={isLoading}
           />
           <PostJobPreview value={formData} />
         </div>
       </div>
+      {isLoading && <Loader fullScreen className="z-[9998]" />}
       <NotificationPopup
         open={popup.open}
         variant={popup.variant}

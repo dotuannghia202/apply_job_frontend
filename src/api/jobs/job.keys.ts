@@ -8,5 +8,5 @@ export const jobKeys = {
   hrLists: () => [...jobKeys.all, "hr", "list"] as const,
   hrList: (filters: JobListFilters) => [...jobKeys.hrLists(), filters] as const,
   details: () => [...jobKeys.all, "detail"] as const,
-  detail: (id: number) => [...jobKeys.details(), id] as const,
+  detail: (id: number | string) => [...jobKeys.details(), id] as const,
 };

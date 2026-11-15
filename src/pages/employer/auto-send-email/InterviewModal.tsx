@@ -349,7 +349,7 @@ export const InterviewModal = ({ applicationId, onClose }: InterviewModalProps) 
         title={popup.title}
         message={popup.message}
         onDismiss={popup.onDismiss}
-        dismissLabel={t("common.understood", "Đã hiểu")}
+        dismissLabel={t("common.understood")}
       />
     </div>
   );
