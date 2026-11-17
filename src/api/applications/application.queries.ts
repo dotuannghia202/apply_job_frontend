@@ -51,11 +51,11 @@ export const useGetHrApplications = (
   });
 };
 
-export const useGetApplicationById = (id: number) => {
+export const useGetApplicationById = (id?: number | string) => {
   return useQuery({
-    queryKey: applicationKeys.detail(id),
-    queryFn: () => fetchApplicationById(id),
-    enabled: !!id,
+    queryKey: applicationKeys.detail(id ?? ""),
+    queryFn: () => fetchApplicationById(id!),
+    enabled: Boolean(id),
   });
 };
 

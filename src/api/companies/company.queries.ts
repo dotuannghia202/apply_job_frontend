@@ -41,11 +41,11 @@ export const useGetCompanyDashboardStats = () => {
   });
 };
 
-export const useGetCompanyById = (id: number) => {
+export const useGetCompanyById = (id?: number | string) => {
   return useQuery({
-    queryKey: companyKeys.detail(id),
-    queryFn: () => fetchCompanyById(id),
-    enabled: !!id,
+    queryKey: companyKeys.detail(id ?? ""),
+    queryFn: () => fetchCompanyById(id!),
+    enabled: Boolean(id),
   });
 };
 

@@ -63,7 +63,7 @@ export function UpdateJobPanel({
     update({ selectedSkills: [...form.selectedSkills, skill] });
   };
 
-  const removeSkill = (id: number) => {
+  const removeSkill = (id: number | string) => {
     update({
       selectedSkills: form.selectedSkills.filter((skill) => skill.id !== id),
     });

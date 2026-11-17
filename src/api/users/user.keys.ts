@@ -9,5 +9,5 @@ export const userKeys = {
   account: () => [...userKeys.all, "account"] as const,
   hrDashboardStats: () => [...userKeys.all, "hr", "dashboard-stats"] as const,
   details: () => [...userKeys.all, "detail"] as const,
-  detail: (id: number) => [...userKeys.details(), id] as const,
+  detail: (id: number | string) => [...userKeys.details(), id] as const,
 };

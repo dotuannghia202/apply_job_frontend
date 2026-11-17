@@ -46,7 +46,7 @@ type CreateResumeFormProps = {
   onSubmit: (data: {
     fileName: string;
     specializationId?: string | number;
-    skillIds?: number[];
+    skillIds?: (number | string)[];
   }) => void;
 };
 

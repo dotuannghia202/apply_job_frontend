@@ -59,7 +59,7 @@ const MyCV = () => {
   const handleCreateResume = async (data: {
     fileName: string;
     specializationId?: string | number;
-    skillIds?: number[];
+    skillIds?: (string | number)[];
   }) => {
     if (!selectedFile || isSubmitting || createResumeMutation.isPending) return;
 

@@ -12,7 +12,7 @@ export type InterviewSessionStatus =
   | "EXPIRED";
 
 export interface QuestionProgress {
-  questionId: number;
+  questionId: number | string;
   durationSeconds: number;
   startTimeSeconds: number;
 }
@@ -22,7 +22,7 @@ export interface ReqSubmitInterviewDTO {
 }
 
 export interface ResInterviewQuestionDTO {
-  id: number;
+  id: number | string;
   orderIndex: number;
   category: QuestionCategory;
   timeLimitSeconds: number;
@@ -48,7 +48,7 @@ export interface ResInterviewQuestionDTO {
 }
 
 export interface ResInterviewSessionDTO {
-  id: number;
+  id: number | string;
   status: InterviewSessionStatus;
   totalScore?: number | null;
   aiOverallFeedback?: string | null;

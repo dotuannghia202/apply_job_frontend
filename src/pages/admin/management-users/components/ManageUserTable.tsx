@@ -7,7 +7,7 @@ import avatarPlaceholder from "@/assets/images/avatar-placeholder.webp";
 import type { RoleName } from "@/types/auth";
 
 export type ManageUserRow = {
-  id: number;
+  id: number | string;
   name: string;
   email: string;
   avatarUrl?: string;
@@ -20,7 +20,7 @@ type ManageUserTableProps = {
   rows: ManageUserRow[];
   isLoading: boolean;
   isError: boolean;
-  isUpdatingId?: number | null;
+  isUpdatingId?: number | string | null;
   total?: number;
   page?: number;
   pageSize?: number;

@@ -13,7 +13,7 @@ export const fetchSkills = async (params: SkillListFilters = {}) => {
   }) as Promise<BackendResponse<Pagination<Skill>>>;
 };
 
-export const fetchSkillById = async (id: number) => {
+export const fetchSkillById = async (id: number | string) => {
   return axiosClient.get(`/skills/${id}`) as Promise<BackendResponse<Skill>>;
 };
 
@@ -24,7 +24,7 @@ export const createSkill = async (skillData: CreateSkillRequest) => {
 };
 
 export const updateSkill = async (
-  id: number,
+  id: number | string,
   data: UpdateSkillRequest,
 ) => {
   return axiosClient.put(`/skills/${id}`, data) as Promise<
@@ -32,6 +32,6 @@ export const updateSkill = async (
   >;
 };
 
-export const deleteSkill = async (id: number) => {
+export const deleteSkill = async (id: number | string) => {
   return axiosClient.delete(`/skills/${id}`) as Promise<BackendResponse<void>>;
 };

@@ -46,7 +46,7 @@ export type PostJobFormData = {
   industryName: string;
   specializationId: string;
   specializationName: string;
-  skillIds: number[];
+  skillIds: (number | string)[];
   skillNames: string[];
 };
 
@@ -340,7 +340,7 @@ export function PostJobForm({
   const [industrySearch, setIndustrySearch] = useState("");
   const [skillSearch, setSkillSearch] = useState("");
   const [selectedSkillLabels, setSelectedSkillLabels] = useState<
-    Record<number, string>
+    Record<string | number, string>
   >({});
   const provinceId = value.provinceCode ? Number(value.provinceCode) : null;
   const wardId = value.wardCode ? Number(value.wardCode) : null;
@@ -401,7 +401,7 @@ export function PostJobForm({
   );
 
   const skillOptionLabels = useMemo(() => {
-    const map: Record<number, string> = {};
+    const map: Record<string | number, string> = {};
     skillOptions.forEach((skill) => {
       map[skill.id] = skill.name;
     });
@@ -458,7 +458,7 @@ export function PostJobForm({
     update({ levels: [...value.levels, level] });
   }
 
-  function addSkill(id: number, label: string) {
+  function addSkill(id: number | string, label: string) {
     if (value.skillIds.includes(id)) return;
     update({
       skillIds: [...value.skillIds, id],
@@ -467,7 +467,7 @@ export function PostJobForm({
     setSelectedSkillLabels((prev) => ({ ...prev, [id]: label }));
   }
 
-  function removeSkill(id: number) {
+  function removeSkill(id: number | string) {
     const index = value.skillIds.findIndex((skillId) => skillId === id);
     const nextSkillIds = value.skillIds.filter((skillId) => skillId !== id);
     const nextSkillNames = value.skillNames.filter(

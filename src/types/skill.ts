@@ -1,5 +1,5 @@
 export interface Skill {
-  id: number;
+  id: number | string;
   name: string;
   createdAt?: string | null;
   updatedAt?: string | null;

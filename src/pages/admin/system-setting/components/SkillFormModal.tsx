@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 
 interface SkillFormModalProps {
   open: boolean;
-  initialData?: { id: number; name: string } | null;
+  initialData?: { id: number | string; name: string } | null;
   isPending?: boolean;
   onSubmit: (name: string) => void;
   onClose: () => void;

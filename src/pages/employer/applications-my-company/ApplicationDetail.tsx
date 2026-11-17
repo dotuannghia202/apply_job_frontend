@@ -44,16 +44,15 @@ const getLocale = (language: string) =>
 
 export default function ApplicationDetail() {
   const { t, i18n } = useTranslation();
-  const { id } = useParams();
-  const applicationId = Number(id);
-  const isValidApplicationId = Boolean(id) && Number.isFinite(applicationId);
+  const { id } = useParams<{ id: string }>();
+  const isValidApplicationId = Boolean(id && id.trim() !== "");
   const locale = getLocale(i18n.language);
 
   const applicationQuery = useGetApplicationById(
-    isValidApplicationId ? applicationId : 0,
+    isValidApplicationId ? id : undefined,
   );
   const interviewSessionQuery = useGetInterviewSessionByApplication(
-    isValidApplicationId ? applicationId : 0,
+    isValidApplicationId ? id : undefined,
   );
   const updateStatusMutation = useUpdateApplicationStatus();
   const [showInterviewModal, setShowInterviewModal] = useState(false);
@@ -145,7 +144,7 @@ export default function ApplicationDetail() {
       setShowInterviewModal(true);
     } else {
       updateStatusMutation.mutate({
-        id: applicationId,
+        id: id!,
         data: { status: newStatus },
       });
     }
@@ -506,7 +505,7 @@ export default function ApplicationDetail() {
 
       {showInterviewModal && (
         <InterviewModal
-          applicationId={applicationId}
+          applicationId={id!}
           onClose={() => setShowInterviewModal(false)}
         />
       )}

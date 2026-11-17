@@ -8,25 +8,33 @@ import {
 
 export const interviewKeys = {
   all: ["interviews"] as const,
-  detail: (id: number) => [...interviewKeys.all, "detail", id] as const,
-  byApp: (appId: number) => [...interviewKeys.all, "application", appId] as const,
+  detail: (id: number | string) => [...interviewKeys.all, "detail", id] as const,
+  byApp: (appId: number | string) => [...interviewKeys.all, "application", appId] as const,
 };
 
-export const useGetInterviewSession = (sessionId: number) => {
+export const useGetInterviewSession = (sessionId?: number | string) => {
   return useQuery({
-    queryKey: interviewKeys.detail(sessionId),
-    queryFn: () => fetchInterviewSessionById(sessionId),
-    enabled: Number.isFinite(sessionId) && sessionId > 0,
+    queryKey: interviewKeys.detail(sessionId ?? ""),
+    queryFn: () => fetchInterviewSessionById(sessionId!),
+    enabled: Boolean(sessionId),
     staleTime: 30 * 1000,
+    refetchInterval: (query) => {
+      const status = query.state.data?.data?.status;
+      return status === "EVALUATING" ? 4000 : false;
+    },
   });
 };
 
-export const useGetInterviewSessionByApplication = (applicationId: number) => {
+export const useGetInterviewSessionByApplication = (applicationId?: number | string) => {
   return useQuery({
-    queryKey: interviewKeys.byApp(applicationId),
-    queryFn: () => fetchInterviewSessionByApplication(applicationId),
-    enabled: Number.isFinite(applicationId) && applicationId > 0,
+    queryKey: interviewKeys.byApp(applicationId ?? ""),
+    queryFn: () => fetchInterviewSessionByApplication(applicationId!),
+    enabled: Boolean(applicationId),
     staleTime: 30 * 1000,
+    refetchInterval: (query) => {
+      const status = query.state.data?.data?.status;
+      return status === "EVALUATING" ? 4000 : false;
+    },
   });
 };
 
@@ -34,7 +42,7 @@ export const useStartInterview = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (sessionId: number) => startInterviewSession(sessionId),
+    mutationFn: (sessionId: number | string) => startInterviewSession(sessionId),
     onSuccess: (_, sessionId) => {
       queryClient.invalidateQueries({ queryKey: interviewKeys.detail(sessionId) });
     },
@@ -49,7 +57,7 @@ export const useSubmitInterview = () => {
       sessionId,
       formData,
     }: {
-      sessionId: number;
+      sessionId: number | string;
       formData: FormData;
     }) => submitInterviewSession(sessionId, formData),
     onSuccess: (_, { sessionId }) => {

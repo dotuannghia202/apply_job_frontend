@@ -1,14 +1,14 @@
 export type RoleName = "ADMIN" | "EMPLOYER" | "CANDIDATE";
 
 export interface AuthUser {
-  id: number;
+  id: number | string;
   email: string;
   name: string;
   avatarUrl: string | null;
   isActive?: boolean | null;
   roles: Array<RoleName>;
   company: {
-    id: number;
+    id: number | string;
     name: string;
   } | null;
   isGmailLinked?: boolean | null;

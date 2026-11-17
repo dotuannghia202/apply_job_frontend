@@ -7,7 +7,7 @@ import type { RoleName } from "@/types/auth";
 
 interface CompanyLogoCardProps {
   role: RoleName;
-  companyId?: number | null;
+  companyId?: number | string | null;
   logoUrl?: string | null;
   onSelectFile?: (file: File) => void;
   isUploading?: boolean;

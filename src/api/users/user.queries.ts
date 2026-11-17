@@ -39,11 +39,11 @@ export const useGetUsers = (filters: UserListFilters = {}) => {
   });
 };
 
-export const useGetUserById = (id: number) => {
+export const useGetUserById = (id?: number | string) => {
   return useQuery({
-    queryKey: userKeys.detail(id),
-    queryFn: () => fetchUserById(id),
-    enabled: !!id,
+    queryKey: userKeys.detail(id ?? ""),
+    queryFn: () => fetchUserById(id!),
+    enabled: Boolean(id),
   });
 };
 

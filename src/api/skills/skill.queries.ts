@@ -29,11 +29,11 @@ export const useGetSkills = (
   });
 };
 
-export const useGetSkillById = (id: number) => {
+export const useGetSkillById = (id?: number | string) => {
   return useQuery({
-    queryKey: skillKeys.detail(id),
-    queryFn: () => fetchSkillById(id),
-    enabled: !!id,
+    queryKey: skillKeys.detail(id ?? ""),
+    queryFn: () => fetchSkillById(id!),
+    enabled: Boolean(id),
   });
 };
 
@@ -52,7 +52,7 @@ export const useUpdateSkill = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdateSkillRequest }) =>
+    mutationFn: ({ id, data }: { id: number | string; data: UpdateSkillRequest }) =>
       updateSkill(id, data),
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: skillKeys.lists() });
@@ -65,7 +65,7 @@ export const useDeleteSkill = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteSkill,
+    mutationFn: (id: number | string) => deleteSkill(id),
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: skillKeys.lists() });
       queryClient.invalidateQueries({ queryKey: skillKeys.detail(id) });

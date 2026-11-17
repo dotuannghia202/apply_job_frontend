@@ -8,5 +8,5 @@ export const companyKeys = {
   stats: () => [...companyKeys.all, "stats"] as const,
   myCompany: () => [...companyKeys.all, "my-company"] as const,
   details: () => [...companyKeys.all, "detail"] as const,
-  detail: (id: number) => [...companyKeys.details(), id] as const,
+  detail: (id: number | string) => [...companyKeys.details(), id] as const,
 };

@@ -67,7 +67,7 @@ export const getJobOptions = (
   applications: Application[],
   labels: { allJobs: string; untitledRole: string },
 ) => {
-  const map = new Map<number, string>();
+  const map = new Map<number | string, string>();
 
   applications.forEach((application) => {
     if (!application.job?.id) return;

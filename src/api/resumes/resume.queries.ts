@@ -34,10 +34,10 @@ export const useGetMyResumes = () => {
   });
 };
 
-export const useGetResumeById = (id: number) => {
+export const useGetResumeById = (id?: number | string) => {
   return useQuery({
-    queryKey: resumeKeys.detail(id),
-    queryFn: () => fetchResumeById(id),
+    queryKey: resumeKeys.detail(id ?? ""),
+    queryFn: () => fetchResumeById(id!),
     enabled: !!id,
   });
 };

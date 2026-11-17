@@ -86,7 +86,7 @@ export function RoleParametersForm({ onGenerate, isGenerating }: Props) {
   );
   const skillOptions = skillsData?.data?.result ?? [];
 
-  function addSkillFromOption(skill: { id: number; name: string }) {
+  function addSkillFromOption(skill: { id: number | string; name: string }) {
     if (skills.some((s) => s.label.toLowerCase() === skill.name.toLowerCase()))
       return;
     setSkills((prev) => [...prev, { id: String(skill.id), label: skill.name }]);

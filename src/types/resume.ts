@@ -1,18 +1,18 @@
 import type { QueryParams } from "./common";
 
 export interface ResumeCandidate {
-  id: number;
+  id: string | number;
   name: string;
   email: string;
 }
 
 export interface ResumeSpecialization {
-  id: number;
+  id: string | number;
   name: string;
 }
 
 export interface Resume {
-  id: number;
+  id: string | number;
   fileName: string;
   fileUrl: string;
   active: boolean;
@@ -32,7 +32,7 @@ export interface CreateResumeRequest {
   fileName: string;
   fileUrl: string;
   active?: boolean;
-  skillIds?: number[];
+  skillIds?: (number | string)[];
   specializationId?: string | number;
 }
 
@@ -40,11 +40,11 @@ export interface UpdateResumeRequest {
   fileName?: string;
   fileUrl?: string;
   active?: boolean;
-  skillIds?: number[];
+  skillIds?: (number | string)[];
   specializationId?: string | number;
 }
 
 export interface UpdateResumePayload {
-  id: number;
+  id: string | number;
   data: UpdateResumeRequest;
 }

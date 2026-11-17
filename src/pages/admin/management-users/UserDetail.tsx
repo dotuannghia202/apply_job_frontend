@@ -39,13 +39,12 @@ type NoticeState = {
 
 export default function UserDetail() {
   const { t, i18n } = useTranslation();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [pendingStatus, setPendingStatus] = useState<boolean | null>(null);
   const [notice, setNotice] = useState<NoticeState | null>(null);
   const locale = getLocale(i18n.language);
-  const userId = Number(id);
-  const isValidId = Number.isFinite(userId) && userId > 0;
-  const userQuery = useGetUserById(isValidId ? userId : 0);
+  const isValidId = Boolean(id && id.trim() !== "");
+  const userQuery = useGetUserById(isValidId ? id : undefined);
   const updateStatusMutation = useUpdateUserStatus();
   const user = userQuery.data?.data ?? null;
   const isStatusUpdating = updateStatusMutation.isPending;

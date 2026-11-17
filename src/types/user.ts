@@ -4,7 +4,7 @@ import type { QueryParams } from "./common";
 export type UserGender = "FEMALE" | "MALE" | "OTHER";
 
 export interface User {
-  id: number;
+  id: number | string;
   email: string;
   name: string;
   avatar?: string | null;
@@ -14,7 +14,7 @@ export interface User {
   address?: string | null;
   isActive?: boolean;
   company?: {
-    id: number;
+    id: number | string;
     name: string;
     logo?: string | null;
   } | null;
@@ -43,7 +43,7 @@ export interface CreateUserRequest {
   age?: number;
   gender?: UserGender | null;
   address?: string | null;
-  companyId?: number | null;
+  companyId?: number | string | null;
   roleName?: RoleName;
 }
 
@@ -55,7 +55,7 @@ export interface UpdateUserRequest {
   gender?: UserGender | null;
   address?: string | null;
   isActive?: boolean | null;
-  companyId?: number | null;
+  companyId?: number | string | null;
   roles: Array<RoleName>;
 }
 
@@ -68,17 +68,17 @@ export interface UpdateUserStatusRequest {
 }
 
 export interface UpdateUserPayload {
-  id: number;
+  id: number | string;
   data: UpdateUserRequest;
 }
 
 export interface UpdateUserRolesPayload {
-  id: number;
+  id: number | string;
   data: UpdateUserRolesRequest;
 }
 
 export interface UpdateUserStatusPayload {
-  id: number;
+  id: number | string;
   data: UpdateUserStatusRequest;
 }
 

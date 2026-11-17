@@ -6,7 +6,7 @@ export interface RequestCreateCompany {
 }
 
 export interface Company {
-  id: number;
+  id: number | string;
   name: string;
   description: string;
   address: string;
@@ -45,16 +45,16 @@ export interface UpdateCompanyRequest {
 }
 
 export interface UpdateCompanyPayload {
-  id: number;
+  id: number | string;
   data: UpdateCompanyRequest;
 }
 
 export interface ApproveCompanyPayload {
-  id: number;
+  id: number | string;
   isApproved: boolean;
 }
 
 export interface ToggleSuspendCompanyPayload {
-  id: number;
+  id: number | string;
   isSuspended: boolean;
 }

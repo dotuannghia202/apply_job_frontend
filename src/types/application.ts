@@ -8,7 +8,7 @@ export type ApplicationStatus =
   | "REJECTED";
 
 export interface ApplicationJobInfo {
-  id: number;
+  id: string | number;
   name: string;
   companyName?: string | null;
   location?: string | null;
@@ -18,20 +18,20 @@ export interface ApplicationJobInfo {
 }
 
 export interface ApplicationResumeInfo {
-  id: number;
+  id: string | number;
   fileName?: string | null;
   fileUrl?: string | null;
 }
 
 export interface ApplicationCandidateInfo {
-  id: number;
+  id: string | number;
   name?: string | null;
   email?: string | null;
   avatarUrl?: string | null;
 }
 
 export interface Application {
-  id: number;
+  id: string | number;
   status: ApplicationStatus;
   matchScore?: number | null;
   matchedSkills?: string[] | null;
@@ -45,7 +45,7 @@ export interface Application {
   interviewTime?: string | null;
   interviewLocation?: string | null;
   interviewMessage?: string | null;
-  interviewSessionId?: number | null;
+  interviewSessionId?: string | number | null;
   interviewSessionStatus?: import("./interview").InterviewSessionStatus | null;
 }
 
@@ -76,11 +76,11 @@ export interface UpdateApplicationStatusRequest {
 }
 
 export interface UpdateApplicationPayload {
-  id: number;
+  id: string | number;
   data: UpdateApplicationRequest;
 }
 
 export interface UpdateApplicationStatusPayload {
-  id: number;
+  id: string | number;
   data: UpdateApplicationStatusRequest;
 }

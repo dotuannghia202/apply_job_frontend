@@ -19,7 +19,7 @@ export const fetchUsers = async (params: UserListFilters = {}) => {
   }) as Promise<BackendResponse<Pagination<User>>>;
 };
 
-export const fetchUserById = async (id: number) => {
+export const fetchUserById = async (id: number | string) => {
   return axiosClient.get(`/users/${id}`) as Promise<BackendResponse<User>>;
 };
 
@@ -72,13 +72,13 @@ export const changePassword = async (data: ChangePasswordRequest) => {
   >;
 };
 
-export const assignCompanyToCurrentUser = async (companyId: number) => {
+export const assignCompanyToCurrentUser = async (companyId: number | string) => {
   return axiosClient.put(`/users/assign-company/${companyId}`) as Promise<
     BackendResponse<void>
   >;
 };
 
-export const deleteUser = async (id: number) => {
+export const deleteUser = async (id: number | string) => {
   return axiosClient.delete(`/users/${id}`) as Promise<BackendResponse<void>>;
 };
 

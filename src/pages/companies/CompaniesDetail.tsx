@@ -20,7 +20,7 @@ type StatusAction = "approve" | "reject" | "suspend" | "restore";
 
 interface ConfirmState {
   action: StatusAction;
-  companyId: number;
+  companyId: number | string;
 }
 
 const resolveRole = (roles: RoleName[] = []): RoleName => {
@@ -31,11 +31,10 @@ const resolveRole = (roles: RoleName[] = []): RoleName => {
 
 export default function CompaniesDetail() {
   const { t } = useTranslation();
-  const { id } = useParams();
-  const companyId = Number(id);
+  const { id } = useParams<{ id: string }>();
   const user = useAuthStore((state) => state.user);
   const role = resolveRole(user?.roles ?? []);
-  const companyQuery = useGetCompanyById(companyId);
+  const companyQuery = useGetCompanyById(id);
   const approveCompanyMutation = useApproveCompany();
   const toggleSuspendMutation = useToggleSuspendCompany();
   const [confirmState, setConfirmState] = useState<ConfirmState | null>(null);

@@ -73,7 +73,7 @@ export function ApplyJobModal({ job, open, onClose }: ApplyJobModalProps) {
   const myResumesQuery = useGetMyResumes();
   const createApplicationMutation = useCreateApplication();
   const createResumeMutation = useCreateResume();
-  const [selectedResumeId, setSelectedResumeId] = useState<number | null>(null);
+  const [selectedResumeId, setSelectedResumeId] = useState<number | string | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
   const [isUploadingResume, setIsUploadingResume] = useState(false);
   const [popup, setPopup] = useState<{

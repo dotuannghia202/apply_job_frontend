@@ -29,8 +29,7 @@ const CvCard = ({ item }: { item: CvItem }) => {
   const [deleteError, setDeleteError] = useState("");
   const setDefaultResumeMutation = useSetDefaultResume();
   const deleteResumeMutation = useDeleteResume();
-  const resumeId = Number(item.id);
-  const isValidResumeId = Number.isFinite(resumeId);
+  const isValidResumeId = Boolean(item.id);
 
   // console.log("Rendering CvCard with item:", item);
 
@@ -48,14 +47,14 @@ const CvCard = ({ item }: { item: CvItem }) => {
       return;
     }
 
-    setDefaultResumeMutation.mutate(resumeId);
+    setDefaultResumeMutation.mutate(item.id);
   };
 
   const handleDelete = () => {
     if (!isValidResumeId || deleteResumeMutation.isPending) return;
 
     setDeleteError("");
-    deleteResumeMutation.mutate(resumeId, {
+    deleteResumeMutation.mutate(item.id, {
       onSuccess: () => setIsDeleteOpen(false),
       onError: () => {
         setDeleteError(t("myCVManagement.card.deleteError"));

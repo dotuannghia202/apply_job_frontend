@@ -12,6 +12,7 @@ import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import Loader from "@/components/Loader";
 import AIProfileInsights from "@/pages/candidate/cvs/components/AIProfileInsights";
 import CandidateProfileCard from "@/pages/candidate/cvs/components/CandidateProfileCard";
 
@@ -71,11 +72,10 @@ const PageMessage = ({ children }: { children: ReactNode }) => (
 
 const CVDetailCandidate = () => {
   const { t, i18n } = useTranslation();
-  const { id } = useParams();
-  const resumeId = Number(id);
-  const isValidResumeId = Boolean(id) && Number.isFinite(resumeId);
+  const { id } = useParams<{ id: string }>();
+  const isValidResumeId = Boolean(id);
   const locale = getLocale(i18n.language);
-  const resumeQuery = useGetResumeById(isValidResumeId ? resumeId : 0);
+  const resumeQuery = useGetResumeById(id);
   const setDefaultResumeMutation = useSetDefaultResume();
 
   if (!isValidResumeId) {
@@ -86,7 +86,9 @@ const CVDetailCandidate = () => {
 
   if (resumeQuery.isLoading) {
     return (
-      <PageMessage>{t("myCVManagement.detail.status.loading")}</PageMessage>
+      <main className="mx-auto max-w-7xl px-6 py-12 md:py-16 flex items-center justify-center">
+        <Loader />
+      </main>
     );
   }
 
@@ -153,7 +155,7 @@ const CVDetailCandidate = () => {
                   size="sm"
                   className="gap-1.5 text-muted-foreground hover:text-primary border-border h-7"
                   disabled={setDefaultResumeMutation.isPending}
-                  onClick={() => setDefaultResumeMutation.mutate(resumeId)}
+                  onClick={() => setDefaultResumeMutation.mutate(resume.id)}
                 >
                   <Star className="h-3.5 w-3.5" aria-hidden="true" />
                   {setDefaultResumeMutation.isPending

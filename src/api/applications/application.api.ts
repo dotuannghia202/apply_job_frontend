@@ -24,7 +24,7 @@ export const fetchHrApplications = async (
   }) as Promise<BackendResponse<Pagination<Application>>>;
 };
 
-export const fetchApplicationById = async (id: number) => {
+export const fetchApplicationById = async (id: number | string) => {
   return axiosClient.get(`/applications/${id}`) as Promise<
     BackendResponse<Application>
   >;

@@ -18,7 +18,7 @@ export interface Job {
   requirements?: string[];
   benefits?: string[];
   workingHours?: string;
-  skillIds?: number[];
+  skillIds?: (string | number)[];
   applicantCount?: number;
   isSaved: boolean;
   isApplied: boolean;
@@ -54,7 +54,7 @@ export interface JobUpdatePayload {
   isActive?: boolean;
   benefits?: string[];
   workingHours?: string;
-  companyId?: number;
+  companyId?: string | number;
   specializationId?: string | number;
-  skillIds?: number[];
+  skillIds?: (string | number)[];
 }

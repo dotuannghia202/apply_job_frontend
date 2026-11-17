@@ -29,7 +29,7 @@ export type EmployerJobFilters = {
 };
 
 export type SelectedSkill = {
-  id: number;
+  id: number | string;
   name: string;
 };
 
@@ -96,7 +96,7 @@ export const getJobSkillNames = (job: Job) => job.skills ?? [];
 
 export const mapJobToUpdateForm = (
   job: Job,
-  formatSkillFallback: (id: number) => string = (id) => `Skill #${id}`,
+  formatSkillFallback: (id: number | string) => string = (id) => `Skill #${id}`,
 ): UpdateJobFormState => {
   const skillNames = getJobSkillNames(job);
   const selectedSkills =

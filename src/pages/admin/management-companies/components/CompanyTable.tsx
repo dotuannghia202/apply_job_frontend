@@ -7,7 +7,7 @@ import type { CompanyStatus } from "@/types/company";
 import { Button } from "@/components/ui/button";
 
 export type CompanyRow = {
-  id: number;
+  id: number | string;
   name: string;
   logo: string;
   employerName: string;

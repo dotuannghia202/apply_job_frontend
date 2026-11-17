@@ -9,5 +9,5 @@ export const applicationKeys = {
   hrList: (filters: ApplicationListFilters) =>
     [...applicationKeys.hrLists(), filters] as const,
   details: () => [...applicationKeys.all, "detail"] as const,
-  detail: (id: number) => [...applicationKeys.details(), id] as const,
+  detail: (id: number | string) => [...applicationKeys.details(), id] as const,
 };

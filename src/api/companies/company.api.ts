@@ -22,7 +22,7 @@ export const fetchCompanyDashboardStats = async () => {
   >;
 };
 
-export const fetchCompanyById = async (id: number) => {
+export const fetchCompanyById = async (id: number | string) => {
   return axiosClient.get(`/companies/${id}`) as Promise<
     BackendResponse<Company>
   >;
@@ -44,7 +44,7 @@ export const updateCompany = async ({ id, data }: UpdateCompanyPayload) => {
   >;
 };
 
-export const deleteCompany = async (id: number) => {
+export const deleteCompany = async (id: number | string) => {
   return axiosClient.delete(`/companies/${id}`) as Promise<
     BackendResponse<void>
   >;

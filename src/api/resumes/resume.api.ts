@@ -17,7 +17,7 @@ export const fetchMyResumes = async () => {
   return axiosClient.get("/my-cvs") as Promise<BackendResponse<Resume[]>>;
 };
 
-export const fetchResumeById = async (id: number) => {
+export const fetchResumeById = async (id: number | string) => {
   return axiosClient.get(`/resumes/${id}`) as Promise<BackendResponse<Resume>>;
 };
 
@@ -33,11 +33,11 @@ export const updateResume = async ({ id, data }: UpdateResumePayload) => {
   >;
 };
 
-export const deleteResume = async (id: number) => {
+export const deleteResume = async (id: number | string) => {
   return axiosClient.delete(`/resumes/${id}`) as Promise<BackendResponse<void>>;
 };
 
-export const setDefaultResume = async (id: number) => {
+export const setDefaultResume = async (id: number | string) => {
   return axiosClient.put(`/resumes/${id}/default`) as Promise<
     BackendResponse<Resume>
   >;

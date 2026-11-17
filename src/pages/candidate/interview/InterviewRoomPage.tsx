@@ -22,12 +22,11 @@ type InterviewStage = "DEVICE_CHECK" | "RECORDING" | "SUBMITTING" | "FINISHED";
 
 export default function InterviewRoomPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
-  const numericSessionId = Number(sessionId);
   const navigate = useNavigate();
   const { i18n } = useTranslation();
   const isVi = i18n.language.startsWith("vi");
 
-  const { data: sessionData, isLoading, isError } = useGetInterviewSession(numericSessionId);
+  const { data: sessionData, isLoading, isError } = useGetInterviewSession(sessionId);
   const startMutation = useStartInterview();
   const submitMutation = useSubmitInterview();
 
@@ -143,7 +142,7 @@ export default function InterviewRoomPage() {
     if (!mediaStreamRef.current || !questions.length) return;
 
     try {
-      await startMutation.mutateAsync(numericSessionId);
+      await startMutation.mutateAsync(sessionId!);
     } catch (e) {
       console.warn("Could not mark session as in_progress on BE:", e);
     }
@@ -197,34 +196,55 @@ export default function InterviewRoomPage() {
   };
 
   // 5. Submit interview recording to Backend
+  const uploadAndSubmitVideo = async (finalProgress: QuestionProgress[]) => {
+    try {
+      const chunks = recordedChunksRef.current;
+      if (!chunks || chunks.length === 0) {
+        throw new Error(
+          isVi
+            ? "Không tìm thấy dữ liệu video đã ghi lại. Vui lòng thử lại!"
+            : "No recorded video data found. Please try again!",
+        );
+      }
+
+      const fullVideoBlob = new Blob(chunks, { type: "video/webm" });
+      const videoFile = new File([fullVideoBlob], `interview_${sessionId}.webm`, {
+        type: "video/webm",
+      });
+
+      const formData = new FormData();
+      formData.append("video", videoFile);
+      formData.append("progress", JSON.stringify({ questionProgresses: finalProgress }));
+
+      await submitMutation.mutateAsync({
+        sessionId: sessionId!,
+        formData,
+      });
+
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      }
+
+      setStage("FINISHED");
+    } catch (err: unknown) {
+      console.error("Submission failed:", err);
+      const msg = getApiErrorMessage(err);
+      alert(msg);
+      setStage("RECORDING");
+    }
+  };
+
   const finishAndSubmit = (finalProgress: QuestionProgress[]) => {
     setStage("SUBMITTING");
 
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current.onstop = async () => {
-        const fullVideoBlob = new Blob(recordedChunksRef.current, { type: "video/webm" });
-        const videoFile = new File([fullVideoBlob], `interview_${numericSessionId}.webm`, {
-          type: "video/webm",
-        });
-
-        const formData = new FormData();
-        formData.append("video", videoFile);
-        formData.append("progress", JSON.stringify({ questionProgresses: finalProgress }));
-
-        try {
-          await submitMutation.mutateAsync({
-            sessionId: numericSessionId,
-            formData,
-          });
-          setStage("FINISHED");
-        } catch (err: unknown) {
-          console.error("Submission failed:", err);
-          const msg = getApiErrorMessage(err);
-          alert(msg);
-          setStage("RECORDING");
-        }
+    const recorder = mediaRecorderRef.current;
+    if (recorder && recorder.state !== "inactive") {
+      recorder.onstop = () => {
+        uploadAndSubmitVideo(finalProgress);
       };
+      recorder.stop();
+    } else {
+      uploadAndSubmitVideo(finalProgress);
     }
   };
 

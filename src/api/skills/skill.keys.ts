@@ -5,5 +5,5 @@ export const skillKeys = {
   lists: () => [...skillKeys.all, "list"] as const,
   list: (filters: SkillListFilters) => [...skillKeys.lists(), filters] as const,
   details: () => [...skillKeys.all, "detail"] as const,
-  detail: (id: number) => [...skillKeys.details(), id] as const,
+  detail: (id: number | string) => [...skillKeys.details(), id] as const,
 };

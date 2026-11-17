@@ -13,7 +13,7 @@ import { NotificationPopup } from "@/components/NotificationPopup";
 import { getLocalDatetimeMin } from "@/helper";
 
 interface InterviewModalProps {
-  applicationId: number;
+  applicationId: number | string;
   onClose: () => void;
 }
 

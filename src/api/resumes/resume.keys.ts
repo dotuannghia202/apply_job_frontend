@@ -7,5 +7,5 @@ export const resumeKeys = {
     [...resumeKeys.lists(), filters] as const,
   mine: () => [...resumeKeys.all, "mine"] as const,
   details: () => [...resumeKeys.all, "detail"] as const,
-  detail: (id: number) => [...resumeKeys.details(), id] as const,
+  detail: (id: number | string) => [...resumeKeys.details(), id] as const,
 };
