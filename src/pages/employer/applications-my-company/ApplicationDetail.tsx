@@ -35,7 +35,13 @@ import { AiFitCard } from "@/components/applications/AiFitCard";
 import { ApplicationDocumentsCard } from "@/components/applications/ApplicationDocumentsCard";
 import { getCandidateInitials } from "@/pages/employer/applications-my-company/helper";
 import { InterviewModal } from "@/pages/employer/auto-send-email/InterviewModal";
-import { useGetInterviewSessionByApplication } from "@/api/interviews/interview.queries";
+import {
+  useGetInterviewSessionByApplication,
+  useRetryEvaluateInterview,
+} from "@/api/interviews/interview.queries";
+import { InterviewEvaluatingCard } from "@/components/interview/InterviewEvaluatingCard";
+import { NotificationPopup } from "@/components/NotificationPopup";
+import { getApiErrorMessage } from "@/helper/error";
 import { InterviewAssessmentCard } from "@/components/interview/InterviewAssessmentCard";
 import type { ApplicationStatus } from "@/types/application";
 
@@ -56,6 +62,36 @@ export default function ApplicationDetail() {
   );
   const updateStatusMutation = useUpdateApplicationStatus();
   const [showInterviewModal, setShowInterviewModal] = useState(false);
+  const retryEvaluateMutation = useRetryEvaluateInterview();
+  const [popup, setPopup] = useState<{
+    open: boolean;
+    variant: "success" | "error";
+    title: string;
+    message: string;
+  } | null>(null);
+
+  const handleRetryEvaluate = async () => {
+    if (!interviewSession?.id) return;
+    try {
+      await retryEvaluateMutation.mutateAsync(interviewSession.id);
+      setPopup({
+        open: true,
+        variant: "success",
+        title: i18n.language.startsWith("vi") ? "Thành công" : "Success",
+        message: i18n.language.startsWith("vi")
+          ? "Đã gửi yêu cầu chấm điểm lại buổi phỏng vấn video. Hệ thống AI đang tiến hành bóc băng và đánh giá!"
+          : "Re-evaluation request sent. AI is now processing video transcription and evaluation!",
+      });
+      interviewSessionQuery.refetch();
+    } catch (err) {
+      setPopup({
+        open: true,
+        variant: "error",
+        title: i18n.language.startsWith("vi") ? "Thao tác thất bại" : "Action Failed",
+        message: getApiErrorMessage(err),
+      });
+    }
+  };
 
   const application = applicationQuery.data?.data;
   const interviewSession = interviewSessionQuery.data?.data;
@@ -225,28 +261,24 @@ export default function ApplicationDetail() {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
           <section className="flex flex-col gap-6">
-            {interviewSession && interviewSession.status === "COMPLETED" && (
-              <InterviewAssessmentCard session={interviewSession} />
-            )}
+            {interviewSession &&
+              (interviewSession.status === "EVALUATING" ||
+                (interviewSession.mediaRecordUrl &&
+                  interviewSession.status !== "COMPLETED")) && (
+                <InterviewEvaluatingCard
+                  session={interviewSession}
+                  onRetry={handleRetryEvaluate}
+                  isRetrying={retryEvaluateMutation.isPending}
+                  role="employer"
+                />
+              )}
 
-            {interviewSession && interviewSession.status === "EVALUATING" && (
-              <Card className="border-amber-200 bg-amber-50/50 p-6">
-                <div className="flex items-center gap-3 text-amber-800">
-                  <Clock3 className="size-5 animate-spin" />
-                  <div>
-                    <h3 className="font-bold text-sm">
-                      {i18n.language.startsWith("vi")
-                        ? "AI đang chấm điểm buổi phỏng vấn video..."
-                        : "AI is evaluating interview video..."}
-                    </h3>
-                    <p className="text-xs text-amber-700 mt-0.5">
-                      {i18n.language.startsWith("vi")
-                        ? "Hệ thống đang bóc băng STT, dịch thuật và đối chiếu Rubric chống ảo giác. Vui lòng quay lại sau ít phút!"
-                        : "Video STT transcription, translation, and rubric evaluation in progress. Please refresh in a moment!"}
-                    </p>
-                  </div>
-                </div>
-              </Card>
+            {interviewSession && interviewSession.status === "COMPLETED" && (
+              <InterviewAssessmentCard
+                session={interviewSession}
+                onRetry={handleRetryEvaluate}
+                isRetrying={retryEvaluateMutation.isPending}
+              />
             )}
 
             <AiFitCard
@@ -507,6 +539,15 @@ export default function ApplicationDetail() {
         <InterviewModal
           applicationId={id!}
           onClose={() => setShowInterviewModal(false)}
+        />
+      )}
+      {popup && (
+        <NotificationPopup
+          open={popup.open}
+          variant={popup.variant}
+          title={popup.title}
+          message={popup.message}
+          onClose={() => setPopup(null)}
         />
       )}
     </main>

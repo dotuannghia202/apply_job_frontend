@@ -4,6 +4,7 @@ import {
   fetchInterviewSessionByApplication,
   startInterviewSession,
   submitInterviewSession,
+  retryEvaluateInterviewSession,
 } from "./interview.api";
 
 export const interviewKeys = {
@@ -62,6 +63,19 @@ export const useSubmitInterview = () => {
     }) => submitInterviewSession(sessionId, formData),
     onSuccess: (_, { sessionId }) => {
       queryClient.invalidateQueries({ queryKey: interviewKeys.detail(sessionId) });
+      queryClient.invalidateQueries({ queryKey: ["applications"] });
+    },
+  });
+};
+
+export const useRetryEvaluateInterview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (sessionId: number | string) => retryEvaluateInterviewSession(sessionId),
+    onSuccess: (_, sessionId) => {
+      queryClient.invalidateQueries({ queryKey: interviewKeys.detail(sessionId) });
+      queryClient.invalidateQueries({ queryKey: ["interviews"] });
       queryClient.invalidateQueries({ queryKey: ["applications"] });
     },
   });

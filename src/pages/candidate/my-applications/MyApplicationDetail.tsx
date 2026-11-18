@@ -16,7 +16,14 @@ import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 
 import { useGetApplicationById } from "@/api/applications/application.queries";
-import { useGetInterviewSessionByApplication } from "@/api/interviews/interview.queries";
+import { useState } from "react";
+import {
+  useGetInterviewSessionByApplication,
+  useRetryEvaluateInterview,
+} from "@/api/interviews/interview.queries";
+import { InterviewEvaluatingCard } from "@/components/interview/InterviewEvaluatingCard";
+import { NotificationPopup } from "@/components/NotificationPopup";
+import { getApiErrorMessage } from "@/helper/error";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -315,6 +322,37 @@ const MyApplicationDetail = () => {
   const interviewSessionQuery = useGetInterviewSessionByApplication(
     isValidApplicationId ? id : undefined,
   );
+  const retryEvaluateMutation = useRetryEvaluateInterview();
+  const [popup, setPopup] = useState<{
+    open: boolean;
+    variant: "success" | "error";
+    title: string;
+    message: string;
+  } | null>(null);
+
+  const handleRetryEvaluate = async () => {
+    if (!interviewSession?.id) return;
+    try {
+      await retryEvaluateMutation.mutateAsync(interviewSession.id);
+      setPopup({
+        open: true,
+        variant: "success",
+        title: i18n.language.startsWith("vi") ? "Thành công" : "Success",
+        message: i18n.language.startsWith("vi")
+          ? "Đã gửi yêu cầu chấm điểm lại buổi phỏng vấn video. Hệ thống AI đang tiến hành bóc băng và đánh giá!"
+          : "Re-evaluation request sent. AI is now processing video transcription and evaluation!",
+      });
+      interviewSessionQuery.refetch();
+    } catch (err) {
+      setPopup({
+        open: true,
+        variant: "error",
+        title: i18n.language.startsWith("vi") ? "Thao tác thất bại" : "Action Failed",
+        message: getApiErrorMessage(err),
+      });
+    }
+  };
+
 
   if (!isValidApplicationId) {
     return (
@@ -440,53 +478,55 @@ const MyApplicationDetail = () => {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
           <section className="flex flex-col gap-6">
-            {interviewSession && (interviewSession.status === "NOT_STARTED" || interviewSession.status === "IN_PROGRESS") && (
-              <Card className="overflow-hidden border-emerald-300 bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-900 text-white p-6 shadow-lg">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 border border-emerald-500/30">
-                      <Sparkles className="size-3.5" />
-                      {t("interviewRoom.headerTitle", "PHÒNG PHỎNG VẤN AI")}
-                    </span>
-                    <h3 className="mt-2 text-xl font-bold">
-                      {t("interviewRoom.lobbyTitle", "Sẵn sàng cho buổi phỏng vấn AI")}
-                    </h3>
-                    <p className="mt-1 text-xs text-slate-300 max-w-xl">
-                      {t("interviewRoom.interviewPendingDesc", "Hồ sơ của bạn đã sẵn sàng cho buổi phỏng vấn AI. Hãy tham gia ngay để hoàn thiện ứng tuyển!")}
-                    </p>
+            {interviewSession &&
+              !interviewSession.mediaRecordUrl &&
+              (interviewSession.status === "NOT_STARTED" ||
+                interviewSession.status === "IN_PROGRESS") && (
+                <Card className="overflow-hidden border-emerald-300 bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-900 text-white p-6 shadow-lg">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 border border-emerald-500/30">
+                        <Sparkles className="size-3.5" />
+                        {t("interviewRoom.headerTitle", "PHÒNG PHỎNG VẤN AI")}
+                      </span>
+                      <h3 className="mt-2 text-xl font-bold">
+                        {t("interviewRoom.lobbyTitle", "Sẵn sàng cho buổi phỏng vấn AI")}
+                      </h3>
+                      <p className="mt-1 text-xs text-slate-300 max-w-xl">
+                        {t(
+                          "interviewRoom.interviewPendingDesc",
+                          "Hồ sơ của bạn đã sẵn sàng cho buổi phỏng vấn AI. Hãy tham gia ngay để hoàn thiện ứng tuyển!"
+                        )}
+                      </p>
+                    </div>
+                    <Link to={`/interview/${interviewSession.id}`}>
+                      <Button className="bg-emerald-500 hover:bg-emerald-600 font-bold px-6 py-5 gap-2 text-white cursor-pointer shadow-md">
+                        <Video className="size-4" />
+                        {t("interviewRoom.takeInterviewNow", "Tham gia phỏng vấn AI ngay")}
+                      </Button>
+                    </Link>
                   </div>
-                  <Link to={`/interview/${interviewSession.id}`}>
-                    <Button className="bg-emerald-500 hover:bg-emerald-600 font-bold px-6 py-5 gap-2 text-white cursor-pointer shadow-md">
-                      <Video className="size-4" />
-                      {t("interviewRoom.takeInterviewNow", "Tham gia phỏng vấn AI ngay")}
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
-            )}
+                </Card>
+              )}
 
-            {interviewSession && interviewSession.status === "EVALUATING" && (
-              <Card className="border-amber-200 bg-amber-50/50 p-6">
-                <div className="flex items-center gap-3 text-amber-800">
-                  <Clock3 className="size-5 animate-spin" />
-                  <div>
-                    <h3 className="font-bold text-sm">
-                      {i18n.language.startsWith("vi")
-                        ? "AI đang chấm điểm buổi phỏng vấn video..."
-                        : "AI is evaluating your interview video..."}
-                    </h3>
-                    <p className="text-xs text-amber-700 mt-0.5">
-                      {i18n.language.startsWith("vi")
-                        ? "Hệ thống đang bóc băng STT, dịch thuật và đối chiếu Rubric chống ảo giác. Vui lòng quay lại sau ít phút!"
-                        : "Video transcription, translation, and rubric evaluation in progress. Please check back shortly!"}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            )}
+            {interviewSession &&
+              (interviewSession.status === "EVALUATING" ||
+                (interviewSession.mediaRecordUrl &&
+                  interviewSession.status !== "COMPLETED")) && (
+                <InterviewEvaluatingCard
+                  session={interviewSession}
+                  onRetry={handleRetryEvaluate}
+                  isRetrying={retryEvaluateMutation.isPending}
+                  role="candidate"
+                />
+              )}
 
             {interviewSession && interviewSession.status === "COMPLETED" && (
-              <InterviewAssessmentCard session={interviewSession} />
+              <InterviewAssessmentCard
+                session={interviewSession}
+                onRetry={handleRetryEvaluate}
+                isRetrying={retryEvaluateMutation.isPending}
+              />
             )}
 
             <AiFitCard
@@ -663,6 +703,15 @@ const MyApplicationDetail = () => {
           </aside>
         </div>
       </div>
+      {popup && (
+        <NotificationPopup
+          open={popup.open}
+          variant={popup.variant}
+          title={popup.title}
+          message={popup.message}
+          onClose={() => setPopup(null)}
+        />
+      )}
     </main>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Play, Quote, Video, Globe2, Award, Zap } from "lucide-react";
+import { Play, Quote, Video, Globe2, Award, Zap, RotateCw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,15 @@ import type { ResInterviewSessionDTO } from "@/types/interview";
 
 interface InterviewAssessmentCardProps {
   session: ResInterviewSessionDTO;
+  onRetry?: () => void;
+  isRetrying?: boolean;
 }
 
-export function InterviewAssessmentCard({ session }: InterviewAssessmentCardProps) {
+export function InterviewAssessmentCard({
+  session,
+  onRetry,
+  isRetrying = false,
+}: InterviewAssessmentCardProps) {
   const { t, i18n } = useTranslation();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [selectedQuestionIdx, setSelectedQuestionIdx] = useState(0);
@@ -77,6 +83,27 @@ export function InterviewAssessmentCard({ session }: InterviewAssessmentCardProp
               <Globe2 className="size-3" />
               {isViView ? "EN Version" : "Bản tiếng Việt"}
             </Button>
+
+            {onRetry && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                disabled={isRetrying}
+                onClick={onRetry}
+                className="h-7 text-xs text-amber-700 hover:text-amber-800 hover:bg-amber-50 gap-1 border border-amber-200"
+                title={isViView ? "Yêu cầu AI chấm điểm lại" : "Re-evaluate with AI"}
+              >
+                <RotateCw className={`size-3 ${isRetrying ? "animate-spin" : ""}`} />
+                {isRetrying
+                  ? isViView
+                    ? "Đang xử lý..."
+                    : "Processing..."
+                  : isViView
+                    ? "Chấm lại"
+                    : "Re-evaluate"}
+              </Button>
+            )}
           </div>
 
           <h2 className="mt-2 text-xl font-bold text-slate-900">

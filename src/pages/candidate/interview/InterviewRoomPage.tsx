@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Loader2, ShieldAlert } from "lucide-react";
+import { Loader2, ShieldAlert, CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -252,6 +252,30 @@ export default function InterviewRoomPage() {
     return (
       <div className="flex h-screen items-center justify-center bg-[#0b0f17] text-white">
         <Loader2 className="size-8 animate-spin text-emerald-400" />
+      </div>
+    );
+  }
+
+  if (session && (session.status === "EVALUATING" || session.status === "COMPLETED" || session.mediaRecordUrl)) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-[#0b0f17] text-white p-6 text-center">
+        <CheckCircle2 className="size-14 text-emerald-400 mb-4" />
+        <h2 className="text-xl font-bold">
+          {isVi
+            ? "Buổi phỏng vấn này đã được hoàn tất!"
+            : "This interview session has already been submitted!"}
+        </h2>
+        <p className="mt-2 text-sm text-slate-400 max-w-md">
+          {isVi
+            ? "Video của bạn đã được lưu trữ an toàn trên Cloud. Vui lòng chuyển tới trang chi tiết đơn ứng tuyển để xem tiến độ đánh giá hoặc yêu cầu chấm lại nếu cần."
+            : "Your video has been saved safely on Cloud. Please view your application detail page to check evaluation progress or request a retry."}
+        </p>
+        <Button
+          onClick={() => navigate("/applications")}
+          className="mt-6 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 cursor-pointer"
+        >
+          {isVi ? "Xem đơn ứng tuyển" : "View Application"}
+        </Button>
       </div>
     );
   }

@@ -30,3 +30,9 @@ export const submitInterviewSession = async (
     },
   }) as Promise<BackendResponse<void>>;
 };
+
+export const retryEvaluateInterviewSession = async (sessionId: number | string) => {
+  return axiosClient.post(`/interviews/${sessionId}/retry-evaluate`) as Promise<
+    BackendResponse<void>
+  >;
+};
